@@ -1,0 +1,96 @@
+*uvguix.* 
+.mxproject
+JLinkLog.txt
+# dot files
+.settings
+.eide
+
+# project out
+/build
+/bin
+/obj
+/out
+
+# eide template
+*.ept
+*.eide-template
+*.code-workspace
+
+# editor
+.vscode
+
+# CUBE Generate
+Drivers
+Middlewares
+
+# 
+RTE
+Drivers
+*.crf
+*.axf
+*.htm
+*.dep
+*.lnp
+*.sct
+*.scvd
+*.rar
+*.zip
+*.7z
+
+
+# Prerequisites
+*.d
+*.s
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+*.iex
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+DebugConfig
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+

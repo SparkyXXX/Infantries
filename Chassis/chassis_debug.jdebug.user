@@ -1,0 +1,36 @@
+
+
+GraphedExpression="task_freq", Color=#e56a6f, Show=0
+GraphedExpression="(GimbalYaw_Control).mode_change_flag", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#35792b
+OpenDocument="main.c", FilePath="F:/RM Code/NB_QX/infantry-2024-debug-chassis/Core/Src/main.c", Line=61
+OpenDocument="app_gimbal.c", FilePath="F:/RM Code/NB_QX/infantry-2024-debug-chassis/User/Application/app_gimbal.c", Line=67
+OpenDocument="callback_ctrl.c", FilePath="F:/RM Code/NB_QX/infantry-2024-debug-chassis/User/Infantry/callback_ctrl.c", Line=44
+OpenDocument="protocol_board.c", FilePath="F:/RM Code/NB_QX/infantry-2024-debug-chassis/User/Protocol/protocol_board.c", Line=231
+OpenDocument="stm32g4xx_hal_fdcan.c", FilePath="F:/RM Code/NB_QX/infantry-2024-debug-chassis/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_fdcan.c", Line=2959
+OpenDocument="startup_stm32g473xx.s", FilePath="F:/RM Code/NB_QX/infantry-2024-debug-chassis/MDK-ARM/startup_stm32g473xx.s", Line=187
+OpenDocument="app_chassis.cpp", FilePath="F:/RM Code/NB_QX/infantry-2024-debug-chassis/User/Application/app_chassis.cpp", Line=48
+OpenDocument="tasks.c", FilePath="F:/RM Code/NB_QX/infantry-2024-debug-chassis/Middlewares/Third_Party/FreeRTOS/Source/tasks.c", Line=3423
+OpenDocument="task_ctrl.c", FilePath="F:/RM Code/NB_QX/infantry-2024-debug-chassis/User/Infantry/task_ctrl.c", Line=54
+OpenToolbar="Debug", Floating=0, x=0, y=0
+OpenWindow="Call Stack", DockArea=RIGHT, x=0, y=0, w=1622, h=823, TabPos=3, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=188, h=823, TabPos=0, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Disassembly", DockArea=LEFT, x=0, y=0, w=188, h=823, TabPos=1, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Global Data", DockArea=BOTTOM, x=0, y=0, w=2400, h=299, TabPos=2, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Local Data", DockArea=BOTTOM, x=0, y=0, w=2400, h=299, TabPos=0, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Watched Data 1", DockArea=BOTTOM, x=0, y=0, w=2400, h=299, TabPos=1, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Data Sampling", DockArea=RIGHT, x=0, y=0, w=1622, h=823, TabPos=2, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
+OpenWindow="Timeline", DockArea=RIGHT, x=0, y=0, w=1622, h=823, TabPos=0, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="10 ms / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="1054;0", DataGraphShowNamesAtCursor=0, PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="1647;-89", CodeGraphLegendShown=0, CodeGraphLegendPosition="1666;0"
+OpenWindow="RTOS", DockArea=RIGHT, x=0, y=0, w=1622, h=823, TabPos=1, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, Showing=""
+SmartViewPlugin="", Page="", Toolbar="Hidden", Window="SmartView 1"
+TableHeader="Call Stack", SortCol="Function", SortOrder="ASCENDING", VisibleCols=["Function";"Stack Frame";"Source";"PC";"Return Address";"Stack Used"], ColWidths=[239;100;100;100;112;251]
+TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" task_freq";" (GimbalYaw_Control).mode_change_flag"], ColWidths=[100;100;100;1632]
+TableHeader="Data Sampling Setup", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[239;157;157;157;157;168;129;151;151]
+TableHeader="Global Data", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Location";"Size";"Type";"Access";"Scope"], ColWidths=[100;100;100;100;100;0;700]
+TableHeader="Local Data", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Location";"Size";"Type";"Access";"Scope"], ColWidths=[149;100;118;100;100;0;344]
+TableHeader="Power Sampling", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
+TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
+TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;351]
+TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[345;102;100;100;1323]
+TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh";"Access"], ColWidths=[484;435;402;1079;100]
+WatchedExpression="task_freq", Window=Watched Data 1
+WatchedExpression="GimbalYaw_Control", RefreshRate=5, Window=Watched Data 1
