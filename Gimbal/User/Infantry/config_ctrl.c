@@ -33,8 +33,8 @@ float Mouse_Yaw_To_Ref_Quiet = 0.0002f;
 
 float Elevation_Angle = 21.0f;
 float Depression_Angle = -27.0f;
-float Servo_Open = 162.0f;
-float Servo_Close = 92.0f;
+float Servo_Open = 80.0f;
+float Servo_Close = -10.0f;
 
 const float Correction_Matrix[9] = {1, 0, 0,
                                     0, 1, 0,
