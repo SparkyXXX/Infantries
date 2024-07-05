@@ -1,0 +1,153 @@
+T6678 000:193.580   SEGGER J-Link V7.96g Log File
+T6678 000:193.679   DLL Compiled: May  8 2024 14:57:36
+T6678 000:193.682   Logging started @ 2024-05-11 02:52
+T6678 000:193.685   Process: D:\Keil\UV4\UV4.exe
+T6678 000:193.692 - 193.688ms
+T6678 000:193.698 JLINK_SetWarnOutHandler(...)
+T6678 000:193.701 - 0.004ms
+T6678 000:193.705 JLINK_OpenEx(...)
+T6678 000:195.748   Firmware: J-Link V9 compiled May  7 2021 16:26:12
+T6678 000:196.359   Firmware: J-Link V9 compiled May  7 2021 16:26:12
+T6678 000:196.499   Decompressing FW timestamp took 102 us
+T6678 000:202.766   Hardware: V9.60
+T6678 000:202.783   S/N: 69665299
+T6678 000:202.789   OEM: SEGGER
+T6678 000:202.795   Feature(s): RDI, GDB, FlashDL, FlashBP, JFlash
+T6678 000:203.591   Bootloader: (Could not read)
+T6678 000:204.736   TELNET listener socket opened on port 19021
+T6678 000:204.805   WEBSRV WEBSRV_Init(): Starting webserver thread(s)
+T6678 000:204.901   WEBSRV Webserver running on local port 19080
+T6678 000:204.971   Looking for J-Link GUI Server exe at: D:\Keil\ARM\Segger\JLinkGUIServer.exe
+T6678 000:204.990   Looking for J-Link GUI Server exe at: E:\College Data\Technic Learning\RoboMaster\Jlink\JLink_V796g\JLinkGUIServer.exe
+T6678 000:205.000   Forking J-Link GUI Server: E:\College Data\Technic Learning\RoboMaster\Jlink\JLink_V796g\JLinkGUIServer.exe
+T6678 000:207.174   J-Link GUI Server info: "J-Link GUI server V7.96g "
+T6678 000:207.512 - 13.788ms returns "O.K."
+T6678 000:207.532 JLINK_SetErrorOutHandler(...)
+T6678 000:207.539 - 0.004ms
+T6678 000:207.565 JLINK_ExecCommand("ProjectFile = "E:\College Data\Technic Learning\RoboMaster\2.SWING DANCE\Gimbal\MDK-ARM\JLinkSettings.ini"", ...). 
+T6678 000:219.671   Ref file found at: D:\Keil\ARM\Segger\JLinkDevices.ref
+T6678 000:219.721   REF file references invalid XML file: E:\College Data\Technic Learning\RoboMaster\Jlink\JLink_V796g\JLinkDevices.xml
+T6678 000:220.946   Device "STM32F030C6 (ALLOW OPT. BYTES)" selected.
+T6678 000:221.150 - 13.587ms returns 0x00
+T6678 000:221.165 JLINK_ExecCommand("Device = STM32G473CBTx", ...). 
+T6678 000:221.394   Device "STM32F030C6 (ALLOW OPT. BYTES)" selected.
+T6678 000:221.517 - 0.347ms returns 0x00
+T6678 000:221.524 JLINK_ExecCommand("DisableConnectionTimeout", ...). 
+T6678 000:221.529 - 0.001ms returns 0x01
+T6678 000:221.534 JLINK_GetHardwareVersion()
+T6678 000:221.537 - 0.003ms returns 96000
+T6678 000:221.540 JLINK_GetDLLVersion()
+T6678 000:221.543 - 0.003ms returns 79607
+T6678 000:221.548 JLINK_GetOEMString(...)
+T6678 000:221.552 JLINK_GetFirmwareString(...)
+T6678 000:221.555 - 0.003ms
+T6678 000:221.560 JLINK_GetDLLVersion()
+T6678 000:221.563 - 0.002ms returns 79607
+T6678 000:221.566 JLINK_GetCompileDateTime()
+T6678 000:221.569 - 0.002ms
+T6678 000:221.574 JLINK_GetFirmwareString(...)
+T6678 000:221.577 - 0.003ms
+T6678 000:221.580 JLINK_GetHardwareVersion()
+T6678 000:221.583 - 0.002ms returns 96000
+T6678 000:221.587 JLINK_GetSN()
+T6678 000:221.590 - 0.002ms returns 69665299
+T6678 000:221.594 JLINK_GetOEMString(...)
+T6678 000:221.599 JLINK_TIF_Select(JLINKARM_TIF_SWD)
+T6678 000:222.406 - 0.806ms returns 0x00
+T6678 000:222.417 JLINK_HasError()
+T6678 000:222.432 JLINK_SetSpeed(5000)
+T6678 000:222.544 - 0.113ms
+T6678 000:222.865 JLINK_HasError()
+T6678 000:222.872 JLINK_SetResetType(JLINKARM_RESET_TYPE_NORMAL)
+T6678 000:222.876 - 0.003ms returns JLINKARM_RESET_TYPE_NORMAL
+T6678 000:222.880 JLINK_Reset()
+T6678 000:223.072   InitTarget() start
+T6678 000:223.077    J-Link Script File: Executing InitTarget()
+T6678 000:223.259   SWD selected. Executing JTAG -> SWD switching sequence.
+T6678 000:224.549   DAP initialized successfully.
+T6678 000:229.609   Active write protection detected.
+T6678 008:613.850   Device will be unsecured now.
+T6678 008:620.760   DAP initialized successfully.
+T6678 008:620.787   Device unlocked successfully.
+T6678 008:625.246   DAP initialized successfully.
+T6678 008:625.282   InitTarget() end - Took 8.40s
+T6678 008:625.930   Found SW-DP with ID 0x2BA01477
+T6678 008:628.066   DPIDR: 0x2BA01477
+T6678 008:628.098   CoreSight SoC-400 or earlier
+T6678 008:628.299   Scanning AP map to find all available APs
+T6678 008:628.918   AP[1]: Stopped AP scan as end of AP map has been reached
+T6678 008:628.950   AP[0]: AHB-AP (IDR: 0x24770011)
+T6678 008:628.959   Iterating through AP map to find AHB-AP to use
+T6678 008:629.885   AP[0]: Core found
+T6678 008:629.914   AP[0]: AHB-AP ROM base: 0xE00FF000
+T6678 008:630.442   CPUID register: 0x410FC241. Implementer code: 0x41 (ARM)
+T6678 008:630.610   Found Cortex-M4 r0p1, Little endian.
+T6678 008:630.685   
+  ***** Warning: 
+T6678 008:630.699   Identified core does not match configuration. (Found: Cortex-M4, Configured: Cortex-M0)
+T6678 008:631.194   -- Max. mem block: 0x00010C40
+T6678 008:631.941   CPU_ReadMem(4 bytes @ 0xE000EDF0)
+T6678 008:632.384   CPU_ReadMem(4 bytes @ 0xE0002000)
+T6678 008:632.797   FPUnit: 6 code (BP) slots and 2 literal slots
+T6678 008:632.814   CPU_ReadMem(4 bytes @ 0xE000EDFC)
+T6678 008:633.154   CPU_WriteMem(4 bytes @ 0xE000EDFC)
+T6678 008:633.522   CPU_ReadMem(4 bytes @ 0xE0001000)
+T6678 008:633.866   CPU_WriteMem(4 bytes @ 0xE0001000)
+T6678 008:634.206   CPU_ReadMem(4 bytes @ 0xE000ED88)
+T6678 008:634.550   CPU_WriteMem(4 bytes @ 0xE000ED88)
+T6678 008:634.902   CPU_ReadMem(4 bytes @ 0xE000ED88)
+T6678 008:635.312   CPU_WriteMem(4 bytes @ 0xE000ED88)
+T6678 008:635.702   CoreSight components:
+T6678 008:635.728   ROMTbl[0] @ E00FF000
+T6678 008:635.766   CPU_ReadMem(64 bytes @ 0xE00FF000)
+T6678 008:636.422   CPU_ReadMem(32 bytes @ 0xE000EFE0)
+T6678 008:636.877   [0][0]: E000E000 CID B105E00D PID 000BB00C SCS-M7
+T6678 008:636.904   CPU_ReadMem(32 bytes @ 0xE0001FE0)
+T6678 008:637.390   [0][1]: E0001000 CID B105E00D PID 003BB002 DWT
+T6678 008:637.422   CPU_ReadMem(32 bytes @ 0xE0002FE0)
+T6678 008:638.056   [0][2]: E0002000 CID B105E00D PID 002BB003 FPB
+T6678 008:638.080   CPU_ReadMem(32 bytes @ 0xE0000FE0)
+T6678 008:638.557   [0][3]: E0000000 CID B105E00D PID 003BB001 ITM
+T6678 008:638.585   CPU_ReadMem(32 bytes @ 0xE0040FE0)
+T6678 008:639.078   [0][4]: E0040000 CID B105900D PID 000BB9A1 TPIU
+T6678 008:639.275   CPU_ReadMem(32 bytes @ 0xE0041FE0)
+T6678 008:639.803   [0][5]: E0041000 CID B105900D PID 000BB925 ETM
+T6678 008:640.030   CPU is running
+T6678 008:640.092   CPU_WriteMem(4 bytes @ 0xE000EDF0)
+T6678 008:640.498   CPU is running
+T6678 008:640.526   CPU_WriteMem(4 bytes @ 0xE000EDFC)
+T6678 008:641.013   Reset: Halt core after reset via DEMCR.VC_CORERESET.
+T6678 008:641.580   Reset: Reset device via AIRCR.SYSRESETREQ.
+T6678 008:641.613   CPU is running
+T6678 008:641.630   CPU_WriteMem(4 bytes @ 0xE000ED0C)
+T6678 008:694.443   CPU_ReadMem(4 bytes @ 0xE000EDF0)
+T6678 008:694.830   CPU_ReadMem(4 bytes @ 0xE000EDF0)
+T6678 008:697.275   CPU_WriteMem(4 bytes @ 0xE000EDFC)
+T6678 008:703.710   CPU_ReadMem(4 bytes @ 0xE000EDF0)
+T6678 008:706.210   CPU_WriteMem(4 bytes @ 0xE0002000)
+T6678 008:706.628   CPU_ReadMem(4 bytes @ 0xE000EDFC)
+T6678 008:706.974   CPU_ReadMem(4 bytes @ 0xE0001000)
+T6678 008:707.355 - 8484.474ms
+T6678 008:707.376 JLINK_GetId()
+T6678 008:707.619 - 0.241ms returns 0x2BA01477
+T6678 008:711.526 JLINK_GetFirmwareString(...)
+T6678 008:711.552 - 0.026ms
+T6678 012:869.649 JLINK_SWO_Control(JLINKARM_SWO_CMD_GET_SPEED_INFO, ...)
+T6678 012:870.066 - 0.415ms returns 0x00
+T6678 012:870.082 JLINK_SWO_Control(JLINKARM_SWO_CMD_GET_SPEED_INFO, ...)
+T6678 012:870.344 - 0.261ms returns 0x00
+T6678 012:870.469 JLINK_SWO_Control(JLINKARM_SWO_CMD_GET_SPEED_INFO, ...)
+T6678 012:870.739 - 0.269ms returns 0x00
+T6678 015:211.026 JLINK_Close()
+T6678 015:211.299   OnDisconnectTarget() start
+T6678 015:211.307    J-Link Script File: Executing OnDisconnectTarget()
+T6678 015:211.328   CPU_WriteMem(4 bytes @ 0x40015804)
+T6678 015:211.578   CPU_WriteMem(4 bytes @ 0x40015808)
+T6678 015:211.931   CPU_ReadMem(4 bytes @ 0x40021018)
+T6678 015:212.170   CPU_WriteMem(4 bytes @ 0x40021018)
+T6678 015:212.555   OnDisconnectTarget() end - Took 1.24ms
+T6678 015:212.563   CPU_ReadMem(4 bytes @ 0xE0001000)
+T6678 015:212.933   CPU_WriteMem(4 bytes @ 0xE0001004)
+T6678 015:226.432 - 15.405ms
+T6678 015:226.443   
+T6678 015:226.446   Closed
