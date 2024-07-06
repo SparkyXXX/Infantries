@@ -291,7 +291,7 @@ void Shoot_Single()
     }
     if (!shooter->single_shoot_done && Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorLeft.encoder.speed > 20 && ADC_Voltage > 15.0f)
     {
-        PID_AddRef(&(shooter->feed_ang), 45.0f);
+		shooter->feed_ang.ref += 45.0f;
         shooter->single_shoot_done = 1;
     }
 }

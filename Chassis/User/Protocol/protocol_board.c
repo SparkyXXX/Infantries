@@ -26,12 +26,12 @@
 #define CHASSIS_RECEIVE_FROM_GIMBAL_PKG_AMOUNT 5
 #define CHASSIS_RECEIVE_FROM_CAP_PKG_AMOUNT 2
 
-#define ID_SEND_REFEREE_DATA 0x206
+#define ID_SEND_REFEREE_DATA 0x205
 #define ID_SEND_CAP_DATA 0x98
 #define ID_RECEIVE_CONTROL 0x201
-#define ID_RECEIVE_IMU_YAW 0x203
-#define ID_RECEIVE_CHASSIS_REF 0x204
-#define ID_RECEIVE_UI_STATE 0x205
+#define ID_RECEIVE_IMU_YAW 0x202
+#define ID_RECEIVE_CHASSIS_REF 0x203
+#define ID_RECEIVE_UI_STATE 0x204
 #define ID_RECEIVE_CAP_DATA 0x299
 
 BoardCom_DataTypeDef BoardCom_Data;
@@ -39,18 +39,18 @@ BoardCom_DataTypeDef BoardCom_Data;
 uint8_t BoardCom_TxData[BOARDCOM_TX_LEN];
 uint8_t BoardCom_RxData[BOARDCOM_RX_LEN];
 
-Board_SendTableEntryTypeDef Chassis_Send_to_Gimbal[CHASSIS_SEND_TO_GIMBAL_PKG_AMOUNT] = 
-							{&_send_referee_data, 
+Board_SendTableEntryTypeDef Chassis_Send_to_Gimbal[CHASSIS_SEND_TO_GIMBAL_PKG_AMOUNT] =
+							{&_send_referee_data,
 							 &_send_cap_data};
 
-Board_ReceiveTableEntryTypeDef Chassis_Receive_from_Gimbal[CHASSIS_RECEIVE_FROM_GIMBAL_PKG_AMOUNT] = 
+Board_ReceiveTableEntryTypeDef Chassis_Receive_from_Gimbal[CHASSIS_RECEIVE_FROM_GIMBAL_PKG_AMOUNT] =
 							   {{0xff, NULL},
 								{ID_RECEIVE_CONTROL, &_receive_control},
 								{ID_RECEIVE_IMU_YAW, &_receive_imu_yaw},
 								{ID_RECEIVE_CHASSIS_REF, &_receive_chassis_ref},
 								{ID_RECEIVE_UI_STATE, &_receive_ui_state}};
 
-Board_ReceiveTableEntryTypeDef Chassis_Receive_from_Cap[CHASSIS_RECEIVE_FROM_CAP_PKG_AMOUNT] = 
+Board_ReceiveTableEntryTypeDef Chassis_Receive_from_Cap[CHASSIS_RECEIVE_FROM_CAP_PKG_AMOUNT] =
 							   {{0xff, NULL},
 							    {ID_RECEIVE_CAP_DATA, &_receive_cap_data}};
 
@@ -77,7 +77,7 @@ void BoardCom_Update()
     BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
     Referee_DataTypeDef *referee = Referee_GetDataPtr();
-	
+
     boardcom->robot_id = referee->robot_id;
     boardcom->power_limit = referee->chassis_power_limit;
     boardcom->cooling_per_second = referee->shooter_barrel_cooling_value;

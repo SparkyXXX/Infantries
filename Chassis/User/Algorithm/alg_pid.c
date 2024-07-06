@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-06-02 22:45:39
+ * @LastEditTime: 2024-07-06 21:11:24
  */
 
 #include "alg_pid.h"
@@ -34,35 +34,27 @@ float PID_Calc(PID_TypeDef *pid)
 {
     if (pid->pid_mode == PID_POSITION)
     {
-        // Calculate the difference
         float dError, Error, ref_dError;
         Error = pid->ref - pid->fdb;
         pid->err[2] = pid->err[1];
         pid->err[1] = pid->err[0];
         pid->err[0] = Error;
         dError = Math_Differential(pid->err, 1);
-
         pid->err_fdf[2] = pid->err_fdf[1];
         pid->err_fdf[1] = pid->err_fdf[0];
         pid->err_fdf[0] = pid->ref;
         ref_dError = Math_Differential(pid->err_fdf, 1);
 
-        // Calculate the integral and integra anti-windup
         pid->sum = pid->sum + pid->ki * 0.5 * (pid->err[0] + pid->err[1]) * pid->dt;
         LimitMax(pid->sum, pid->sum_max);
-
-        // Calculation results kf1_filter
         pid->output_fdf = Filter_Lowpass((pid->kf * ref_dError), &(pid->kf_filter));
         pid->output = pid->kp * Error + pid->sum + pid->kd * Filter_Lowpass(dError / pid->dt, &(pid->d_filter));
         pid->output += pid->output_fdf;
-
-        // Output limiting
         LimitMax(pid->output, pid->output_max);
     }
 
     else if (pid->pid_mode == PID_DELTA)
     {
-        // Calculate the difference
         float dError, ddError, Error, ref_dError, ref_ddError;
         Error = pid->ref - pid->fdb;
         pid->err[2] = pid->err[1];
@@ -70,15 +62,12 @@ float PID_Calc(PID_TypeDef *pid)
         pid->err[0] = Error;
         dError = Math_Differential(pid->err, 1);
         ddError = Math_Differential(pid->err, 2);
-
         pid->err_fdf[2] = pid->err_fdf[1];
         pid->err_fdf[1] = pid->err_fdf[0];
         pid->err_fdf[0] = pid->ref;
-
         ref_dError = Math_Differential(pid->err_fdf, 1);
         ref_ddError = Math_Differential(pid->err_fdf, 2);
 
-        // Calculate the integral and integral anti-windup
         if (pid->kp == 0)
         {
             pid->sum = Error;
@@ -88,13 +77,9 @@ float PID_Calc(PID_TypeDef *pid)
             pid->sum = Error + pid->err_lim / pid->kp;
         }
         LimitMax(pid->sum, pid->sum_max);
-
-        // Calculation results kf1_filter
         pid->output_fdf = Filter_Lowpass((pid->kf * ref_dError), &(pid->kf_filter));
         pid->output = pid->kp * dError + pid->ki * pid->sum + pid->kd * Filter_Lowpass(ddError, &(pid->d_filter));
         pid->output += pid->output_fdf;
-
-        // Output limiting
         float temp_limit = pid->output;
         LimitMax(pid->output, pid->output_max);
         pid->err_lim = pid->output - temp_limit;
@@ -102,34 +87,14 @@ float PID_Calc(PID_TypeDef *pid)
     return pid->output;
 }
 
-float PID_GetRef(PID_TypeDef *pid)
-{
-    return pid->ref;
-}
-
 void PID_SetRef(PID_TypeDef *pid, float ref)
 {
     pid->ref = ref;
 }
 
-void PID_AddRef(PID_TypeDef *pid, float inc)
-{
-    pid->ref += inc;
-}
-
-float PID_GetFdb(PID_TypeDef *pid)
-{
-    return pid->fdb;
-}
-
 void PID_SetFdb(PID_TypeDef *pid, float fdb)
 {
     pid->fdb = fdb;
-}
-
-float PID_GetOutput(PID_TypeDef *pid)
-{
-    return pid->output;
 }
 
 uint8_t Kp_RuleList[7][7] = {
@@ -172,7 +137,7 @@ void FuzzyPID_Init(FuzzyPID_TypeDef *fuzzy_pid,
     fuzzy_pid->kd_set = kd_set;
 	fuzzy_pid->error_range = *error_range;
     fuzzy_pid->error_change_range = *error_change_range;
-	
+
 	fuzzy_pid->dt = 0.001f;
     fuzzy_pid->sum_max = sum_max;
     fuzzy_pid->output_max = output_max;
@@ -187,18 +152,13 @@ float FuzzyPID_Calc(FuzzyPID_TypeDef *fuzzy_pid)
 	fuzzy_pid->err[0] = Error;
 	fuzzy_pid->derror = Math_Differential(fuzzy_pid->err, 1);
 
-	fuzzy_pid->kp = TableLookup(fuzzy_pid->kp_rule, fuzzy_pid->kp_set, &(fuzzy_pid->error_range), &(fuzzy_pid->error_change_range), Error, fuzzy_pid->derror);
-	fuzzy_pid->ki = TableLookup(fuzzy_pid->ki_rule, fuzzy_pid->ki_set, &(fuzzy_pid->error_range), &(fuzzy_pid->error_change_range), Error, fuzzy_pid->derror);
-	fuzzy_pid->kd = TableLookup(fuzzy_pid->kd_rule, fuzzy_pid->kd_set, &(fuzzy_pid->error_range), &(fuzzy_pid->error_change_range), Error, fuzzy_pid->derror);
+	fuzzy_pid->kp = PID_DeFuzzer(fuzzy_pid->kp_rule, fuzzy_pid->kp_set, &(fuzzy_pid->error_range), &(fuzzy_pid->error_change_range), Error, fuzzy_pid->derror);
+	fuzzy_pid->ki = PID_DeFuzzer(fuzzy_pid->ki_rule, fuzzy_pid->ki_set, &(fuzzy_pid->error_range), &(fuzzy_pid->error_change_range), Error, fuzzy_pid->derror);
+	fuzzy_pid->kd = PID_DeFuzzer(fuzzy_pid->kd_rule, fuzzy_pid->kd_set, &(fuzzy_pid->error_range), &(fuzzy_pid->error_change_range), Error, fuzzy_pid->derror);
 
-	// Calculate the integral and integra anti-windup
     fuzzy_pid->sum = fuzzy_pid->sum + fuzzy_pid->ki * 0.5 * (fuzzy_pid->err[0] + fuzzy_pid->err[1]) * fuzzy_pid->dt;
     LimitMax(fuzzy_pid->sum, fuzzy_pid->sum_max);
-
-    // Calculation results kf1_filter
     fuzzy_pid->output = fuzzy_pid->kp * Error + fuzzy_pid->sum + fuzzy_pid->kd * Filter_Lowpass(fuzzy_pid->derror / fuzzy_pid->dt, &(fuzzy_pid->d_filter));
-
-    // Output limiting
     LimitMax(fuzzy_pid->output, fuzzy_pid->output_max);
 	return fuzzy_pid->output;
 }
@@ -213,7 +173,7 @@ void FuzzyPID_SetFdb(FuzzyPID_TypeDef *fuzzy_pid, float fdb)
     fuzzy_pid->fdb = fdb;
 }
 
-float TableLookup(const uint8_t (*rule)[7], float *set, Interval *eRange, Interval *ecRange, float e, float ec)
+float PID_DeFuzzer(const uint8_t (*rule)[7], float *set, Interval *eRange, Interval *ecRange, float e, float ec)
 {
     float mappedE = 3 * (2 * e - eRange->right - eRange->left) / (eRange->right - eRange->left);
     float mappedEC = 3 * (2 * e - ecRange->right - ecRange->left) / (ecRange->right - ecRange->left);

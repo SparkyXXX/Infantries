@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-04-19 23:25:35
+ * @LastEditTime: 2024-07-06 21:11:35
  */
 
 #ifndef ALG_PID_H
@@ -36,7 +36,7 @@ extern "C"
         float output_max;
         Filter_Lowpass_TypeDef d_filter;
         Filter_Lowpass_TypeDef kf_filter;
-		
+
         float ref;
         float fdb;
         float sum;
@@ -66,21 +66,21 @@ extern "C"
     } Interval;
 
     typedef struct
-    {		
+    {
         float kp;
         float ki;
         float kd;
 		float dt;
         float sum_max;
         float output_max;
-				
+
         const uint8_t (*kp_rule)[7];
         const uint8_t (*ki_rule)[7];
-        const uint8_t (*kd_rule)[7];	
+        const uint8_t (*kd_rule)[7];
         float *kp_set;
         float *ki_set;
         float *kd_set;
-		
+
         Interval error_range;
         Interval error_change_range;
         Filter_Lowpass_TypeDef d_filter;
@@ -93,16 +93,12 @@ extern "C"
 		float derror;
     } FuzzyPID_TypeDef;
 
-void PID_Init(PID_TypeDef *pid, float kp, float ki, float kd, float kf,
+    void PID_Init(PID_TypeDef *pid, float kp, float ki, float kd, float kf,
 	          float sum_max, float output_max, float kd_cutoff_frq, float kf_cutoff_frq);
     void PID_Clear(PID_TypeDef *pid);
     float PID_Calc(PID_TypeDef *pid);
-    float PID_GetRef(PID_TypeDef *pid);
     void PID_SetRef(PID_TypeDef *pid, float ref);
-    void PID_AddRef(PID_TypeDef *pid, float inc);
-    float PID_GetFdb(PID_TypeDef *pid);
     void PID_SetFdb(PID_TypeDef *pid, float fdb);
-    float PID_GetOutput(PID_TypeDef *pid);
 
 	void FuzzyPID_Init(FuzzyPID_TypeDef *fuzzy_pid,
                    float kp_set[7], float ki_set[7], float kd_set[7],
@@ -111,7 +107,7 @@ void PID_Init(PID_TypeDef *pid, float kp, float ki, float kd, float kf,
     float FuzzyPID_Calc(FuzzyPID_TypeDef *fuzzy_pid);
     void FuzzyPID_SetRef(FuzzyPID_TypeDef *fuzzy_pid, float ref);
     void FuzzyPID_SetFdb(FuzzyPID_TypeDef *fuzzy_pid, float fdb);
-    float TableLookup(const uint8_t (*rule)[7], float *set, Interval *eRange, Interval *ecRange, float e, float ec);
+    float PID_DeFuzzer(const uint8_t (*rule)[7], float *set, Interval *eRange, Interval *ecRange, float e, float ec);
 
 #ifdef __cplusplus
 }
