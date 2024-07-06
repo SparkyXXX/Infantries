@@ -26,15 +26,6 @@ void PID_Init(PID_TypeDef *pid, float kp, float ki, float kd, float kf,
 
 void PID_Clear(PID_TypeDef *pid)
 {
-    pid->ref = 0;
-    pid->fdb = 0;
-    pid->err[0] = 0;
-    pid->err[1] = 0;
-    pid->err[2] = 0;
-    pid->err_fdf[0] = 0;
-    pid->err_fdf[1] = 0;
-    pid->err_fdf[2] = 0;
-    pid->err_lim = 0;
     pid->sum = 0;
     pid->output_fdf = 0;
     pid->output = 0;

@@ -29,7 +29,7 @@ void Motor_InitGroup(Motor_GroupDataTypeDef *pgroup, uint8_t motor_num, FDCAN_Ha
     }
     pgroup->motor_num = motor_num;
     pgroup->can_handle = phfdcan;
-    FDCAN_InitTxHeader(&(pgroup->can_header), stdid, FDCAN_DLC_BYTES_8, FDCAN_BRS_OFF, FDCAN_CLASSIC_CAN);
+    FDCAN_InitTxHeader(&(pgroup->can_header), stdid);
     
     for (int i = 0; i < motor_num; i++) 
     {

@@ -19,16 +19,8 @@ extern "C"
 #include "periph_motor_can.h"
 #include "periph_motor_pwm.h"
 
-#define GIMBAL_MOTOR_AMOUNT 2
 #define PITCH_CAN_ID 0x206
 #define FEEDER_CAN_ID 0x201
-
-    typedef struct
-    {
-        uint32_t can_id;
-        Motor_DataTypeDef *pmotor;
-        void (*decode_func)(Motor_DataTypeDef *pmotor, uint8_t *rxdata);
-    } Motor_DecodeTableTypeDef;
 
     static void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata);
     static void M2006_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata);

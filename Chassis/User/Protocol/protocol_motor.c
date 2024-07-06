@@ -10,14 +10,6 @@
 #include "protocol_motor.h"
 #include "config_ctrl.h"
 
-Motor_DecodeTableTypeDef Chassis_MotorDecodeTable[CHASSIS_MOTOR_AMOUNT] = {
-    {FORWARD_LEFT_CAN_ID, &Motor_ForwardLeft, &M3508_Decode},
-    {FORWARD_RIGHT_CAN_ID, &Motor_ForwardRight, &M3508_Decode},
-    {BACKWARD_RIGHT_CAN_ID, &Motor_BackwardRight, &M3508_Decode},
-    {BACKWARD_LEFT_CAN_ID, &Motor_BackwardLeft, &M3508_Decode},
-    {YAW_CAN_ID, &Motor_GimbalYaw, &GM6020_Decode},
-    };
-
 /**
  * @brief      Chassis motor encoder callback
  * @param      pmotor: Pointer to motor object
@@ -88,14 +80,11 @@ void Motor_CAN_Decode(FDCAN_HandleTypeDef *phfdcan, uint32_t stdid, uint8_t rxda
 {
     if (phfdcan == &hfdcan1)
     {
-        for (int i = 0; i < CHASSIS_MOTOR_AMOUNT; i++)
-        {
-            if ((stdid == Chassis_MotorDecodeTable[i].can_id) && Chassis_MotorDecodeTable[i].decode_func != NULL)
-            {
-                Chassis_MotorDecodeTable[i].decode_func(Chassis_MotorDecodeTable[i].pmotor, rxdata);
-                break;
-            }
-        }
+		if (stdid == FORWARD_LEFT_CAN_ID) {M3508_Decode(&Motor_ForwardLeft, rxdata);}
+		if (stdid == FORWARD_RIGHT_CAN_ID) {M3508_Decode(&Motor_ForwardRight, rxdata);}
+		if (stdid == BACKWARD_RIGHT_CAN_ID) {M3508_Decode(&Motor_BackwardRight, rxdata);}
+		if (stdid == BACKWARD_LEFT_CAN_ID) {M3508_Decode(&Motor_BackwardLeft, rxdata);}
+		if (stdid == YAW_CAN_ID) {GM6020_Decode(&Motor_GimbalYaw, rxdata);}
     }
 }
 

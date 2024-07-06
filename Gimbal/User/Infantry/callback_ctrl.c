@@ -41,7 +41,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *phfdcan, uint32_t RxFifo0ITs
         HAL_FDCAN_GetRxMessage(phfdcan, FDCAN_RX_FIFO0, &FDCAN_RxHeader, FDCAN_RxData);
         if (phfdcan == BOARD_CAN_HANDLER)
         {
-            BoardCom_DecodeBoard(FDCAN_RxData, (&FDCAN_RxHeader)->Identifier, ((&FDCAN_RxHeader)->DataLength) >> 16);
+            BoardCom_Decode(FDCAN_RxData, (&FDCAN_RxHeader)->Identifier, ((&FDCAN_RxHeader)->DataLength) >> 16);
         }
         Motor_CAN_Decode(phfdcan, (&FDCAN_RxHeader)->Identifier, FDCAN_RxData, ((&FDCAN_RxHeader)->DataLength) >> 16);
 

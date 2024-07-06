@@ -9,16 +9,7 @@
 
 #include "util_fdcan.h"
 
-/**
- * @brief      Initialize fdcan transmitter
- * @param      pheader: Pointer to the initialized header
- * @param      id: FDCAN Equipment number
- * @param      dlc: FDCAN Datalength
- * @param      baudrateswitch: Choose if use bandrateswitch function
- * @param      can_type: Choose use classis can or fdcan
- * @retval     NULL
- */
-void FDCAN_InitTxHeader(FDCAN_TxHeaderTypeDef *pheader, uint32_t id, uint32_t dlc, uint32_t baudrateswitch, uint32_t can_type)
+void FDCAN_InitTxHeader(FDCAN_TxHeaderTypeDef *pheader, uint32_t id)
 {
     pheader->Identifier = id;
     if (id >= 0x800) 
@@ -30,19 +21,14 @@ void FDCAN_InitTxHeader(FDCAN_TxHeaderTypeDef *pheader, uint32_t id, uint32_t dl
         pheader->IdType = FDCAN_STANDARD_ID;
     }
     pheader->TxFrameType = FDCAN_DATA_FRAME;
-    pheader->DataLength = dlc;
+    pheader->DataLength = FDCAN_DLC_BYTES_8;
     pheader->ErrorStateIndicator = FDCAN_ESI_ACTIVE;
-    pheader->BitRateSwitch = baudrateswitch;
-    pheader->FDFormat = can_type;
+    pheader->BitRateSwitch = FDCAN_BRS_OFF;
+    pheader->FDFormat = FDCAN_CLASSIC_CAN;
     pheader->TxEventFifoControl = FDCAN_NO_TX_EVENTS;
     pheader->MessageMarker = 0;
 }
 
-/**
- * @brief      Initialize fdcan filter and enable FDCAN Bus Transceiver
- * @param      phfdcan: Pointer to the CAN header
- * @retval     NULL
- */
 void FDCAN_IntFilterAndStart(FDCAN_HandleTypeDef *phfdcan)
 {
     FDCAN_FilterTypeDef sFilterConfig;
@@ -76,13 +62,6 @@ void FDCAN_IntFilterAndStart(FDCAN_HandleTypeDef *phfdcan)
     }
 }
 
-/**
- * @brief      Sending information to can bus
- * @param      phfdcan: Pointer to the CAN header
- * @param      pheader: Pointer to the CAN tx header
- * @param      txdata: Message to send
- * @retval     NULL
- */
 void FDCAN_Send(FDCAN_HandleTypeDef *phfdcan, FDCAN_TxHeaderTypeDef *ptxhead, uint8_t *pdata)
 {
     uint32_t ret;
@@ -102,10 +81,6 @@ void FDCAN_Send(FDCAN_HandleTypeDef *phfdcan, FDCAN_TxHeaderTypeDef *ptxhead, ui
     }
 }
 
-/**
- * @brief      FDCAN Error handle handling
- * @retval     NULL
- */
 uint8_t CAN_Error_Flag = 0;
 void FDCAN_ErrorHandler(uint32_t ret)
 {

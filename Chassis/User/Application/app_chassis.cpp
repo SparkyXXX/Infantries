@@ -293,7 +293,29 @@ void OmmiChassis_Output()
 	Referee_DataTypeDef *referee = Referee_GetDataPtr();
 	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
 	Cap_DataTypeDef *cap = Cap_GetDataPtr();
-
+switch (boardcom->chassis_mode)
+    {
+    case CHASSIS_CTRL_STOP:
+    {
+        Chassis_ModeSet(CHASSIS_STOP);
+        Chassis_SetMoveRef(0, 0);
+        break;
+    }
+    case CHASSIS_CTRL_NORMAL:
+    {
+        Chassis_ModeSet(CHASSIS_NORMAL);
+        Chassis_SetMoveRef(boardcom->chassis_fb_ref, boardcom->chassis_lr_ref);
+        break;
+    }
+    case CHASSIS_CTRL_GYRO:
+    {
+        Chassis_ModeSet(CHASSIS_GYRO);
+        Chassis_SetMoveRef(boardcom->chassis_fb_ref, boardcom->chassis_lr_ref);
+        break;
+    }
+    default:
+        return;
+    }
 	switch (chassis->present_mode)
 	{
 	case CHASSIS_STOP:

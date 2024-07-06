@@ -43,7 +43,7 @@ float DWT_GetDeltaT(uint32_t *cnt_last)
 }
 
 float DWT_GetDeltaTWithoutUpdate(uint32_t *cnt_last)
- {
+{
     DWT_DataTypeDef *dwt = DWT_GetDataPtr();
     float dt = ((uint32_t)(uint32_t)(DWT->CYCCNT - *cnt_last)) / ((float)(dwt->CPU_FREQ_Hz));
     return dt;

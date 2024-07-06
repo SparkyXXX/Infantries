@@ -4,14 +4,10 @@
  * @Author: Hatrix
  * @Date: 2023-11-07 14:28:30
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-25 11:51:52
+ * @LastEditTime: 2024-07-06 18:59:32
  */
 
 #include "protocol_motor.h"
-
-Motor_DecodeTableTypeDef Gimbal_MotorDecodeTable[GIMBAL_MOTOR_AMOUNT] = {
-    {PITCH_CAN_ID, &Motor_gimbalMotorPitch, &GM6020_Decode},
-    {FEEDER_CAN_ID, &Motor_feederMotor, &M2006_Decode}};
 
 /**
  * @brief      Gimbal motor encoder callback
@@ -136,14 +132,8 @@ void Motor_CAN_Decode(FDCAN_HandleTypeDef *phfdcan, uint32_t stdid, uint8_t rxda
 {
     if (phfdcan == &hfdcan1)
     {
-        for (int i = 0; i < GIMBAL_MOTOR_AMOUNT; i++)
-        {
-            if ((stdid == Gimbal_MotorDecodeTable[i].can_id) && Gimbal_MotorDecodeTable[i].decode_func != NULL)
-            {
-                Gimbal_MotorDecodeTable[i].decode_func(Gimbal_MotorDecodeTable[i].pmotor, rxdata);
-                break;
-            }
-        }
+		if (stdid == PITCH_CAN_ID) {GM6020_Decode(&Motor_gimbalMotorPitch, rxdata);}
+		if (stdid == FEEDER_CAN_ID) {M2006_Decode(&Motor_feederMotor, rxdata);}
     }
 }
 

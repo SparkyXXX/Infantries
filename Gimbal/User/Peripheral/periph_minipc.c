@@ -72,7 +72,7 @@ void MiniPC_Send()
     buff[5] = MINIPC_DATA_PACKET_LEN;
     buff[6] = 0;
     buff[7] = 0;
-    buff[8] = boardcom->game_outpost_alive;
+    buff[8] = 0;
     float2buff(yaw, buff + 9);
     i162buff(pitch, buff + 13);
     i162buff(roll, buff + 15);

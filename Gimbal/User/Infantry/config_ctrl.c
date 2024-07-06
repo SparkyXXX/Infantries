@@ -16,8 +16,8 @@ uint16_t Shooter_Freq = 500;
 
 float Armor_Feeder_Fast_Speed = 150.0f;
 float Armor_Feeder_Slow_Speed = 60.0f;
-float Buff_Feeder_Fast_Speed = 20.0f;
-float Buff_Feeder_Slow_Speed = 20.0f;
+float Buff_Feeder_Fast_Speed = 6.5f;
+float Buff_Feeder_Slow_Speed = 6.5f;
 float AutoShoot_Wait_ms = 200.0f;
 uint16_t AutoShootBigEnergy_Wait_ms = 310;
 uint16_t AutoShootSmallEnergy_Wait_ms = 310;

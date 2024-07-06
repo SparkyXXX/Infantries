@@ -74,17 +74,33 @@ void GimbalYaw_Output()
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
     BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
+	GimbalYaw_SetRef(boardcom->yaw_ref);
+    GimbalYaw_SetAngleFdb(boardcom->yaw_pos_fdb);
+    GimbalYaw_SetSpeedFdb(boardcom->yaw_spd_fdb);
 
+    switch (boardcom->yaw_mode)
+    {
+    case GIMBAL_YAW_NO_AUTO:
+        GimbalYaw_ModeSet(GimbalYaw_NO_AUTO);
+        break;
+    case GIMBAL_YAW_ARMOR:
+        GimbalYaw_ModeSet(GimbalYaw_ARMOR);
+        break;
+    case GIMBAL_YAW_BIG_ENERGY:
+        GimbalYaw_ModeSet(GimbalYaw_BIG_ENERGY);
+        break;
+    case GIMBAL_YAW_SMALL_ENERGY:
+        GimbalYaw_ModeSet(GimbalYaw_SMALL_ENERGY);
+        break;
+    default:
+        return;
+    }
     if (gimbalyaw->mode_change_flag == 1)
     {
-        PID_Clear(&(gimbalyaw->spd_no_auto));
-        PID_Clear(&(gimbalyaw->pos_no_auto));
-        PID_Clear(&(gimbalyaw->spd_armor));
-        PID_Clear(&(gimbalyaw->pos_armor));
-        PID_Clear(&(gimbalyaw->spd_big_energy));
-        PID_Clear(&(gimbalyaw->pos_big_energy));
-        PID_Clear(&(gimbalyaw->spd_small_energy));
-        PID_Clear(&(gimbalyaw->pos_small_energy));
+		if (gimbalyaw->last_mode == GimbalYaw_NO_AUTO)      {PID_Clear(&(gimbalyaw->spd_no_auto)); PID_Clear(&(gimbalyaw->pos_no_auto));}
+		if (gimbalyaw->last_mode == GimbalYaw_ARMOR)        {PID_Clear(&(gimbalyaw->spd_armor)); PID_Clear(&(gimbalyaw->pos_armor));}
+		if (gimbalyaw->last_mode == GimbalYaw_BIG_ENERGY)   {PID_Clear(&(gimbalyaw->spd_big_energy)); PID_Clear(&(gimbalyaw->pos_big_energy));}
+		if (gimbalyaw->last_mode == GimbalYaw_SMALL_ENERGY) {PID_Clear(&(gimbalyaw->spd_small_energy)); PID_Clear(&(gimbalyaw->pos_small_energy));}
         gimbalyaw->mode_change_flag = 0;
     }
 	

@@ -304,6 +304,7 @@ void Shoot_Single()
 float INITDONE_CURRENT = 1000.0f;
 float INITDONE_SPEED = 10.0f;
 float INITDONE_TIME = 5.0f;
+float feeder_offset = 2.0f;
 
 void Shoot_FeederLockedJudge()
 {
@@ -318,13 +319,13 @@ void Shoot_FeederLockedJudge()
         }
         if ((shooter_done == 1) && (Motor_shooterMotorLeft.encoder.speed < 21.0))
         {
-            shooter->feeder_angle_init = Motor_feederMotor.encoder.consequent_angle + 2.0f;
+            shooter->feeder_angle_init = Motor_feederMotor.encoder.consequent_angle + feeder_offset;
             while (shooter->feeder_angle_init > 45.0f)
             {
                 shooter->feeder_angle_init -= 45.0f;
             }
             Shoot_FeederModeForceSet(FEEDER_STOP);
-            PID_SetRef(&(shooter->feed_ang), Motor_feederMotor.encoder.consequent_angle + 2.0f);
+            PID_SetRef(&(shooter->feed_ang), Motor_feederMotor.encoder.consequent_angle + feeder_offset);
         }
     }
     else if (shooter->feeder_mode != FEEDER_LOCKED)

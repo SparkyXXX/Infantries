@@ -17,7 +17,6 @@ extern "C"
 
 #include "periph_motor_can.h"
 
-#define CHASSIS_MOTOR_AMOUNT 5
 #define FORWARD_LEFT_CAN_ID 0x201
 #define FORWARD_RIGHT_CAN_ID 0x202
 #define BACKWARD_RIGHT_CAN_ID 0x203
@@ -25,13 +24,6 @@ extern "C"
 #define YAW_CAN_ID 0x205
 
 extern float Wheel_Dec_Ratio;
-
-    typedef struct
-    {
-        uint32_t can_id;
-        Motor_DataTypeDef *pmotor;
-        void (*decode_func)(Motor_DataTypeDef *pmotor, uint8_t *rxdata);
-    } Motor_DecodeTableTypeDef;
 
 	static void M3508_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata);
 	static void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata);

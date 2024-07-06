@@ -9,7 +9,7 @@
 
 #include "app_remote.h"
 
-#define REMOTE_MODE TRAIN
+#define REMOTE_MODE DEBUG
 
 #define DEBUG 1
 #define TRAIN 2
@@ -54,6 +54,7 @@ void Remote_DriveModeSet()
         remote_control->aim_mode = REMOTE_BIG_BUFF;
         Remote_Update();
         Remote_ShootModeSet();
+		autoaim->AutoShootFlag = 1;
         Servo_SetAngle(&Servo_MagServo, Servo_Open);
         Remote_Mag_State = 1;
 #endif
@@ -74,6 +75,7 @@ void Remote_DriveModeSet()
         remote_control->aim_mode = REMOTE_SMALL_BUFF;
         Remote_Update();
         Remote_ShootModeSet();
+		autoaim->AutoShootFlag = 1;
         Servo_SetAngle(&Servo_MagServo, Servo_Open);
         Remote_Mag_State = 1;
 #endif
@@ -125,6 +127,7 @@ void Remote_DriveModeSet()
 uint16_t wait_tick = 0;
 uint8_t have_shooted = 0; // this is_shoot=1 time is have shooted to avoid one is_shoot time shoot twice
                           //  set when is_shoot==1 and shooted, and reset when is_shoot==0
+uint32_t buff_tick_start = 0;
 void AutoAim_ShootModeSet()
 {
     MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
@@ -163,6 +166,7 @@ void AutoAim_ShootModeSet()
             if (minipc->is_get_target == 1 && minipc->is_shoot == 1 && have_shooted == 0 &&
                 (shooter->heat_ctrl.shooter_heat_limit - shooter->heat_ctrl.shooter_heat_now) >= HEAT_SLOW_LIMIT && Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorRight.encoder.speed > 20)
             {
+				buff_tick_start = DWT->CYCCNT;
                 Shoot_FeederModeForceSet(FEEDER_SINGLE);
                 shooter->single_shoot_done = 0;
                 have_shooted = 1;
@@ -202,8 +206,7 @@ static void Remote_ShootModeSet()
     }
     case REMOTE_SWITCH_DOWN:
     {
-        shooter->shooter_mode = SHOOTER_REFEREE;
-        Shoot_FeederModeSet(FEEDER_REFEREE);
+        AutoAim_ShootModeSet();
         break;
     }
     default:

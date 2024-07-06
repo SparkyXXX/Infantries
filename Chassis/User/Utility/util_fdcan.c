@@ -9,7 +9,7 @@
 
 #include "util_fdcan.h"
 
-void FDCAN_InitTxHander(FDCAN_TxHeaderTypeDef *pheader, uint32_t id)
+void FDCAN_InitTxHeader(FDCAN_TxHeaderTypeDef *pheader, uint32_t id)
 {
     pheader->Identifier = id;
     if (id >= 0x800) 
