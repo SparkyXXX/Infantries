@@ -6,9 +6,9 @@
  * @LastEditors: Please set LastEditors
  * @LastEditTime: 2024-05-24 16:03:18
  */
-
+//STAR DUST
 #include "config_ctrl.h"
-#include "test_ctrl.h"	
+#include "test_ctrl.h"
 #include "app_chassis.h"
 #include "app_gimbal.h"
 #include "app_ui.h"
@@ -20,7 +20,6 @@
 #include "periph_cap.h"
 #include "alg_pid.h"
 #include "sys_dwt.h"
-
 
 /********** START OF PARAMETER SETTING **********/
 uint8_t CPU_Clock = 170; //(MHz)
@@ -66,7 +65,7 @@ void GimbalYaw_ParamInit(void)
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
 	PID_Init(&(gimbalyaw->spd_no_auto), 12000.0f, 8000.0f, 30.0f, 100000.0f, 5000.0f, 25000.0f, 100000.0f, 159.154922f);
     PID_Init(&(gimbalyaw->pos_no_auto), 18.5f,    20.0f,   0.15f, 0.0f,   0.1f,    9.0f,     500.0f,    159.154922f);
-	//                                   kp        ki        kd      kf       sum_max  output_max   d_frq     kf_frq	
+	//                                   kp        ki        kd      kf       sum_max  output_max   d_frq     kf_frq
 	PID_Init(&(gimbalyaw->spd_armor), 12000.0f, 8000.0f, 30.0f, 100000.0f, 5000.0f, 25000.0f, 100000.0f, 159.154922f);
     PID_Init(&(gimbalyaw->pos_armor), 18.5f,    20.0f,   0.15f, 0.0f,    0.1f,    9.0f,     500.0f,    159.154922f);
 	//                                   kp        ki        kd      kf       sum_max  output_max   d_frq     kf_frq
@@ -77,7 +76,7 @@ void GimbalYaw_ParamInit(void)
 	PID_Init(&(gimbalyaw->spd_small_energy), 7860.98773778112f, 24876.1388107406f, 10.9682598257439f, 0.0f,  5000.0f, 30000.0f, 32.78987f, 1.0f);
     PID_Init(&(gimbalyaw->pos_small_energy), 25.1943607025437f, 1.81996401951577f, 0.335675508f, 0.0f, 0.001f, 6.0f, 249.999985f, 159.154922f);
 	//                                     kp    ki    kd    kf  sum_max  output_max   d_frq     kf_frq
-	Filter_Lowpass_Init(200.0f, &(gimbalyaw->spd_ref_filter));		  
+	Filter_Lowpass_Init(200.0f, &(gimbalyaw->spd_ref_filter));
 }
 /********** END OF PARAMETER SETTING **********/
 
@@ -113,7 +112,6 @@ static void Init_AllMotors(void)
 void Init_All(void)
 {
     DWT_Init(CPU_Clock);
-
     Referee_Init(&huart2);
     Init_AllMotors();
     BoardCom_Init();
@@ -124,6 +122,5 @@ void Init_All(void)
     Cap_Init();
     Chassis_Init();
     GimbalYaw_Init();
-
     UI_Init();
 }

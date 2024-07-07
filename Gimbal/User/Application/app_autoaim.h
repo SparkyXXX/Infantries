@@ -45,6 +45,10 @@ extern "C"
 
     typedef struct
     {
+        AutoAim_ModeEnum aim_mode;
+        AutoAim_HitModeEnum hit_mode;
+        AutoAim_StateEnum target_state;
+
         float armor_yaw;
         float armor_pitch;
         float buff_yaw;
@@ -53,10 +57,6 @@ extern "C"
         uint32_t get_target_time;
         uint8_t isChangeTarget;
         uint8_t AutoShootFlag;
-
-        AutoAim_ModeEnum aim_mode;
-        AutoAim_HitModeEnum hit_mode;
-        AutoAim_StateEnum target_state;
     } AutoAim_ControlTypeDef;
 
     typedef struct __attribute__((packed))
@@ -75,9 +75,8 @@ extern "C"
     extern float Armor_Feeder_Slow_Speed;
 	extern float Buff_Feeder_Fast_Speed;
     extern float Buff_Feeder_Slow_Speed;
-	
+
     AutoAim_ControlTypeDef *AutoAim_GetControlPtr(void);
-    void AutoAim_Init(void);
     void AutoAim_Output(void);
     void AutoAim_ModeSet(AutoAim_ModeEnum mode);
 	void AutoAim_UpdateTime(void);

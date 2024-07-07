@@ -47,7 +47,7 @@ float Pitch_Spd_KiSet[7] = {20000.0f, 20000.0f, 20000.0f, 20000.0f, 50000.0f, 50
 float Pitch_Spd_KdSet[7] = {30.0f, 30.0f, 30.0f, 30.0f, 20.0f, 20.0f, 20.0f};
 Interval Pitch_Spd_Error_Range = {-8.0f, 8.0f};
 Interval Pitch_Spd_ErrorChange_Range = {-8.0f, 8.0f};
-									
+
 float Pitch_Pos_KpSet[7] = {80.0f, 60.0f, 40.0f, 30.0f, 40.0f, 60.0f, 80.0f};
 float Pitch_Pos_KiSet[7] = {20.0f, 20.0f, 20.0f, 15.0f, 10.0f, 10.0f, 10.0f};
 float Pitch_Pos_KdSet[7] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
@@ -57,10 +57,10 @@ Interval Pitch_Pos_ErrorChange_Range = {-0.54f, 0.48f};
 void Gimbal_ParamInit(void)
 {
     Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();
-	FuzzyPID_Init(&(gimbal->pitch_spd), Pitch_Spd_KpSet, Pitch_Spd_KiSet, Pitch_Spd_KdSet, 
+	FuzzyPID_Init(&(gimbal->pitch_spd), Pitch_Spd_KpSet, Pitch_Spd_KiSet, Pitch_Spd_KdSet,
 				  &Pitch_Spd_Error_Range, &Pitch_Spd_ErrorChange_Range, 20000.0f, 8000.0f, 25000.0f, 100000000.0f, 159.154922f);
 	//																	kf        sum_max  output_max d_cutoff_frq kf_cutoff_frq
-    FuzzyPID_Init(&(gimbal->pitch_pos), Pitch_Pos_KpSet, Pitch_Pos_KiSet, Pitch_Pos_KdSet, 
+    FuzzyPID_Init(&(gimbal->pitch_pos), Pitch_Pos_KpSet, Pitch_Pos_KiSet, Pitch_Pos_KdSet,
 				  &Pitch_Pos_Error_Range, &Pitch_Pos_ErrorChange_Range, 0.0f, 0.15f, 15.0f, 159.154922f, 159.154922f);
 }
 
@@ -149,6 +149,5 @@ void Init_All(void)
     INS_Init();
     Gimbal_Init();
     Shoot_Init();
-    AutoAim_Init();
     Remote_Init(&huart3);
 }

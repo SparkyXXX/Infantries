@@ -223,7 +223,7 @@ static void Chassis_CalcWheelRef()
 	
 	for (int i = 0; i < 4; i++)
 	{
-		chassis->last_wheel_ref[i] = PID_GetRef(&(chassis->Chassis_MotorSpdPID[i]));
+		chassis->last_wheel_ref[i] = chassis->Chassis_MotorSpdPID[i].fdb;
 	}
 	float f_b_ref = chassis->move_ref.forward_back_ref;
 	float l_r_ref = chassis->move_ref.left_right_ref;

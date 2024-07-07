@@ -1,10 +1,10 @@
- /*
+/*
  * @Project: Hatrix_Robot
  *
  * @Author: Hatrix
  * @Date: 2023-11-07 14:28:30
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-25 11:51:06
+ * @LastEditTime: 2024-07-06 22:47:22
  */
 
 #include "task_ctrl.h"
@@ -32,10 +32,10 @@ void Init_Task(void const *argument)
 uint8_t pkg_flag = 1;
 void BoardCom_Task(void const *argument)
 {
-	while (!GLOBAL_INIT_FLAG)
-        {
-            osDelay(1);
-        }
+    while (!GLOBAL_INIT_FLAG)
+    {
+        osDelay(1);
+    }
     for (;;)
     {
         if (pkg_flag == 1)
@@ -54,44 +54,47 @@ void BoardCom_Task(void const *argument)
 }
 
 void Gimbal_Task(void const *argument)
-{while (!GLOBAL_INIT_FLAG)
-        {
-            osDelay(1);
-        }
+{
+    while (!GLOBAL_INIT_FLAG)
+    {
+        osDelay(1);
+    }
     for (;;)
     {
-//		begin = DWT_GetTimeline_us();
+        //		begin = DWT_GetTimeline_us();
         Gimbal_PitchOutput();
         Gimbal_YawModeSet();
-		osDelay(1);
-//		Timer_Delay_usE_1(1, 500 - (DWT_GetTimeline_us() - begin)); //DWT不准，500当1000用
-//		end = DWT_GetTimeline_us();
-//		diff = (end - begin) / 1000000.0f;
+        osDelay(1);
+        //		Timer_Delay_usE_1(1, 500 - (DWT_GetTimeline_us() - begin)); //DWT不准，500当1000用
+        //		end = DWT_GetTimeline_us();
+        //		diff = (end - begin) / 1000000.0f;
     }
 }
 
 void Shoot_Task(void const *argument)
-{while (!GLOBAL_INIT_FLAG)
-        {
-            osDelay(1);
-        }
-    for (;;)	
+{
+    while (!GLOBAL_INIT_FLAG)
+    {
+        osDelay(1);
+    }
+    for (;;)
     {
         Shoot_Update();
-		Heat_Update();
+        Heat_Update();
         Shoot_FeederLockedJudge();
         Shoot_ShooterControl();
         Shoot_FeederControl();
         Shoot_Output();
-osDelay(1);
+        osDelay(1);
     }
 }
 
 void AutoAim_Task(void const *argument)
-{while (!GLOBAL_INIT_FLAG)
-        {
-            osDelay(1);
-        }
+{
+    while (!GLOBAL_INIT_FLAG)
+    {
+        osDelay(1);
+    }
     for (;;)
     {
         AutoAim_IsLost();
@@ -103,13 +106,14 @@ void AutoAim_Task(void const *argument)
 }
 
 void Remote_Task(void const *argument)
-{while (!GLOBAL_INIT_FLAG)
-        {
-            osDelay(1);
-        }
+{
+    while (!GLOBAL_INIT_FLAG)
+    {
+        osDelay(1);
+    }
     for (;;)
     {
-        
+
         Remote_DriveModeSet();
         osDelay(1);
     }
@@ -121,9 +125,9 @@ void Ins_Task(void const *argument)
     {
         osDelay(1);
     }
-	for (;;)
-	{
-		INS_Upadte(&BMI088_Data);
-		osDelay(1);
-	}
+    for (;;)
+    {
+        INS_Upadte(&BMI088_Data);
+        osDelay(1);
+    }
 }

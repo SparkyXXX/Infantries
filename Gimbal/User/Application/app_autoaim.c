@@ -4,39 +4,17 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-04-20 01:41:34
+ * @LastEditTime: 2024-07-06 21:50:12
  */
 
 #include "app_autoaim.h"
 
 AutoAim_ControlTypeDef AutoAim_Control;
-
-/**
- * @brief      Gets the pointer to the MiniPC data object
- * @param      NULL
- * @retval     Pointer to MiniPC data object
- */
 AutoAim_ControlTypeDef *AutoAim_GetControlPtr()
 {
     return &AutoAim_Control;
 }
 
-/**
- * @brief      Init autoaim data
- * @param      NULL
- * @retval     NULL
- */
-void AutoAim_Init()
-{
-    AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
-    autoaim->hit_mode = AUTOAIM_HIT_ARMOR;
-}
-
-/**
- * @brief      Set gimbal autoaim reference
- * @param      NULL
- * @retval     NULL
- */
 void AutoAim_Output()
 {
     AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
@@ -95,11 +73,6 @@ void AutoAim_Output()
 	}
 }
 
-/**
- * @brief      Change aiming mode
- * @param      mode: MiniPC aim mode enum
- * @retval     NULL
- */
 void AutoAim_ModeSet(AutoAim_ModeEnum mode)
 {
     AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
@@ -122,11 +95,6 @@ void AutoAim_UpdateTime()
 	}
 }
 
-/**
- * @brief      Set the state of the target being recognized
- * @param      NULL
- * @retval     NULL
- */
 void AutoAim_IsLost()
 {
     AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();

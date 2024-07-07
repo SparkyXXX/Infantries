@@ -13,3 +13,7 @@
 #define SHOOT_CLOSE_LOOP 1
 #define SHOOT_OPEN_LOOP 0
 #define SHOOT_MODE SHOOT_CLOSE_LOOP
+
+#define REMOTE_MODE TRAIN
+#define DEBUG 1
+#define TRAIN 2

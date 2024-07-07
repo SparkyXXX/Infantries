@@ -45,6 +45,8 @@ extern "C"
         GimbalYaw_ModeEnum yaw_mode;
         uint8_t mode_change_flag;
 
+        float last_pitch_spd_ref;
+        float last_pitch_pos_ref;
         float yaw_position_ref;
         float pitch_position_ref;
 
@@ -52,10 +54,9 @@ extern "C"
         FuzzyPID_TypeDef pitch_pos;
     } Gimbal_ControlTypeDef;
 
+    Gimbal_ControlTypeDef *Gimbal_GetControlPtr(void);
     void Gimbal_Init(void);
     void Gimbal_PitchOutput(void);
-
-    Gimbal_ControlTypeDef *Gimbal_GetControlPtr(void);
     void Gimbal_ModeSet(Gimbal_ModeEnum mode);
     void Gimbal_YawModeSet(void);
 

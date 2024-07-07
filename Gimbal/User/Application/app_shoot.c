@@ -10,12 +10,11 @@
 #include "app_shoot.h"
 
 Shoot_ControlTypeDef Shoot_Control;
+Shoot_ControlTypeDef *Shoot_GetControlPtr()
+{
+    return &Shoot_Control;
+}
 
-/**
- * @brief      shooter control initialization
- * @param      NULL
- * @retval     NULL
- */
 void Shoot_Init()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
@@ -35,6 +34,50 @@ void Shoot_Init()
         HAL_Delay(200);
     }
     Shoot_ParamInit();
+}
+
+float heat_now = 0.0f;
+void Shoot_Update()
+{
+    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+	// shooter->heat_ctrl.shooter_heat_now = (float)boardcom->heat_now;
+	shooter->heat_ctrl.shooter_heat_now = heat_now;
+	shooter->heat_ctrl.shooter_heat_limit = (float)boardcom->heat_limit;
+    Motor_PWM_ReadEncoder(&Motor_shooterMotorLeft, 1);
+    Motor_PWM_ReadEncoder(&Motor_shooterMotorRight, 1);
+    ADC_Decode();
+}
+
+float feeder_tick_last = 0.0f;
+float angle_diff_sum = 0.0f;
+int ammunition = 0;
+uint8_t if_bullet = 0;
+void Heat_Update()
+{
+	Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+
+	angle_diff_sum += angle_diff;
+	if (shooter->feeder_mode == FEEDER_LOCKED)
+	{
+		angle_diff_sum = angle_diff_sum < 0.0f ? angle_diff_sum + 45 : angle_diff_sum;
+		heat_now += -boardcom->cooling_per_second * (DWT_GetTimeline_ms() - feeder_tick_last) / 1000;
+		heat_now += (heat_now < 0) ? 0 : heat_now;
+	}
+	else
+	{
+		if_bullet = (angle_diff_sum > 45.0f) ? 1 : 0;
+		if (if_bullet)
+		{
+			angle_diff_sum = angle_diff_sum - 45.0f;
+		}
+		ammunition += if_bullet;
+		heat_now += -boardcom->cooling_per_second *  (DWT_GetTimeline_ms() - feeder_tick_last) / 1000 + 10 * if_bullet;
+		heat_now = (heat_now < 0) ? 0 : heat_now;
+	}
+	feeder_tick_last = DWT_GetTimeline_ms();
+	if_bullet = 0;
 }
 
 uint16_t encoder_spd_l = 0;
@@ -82,11 +125,6 @@ void Shoot_ShooterControl()
 #endif
 }
 
-/**
- * @brief      Shooter feeder control
- * @param      NULL
- * @retval     NULL
- */
 int shoot_mode = 0;
 int test_shoot_frq = 150;
 void Shoot_FeederControl()
@@ -152,7 +190,8 @@ void Shoot_FeederControl()
         PID_SetFdb(&(shooter->feed_spd), Motor_feederMotor.encoder.speed);
         PID_Calc(&(shooter->feed_spd));
         PID_SetRef(&(shooter->feed_ang),
-                   shooter->feeder_angle_init + (int)((Motor_feederMotor.encoder.consequent_angle - shooter->feeder_angle_init + 40.0f) / 45) * 45);
+                   shooter->feeder_angle_init + (int)((Motor_feederMotor.encoder.consequent_angle -
+                                                           shooter->feeder_angle_init + 40.0f) / 45) * 45);
     }
     else if (shoot_mode == SINGLE)
     {
@@ -163,16 +202,10 @@ void Shoot_FeederControl()
             PID_SetRef(&(shooter->feed_spd), 0);
         }
         PID_SetFdb(&(shooter->feed_spd), Motor_feederMotor.encoder.speed);
-        PID_Calc(&(shooter->feed_spd));
     }
-    Motor_SetOutput(&Motor_feederMotor, PID_GetOutput(&(shooter->feed_spd)));
+    Motor_SetOutput(&Motor_feederMotor, PID_Calc(&(shooter->feed_spd)));
 }
 
-/**
- * @brief      Shooter heat control
- * @param      NULL
- * @retval     pid_num
- */
 float Feeder_Fast_Speed = 0.0f;
 float Feeder_Slow_Speed = 0.0f;
 static void Shoot_HeatControl()
@@ -193,60 +226,6 @@ static void Shoot_HeatControl()
     }
 }
 
-/**
- * @brief      Updata control data
- * @param      NULL
- * @retval     NULL
- */
-float feeder_tick_last = 0.0f;
-float angle_diff_sum = 0.0f;
-float heat_now = 0.0f;
-int ammunition = 0;
-uint8_t if_bullet = 0;
-void Heat_Update()
-{
-	Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
-    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-	
-	angle_diff_sum += angle_diff;
-	if (shooter->feeder_mode == FEEDER_LOCKED)
-	{
-		angle_diff_sum = angle_diff_sum < 0.0f ? angle_diff_sum + 45 : angle_diff_sum;
-		heat_now += -boardcom->cooling_per_second * (DWT_GetTimeline_ms() - feeder_tick_last) / 1000;
-		heat_now += (heat_now < 0) ? 0 : heat_now;
-	}
-	else
-	{
-		if_bullet = (angle_diff_sum > 45.0f) ? 1 : 0;
-		if (if_bullet)
-		{
-			angle_diff_sum = angle_diff_sum - 45.0f;
-		}
-		ammunition += if_bullet;
-		heat_now += -boardcom->cooling_per_second *  (DWT_GetTimeline_ms() - feeder_tick_last) / 1000 + 10 * if_bullet;
-		heat_now = (heat_now < 0) ? 0 : heat_now;
-	}
-	feeder_tick_last = DWT_GetTimeline_ms();
-	if_bullet = 0;
-}
-
-void Shoot_Update()
-{
-    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
-    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-	// shooter->heat_ctrl.shooter_heat_now = (float)boardcom->heat_now;
-	shooter->heat_ctrl.shooter_heat_now = heat_now;
-	shooter->heat_ctrl.shooter_heat_limit = (float)boardcom->heat_limit;
-    Motor_PWM_ReadEncoder(&Motor_shooterMotorLeft, 1);
-    Motor_PWM_ReadEncoder(&Motor_shooterMotorRight, 1);
-    ADC_Decode();
-}
-
-/**
- * @brief      Output shooter motor
- * @param      NULL
- * @retval     NULL
- */
 uint64_t shooter_cnt = 0;
 uint8_t shooter_adc_flag = 1;
 uint8_t shooter_adc_flag_last = 1;
@@ -264,11 +243,11 @@ void Shoot_Output()
         shooter_adc_flag = 0;
         shooter_cnt = HAL_GetTick();
     }
-    if ((HAL_GetTick() - shooter_cnt) < 7000)
-    {
-        Motor_shooterMotors.motor_handle[0]->output = 0;
-        Motor_shooterMotors.motor_handle[1]->output = 0;
-    }
+    // if ((HAL_GetTick() - shooter_cnt) < 7000)
+    // {
+    //     Motor_shooterMotors.motor_handle[0]->output = 0;
+    //     Motor_shooterMotors.motor_handle[1]->output = 0;
+    // }
     shooter_adc_flag_last = shooter_adc_flag;
 
     Motor_PWM_SendOutput(&Motor_shooterMotorLeft);
@@ -276,16 +255,11 @@ void Shoot_Output()
     Motor_CAN_SendGroupOutput(&Motor_feederMotors);
 }
 
-/**
- * @brief      Shooter feeder control: single shooting
- * @param      NULL
- * @retval     NULL
- */
 void Shoot_Single()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
 
-    if (fabs(PID_GetFdb(&(shooter->feed_ang)) - PID_GetRef(&(shooter->feed_ang))) > 5.0f)
+    if (fabs(shooter->feed_ang.fdb - shooter->feed_ang.ref) > 5.0f)
     {
         return;
     }
@@ -296,16 +270,10 @@ void Shoot_Single()
     }
 }
 
-/**
- * @brief      Motor locked rotor judge
- * @param      NULL
- * @retval     NULL
- */
 float INITDONE_CURRENT = 1000.0f;
 float INITDONE_SPEED = 10.0f;
 float INITDONE_TIME = 5.0f;
 float feeder_offset = 2.0f;
-
 void Shoot_FeederLockedJudge()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
@@ -345,11 +313,6 @@ void Shoot_FeederLockedJudge()
     }
 }
 
-/**
- * @brief      Motor locked handle
- * @param      NULL
- * @retval     NULL
- */
 static void Shoot_FeederLockedHandle()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
@@ -363,21 +326,6 @@ static void Shoot_FeederLockedHandle()
     }
 }
 
-/**
- * @brief      Gets the pointer to the shooter control data object
- * @param      NULL
- * @retval     Pointer to shooter control data object
- */
-Shoot_ControlTypeDef *Shoot_GetControlPtr()
-{
-    return &Shoot_Control;
-}
-
-/**
- * @brief      Change shooter mode
- * @param      mode: Feeder mode
- * @retval     NULL
- */
 void Shoot_FeederModeSet(Feeder_ModeEnum mode)
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
@@ -391,7 +339,7 @@ void Shoot_FeederModeSet(Feeder_ModeEnum mode)
     {
         shooter->feeder_mode = FEEDER_FINISH;
         PID_SetRef(&(shooter->feed_ang),
-                   shooter->feeder_angle_init + (int)((PID_GetFdb(&(shooter->feed_ang)) - shooter->feeder_angle_init + 40.0f) / 45) * 45); // feeder angle correct
+                   shooter->feeder_angle_init + (int)((shooter->feed_ang.fdb - shooter->feeder_angle_init + 40.0f) / 45) * 45);
     }
 }
 

@@ -10,6 +10,23 @@
 #include "app_ins.h"
 
 INS_DataTypeDef INS_Data;
+INS_DataTypeDef *INS_GetControlPtr()
+{
+    return &INS_Data;
+}
+
+void INS_Init()
+{
+    INS_DataTypeDef *ins = INS_GetControlPtr();
+    ins->ins_param.scale[X_AXIS] = 1;
+    ins->ins_param.scale[Y_AXIS] = 1;
+    ins->ins_param.scale[Z_AXIS] = 1;
+    ins->ins_param.yaw = 0;
+    ins->ins_param.pitch = 0;
+    ins->ins_param.roll = 0;
+    ins->ins_param.init_flag = 0;
+    QEKF_Init(&(ins->q), 10, 0.01f, 10000000, 1, 0.0085f);
+}
 
 void INS_Upadte(BMI088_DataTypeDef *bmi088)
 {
@@ -33,22 +50,4 @@ void INS_Upadte(BMI088_DataTypeDef *bmi088)
 		ins->gyro[YAW] = bmi088->gyro.pitch * Correction_Matrix[6] + bmi088->gyro.row * Correction_Matrix[7] + bmi088->gyro.yaw * Correction_Matrix[8];
 	}
 	count++;
-}
-
-INS_DataTypeDef *INS_GetControlPtr()
-{
-    return &INS_Data;
-}
-
-void INS_Init()
-{
-    INS_DataTypeDef *ins = INS_GetControlPtr();
-    ins->ins_param.scale[X_AXIS] = 1;
-    ins->ins_param.scale[Y_AXIS] = 1;
-    ins->ins_param.scale[Z_AXIS] = 1;
-    ins->ins_param.yaw = 0;
-    ins->ins_param.pitch = 0;
-    ins->ins_param.roll = 0;
-    ins->ins_param.init_flag = 0;
-    QEKF_Init(&(ins->q), 10, 0.01f, 10000000, 1, 0.0085f);
 }

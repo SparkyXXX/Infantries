@@ -74,33 +74,33 @@ extern "C"
         Feeder_ModeEnum feeder_mode, last_feeder_mode;
         Shooter_SpeedDataTypeDef shoot_speed;
         Shooter_HeatDataTypeDef heat_ctrl;
+
         uint8_t single_shoot_done;
+        float feeder_angle_init;
+
         PID_TypeDef shoot_left, shoot_right;
         PID_TypeDef feed_spd, feed_ang;
-        float feeder_angle_init;
         Filter_Lowpass_TypeDef shooter_left_lpf;
         Filter_Lowpass_TypeDef shooter_right_lpf;
     } Shoot_ControlTypeDef;
-	
+
 	extern float angle_diff, last_consequent_angle;
 
+    Shoot_ControlTypeDef *Shoot_GetControlPtr(void);
     void Shoot_Init(void);
-    void Shoot_ShooterControl(void);
-    void Shoot_FeederControl(void);
-    static void Shoot_HeatControl();
     void Shoot_Update(void);
 	void Heat_Update(void);
+    void Shoot_ShooterControl(void);
+    void Shoot_FeederControl(void);
+    static void Shoot_HeatControl(void);
     void Shoot_Output(void);
 
     void Shoot_Single(void);
     void Shoot_FeederLockedJudge(void);
     static void Shoot_FeederLockedHandle();
-
-    Shoot_ControlTypeDef *Shoot_GetControlPtr(void);
     void Shoot_FeederModeSet(Feeder_ModeEnum mode);
     void Shoot_FeederModeForceSet(Feeder_ModeEnum mode);
     void Shoot_SetFeederSpeed(float speed);
-
 #endif
 
 #ifdef __cplusplus

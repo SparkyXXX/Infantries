@@ -22,12 +22,12 @@ void OnProjectLoad (void) {
   //
   // Dialog-generated settings
   //
-  Project.AddPathSubstitute ("F:/RM Code/NB_QX/infantry-2024-debug-chassis", "$(ProjectDir)");
-  Project.AddPathSubstitute ("f:/rm code/nb_qx/infantry-2024-debug-chassis", "$(ProjectDir)");
   Project.SetDevice ("STM32G473CB");
-  Project.SetHostIF ("USB", "69405880");
+  Project.SetHostIF ("USB", "69543073");
   Project.SetTargetIF ("SWD");
   Project.SetTIFSpeed ("4 MHz");
+  Project.AddPathSubstitute ("F:/RM Code/NB_QX/infantry-2024-debug-chassis", "$(ProjectDir)");
+  Project.AddPathSubstitute ("f:/rm code/nb_qx/infantry-2024-debug-chassis", "$(ProjectDir)");
   Project.AddSvdFile ("$(InstallDir)/Config/CPU/Cortex-M4F.svd");
   Project.AddSvdFile ("D:/Keil/ARM/Pack/Keil/STM32G4xx_DFP/1.5.0/CMSIS/SVD/STM32G473xx.svd");
   //

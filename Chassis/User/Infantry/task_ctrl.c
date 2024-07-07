@@ -37,13 +37,14 @@ void Init_Task(void const *argument)
  * @retval         NULL
  */
 void Chassis_Task(void const *argument)
-{while (!Global_Init_Flag)
-        {
-            osDelay(1);
-        }
+{
+    while (!Global_Init_Flag)
+    {
+        osDelay(1);
+    }
     for (;;)
     {
-		OmmiChassis_Output();
+        OmmiChassis_Output();
         osDelay(1);
     }
 }
@@ -54,10 +55,11 @@ void Chassis_Task(void const *argument)
  * @retval         NULL
  */
 void Gimbal_Task(void const *argument)
-{while (!Global_Init_Flag)
-        {
-            osDelay(1);
-        }
+{
+    while (!Global_Init_Flag)
+    {
+        osDelay(1);
+    }
     for (;;)
     {
         GimbalYaw_Output();
@@ -66,10 +68,11 @@ void Gimbal_Task(void const *argument)
 }
 
 void BoardCom_Task(void const *argument)
-{while (!Global_Init_Flag)
-        {
-            osDelay(1);
-        }
+{
+    while (!Global_Init_Flag)
+    {
+        osDelay(1);
+    }
     for (;;)
     {
         BoardCom_Send();
@@ -83,10 +86,11 @@ void BoardCom_Task(void const *argument)
  * @retval         NULL
  */
 void Cap_Task(void const *argument)
-{while (!Global_Init_Flag)
-        {
-            osDelay(1);
-        }
+{
+    while (!Global_Init_Flag)
+    {
+        osDelay(1);
+    }
     for (;;)
     {
         Cap_Update();
@@ -102,24 +106,25 @@ void Cap_Task(void const *argument)
 
 uint8_t ui_cmd_last = 0;
 void UI_Task(void const *argument)
-{while (!Global_Init_Flag)
-        {
-            osDelay(1);
-        }
-	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+{
+    while (!Global_Init_Flag)
+    {
+        osDelay(1);
+    }
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     for (;;)
     {
 #if IF_SYS_IDENT == SYS_IDENT
-		Test_Response();
+        Test_Response();
 #endif
-		if (boardcom->ui_cmd != ui_cmd_last)
-		{
-			UI_Refresh();
-		}
+        if (boardcom->ui_cmd != ui_cmd_last)
+        {
+            UI_Refresh();
+        }
 
-	    ui_cmd_last = boardcom->ui_cmd;
-		HomeHurt_Detect();
-		UI_Update();
+        ui_cmd_last = boardcom->ui_cmd;
+        HomeHurt_Detect();
+        UI_Update();
         osDelay(20);
     }
 }

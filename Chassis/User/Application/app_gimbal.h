@@ -29,7 +29,9 @@ extern "C"
     {
         GimbalYaw_ModeEnum present_mode, last_mode;
         uint8_t mode_change_flag;
-
+		
+		float last_yaw_spd_ref;
+		float last_yaw_pos_ref;
         float yaw_ref;
         float yaw_position_fdb;
         float yaw_speed_fdb;

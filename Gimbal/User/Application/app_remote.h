@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-04-20 01:53:30
+ * @LastEditTime: 2024-07-06 22:32:59
  */
 
 #ifndef APP_REMOTE_H
@@ -41,7 +41,7 @@ extern "C"
 
     typedef struct
     {
-        uint8_t pending; // 互斥锁，目前没用到
+        uint8_t pending;
         uint8_t on_aim;
         Remote_AutoAimModeEnum aim_mode;
     } Remote_ControlTypeDef;
@@ -68,21 +68,19 @@ extern "C"
     extern uint16_t AutoShootBigEnergy_Wait_ms;
     extern uint8_t is_shoot_changed;
 
-    static void Remote_Update();
-    static void Keymouse_Update();
+    Remote_ControlTypeDef *Remote_GetControlPtr(void);
     void Remote_DriveModeSet(void);
-
-    static void Remote_ShootModeSet();
-    static void Keymouse_ShootModeSet();
+    static void Remote_Update(void);
+    static void Keymouse_Update(void);
     static void Remote_AutoaimModeSet(uint8_t mode);
     static void Keymouse_AutoaimModeSet(uint8_t mode);
-    static void Following_AutoaimModeSet();
-
-    static void Remote_Chassis_ModeSet(uint8_t chassis_mode);
+    static void Following_AutoaimModeSet(void);
     static void Remote_Gyro_ModeSet(void);
+    static void Remote_Chassis_ModeSet(uint8_t chassis_mode);
 
-    Remote_ControlTypeDef *Remote_GetControlPtr(void);
-
+    static void Remote_ShootModeSet(void);
+    static void Keymouse_ShootModeSet(void);
+	static void AutoAim_ShootModeSet(void);
 #ifdef __cplusplus
 }
 #endif

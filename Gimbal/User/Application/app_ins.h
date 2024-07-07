@@ -43,7 +43,7 @@ extern "C"
         float yaw;
         float yaw_consequent;
 
-        float gyro[3]; // 0:pitch, 1:roll, 2:yaw
+        float gyro[3];
         float accel[3];
         Quaternion_DataTypeDef q;
         INS_ParamTypeDef ins_param;
@@ -54,9 +54,9 @@ extern "C"
 
     extern const float Correction_Matrix[9];
 
-    void INS_Upadte(BMI088_DataTypeDef *bmi088);
     INS_DataTypeDef *INS_GetControlPtr(void);
     void INS_Init(void);
+    void INS_Upadte(BMI088_DataTypeDef *bmi088);
 
 #endif
 

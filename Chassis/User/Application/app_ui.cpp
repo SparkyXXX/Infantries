@@ -289,7 +289,7 @@ void UI_Update()
 	ui->auto_shoot_state = boardcom->auto_shoot_state;
 	ui->cap_mode = boardcom->cap_speedup_flag;
 	ui->flyslope_flag = boardcom->power_limit_mode;
-	ui->fly_state = (fabs(PID_GetFdb(&(chassis->Chassis_AngfollowPID)) - FLY_ANGLE) < 1.0) ? 1 : 0;
+	ui->fly_state = (fabs(chassis->Chassis_AngfollowPID.fdb - FLY_ANGLE) < 1.0) ? 1 : 0;
 	ui->is_get_target = boardcom->is_get_target;
 
 	if (ui->shooter_state)
