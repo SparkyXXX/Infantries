@@ -17,11 +17,11 @@ uint64_t end = 0;
 uint64_t mid = 0;
 float diff = 0;
 
-void Init_Task(void const *argument)
+void Init_Task(void const* argument)
 {
     Init_All();
     TaskHandle_t InitTask_Handler = xTaskGetHandle(pcTaskGetName(NULL));
-    for (;;)
+    for(;;)
     {
         GLOBAL_INIT_FLAG = 1;
         vTaskSuspend(InitTask_Handler);
@@ -30,21 +30,21 @@ void Init_Task(void const *argument)
 }
 
 uint8_t pkg_flag = 1;
-void BoardCom_Task(void const *argument)
+void BoardCom_Task(void const* argument)
 {
-    while (!GLOBAL_INIT_FLAG)
+    while(!GLOBAL_INIT_FLAG)
     {
         osDelay(1);
     }
-    for (;;)
+    for(;;)
     {
-        if (pkg_flag == 1)
+        if(pkg_flag == 1)
         {
             BoardComPkg1_Send();
             pkg_flag = 2;
             osDelay(1);
         }
-        if (pkg_flag == 2)
+        if(pkg_flag == 2)
         {
             BoardComPkg2_Send();
             pkg_flag = 1;
@@ -53,13 +53,13 @@ void BoardCom_Task(void const *argument)
     }
 }
 
-void Gimbal_Task(void const *argument)
+void Gimbal_Task(void const* argument)
 {
-    while (!GLOBAL_INIT_FLAG)
+    while(!GLOBAL_INIT_FLAG)
     {
         osDelay(1);
     }
-    for (;;)
+    for(;;)
     {
         //		begin = DWT_GetTimeline_us();
         Gimbal_PitchOutput();
@@ -71,13 +71,13 @@ void Gimbal_Task(void const *argument)
     }
 }
 
-void Shoot_Task(void const *argument)
+void Shoot_Task(void const* argument)
 {
-    while (!GLOBAL_INIT_FLAG)
+    while(!GLOBAL_INIT_FLAG)
     {
         osDelay(1);
     }
-    for (;;)
+    for(;;)
     {
         Shoot_Update();
         Heat_Update();
@@ -89,13 +89,13 @@ void Shoot_Task(void const *argument)
     }
 }
 
-void AutoAim_Task(void const *argument)
+void AutoAim_Task(void const* argument)
 {
-    while (!GLOBAL_INIT_FLAG)
+    while(!GLOBAL_INIT_FLAG)
     {
         osDelay(1);
     }
-    for (;;)
+    for(;;)
     {
         AutoAim_IsLost();
         AutoAim_Output();
@@ -105,13 +105,13 @@ void AutoAim_Task(void const *argument)
     }
 }
 
-void Remote_Task(void const *argument)
+void Remote_Task(void const* argument)
 {
-    while (!GLOBAL_INIT_FLAG)
+    while(!GLOBAL_INIT_FLAG)
     {
         osDelay(1);
     }
-    for (;;)
+    for(;;)
     {
 
         Remote_DriveModeSet();
@@ -119,13 +119,13 @@ void Remote_Task(void const *argument)
     }
 }
 
-void Ins_Task(void const *argument)
+void Ins_Task(void const* argument)
 {
-    while (!GLOBAL_INIT_FLAG)
+    while(!GLOBAL_INIT_FLAG)
     {
         osDelay(1);
     }
-    for (;;)
+    for(;;)
     {
         INS_Upadte(&BMI088_Data);
         osDelay(1);

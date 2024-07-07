@@ -39,7 +39,7 @@ extern "C"
     extern Servo_DataTypeDef Servo_MagServo;
     extern BMI088_DataTypeDef BMI088_Data;
 
-    extern Motor_GroupDataTypeDef *Motor_groupHandle[3];
+    extern Motor_GroupDataTypeDef* Motor_groupHandle[3];
     extern Motor_GroupDataTypeDef Motor_gimbalMotors;
     extern Motor_GroupDataTypeDef Motor_feederMotors;
     extern MotorPWM_GroupDataTypeDef Motor_shooterMotors;

@@ -33,8 +33,8 @@ void Gimbal_PitchOutput()
 
     if (gimbal->mode_change_flag == 1)
     {
-        PID_Clear(&(gimbal->pitch_spd));
-        PID_Clear(&(gimbal->pitch_pos));
+        FuzzyPID_Clear(&(gimbal->pitch_spd));
+        FuzzyPID_Clear(&(gimbal->pitch_pos));
         gimbal->pitch_spd.ref = gimbal->last_pitch_spd_ref;
         gimbal->pitch_pos.ref = gimbal->last_pitch_pos_ref;
         gimbal->mode_change_flag = 0;

@@ -111,6 +111,7 @@ extern "C"
                    float kp_set[7], float ki_set[7], float kd_set[7],
                    Interval *error_range, Interval *error_change_range,
 				   float kf, float sum_max, float output_max, float d_cutoff_frq, float kf_cutoff_frq);
+	void FuzzyPID_Clear(FuzzyPID_TypeDef *fuzzy_pid);
     float FuzzyPID_Calc(FuzzyPID_TypeDef *fuzzy_pid);
     void FuzzyPID_SetRef(FuzzyPID_TypeDef *fuzzy_pid, float ref);
     void FuzzyPID_SetFdb(FuzzyPID_TypeDef *fuzzy_pid, float fdb);

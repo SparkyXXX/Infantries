@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Infantry_Oreo\Infantry_Oreo.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Infantry_Oreo\Infantry_Oreo.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Sun Jul  7 08:37:46 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Sun Jul  7 13:04:06 2024
 <BR><P>
 <H3>Maximum Stack Usage =        744 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1369,6 +1369,12 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Gimbal_PitchOutput
 </UL>
 
+<P><STRONG><a name="[127]"></a>FuzzyPID_Clear</STRONG> (Thumb, 26 bytes, Stack size 4 bytes, alg_pid.o(.text.FuzzyPID_Clear))
+<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = FuzzyPID_Clear
+</UL>
+<BR>[Called By]<UL><LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Gimbal_PitchOutput
+</UL>
+
 <P><STRONG><a name="[11d]"></a>FuzzyPID_Init</STRONG> (Thumb, 176 bytes, Stack size 48 bytes, alg_pid.o(.text.FuzzyPID_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = FuzzyPID_Init &rArr; Filter_Lowpass_Init &rArr; __aeabi_dmul
 </UL>
@@ -1477,7 +1483,7 @@ Global Symbols
 <LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FuzzyPID_Calc
 <LI><a href="#[129]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FuzzyPID_SetFdb
 <LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FuzzyPID_SetRef
-<LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Clear
+<LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FuzzyPID_Clear
 <LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INS_GetControlPtr
 <LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Gimbal_GetControlPtr
 <LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
@@ -3240,12 +3246,6 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[259]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Shoot_FeederControl
 <LI><a href="#[267]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Shoot_ShooterControl
-</UL>
-
-<P><STRONG><a name="[127]"></a>PID_Clear</STRONG> (Thumb, 22 bytes, Stack size 4 bytes, alg_pid.o(.text.PID_Clear))
-<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = PID_Clear
-</UL>
-<BR>[Called By]<UL><LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Gimbal_PitchOutput
 </UL>
 
 <P><STRONG><a name="[241]"></a>PID_Init</STRONG> (Thumb, 120 bytes, Stack size 48 bytes, alg_pid.o(.text.PID_Init))

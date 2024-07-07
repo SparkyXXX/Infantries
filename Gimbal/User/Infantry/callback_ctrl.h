@@ -21,8 +21,8 @@ extern "C"
 #define FDCAN_RX_LEN 200
 #define __HAL_DMA_SET_COUNTER(__HANDLE__, __COUNTER__) ((__HANDLE__)->Instance->CNDTR = (uint16_t)(__COUNTER__))
 
-    void UART_ReceiveHandler(UART_HandleTypeDef *huart);
-    void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *phfdcan, uint32_t RxFifo0ITs);
+    void UART_ReceiveHandler(UART_HandleTypeDef* huart);
+    void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef* phfdcan, uint32_t RxFifo0ITs);
 
 #ifdef __cplusplus
 }
