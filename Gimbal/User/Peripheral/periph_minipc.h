@@ -78,7 +78,7 @@ extern "C"
 
         uint8_t address;
         uint32_t last_update_time;
-        uint8_t new_data_flag;
+        uint8_t recieve_packet_type;
         uint8_t explosure_time;
     } MiniPC_DataTypeDef;
 

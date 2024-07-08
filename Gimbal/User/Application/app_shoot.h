@@ -28,11 +28,8 @@ extern "C"
 #define RELOCKED_TIME 100.0f
 #define REVERSE_SPEED -30.0f
 
-#define HEAT_SINGLE_COUNT 10
-#define HEAT_FAST_LIMIT 120
-#define HEAT_SLOW_LIMIT 80
-#define HEAT_WAIT_LIMIT 10
-#define HEAT_STOP_LIMIT 0
+#define HEAT_FAST_LIMIT 80
+#define HEAT_SLOW_LIMIT 30
 
 #define CONTINUOUS 1
 #define SINGLE 2

@@ -38,7 +38,7 @@ void AutoAim_Output()
             {
                 autoaim->armor_yaw += 360;
             }
-            if (minipc->new_data_flag && minipc->is_get_target && !MiniPC_IsLost())
+            if (minipc->recieve_packet_type == MINIPC_ARMOR_PACKET && minipc->is_get_target && !MiniPC_IsLost())
             {
                 gimbal->pitch_position_ref = autoaim->armor_pitch;
                 gimbal->yaw_position_ref = autoaim->armor_yaw;
@@ -59,7 +59,7 @@ void AutoAim_Output()
             {
                 autoaim->buff_yaw += 360;
             }
-            if (minipc->new_data_flag && minipc->is_get_target && !MiniPC_IsLost() && autoaim->target_state == AUTOAIM_TARGET_FOLLOWING)
+            if (minipc->recieve_packet_type == MINIPC_BUFF_PACKET && minipc->is_get_target && !MiniPC_IsLost() && autoaim->target_state == AUTOAIM_TARGET_FOLLOWING)
             {
                 gimbal->pitch_position_ref = autoaim->buff_pitch;
                 gimbal->yaw_position_ref = autoaim->buff_yaw;

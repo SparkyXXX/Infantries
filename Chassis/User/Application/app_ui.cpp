@@ -350,14 +350,17 @@ void UI_Update()
 	if (chassis->present_mode == CHASSIS_STOP)
 	{
 		ChangeModeStr(chassisModeString, GET_STR(chassisModeStop));
+		chassisModeString.changeColor(UI::Color::Cyan);
 	}
 	else if (chassis->present_mode == CHASSIS_NORMAL)
 	{
 		ChangeModeStr(chassisModeString, GET_STR(chassisModeNormal));
+		chassisModeString.changeColor(UI::Color::Cyan);
 	}
 	else if (chassis->present_mode == CHASSIS_GYRO)
 	{
 		ChangeModeStr(chassisModeString, GET_STR(chassisModeGyro));
+		chassisModeString.changeColor(UI::Color::Orange);
 	}
 
 	if (gimbalyaw->present_mode == GimbalYaw_NO_AUTO)

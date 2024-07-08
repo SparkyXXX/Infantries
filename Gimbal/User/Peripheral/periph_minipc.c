@@ -135,7 +135,7 @@ static void MiniPC_ArmorPacketDecode(void *buff, uint16_t rxdatalen)
     MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
     AutoAim_ArmorPacketDataTypeDef *data_ptr = buff + 8;
     MiniPC_ArmorPacket_Watch = *data_ptr;
-    minipc->new_data_flag = 1;
+	minipc->recieve_packet_type = MINIPC_ARMOR_PACKET;
     minipc->is_get_target = data_ptr->is_get;
 	minipc->is_shoot = data_ptr->is_shoot;
     minipc->timestamp = data_ptr->timestamp;
@@ -148,7 +148,7 @@ static void MiniPC_ArmorPacketDecode(void *buff, uint16_t rxdatalen)
 static void MiniPC_BuffPacketDecode(uint8_t *buff, uint16_t rxdatalen)
 {
     MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
-    minipc->new_data_flag = 1;
+    minipc->recieve_packet_type = MINIPC_BUFF_PACKET;
     minipc->is_get_target = buff[8];
     minipc->buff_yaw = buff2float(buff + 9);
     minipc->buff_pitch = (float)buff2i16(buff + 13);
@@ -186,7 +186,7 @@ void MiniPC_Init()
 	minipc->pitch_ref = 0;
     minipc->address = 0;
     minipc->state = MINIPC_NULL;
-    minipc->new_data_flag = 0;
+    minipc->recieve_packet_type = 0;
     minipc->last_update_time = HAL_GetTick();
 	Armor_Trigger = 1000 / ARMOR_CAMERA_FPS - ARMOR_SEND_DELAY - MINIPC_TASK_DELAY;
 	Buff_Trigger = 1000 / BUFF_CAMERA_FPS - BUFF_SEND_DELAY - MINIPC_TASK_DELAY;

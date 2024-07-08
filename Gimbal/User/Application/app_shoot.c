@@ -212,15 +212,15 @@ static void Shoot_HeatControl()
 {
     Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
-    if ((shooter->heat_ctrl.shooter_heat_limit - shooter->heat_ctrl.shooter_heat_now) >= 80)
+	if ((shooter->heat_ctrl.shooter_heat_limit - shooter->heat_ctrl.shooter_heat_now) >= HEAT_FAST_LIMIT)
     {
         shooter->heat_ctrl.feeder_speed = Feeder_Fast_Speed;
     }
-    else if ((shooter->heat_ctrl.shooter_heat_limit - shooter->heat_ctrl.shooter_heat_now) > 20)
+    else if ((shooter->heat_ctrl.shooter_heat_limit - shooter->heat_ctrl.shooter_heat_now) > HEAT_SLOW_LIMIT)
     {
         shooter->heat_ctrl.feeder_speed = Feeder_Slow_Speed;
     }
-    else if ((shooter->heat_ctrl.shooter_heat_limit - shooter->heat_ctrl.shooter_heat_now) <= 20)
+    else if ((shooter->heat_ctrl.shooter_heat_limit - shooter->heat_ctrl.shooter_heat_now) <= HEAT_SLOW_LIMIT)
     {
         shooter->heat_ctrl.feeder_speed = 0;
     }

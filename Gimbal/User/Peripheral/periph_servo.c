@@ -17,8 +17,11 @@
  */
 void Servo_SetAngle(Servo_DataTypeDef *servo, float angle)
 {
-    servo->angle = angle;
-    PWM_SetDuty(&(servo->pwm), (angle / 1800 + 0.025f)); 
+    if(servo->angle != angle)
+	{
+		servo->angle = angle;
+		PWM_SetDuty(&(servo->pwm), (angle / 1800 + 0.025f)); 
+	}
 }
 
 /**

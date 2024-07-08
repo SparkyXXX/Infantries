@@ -476,8 +476,10 @@ static void AutoAim_ShootModeSet()
     MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
     AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
-    Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();
+	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+
     uint16_t wait_ms = 1000;
+	AutoShoot_Wait_ms = 10.0f / boardcom->cooling_per_second * 1000;
     if (autoaim->aim_mode == AUTOAIM_ARMOR)           {wait_ms = AutoShoot_Wait_ms;}
     else if (autoaim->aim_mode == AUTOAIM_SMALL_BUFF) {wait_ms = AutoShootSmallEnergy_Wait_ms;}
     else if (autoaim->aim_mode == AUTOAIM_BIG_BUFF)   {wait_ms = AutoShootBigEnergy_Wait_ms;}
@@ -485,9 +487,14 @@ static void AutoAim_ShootModeSet()
     {
         if (autoaim->hit_mode == AUTOAIM_HIT_ARMOR)
         {
+			if ((shooter->heat_ctrl.shooter_heat_limit - shooter->heat_ctrl.shooter_heat_now) <= HEAT_SLOW_LIMIT)
+			{
+				Shoot_FeederModeSet(FEEDER_STOP);
+				return;
+			}
             wait_tick++;
             if (minipc->is_get_target == 1 && minipc->is_shoot == 1 && autoaim->AutoShootFlag == 1 && wait_tick >= wait_ms &&
-                (shooter->heat_ctrl.shooter_heat_limit - shooter->heat_ctrl.shooter_heat_now) >= 40 &&
+                (shooter->heat_ctrl.shooter_heat_limit - shooter->heat_ctrl.shooter_heat_now) >= HEAT_FAST_LIMIT &&
                  Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorRight.encoder.speed > 20)
             {
                 Shoot_FeederModeSet(FEEDER_SINGLE);
@@ -498,7 +505,7 @@ static void AutoAim_ShootModeSet()
         else if (autoaim->hit_mode == AUTOAIM_HIT_BUFF)
         {
             if (minipc->is_get_target == 1 && minipc->is_shoot == 1 && have_shooted == 0 &&
-                (shooter->heat_ctrl.shooter_heat_limit - shooter->heat_ctrl.shooter_heat_now) >= HEAT_SLOW_LIMIT &&
+                (shooter->heat_ctrl.shooter_heat_limit - shooter->heat_ctrl.shooter_heat_now) >= HEAT_FAST_LIMIT &&
                  Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorRight.encoder.speed > 20)
             {
 				buff_tick_start = DWT->CYCCNT;

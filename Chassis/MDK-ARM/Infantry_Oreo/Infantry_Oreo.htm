@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Infantry_Oreo\Infantry_Oreo.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Infantry_Oreo\Infantry_Oreo.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Sun Jul  7 08:35:49 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Mon Jul  8 10:45:46 2024
 <BR><P>
 <H3>Maximum Stack Usage =        688 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -2544,7 +2544,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[7b]"></a>UI_Task</STRONG> (Thumb, 98 bytes, Stack size 16 bytes, task_ctrl.o(.text.UI_Task))
-<BR><BR>[Stack]<UL><LI>Max Depth = 260 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 276 + Unknown Stack Size
 <LI>Call Chain = UI_Task &rArr; UI_Update &rArr; ChangeModeStr(UI::String&, char const*, unsigned short) &rArr; osDelay &rArr; vTaskDelay &rArr; xTaskResumeAll &rArr; xTaskIncrementTick &rArr; vListInsertEnd
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
@@ -2555,8 +2555,8 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> app_freertos.o(.rodata..L__const.MX_FREERTOS_Init.os_thread_def_UI)
 </UL>
-<P><STRONG><a name="[197]"></a>UI_Update</STRONG> (Thumb, 1332 bytes, Stack size 88 bytes, app_ui.o(.text.UI_Update))
-<BR><BR>[Stack]<UL><LI>Max Depth = 244 + Unknown Stack Size
+<P><STRONG><a name="[197]"></a>UI_Update</STRONG> (Thumb, 1364 bytes, Stack size 104 bytes, app_ui.o(.text.UI_Update))
+<BR><BR>[Stack]<UL><LI>Max Depth = 260 + Unknown Stack Size
 <LI>Call Chain = UI_Update &rArr; ChangeModeStr(UI::String&, char const*, unsigned short) &rArr; osDelay &rArr; vTaskDelay &rArr; xTaskResumeAll &rArr; xTaskIncrementTick &rArr; vListInsertEnd
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
