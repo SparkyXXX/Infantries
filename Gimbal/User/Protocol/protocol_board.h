@@ -91,6 +91,7 @@ extern "C"
 	extern float bullet[5];
     extern FDCAN_HandleTypeDef *BOARD_CAN_HANDLER;
     extern FDCAN_HandleTypeDef *CAP_CAN_HANDLER;
+	extern uint8_t Boardcom_Decode_Flag;
 
     BoardCom_DataTypeDef *BoardCom_GetDataPtr(void);
     void BoardCom_Init(void);

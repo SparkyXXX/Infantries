@@ -9,12 +9,14 @@
 
 #include "protocol_motor.h"
 
+FDCAN_HandleTypeDef *MOTOR_CAN_HANDLER = &hfdcan1;
+
 /**
  * @brief      Gimbal motor encoder callback
  * @param      pmotor: Pointer to motor object
  * @retval     NULL
  */
-static void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
+void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
 {
     pmotor->encoder.last_angle = pmotor->encoder.angle;
     pmotor->encoder.angle = (float)((int16_t)((uint16_t)rxdata[0] << 8 | (uint16_t)rxdata[1]));
@@ -39,6 +41,7 @@ static void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
     pmotor->encoder.limited_angle = (float)pmotor->encoder.angle / 8192.0f * 360.0f;
     // For yaw axis processing, the small gyroscope is rotated to the same position as the PTZ according to the nearest distance after stopping
 
+//	Gimbal_Motor_Decode_Flag = 0;
     pmotor->encoder.last_update_time = HAL_GetTick();
 }
 
@@ -48,7 +51,7 @@ static void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
  * @retval     NULL
  */
 float angle_diff, last_consequent_angle;
-static void M2006_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
+void M2006_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
 {
     pmotor->encoder.last_angle = pmotor->encoder.angle;
     pmotor->encoder.angle = (float)((int16_t)((uint16_t)rxdata[0] << 8 | (uint16_t)rxdata[1]));
@@ -69,6 +72,8 @@ static void M2006_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
     pmotor->encoder.consequent_angle = (float)pmotor->encoder.round_count * 10.0f + (float)pmotor->encoder.angle / 8192.0f * 10.0f;
 	angle_diff = Motor_feederMotor.encoder.consequent_angle - last_consequent_angle;
 	last_consequent_angle = Motor_feederMotor.encoder.consequent_angle;
+	
+//	Shoot_Motor_Decode_Flag = 0;
     pmotor->encoder.last_update_time = HAL_GetTick();
 }
 
@@ -126,15 +131,6 @@ void Motor_PWM_ReadEncoder(MotorPWM_DataTypeDef *pmotor, uint8_t multiple)
     __HAL_TIM_SET_COUNTER(pmotor->encoder.htim, 0);
     pmotor->encoder.speed = (float)fdb * 2 * 3.1415926f * 1000 * 0.0235 / 4096;
     // register_counter * (numbers of turns to rads:2 * PI) * (ms_to_s:1000) * (radius:0.0235m) / (4 * 1024 lines)
-}
-
-void Motor_CAN_Decode(FDCAN_HandleTypeDef *phfdcan, uint32_t stdid, uint8_t rxdata[], uint32_t len)
-{
-    if (phfdcan == &hfdcan1)
-    {
-		if (stdid == PITCH_CAN_ID) {GM6020_Decode(&Motor_gimbalMotorPitch, rxdata);}
-		if (stdid == FEEDER_CAN_ID) {M2006_Decode(&Motor_feederMotor, rxdata);}
-    }
 }
 
 void Motor_CAN_SendGroupOutput(Motor_GroupDataTypeDef *pgroup)

@@ -18,6 +18,10 @@ extern "C" {
 #include "config_ctrl.h"
 #include "callback_ctrl.h"
 
+//	extern uint8_t Remote_Decode_Flag;
+//	extern uint8_t Boardcom_Decode_Flag;
+//	extern uint8_t Gimbal_Motor_Decode_Flag;
+//	extern uint8_t Shoot_Motor_Decode_Flag;
 
 #ifdef __cplusplus
 }

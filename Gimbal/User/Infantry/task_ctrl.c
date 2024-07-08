@@ -10,32 +10,14 @@
 #include "task_ctrl.h"
 #include "lib_timer_tim1.h"
 
-int GLOBAL_INIT_FLAG = 0;
-
 uint64_t begin = 0;
 uint64_t end = 0;
 uint64_t mid = 0;
 float diff = 0;
 
-void Init_Task(void const* argument)
-{
-    Init_All();
-    TaskHandle_t InitTask_Handler = xTaskGetHandle(pcTaskGetName(NULL));
-    for(;;)
-    {
-        GLOBAL_INIT_FLAG = 1;
-        vTaskSuspend(InitTask_Handler);
-        osDelay(1);
-    }
-}
-
 uint8_t pkg_flag = 1;
 void BoardCom_Task(void const* argument)
 {
-    while(!GLOBAL_INIT_FLAG)
-    {
-        osDelay(1);
-    }
     for(;;)
     {
         if(pkg_flag == 1)
@@ -55,13 +37,10 @@ void BoardCom_Task(void const* argument)
 
 void Gimbal_Task(void const* argument)
 {
-    while(!GLOBAL_INIT_FLAG)
-    {
-        osDelay(1);
-    }
     for(;;)
     {
-        //		begin = DWT_GetTimeline_us();
+		Check_Task_Freq();
+		//	begin = DWT_GetTimeline_us();
         Gimbal_PitchOutput();
         Gimbal_YawModeSet();
         osDelay(1);
@@ -73,10 +52,6 @@ void Gimbal_Task(void const* argument)
 
 void Shoot_Task(void const* argument)
 {
-    while(!GLOBAL_INIT_FLAG)
-    {
-        osDelay(1);
-    }
     for(;;)
     {
         Shoot_Update();
@@ -91,10 +66,6 @@ void Shoot_Task(void const* argument)
 
 void AutoAim_Task(void const* argument)
 {
-    while(!GLOBAL_INIT_FLAG)
-    {
-        osDelay(1);
-    }
     for(;;)
     {
         AutoAim_IsLost();
@@ -107,13 +78,8 @@ void AutoAim_Task(void const* argument)
 
 void Remote_Task(void const* argument)
 {
-    while(!GLOBAL_INIT_FLAG)
-    {
-        osDelay(1);
-    }
     for(;;)
     {
-
         Remote_DriveModeSet();
         osDelay(1);
     }
@@ -121,10 +87,6 @@ void Remote_Task(void const* argument)
 
 void Ins_Task(void const* argument)
 {
-    while(!GLOBAL_INIT_FLAG)
-    {
-        osDelay(1);
-    }
     for(;;)
     {
         INS_Upadte(&BMI088_Data);

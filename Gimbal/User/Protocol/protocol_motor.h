@@ -21,10 +21,13 @@ extern "C"
 
 #define PITCH_CAN_ID 0x206
 #define FEEDER_CAN_ID 0x201
+	
+	extern FDCAN_HandleTypeDef *MOTOR_CAN_HANDLER;
+	extern uint8_t Gimbal_Motor_Decode_Flag;
+	extern uint8_t Shoot_Motor_Decode_Flag;
 
-    static void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata);
-    static void M2006_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata);
-    void Motor_CAN_Decode(FDCAN_HandleTypeDef *phfdcan, uint32_t stdid, uint8_t rxdata[], uint32_t len);
+    void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata);
+    void M2006_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata);
     void Motor_CAN_SendGroupOutput(Motor_GroupDataTypeDef *pgroup);
     void Motor_PWM_ReadEncoder(MotorPWM_DataTypeDef *pmotor, uint8_t multiple);
     void Motor_PWM_SendOutput(MotorPWM_DataTypeDef *pmotor);

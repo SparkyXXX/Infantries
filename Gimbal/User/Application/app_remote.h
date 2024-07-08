@@ -67,6 +67,7 @@ extern "C"
     extern uint16_t AutoShootSmallEnergy_Wait_ms;
     extern uint16_t AutoShootBigEnergy_Wait_ms;
     extern uint8_t is_shoot_changed;
+	extern uint8_t shoot_strategy;
 
     Remote_ControlTypeDef *Remote_GetControlPtr(void);
     void Remote_DriveModeSet(void);

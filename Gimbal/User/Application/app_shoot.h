@@ -27,6 +27,9 @@ extern "C"
 #define LOCKED_TIME 200.0f
 #define RELOCKED_TIME 100.0f
 #define REVERSE_SPEED -30.0f
+	
+#define COOLING_FIRST 1
+#define PENGPENG_FIRST 2
 
 #define HEAT_FAST_LIMIT 80
 #define HEAT_SLOW_LIMIT 30

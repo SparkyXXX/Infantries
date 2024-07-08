@@ -75,13 +75,14 @@ extern TIM_HandleTypeDef htim20;
   */
 void NMI_Handler(void)
 {
-  /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
+    /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
 
-  /* USER CODE END NonMaskableInt_IRQn 0 */
-  /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
-    while (1) {
+    /* USER CODE END NonMaskableInt_IRQn 0 */
+    /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
+    while(1)
+    {
     }
-  /* USER CODE END NonMaskableInt_IRQn 1 */
+    /* USER CODE END NonMaskableInt_IRQn 1 */
 }
 
 /**
@@ -89,14 +90,14 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* USER CODE BEGIN HardFault_IRQn 0 */
-   //return;
-  /* USER CODE END HardFault_IRQn 0 */
-  while (1)
-  {
-    /* USER CODE BEGIN W1_HardFault_IRQn 0 */
-    /* USER CODE END W1_HardFault_IRQn 0 */
-  }
+    /* USER CODE BEGIN HardFault_IRQn 0 */
+    //return;
+    /* USER CODE END HardFault_IRQn 0 */
+    while(1)
+    {
+        /* USER CODE BEGIN W1_HardFault_IRQn 0 */
+        /* USER CODE END W1_HardFault_IRQn 0 */
+    }
 }
 
 /**
@@ -104,14 +105,14 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* USER CODE BEGIN MemoryManagement_IRQn 0 */
-  return;
-  /* USER CODE END MemoryManagement_IRQn 0 */
-  while (1)
-  {
-    /* USER CODE BEGIN W1_MemoryManagement_IRQn 0 */
-    /* USER CODE END W1_MemoryManagement_IRQn 0 */
-  }
+    /* USER CODE BEGIN MemoryManagement_IRQn 0 */
+    return;
+    /* USER CODE END MemoryManagement_IRQn 0 */
+    while(1)
+    {
+        /* USER CODE BEGIN W1_MemoryManagement_IRQn 0 */
+        /* USER CODE END W1_MemoryManagement_IRQn 0 */
+    }
 }
 
 /**
@@ -119,14 +120,14 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* USER CODE BEGIN BusFault_IRQn 0 */
+    /* USER CODE BEGIN BusFault_IRQn 0 */
 
-  /* USER CODE END BusFault_IRQn 0 */
-  while (1)
-  {
-    /* USER CODE BEGIN W1_BusFault_IRQn 0 */
-    /* USER CODE END W1_BusFault_IRQn 0 */
-  }
+    /* USER CODE END BusFault_IRQn 0 */
+    while(1)
+    {
+        /* USER CODE BEGIN W1_BusFault_IRQn 0 */
+        /* USER CODE END W1_BusFault_IRQn 0 */
+    }
 }
 
 /**
@@ -134,14 +135,14 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* USER CODE BEGIN UsageFault_IRQn 0 */
+    /* USER CODE BEGIN UsageFault_IRQn 0 */
 
-  /* USER CODE END UsageFault_IRQn 0 */
-  while (1)
-  {
-    /* USER CODE BEGIN W1_UsageFault_IRQn 0 */
-    /* USER CODE END W1_UsageFault_IRQn 0 */
-  }
+    /* USER CODE END UsageFault_IRQn 0 */
+    while(1)
+    {
+        /* USER CODE BEGIN W1_UsageFault_IRQn 0 */
+        /* USER CODE END W1_UsageFault_IRQn 0 */
+    }
 }
 
 /**
@@ -149,12 +150,12 @@ void UsageFault_Handler(void)
   */
 void DebugMon_Handler(void)
 {
-  /* USER CODE BEGIN DebugMonitor_IRQn 0 */
+    /* USER CODE BEGIN DebugMonitor_IRQn 0 */
 
-  /* USER CODE END DebugMonitor_IRQn 0 */
-  /* USER CODE BEGIN DebugMonitor_IRQn 1 */
+    /* USER CODE END DebugMonitor_IRQn 0 */
+    /* USER CODE BEGIN DebugMonitor_IRQn 1 */
 
-  /* USER CODE END DebugMonitor_IRQn 1 */
+    /* USER CODE END DebugMonitor_IRQn 1 */
 }
 
 /******************************************************************************/
@@ -169,13 +170,13 @@ void DebugMon_Handler(void)
   */
 void PVD_PVM_IRQHandler(void)
 {
-  /* USER CODE BEGIN PVD_PVM_IRQn 0 */
+    /* USER CODE BEGIN PVD_PVM_IRQn 0 */
 
-  /* USER CODE END PVD_PVM_IRQn 0 */
-  HAL_PWREx_PVD_PVM_IRQHandler();
-  /* USER CODE BEGIN PVD_PVM_IRQn 1 */
+    /* USER CODE END PVD_PVM_IRQn 0 */
+    HAL_PWREx_PVD_PVM_IRQHandler();
+    /* USER CODE BEGIN PVD_PVM_IRQn 1 */
 
-  /* USER CODE END PVD_PVM_IRQn 1 */
+    /* USER CODE END PVD_PVM_IRQn 1 */
 }
 
 /**
@@ -183,13 +184,13 @@ void PVD_PVM_IRQHandler(void)
   */
 void DMA1_Channel3_IRQHandler(void)
 {
-  /* USER CODE BEGIN DMA1_Channel3_IRQn 0 */
+    /* USER CODE BEGIN DMA1_Channel3_IRQn 0 */
 
-  /* USER CODE END DMA1_Channel3_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_usart2_rx);
-  /* USER CODE BEGIN DMA1_Channel3_IRQn 1 */
+    /* USER CODE END DMA1_Channel3_IRQn 0 */
+    HAL_DMA_IRQHandler(&hdma_usart2_rx);
+    /* USER CODE BEGIN DMA1_Channel3_IRQn 1 */
 
-  /* USER CODE END DMA1_Channel3_IRQn 1 */
+    /* USER CODE END DMA1_Channel3_IRQn 1 */
 }
 
 /**
@@ -197,13 +198,13 @@ void DMA1_Channel3_IRQHandler(void)
   */
 void FDCAN1_IT0_IRQHandler(void)
 {
-  /* USER CODE BEGIN FDCAN1_IT0_IRQn 0 */
+    /* USER CODE BEGIN FDCAN1_IT0_IRQn 0 */
 
-  /* USER CODE END FDCAN1_IT0_IRQn 0 */
-  HAL_FDCAN_IRQHandler(&hfdcan1);
-  /* USER CODE BEGIN FDCAN1_IT0_IRQn 1 */
+    /* USER CODE END FDCAN1_IT0_IRQn 0 */
+    HAL_FDCAN_IRQHandler(&hfdcan1);
+    /* USER CODE BEGIN FDCAN1_IT0_IRQn 1 */
 
-  /* USER CODE END FDCAN1_IT0_IRQn 1 */
+    /* USER CODE END FDCAN1_IT0_IRQn 1 */
 }
 
 /**
@@ -211,13 +212,13 @@ void FDCAN1_IT0_IRQHandler(void)
   */
 void USART2_IRQHandler(void)
 {
-  /* USER CODE BEGIN USART2_IRQn 0 */
+    /* USER CODE BEGIN USART2_IRQn 0 */
 
-  /* USER CODE END USART2_IRQn 0 */
-  HAL_UART_IRQHandler(&huart2);
-  /* USER CODE BEGIN USART2_IRQn 1 */
+    /* USER CODE END USART2_IRQn 0 */
+    HAL_UART_IRQHandler(&huart2);
+    /* USER CODE BEGIN USART2_IRQn 1 */
 
-  /* USER CODE END USART2_IRQn 1 */
+    /* USER CODE END USART2_IRQn 1 */
 }
 
 /**
@@ -225,13 +226,13 @@ void USART2_IRQHandler(void)
   */
 void TIM20_UP_IRQHandler(void)
 {
-  /* USER CODE BEGIN TIM20_UP_IRQn 0 */
+    /* USER CODE BEGIN TIM20_UP_IRQn 0 */
 
-  /* USER CODE END TIM20_UP_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim20);
-  /* USER CODE BEGIN TIM20_UP_IRQn 1 */
+    /* USER CODE END TIM20_UP_IRQn 0 */
+    HAL_TIM_IRQHandler(&htim20);
+    /* USER CODE BEGIN TIM20_UP_IRQn 1 */
 
-  /* USER CODE END TIM20_UP_IRQn 1 */
+    /* USER CODE END TIM20_UP_IRQn 1 */
 }
 
 /**
@@ -239,13 +240,13 @@ void TIM20_UP_IRQHandler(void)
   */
 void FDCAN2_IT0_IRQHandler(void)
 {
-  /* USER CODE BEGIN FDCAN2_IT0_IRQn 0 */
+    /* USER CODE BEGIN FDCAN2_IT0_IRQn 0 */
 
-  /* USER CODE END FDCAN2_IT0_IRQn 0 */
-  HAL_FDCAN_IRQHandler(&hfdcan2);
-  /* USER CODE BEGIN FDCAN2_IT0_IRQn 1 */
+    /* USER CODE END FDCAN2_IT0_IRQn 0 */
+    HAL_FDCAN_IRQHandler(&hfdcan2);
+    /* USER CODE BEGIN FDCAN2_IT0_IRQn 1 */
 
-  /* USER CODE END FDCAN2_IT0_IRQn 1 */
+    /* USER CODE END FDCAN2_IT0_IRQn 1 */
 }
 
 /**
@@ -253,13 +254,13 @@ void FDCAN2_IT0_IRQHandler(void)
   */
 void FDCAN3_IT0_IRQHandler(void)
 {
-  /* USER CODE BEGIN FDCAN3_IT0_IRQn 0 */
+    /* USER CODE BEGIN FDCAN3_IT0_IRQn 0 */
 
-  /* USER CODE END FDCAN3_IT0_IRQn 0 */
-  HAL_FDCAN_IRQHandler(&hfdcan3);
-  /* USER CODE BEGIN FDCAN3_IT0_IRQn 1 */
+    /* USER CODE END FDCAN3_IT0_IRQn 0 */
+    HAL_FDCAN_IRQHandler(&hfdcan3);
+    /* USER CODE BEGIN FDCAN3_IT0_IRQn 1 */
 
-  /* USER CODE END FDCAN3_IT0_IRQn 1 */
+    /* USER CODE END FDCAN3_IT0_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

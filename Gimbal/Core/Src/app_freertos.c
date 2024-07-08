@@ -119,9 +119,9 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* definition and creation of Init */
-  osThreadDef(Init, Init_Task, osPriorityRealtime, 0, 128);
-  InitHandle = osThreadCreate(osThread(Init), NULL);
+//  /* definition and creation of Init */
+//  osThreadDef(Init, Init_Task, osPriorityRealtime, 0, 128);
+//  InitHandle = osThreadCreate(osThread(Init), NULL);
 
   /* definition and creation of Gimbal */
   osThreadDef(Gimbal, Gimbal_Task, osPriorityRealtime, 0, 128);

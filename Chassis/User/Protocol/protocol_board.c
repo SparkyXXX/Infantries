@@ -23,8 +23,8 @@
 #define SEND_CAP_DATA_TIMEOUT 5
 
 #define CHASSIS_SEND_TO_GIMBAL_PKG_AMOUNT 2
-#define CHASSIS_RECEIVE_FROM_GIMBAL_PKG_AMOUNT 5
-#define CHASSIS_RECEIVE_FROM_CAP_PKG_AMOUNT 2
+#define CHASSIS_RECEIVE_FROM_GIMBAL_PKG_AMOUNT 4
+#define CHASSIS_RECEIVE_FROM_CAP_PKG_AMOUNT 1
 
 #define ID_SEND_REFEREE_DATA 0x205
 #define ID_SEND_CAP_DATA 0x98
@@ -44,15 +44,13 @@ Board_SendTableEntryTypeDef Chassis_Send_to_Gimbal[CHASSIS_SEND_TO_GIMBAL_PKG_AM
 							 &_send_cap_data};
 
 Board_ReceiveTableEntryTypeDef Chassis_Receive_from_Gimbal[CHASSIS_RECEIVE_FROM_GIMBAL_PKG_AMOUNT] =
-							   {{0xff, NULL},
-								{ID_RECEIVE_CONTROL, &_receive_control},
+							   {{ID_RECEIVE_CONTROL, &_receive_control},
 								{ID_RECEIVE_IMU_YAW, &_receive_imu_yaw},
 								{ID_RECEIVE_CHASSIS_REF, &_receive_chassis_ref},
 								{ID_RECEIVE_UI_STATE, &_receive_ui_state}};
 
 Board_ReceiveTableEntryTypeDef Chassis_Receive_from_Cap[CHASSIS_RECEIVE_FROM_CAP_PKG_AMOUNT] =
-							   {{0xff, NULL},
-							    {ID_RECEIVE_CAP_DATA, &_receive_cap_data}};
+							   {{ID_RECEIVE_CAP_DATA, &_receive_cap_data}};
 
 FDCAN_HandleTypeDef *BOARD_CAN_HANDLER = &hfdcan2;
 FDCAN_HandleTypeDef *CAP_CAN_HANDLER = &hfdcan3;
@@ -115,7 +113,7 @@ void BoardCom_Decode(FDCAN_HandleTypeDef *pfdhcan, uint32_t stdid, uint8_t rxdat
         decode_count[0]++;
 		decode_rate[0] = decode_count[0] / HAL_GetTick();
 		memcpy(BoardCom_RxData, rxdata, len);
-		for (int i = 1; i < (CHASSIS_RECEIVE_FROM_GIMBAL_PKG_AMOUNT); i++)
+		for (int i = 0; i < CHASSIS_RECEIVE_FROM_GIMBAL_PKG_AMOUNT; i++)
 		{
 			if ((stdid == Chassis_Receive_from_Gimbal[i].cmd_id) && (Chassis_Receive_from_Gimbal[i].bus_func != NULL))
 			{
@@ -130,7 +128,7 @@ void BoardCom_Decode(FDCAN_HandleTypeDef *pfdhcan, uint32_t stdid, uint8_t rxdat
 		decode_rate[1] = decode_count[1] / HAL_GetTick();
 		memcpy(BoardCom_RxData, rxdata, len);
 
-		for (int i = 1; i < (CHASSIS_RECEIVE_FROM_CAP_PKG_AMOUNT); i++)
+		for (int i = 0; i < CHASSIS_RECEIVE_FROM_CAP_PKG_AMOUNT; i++)
 		{
 			if ((stdid == Chassis_Receive_from_Cap[i].cmd_id) && (Chassis_Receive_from_Cap[i].bus_func != NULL))
 			{

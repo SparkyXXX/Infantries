@@ -20,7 +20,7 @@
 
 #define GIMBAL_SEND_TOCHASSIS_PKG1_AMOUNT 2
 #define GIMBAL_SEND_TOCHASSIS_PKG2_AMOUNT 2
-#define GIMBAL_RECEIVE_FROM_CHASSIS_PKG_AMOUNT 7
+#define GIMBAL_RECEIVE_FROM_CHASSIS_PKG_AMOUNT 1
 
 #define ID_SEND_CONTROL 0x201
 #define ID_SEND_IMU_YAW 0x202
@@ -43,8 +43,7 @@ Board_SendTableEntryTypeDef Gimbal_Send_to_Chassis_Pkg2[GIMBAL_SEND_TOCHASSIS_PK
 							 {&_send_ui_state}};
 
 Board_ReceiveTableEntryTypeDef Gimbal_Receive_from_Chassis[GIMBAL_RECEIVE_FROM_CHASSIS_PKG_AMOUNT] =
-							   {{0xff, NULL},
-								{ID_RECEIVE_REFEREE_DATA, &_receive_referee_data}};
+							   {{ID_RECEIVE_REFEREE_DATA, &_receive_referee_data}};
 
 FDCAN_HandleTypeDef *BOARD_CAN_HANDLER = &hfdcan2;
 
@@ -156,11 +155,12 @@ void BoardCom_Decode(uint8_t buff[], uint32_t stdid, uint16_t rxdatalen)
     decode_rate = decode_count / HAL_GetTick();
     memcpy(BoardCom_RxData, buff, rxdatalen);
 
-    for (int i = 1; i < (GIMBAL_RECEIVE_FROM_CHASSIS_PKG_AMOUNT); i++)
+    for (int i = 0; i < (GIMBAL_RECEIVE_FROM_CHASSIS_PKG_AMOUNT); i++)
     {
         if ((stdid == Gimbal_Receive_from_Chassis[i].cmd_id) && (Gimbal_Receive_from_Chassis[i].bus_func != NULL))
         {
             Gimbal_Receive_from_Chassis[i].bus_func(BoardCom_RxData);
+//			Boardcom_Decode_Flag = 0;
             return;
         }
     }

@@ -17,20 +17,6 @@
 #include "periph_cap.h"
 #include "sys_dwt.h"
 
-int Global_Init_Flag = 0;
-
-void Init_Task(void const *argument)
-{
-    Init_All();
-    TaskHandle_t InitTask_Handler = xTaskGetHandle(pcTaskGetName(NULL));
-    for (;;)
-    {
-        Global_Init_Flag = 1;
-        vTaskSuspend(InitTask_Handler);
-        osDelay(1);
-    }
-}
-
 /**
  * @brief          Chassis task
  * @param          NULL
@@ -38,10 +24,6 @@ void Init_Task(void const *argument)
  */
 void Chassis_Task(void const *argument)
 {
-    while (!Global_Init_Flag)
-    {
-        osDelay(1);
-    }
     for (;;)
     {
         OmmiChassis_Output();
@@ -56,10 +38,6 @@ void Chassis_Task(void const *argument)
  */
 void Gimbal_Task(void const *argument)
 {
-    while (!Global_Init_Flag)
-    {
-        osDelay(1);
-    }
     for (;;)
     {
         GimbalYaw_Output();
@@ -69,10 +47,6 @@ void Gimbal_Task(void const *argument)
 
 void BoardCom_Task(void const *argument)
 {
-    while (!Global_Init_Flag)
-    {
-        osDelay(1);
-    }
     for (;;)
     {
         BoardCom_Send();
@@ -87,10 +61,6 @@ void BoardCom_Task(void const *argument)
  */
 void Cap_Task(void const *argument)
 {
-    while (!Global_Init_Flag)
-    {
-        osDelay(1);
-    }
     for (;;)
     {
         Cap_Update();
@@ -107,10 +77,6 @@ void Cap_Task(void const *argument)
 uint8_t ui_cmd_last = 0;
 void UI_Task(void const *argument)
 {
-    while (!Global_Init_Flag)
-    {
-        osDelay(1);
-    }
     BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     for (;;)
     {

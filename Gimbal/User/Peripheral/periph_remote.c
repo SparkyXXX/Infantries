@@ -10,6 +10,7 @@
 #include "periph_remote.h"
 
 Remote_DataTypeDef Remote_Data;
+UART_HandleTypeDef* REMOTE_UART_HANDLER = &huart3;
 
 /**
  * @brief      Remote control decoding function
@@ -54,6 +55,7 @@ void Remote_Decode(Remote_DataTypeDef *rc, uint8_t *buff, int rxdatalen)
         return;
     }
     rc->state = REMOTE_STATE_CONNECTED;
+//	Remote_Decode_Flag = 0;
 }
 
 /**

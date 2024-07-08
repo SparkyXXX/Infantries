@@ -434,7 +434,12 @@ static void Remote_ShootModeSet()
     }
     case REMOTE_SWITCH_DOWN:
     {
+#if IF_TEST_SHOOT == NO_SHOOT_TEST
         AutoAim_ShootModeSet();
+#endif
+#if IF_TEST_SHOOT == SHOOT_TEST
+		Shoot_FeederModeSet(FEEDER_REFEREE);
+#endif
         break;
     }
     default:
@@ -479,7 +484,14 @@ static void AutoAim_ShootModeSet()
 	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
 
     uint16_t wait_ms = 1000;
-	AutoShoot_Wait_ms = 10.0f / boardcom->cooling_per_second * 1000;
+	if (shoot_strategy == COOLING_FIRST)
+	{
+		AutoShoot_Wait_ms = 10.0f / boardcom->cooling_per_second * 1000;
+	}
+	else if (shoot_strategy == PENGPENG_FIRST)
+	{
+		AutoShoot_Wait_ms = 200.0f;
+	}
     if (autoaim->aim_mode == AUTOAIM_ARMOR)           {wait_ms = AutoShoot_Wait_ms;}
     else if (autoaim->aim_mode == AUTOAIM_SMALL_BUFF) {wait_ms = AutoShootSmallEnergy_Wait_ms;}
     else if (autoaim->aim_mode == AUTOAIM_BIG_BUFF)   {wait_ms = AutoShootBigEnergy_Wait_ms;}

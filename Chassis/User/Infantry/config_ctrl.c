@@ -51,7 +51,7 @@ void Chassis_ParamInit(void)
     }
 #if IF_FOLLOW == FOLLOW
     PID_Init(&(chassis->Chassis_SpdfollowPID), 8.0f, 0.0f, 0.0f, 0.0f, 1000.0f, 1000.0f, 159.154922f, 159.154922f);
-    PID_Init(&(chassis->Chassis_AngfollowPID), 2.2f, 0.0f, 0.0f, 0.0f, 200.0f, 120.0f, 159.154922f, 159.154922f);
+    PID_Init(&(chassis->Chassis_AngfollowPID), 2.0f, 0.0f, 0.0f, 0.0f, 200.0f, 120.0f, 159.154922f, 159.154922f);
 #endif
 #if IF_FOLLOW == NO_FOLLOW
     PID_Init(&(chassis->Chassis_SpdfollowPID), 0.0f, 0.0f, 0.0f, 0.0f, 1000.0f, 1000.0f, 159.154922f, 159.154922f);

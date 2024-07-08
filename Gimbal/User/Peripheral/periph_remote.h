@@ -81,6 +81,9 @@ extern "C"
 
         uint32_t last_update_time;
     } Remote_DataTypeDef;
+	
+	extern uint8_t Remote_Decode_Flag;
+	extern UART_HandleTypeDef* REMOTE_UART_HANDLER;
 
     void Remote_Decode(Remote_DataTypeDef *rc, uint8_t *buff, int rxdatalen);
     void KeyBoard_Decode(Keyboard_DataTypeDef *key, uint16_t v);
