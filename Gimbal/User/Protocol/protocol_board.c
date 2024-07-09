@@ -150,17 +150,14 @@ float decode_rate;
 void BoardCom_Decode(uint8_t buff[], uint32_t stdid, uint16_t rxdatalen)
 {
     BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-
     decode_count++;
     decode_rate = decode_count / HAL_GetTick();
     memcpy(BoardCom_RxData, buff, rxdatalen);
-
     for (int i = 0; i < (GIMBAL_RECEIVE_FROM_CHASSIS_PKG_AMOUNT); i++)
     {
         if ((stdid == Gimbal_Receive_from_Chassis[i].cmd_id) && (Gimbal_Receive_from_Chassis[i].bus_func != NULL))
         {
-            Gimbal_Receive_from_Chassis[i].bus_func(BoardCom_RxData);
-//			Boardcom_Decode_Flag = 0;
+            Gimbal_Receive_from_Chassis[i].bus_func(buff);
             return;
         }
     }

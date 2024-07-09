@@ -40,20 +40,21 @@ extern "C"
         BOARDCOM_LOST = 2,
         BOARDCOM_ERROR = 3,
         BOARDCOM_PENDING = 4
-    } BoardCom_StateEnum;
+    }
+                       BoardCom_StateEnum;
 
     typedef struct
     {
         BoardCom_StateEnum state;
         uint32_t last_update_time[8];
 
-		// Chassis Send to Gimbal
-		uint8_t robot_id;
+        // Chassis Send to Gimbal
+        uint8_t robot_id;
         uint16_t heat_limit;
         float shoot_spd_referee;
         uint16_t cooling_per_second;
 
-		// Chassis Send to Cap
+        // Chassis Send to Cap
         uint8_t cap_mode_flag;
         uint8_t power_level_limit;
         uint8_t power_limit;
@@ -79,8 +80,8 @@ extern "C"
         uint8_t magazine_state;
         uint8_t shooter_state;
         uint8_t auto_shoot_state;
-		uint8_t team_color;
-		float autoaim_yaw_spd_ref;
+        uint8_t team_color;
+        float autoaim_yaw_spd_ref;
 
         // Chassis Receive from Cap
         float cap_power;
@@ -91,20 +92,22 @@ extern "C"
     {
         void (*bus_func)(uint8_t buff[]);
     } Board_SendTableEntryTypeDef;
-	
-	typedef struct
+
+    typedef struct
     {
         uint32_t cmd_id;
         void (*bus_func)(uint8_t buff[]);
     } Board_ReceiveTableEntryTypeDef;
 
-    BoardCom_DataTypeDef *BoardCom_GetDataPtr(void);
+    BoardCom_DataTypeDef* BoardCom_GetDataPtr(void);
     void BoardCom_Init(void);
     void BoardCom_Update(void);
     void BoardCom_Send(void);
-    void BoardCom_Decode(FDCAN_HandleTypeDef *pfdhcan, uint32_t stdid, uint8_t rxdata[], uint32_t len);
+	void BoardCom_Decode(FDCAN_HandleTypeDef *pfdhcan, uint32_t stdid, uint8_t rxdata[], uint32_t len);
+    void BoardCom_Decode_Gimbal(uint8_t rxdata[], uint32_t stdid);
+    void BoardCom_Decode_Cap(uint8_t rxdata[], uint32_t stdid);
     uint8_t BoardCom_IsLost(uint8_t);
-	
+
     static void _send_referee_data(uint8_t buff[]);
     static void _send_cap_data(uint8_t buff[]);
     static void _receive_control(uint8_t buff[]);

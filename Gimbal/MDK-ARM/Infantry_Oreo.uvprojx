@@ -2719,11 +2719,6 @@
               <FileType>1</FileType>
               <FilePath>..\User\Library\lib_crc.c</FilePath>
             </File>
-            <File>
-              <FileName>lib_timer_tim1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\Library\lib_timer_tim1.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>

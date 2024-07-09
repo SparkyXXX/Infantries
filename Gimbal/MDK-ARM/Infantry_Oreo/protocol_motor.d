@@ -83,6 +83,6 @@ infantry_oreo/protocol_motor.o: ..\User\Protocol\protocol_motor.c \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_core.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_ctlreq.h \
   ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h \
-  ..\User\Peripheral\periph_motor_pwm.h ..\User\Utility\util_adc.h \
-  ..\Core\Inc\adc.h ..\User\Peripheral\periph_motor_can.h \
-  ..\USB_Device\App\usb_device.h
+  ..\User\Infantry\callback_ctrl.h ..\User\Peripheral\periph_motor_pwm.h \
+  ..\User\Utility\util_adc.h ..\Core\Inc\adc.h \
+  ..\User\Peripheral\periph_motor_can.h ..\USB_Device\App\usb_device.h

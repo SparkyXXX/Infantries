@@ -76,9 +76,9 @@ extern "C"
             uint8_t r; // mouse Right key
         } mouse;
 
-        uint8_t rx_data[REMOTE_RX_BUFF_LEN];
         Keyboard_DataTypeDef key;
-
+		
+        uint8_t rx_data[REMOTE_RX_BUFF_LEN];
         uint32_t last_update_time;
     } Remote_DataTypeDef;
 	

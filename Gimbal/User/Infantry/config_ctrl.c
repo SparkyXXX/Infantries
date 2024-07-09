@@ -136,7 +136,6 @@ static void Init_All_Motors()
  */
 void Init_All(void)
 {
-    // TimerInit();
     DWT_Init(CPU_Clock);
     Servo_Init(&Servo_MagServo, &htim15, TIM_CHANNEL_1, CPU_Clock * 1000000, Servo_Close);
     while(BMI088_Init(&BMI088_Data, BMI088_SPI_HANDLER, &CS_ACCEL, &CS_GYRO))

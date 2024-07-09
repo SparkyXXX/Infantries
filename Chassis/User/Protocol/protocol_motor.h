@@ -17,17 +17,20 @@ extern "C"
 
 #include "periph_motor_can.h"
 
+#define FDCAN_RX_LEN 200
+	
 #define FORWARD_LEFT_CAN_ID 0x201
 #define FORWARD_RIGHT_CAN_ID 0x202
 #define BACKWARD_RIGHT_CAN_ID 0x203
 #define BACKWARD_LEFT_CAN_ID 0x204
 #define YAW_CAN_ID 0x205
 
-extern float Wheel_Dec_Ratio;
-
-	static void M3508_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata);
-	static void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata);
-    void Motor_CAN_Decode(FDCAN_HandleTypeDef *phfdcan, uint32_t stdid, uint8_t rxdata[], uint32_t len);
+	extern FDCAN_HandleTypeDef *MOTOR_CAN_HANDLER;
+	extern float Wheel_Dec_Ratio;
+	
+	void M3508_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata);
+	void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata);
+    void Motor_CAN_Decode(FDCAN_HandleTypeDef *phfdcan, uint32_t stdid, uint8_t rxdata[]);
     void Motor_CAN_SendGroupOutput(Motor_GroupDataTypeDef *pgroup);
 
 #ifdef __cplusplus

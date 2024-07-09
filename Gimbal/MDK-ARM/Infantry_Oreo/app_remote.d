@@ -70,11 +70,9 @@ infantry_oreo/app_remote.o: ..\User\Application\app_remote.c \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
   ..\User\Application\app_shoot.h ..\User\Protocol\protocol_motor.h \
-  ..\User\Peripheral\periph_motor_can.h ..\User\Utility\util_fdcan.h \
-  ..\Core\Inc\fdcan.h ..\User\Peripheral\periph_motor_pwm.h \
-  ..\User\Utility\util_pwm.h ..\Core\Inc\tim.h \
-  ..\User\Protocol\protocol_board.h ..\User\Application\app_autoaim.h \
-  ..\User\Peripheral\periph_minipc.h ..\USB_Device\App\usbd_cdc_if.h \
+  ..\User\Infantry\callback_ctrl.h ..\User\Protocol\protocol_board.h \
+  ..\User\Application\app_autoaim.h ..\User\Peripheral\periph_minipc.h \
+  ..\USB_Device\App\usbd_cdc_if.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Class\CDC\Inc\usbd_cdc.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_ioreq.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_def.h \
@@ -82,7 +80,9 @@ infantry_oreo/app_remote.o: ..\User\Application\app_remote.c \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\stdio.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_core.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_ctlreq.h \
-  ..\User\Utility\util_adc.h ..\Core\Inc\adc.h \
-  ..\User\Peripheral\periph_servo.h ..\User\Peripheral\periph_remote.h \
-  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
-  ..\USB_Device\App\usb_device.h
+  ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h \
+  ..\User\Peripheral\periph_remote.h ..\User\Utility\util_uart.h \
+  ..\Core\Inc\usart.h ..\User\Peripheral\periph_motor_can.h \
+  ..\User\Peripheral\periph_motor_pwm.h ..\User\Utility\util_pwm.h \
+  ..\Core\Inc\tim.h ..\User\Utility\util_adc.h ..\Core\Inc\adc.h \
+  ..\User\Peripheral\periph_servo.h ..\USB_Device\App\usb_device.h

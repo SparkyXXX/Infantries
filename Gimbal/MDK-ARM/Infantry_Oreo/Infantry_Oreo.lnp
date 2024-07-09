@@ -76,7 +76,6 @@
 "infantry_oreo\lib_filter.o"
 "infantry_oreo\lib_buff.o"
 "infantry_oreo\lib_crc.o"
-"infantry_oreo\lib_timer_tim1.o"
 "infantry_oreo\periph_motor_can.o"
 "infantry_oreo\periph_motor_pwm.o"
 "infantry_oreo\periph_servo.o"

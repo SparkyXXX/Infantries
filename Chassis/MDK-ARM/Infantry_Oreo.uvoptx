@@ -153,62 +153,52 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Chassis_Control</ItemText>
+          <ItemText>Boardcom_Decode_Gimbal_Flag,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>dead_zone</ItemText>
+          <ItemText>hfdcan2</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>chassis.Chassis_AngfollowPID.ref</ItemText>
+          <ItemText>FDCAN_RxHeader</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>error</ItemText>
+          <ItemText>Boardcom_Decode_Gimbal_Flag,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>debug_ref</ItemText>
+          <ItemText>id_buffer</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>GimbalYaw_Control,0x0A</ItemText>
+          <ItemText>BoardCom_Data,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Motor_GimbalYaw,0x0A</ItemText>
+          <ItemText>boardcom_gimbal_buffer,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>7</count>
           <WinNumber>1</WinNumber>
-          <ItemText>task_freq</ItemText>
+          <ItemText>id_buffer_gimbal</ItemText>
         </Ww>
         <Ww>
           <count>8</count>
           <WinNumber>1</WinNumber>
-          <ItemText>pos_freq</ItemText>
+          <ItemText>id_buffer_cap</ItemText>
         </Ww>
         <Ww>
           <count>9</count>
           <WinNumber>1</WinNumber>
-          <ItemText>spd_freq</ItemText>
-        </Ww>
-        <Ww>
-          <count>10</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>cur_freq</ItemText>
-        </Ww>
-        <Ww>
-          <count>11</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>BoardCom_Data,0x0A</ItemText>
+          <ItemText>id_buffer_motor</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

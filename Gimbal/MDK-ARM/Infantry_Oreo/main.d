@@ -74,14 +74,14 @@ infantry_oreo/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\User\Library\lib_buff.h ..\User\System\sys_dwt.h \
   ..\User\Algorithm\alg_pid.h ..\User\Library\lib_filter.h \
   ..\User\Application\app_shoot.h ..\User\Protocol\protocol_motor.h \
-  ..\User\Peripheral\periph_motor_can.h ..\User\Utility\util_fdcan.h \
-  ..\User\Peripheral\periph_motor_pwm.h ..\User\Utility\util_pwm.h \
-  ..\User\Protocol\protocol_board.h ..\User\Application\app_remote.h \
-  ..\User\Peripheral\periph_servo.h ..\User\Peripheral\periph_remote.h \
+  ..\User\Infantry\callback_ctrl.h ..\User\Protocol\protocol_board.h \
+  ..\User\Application\app_remote.h ..\User\Peripheral\periph_servo.h \
+  ..\User\Utility\util_pwm.h ..\User\Peripheral\periph_remote.h \
   ..\User\Utility\util_uart.h ..\User\Application\app_autoaim.h \
   ..\User\Peripheral\periph_minipc.h ..\USB_Device\App\usbd_cdc_if.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Class\CDC\Inc\usbd_cdc.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_ioreq.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_core.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_ctlreq.h \
-  ..\User\Utility\util_adc.h
+  ..\User\Utility\util_fdcan.h ..\User\Peripheral\periph_motor_can.h \
+  ..\User\Peripheral\periph_motor_pwm.h ..\User\Utility\util_adc.h

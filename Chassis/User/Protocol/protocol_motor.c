@@ -10,12 +10,14 @@
 #include "protocol_motor.h"
 #include "config_ctrl.h"
 
+FDCAN_HandleTypeDef *MOTOR_CAN_HANDLER = &hfdcan1;
+
 /**
  * @brief      Chassis motor encoder callback
  * @param      pmotor: Pointer to motor object
  * @retval     NULL
  */
-static void M3508_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
+void M3508_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
 {
     pmotor->encoder.last_angle = pmotor->encoder.angle;
     pmotor->encoder.angle = (float)((int16_t)((uint16_t)rxdata[0] << 8 | (uint16_t)rxdata[1]));
@@ -30,7 +32,7 @@ static void M3508_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
  * @param      pmotor: Pointer to motor object
  * @retval     NULL
  */
-static void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
+void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
 {
     pmotor->encoder.last_angle = pmotor->encoder.angle;
     pmotor->encoder.angle = (float)((int16_t)((uint16_t)rxdata[0] << 8 | (uint16_t)rxdata[1]));
@@ -65,7 +67,6 @@ static void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
             pmotor->encoder.limited_angle -= 360;
         }
     }
-
     pmotor->encoder.last_update_time = HAL_GetTick();
 }
 
@@ -76,7 +77,7 @@ static void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
  * @param      rxdata: CAN rx data buff
  * @retval     NULL
  */
-void Motor_CAN_Decode(FDCAN_HandleTypeDef *phfdcan, uint32_t stdid, uint8_t rxdata[], uint32_t len)
+void Motor_CAN_Decode(FDCAN_HandleTypeDef *phfdcan, uint32_t stdid, uint8_t rxdata[])
 {
     if (phfdcan == &hfdcan1)
     {

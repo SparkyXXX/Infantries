@@ -8,12 +8,6 @@
  */
 
 #include "task_ctrl.h"
-#include "lib_timer_tim1.h"
-
-uint64_t begin = 0;
-uint64_t end = 0;
-uint64_t mid = 0;
-float diff = 0;
 
 uint8_t pkg_flag = 1;
 void BoardCom_Task(void const* argument)
@@ -39,14 +33,10 @@ void Gimbal_Task(void const* argument)
 {
     for(;;)
     {
-		Check_Task_Freq();
-		//	begin = DWT_GetTimeline_us();
         Gimbal_PitchOutput();
         Gimbal_YawModeSet();
+		Check_Task_Freq();
         osDelay(1);
-        //		Timer_Delay_usE_1(1, 500 - (DWT_GetTimeline_us() - begin)); //DWT不准，500当1000用
-        //		end = DWT_GetTimeline_us();
-        //		diff = (end - begin) / 1000000.0f;
     }
 }
 

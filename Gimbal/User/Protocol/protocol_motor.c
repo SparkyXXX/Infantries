@@ -40,8 +40,6 @@ void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
                                        (float)pmotor->encoder.angle / 8192.0f * 360.0f;
     pmotor->encoder.limited_angle = (float)pmotor->encoder.angle / 8192.0f * 360.0f;
     // For yaw axis processing, the small gyroscope is rotated to the same position as the PTZ according to the nearest distance after stopping
-
-//	Gimbal_Motor_Decode_Flag = 0;
     pmotor->encoder.last_update_time = HAL_GetTick();
 }
 
@@ -72,9 +70,16 @@ void M2006_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
     pmotor->encoder.consequent_angle = (float)pmotor->encoder.round_count * 10.0f + (float)pmotor->encoder.angle / 8192.0f * 10.0f;
 	angle_diff = Motor_feederMotor.encoder.consequent_angle - last_consequent_angle;
 	last_consequent_angle = Motor_feederMotor.encoder.consequent_angle;
-	
-//	Shoot_Motor_Decode_Flag = 0;
     pmotor->encoder.last_update_time = HAL_GetTick();
+}
+
+void Motor_CAN_Decode(FDCAN_HandleTypeDef *phfdcan, uint32_t stdid, uint8_t rxdata[])
+{
+    if (phfdcan == &hfdcan1)
+    {
+		if (stdid == PITCH_CAN_ID) {GM6020_Decode(&Motor_gimbalMotorPitch, rxdata);}
+		if (stdid == FEEDER_CAN_ID) {M2006_Decode(&Motor_feederMotor, rxdata);}
+    }
 }
 
 /**

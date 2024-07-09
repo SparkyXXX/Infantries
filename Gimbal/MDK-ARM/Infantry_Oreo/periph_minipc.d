@@ -75,7 +75,7 @@ infantry_oreo/periph_minipc.o: ..\User\Peripheral\periph_minipc.c \
   ..\User\Utility\util_pwm.h ..\Core\Inc\tim.h \
   ..\User\Peripheral\periph_remote.h ..\User\Utility\util_uart.h \
   ..\Core\Inc\usart.h ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h \
-  ..\User\Peripheral\periph_motor_can.h \
+  ..\User\Infantry\callback_ctrl.h ..\User\Peripheral\periph_motor_can.h \
   ..\User\Peripheral\periph_motor_pwm.h ..\USB_Device\App\usb_device.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_def.h \
   ..\USB_Device\Target\usbd_conf.h \

@@ -72,10 +72,10 @@ infantry_oreo/app_autoaim.o: ..\User\Application\app_autoaim.c \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
   ..\User\Application\app_remote.h ..\User\Protocol\protocol_board.h \
   ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h \
-  ..\User\Peripheral\periph_servo.h ..\User\Utility\util_pwm.h \
-  ..\Core\Inc\tim.h ..\User\Peripheral\periph_remote.h \
+  ..\User\Infantry\callback_ctrl.h ..\User\Peripheral\periph_remote.h \
   ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
-  ..\User\Peripheral\periph_motor_can.h \
+  ..\User\Peripheral\periph_servo.h ..\User\Utility\util_pwm.h \
+  ..\Core\Inc\tim.h ..\User\Peripheral\periph_motor_can.h \
   ..\User\Peripheral\periph_motor_pwm.h \
   ..\User\Peripheral\periph_minipc.h ..\USB_Device\App\usbd_cdc_if.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Class\CDC\Inc\usbd_cdc.h \

@@ -75,7 +75,8 @@ infantry_oreo/app_shoot.o: ..\User\Application\app_shoot.c \
   ..\User\Utility\util_pwm.h ..\Core\Inc\tim.h \
   ..\User\Peripheral\periph_remote.h ..\User\Utility\util_uart.h \
   ..\Core\Inc\usart.h ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h \
-  ..\User\Peripheral\periph_minipc.h ..\USB_Device\App\usbd_cdc_if.h \
+  ..\User\Infantry\callback_ctrl.h ..\User\Peripheral\periph_minipc.h \
+  ..\USB_Device\App\usbd_cdc_if.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Class\CDC\Inc\usbd_cdc.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_ioreq.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_def.h \

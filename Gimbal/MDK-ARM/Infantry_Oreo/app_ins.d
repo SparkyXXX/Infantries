@@ -65,11 +65,9 @@ infantry_oreo/app_ins.o: ..\User\Application\app_ins.c \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
   ..\User\Application\app_shoot.h ..\User\Protocol\protocol_motor.h \
-  ..\User\Peripheral\periph_motor_can.h ..\User\Utility\util_fdcan.h \
-  ..\Core\Inc\fdcan.h ..\Core\Inc\main.h \
-  ..\User\Peripheral\periph_motor_pwm.h ..\User\Utility\util_pwm.h \
-  ..\Core\Inc\tim.h ..\User\Protocol\protocol_board.h \
+  ..\User\Infantry\callback_ctrl.h ..\User\Protocol\protocol_board.h \
   ..\User\Application\app_remote.h ..\User\Peripheral\periph_servo.h \
+  ..\User\Utility\util_pwm.h ..\Core\Inc\tim.h ..\Core\Inc\main.h \
   ..\User\Peripheral\periph_remote.h ..\User\Utility\util_uart.h \
   ..\Core\Inc\usart.h ..\User\Application\app_autoaim.h \
   ..\User\Peripheral\periph_minipc.h ..\USB_Device\App\usbd_cdc_if.h \
@@ -80,7 +78,9 @@ infantry_oreo/app_ins.o: ..\User\Application\app_ins.c \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\stdio.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_core.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_ctlreq.h \
-  ..\User\Library\lib_buff.h ..\User\Utility\util_adc.h \
+  ..\User\Library\lib_buff.h ..\User\Utility\util_fdcan.h \
+  ..\Core\Inc\fdcan.h ..\User\Peripheral\periph_motor_can.h \
+  ..\User\Peripheral\periph_motor_pwm.h ..\User\Utility\util_adc.h \
   ..\Core\Inc\adc.h ..\User\Peripheral\periph_bmi088.h \
   ..\User\Peripheral\BMI088reg.h ..\User\Utility\util_spi.h \
   ..\Core\Inc\spi.h ..\Core\Inc\dma.h ..\User\Utility\util_gpio.h \

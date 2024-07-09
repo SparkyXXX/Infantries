@@ -37,8 +37,9 @@ infantry_oreo/periph_cap.o: ..\User\Peripheral\periph_cap.c \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
-  ..\User\Protocol\protocol_referee.h ..\User\Utility\util_uart.h \
-  ..\Core\Inc\usart.h D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
+  ..\User\Protocol\protocol_referee.h ..\User\Infantry\callback_ctrl.h \
+  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
   ..\User\Protocol\protocol_board.h ..\User\Algorithm\alg_pid.h \
   ..\User\Library\lib_math.h ..\Drivers\CMSIS\DSP\Include\arm_math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \

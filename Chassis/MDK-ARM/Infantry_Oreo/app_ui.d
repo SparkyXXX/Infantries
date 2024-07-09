@@ -43,9 +43,10 @@ infantry_oreo/app_ui.o: ..\User\Application\app_ui.cpp \
   ..\User\Infantry\config_ctrl.h ..\User\Infantry\test_ctrl.h \
   ..\User\Peripheral\periph_motor_can.h ..\User\Utility\util_fdcan.h \
   ..\Core\Inc\fdcan.h ..\Core\Inc\main.h \
-  ..\User\Protocol\protocol_referee.h ..\User\Utility\util_uart.h \
-  ..\Core\Inc\usart.h ..\User\Algorithm\alg_pid.h \
-  ..\User\Library\lib_math.h ..\Drivers\CMSIS\DSP\Include\arm_math.h \
+  ..\User\Protocol\protocol_referee.h ..\User\Infantry\callback_ctrl.h \
+  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
+  ..\User\Algorithm\alg_pid.h ..\User\Library\lib_math.h \
+  ..\Drivers\CMSIS\DSP\Include\arm_math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\promote.h \

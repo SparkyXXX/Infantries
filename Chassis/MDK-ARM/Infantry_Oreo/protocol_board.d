@@ -38,10 +38,10 @@ infantry_oreo/protocol_board.o: ..\User\Protocol\protocol_board.c \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
   ..\User\Protocol\protocol_board.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
-  ..\User\Protocol\protocol_referee.h ..\User\Utility\util_uart.h \
-  ..\Core\Inc\usart.h ..\User\Application\app_chassis.h \
-  ..\User\Algorithm\alg_pid.h ..\User\Library\lib_math.h \
-  ..\Drivers\CMSIS\DSP\Include\arm_math.h \
+  ..\User\Protocol\protocol_referee.h ..\User\Infantry\callback_ctrl.h \
+  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
+  ..\User\Application\app_chassis.h ..\User\Algorithm\alg_pid.h \
+  ..\User\Library\lib_math.h ..\Drivers\CMSIS\DSP\Include\arm_math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\float.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \

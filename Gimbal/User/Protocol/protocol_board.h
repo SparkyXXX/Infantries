@@ -24,6 +24,7 @@ extern "C"
 #include "util_fdcan.h"
 #include "string.h"
 #include "stm32g4xx_hal.h"
+#include "callback_ctrl.h"
 
 #define POWER_UNLIMIT 0x00
 #define POWER_LIMIT 0x01
@@ -34,6 +35,8 @@ extern "C"
 #define PITCH 0
 #define ROLL 1
 #define YAW 2
+
+#define FDCAN_RX_LEN 200
 
     typedef enum
     {
@@ -91,7 +94,6 @@ extern "C"
 	extern float bullet[5];
     extern FDCAN_HandleTypeDef *BOARD_CAN_HANDLER;
     extern FDCAN_HandleTypeDef *CAP_CAN_HANDLER;
-	extern uint8_t Boardcom_Decode_Flag;
 
     BoardCom_DataTypeDef *BoardCom_GetDataPtr(void);
     void BoardCom_Init(void);

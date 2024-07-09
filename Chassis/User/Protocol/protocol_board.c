@@ -106,6 +106,7 @@ void BoardCom_Send()
 
 uint32_t decode_count[2];
 float decode_rate[2];
+
 void BoardCom_Decode(FDCAN_HandleTypeDef *pfdhcan, uint32_t stdid, uint8_t rxdata[], uint32_t len)
 {
     if (pfdhcan == BOARD_CAN_HANDLER)

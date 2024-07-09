@@ -36,9 +36,9 @@ infantry_oreo/task_ctrl.o: ..\User\Infantry\task_ctrl.c \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
-  ..\User\Infantry\callback_ctrl.h ..\User\Utility\util_uart.h \
-  ..\Core\Inc\usart.h ..\User\Application\app_chassis.h \
-  ..\User\Protocol\protocol_referee.h \
+  ..\User\Protocol\protocol_motor.h ..\User\Infantry\callback_ctrl.h \
+  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
+  ..\User\Application\app_chassis.h ..\User\Protocol\protocol_referee.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
   ..\User\Protocol\protocol_board.h ..\User\Algorithm\alg_pid.h \
   ..\User\Library\lib_math.h ..\Drivers\CMSIS\DSP\Include\arm_math.h \

@@ -50,8 +50,9 @@ infantry_oreo/app_freertos.o: ..\Core\Src\app_freertos.c \
   ..\User\Application\app_chassis.h ..\User\Infantry\config_ctrl.h \
   ..\User\Infantry\test_ctrl.h ..\User\Peripheral\periph_motor_can.h \
   ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h \
-  ..\User\Protocol\protocol_referee.h ..\User\Utility\util_uart.h \
-  ..\Core\Inc\usart.h D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
+  ..\User\Protocol\protocol_referee.h ..\User\Infantry\callback_ctrl.h \
+  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
   ..\User\Protocol\protocol_board.h ..\User\Algorithm\alg_pid.h \
   ..\User\Library\lib_math.h ..\Drivers\CMSIS\DSP\Include\arm_math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \

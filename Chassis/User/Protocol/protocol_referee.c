@@ -89,7 +89,6 @@ void Referee_Decode(uint8_t *buff, uint16_t rxdatalen)
         referee->state = REFEREE_ERROR;
         return;
     }
-
     referee->state = REFEREE_CONNECTED;
 }
 

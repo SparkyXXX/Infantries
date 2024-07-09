@@ -1,6 +1,6 @@
 infantry_oreo/protocol_referee.o: ..\User\Protocol\protocol_referee.c \
-  ..\User\Protocol\protocol_referee.h ..\User\Utility\util_uart.h \
-  ..\Core\Inc\usart.h ..\Core\Inc\main.h \
+  ..\User\Protocol\protocol_referee.h ..\User\Infantry\callback_ctrl.h \
+  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h ..\Core\Inc\main.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h \
   ..\Core\Inc\stm32g4xx_hal_conf.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h \
@@ -35,5 +35,6 @@ infantry_oreo/protocol_referee.o: ..\User\Protocol\protocol_referee.c \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
+  ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
   ..\User\Peripheral\periph_cap.h ..\User\Library\lib_crc.h

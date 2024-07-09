@@ -55,7 +55,6 @@ void Remote_Decode(Remote_DataTypeDef *rc, uint8_t *buff, int rxdatalen)
         return;
     }
     rc->state = REMOTE_STATE_CONNECTED;
-//	Remote_Decode_Flag = 0;
 }
 
 /**
