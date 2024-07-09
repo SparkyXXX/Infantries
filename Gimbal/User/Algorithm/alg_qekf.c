@@ -32,7 +32,7 @@ float QEKF_P[36] = {100000, 0.1, 0.1, 0.1, 0.1, 0.1,
 void QEKF_Update(Quaternion_DataTypeDef *quaternion, float gx, float gy, float gz, float ax, float ay, float az, float dt)
 {
     // 0.5(Ohm-Ohm^bias)*deltaT
-    static float halfgxdt, halfgydt, halfgzdt;
+    static float halfgxdt = 0.0f, halfgydt = 0.0f, halfgzdt = 0.0f;
     if (!quaternion->init_flag)
     {
         QEKF_Init(quaternion, 10, 0.01f, 10000000, 1, 0.0085f);
@@ -169,8 +169,8 @@ void QEKF_Update(Quaternion_DataTypeDef *quaternion, float gx, float gy, float g
  */
 static void QEKF_F_Linearization_P_Fading(Quaternion_DataTypeDef *quaternion)
 {
-    static float q0, q1, q2, q3;
-    static float qInvNorm;
+    static float q0 = 0.0f, q1 = 0.0f, q2 = 0.0f, q3 = 0.0f;
+    static float qInvNorm = 0.0f;
 
     q0 = quaternion->ekf.xhatminus_data[0];
     q1 = quaternion->ekf.xhatminus_data[1];
@@ -219,7 +219,7 @@ static void QEKF_F_Linearization_P_Fading(Quaternion_DataTypeDef *quaternion)
  */
 static void QEKF_SetH(Quaternion_DataTypeDef *quaternion)
 {
-    static float doubleq0, doubleq1, doubleq2, doubleq3;
+    static float doubleq0 = 0.0f, doubleq1 = 0.0f, doubleq2 = 0.0f, doubleq3 = 0.0f;
     uint8_t sizeof_float = sizeof(float);
     /* H
      0     1     2     3     4     5
@@ -261,7 +261,7 @@ static void QEKF_SetH(Quaternion_DataTypeDef *quaternion)
  */
 static void QEKF_xhatUpdate(Quaternion_DataTypeDef *quaternion)
 {
-    static float q0, q1, q2, q3;
+    static float q0 = 0.0f, q1 = 0.0f, q2 = 0.0f, q3 = 0.0f;
     uint8_t sizeof_float = sizeof(float);
 
     quaternion->ekf.MatStatus = Matrix_Transpose(&quaternion->ekf.H, &quaternion->ekf.HT); // z|x => x|z

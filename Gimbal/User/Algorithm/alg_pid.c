@@ -35,7 +35,7 @@ float PID_Calc(PID_TypeDef *pid)
 {
     if (pid->pid_mode == PID_POSITION)
     {
-        float dError, Error, ref_dError;
+        float dError = 0.0f, Error = 0.0f, ref_dError = 0.0f;
         Error = pid->ref - pid->fdb;
         pid->err[2] = pid->err[1];
         pid->err[1] = pid->err[0];
@@ -56,7 +56,7 @@ float PID_Calc(PID_TypeDef *pid)
 
     else if (pid->pid_mode == PID_DELTA)
     {
-        float dError, ddError, Error, ref_dError, ref_ddError;
+        float dError = 0.0f, ddError = 0.0f, Error = 0.0f, ref_dError = 0.0f, ref_ddError = 0.0f;
         Error = pid->ref - pid->fdb;
         pid->err[2] = pid->err[1];
         pid->err[1] = pid->err[0];
@@ -156,7 +156,7 @@ void FuzzyPID_Clear(FuzzyPID_TypeDef *fuzzy_pid)
 
 float FuzzyPID_Calc(FuzzyPID_TypeDef *fuzzy_pid)
 {
-	float Error;
+	float Error = 0.0f;
     Error = fuzzy_pid->ref - fuzzy_pid->fdb;
     fuzzy_pid->err[1] = fuzzy_pid->err[0];
 	fuzzy_pid->err[0] = Error;
@@ -196,10 +196,10 @@ float DeFuzzy(const uint8_t (*rule)[7], float *set, Interval *eRange, Interval *
     float mappedEC = 3 * (2 * e - ecRange->right - ecRange->left) / (ecRange->right - ecRange->left);
 	P = mappedE;
 	Pc = mappedEC;
-    uint8_t eIndex1, eIndex2;
-    float eWeight;
-    uint8_t ecIndex1, ecIndex2;
-    float ecWeight;
+    uint8_t eIndex1 = 0, eIndex2 = 0;
+	uint8_t ecIndex1 = 0, ecIndex2 = 0;
+    float eWeight = 0.0f;
+	float ecWeight = 0.0f;
     if (mappedE < -3)
     {
         eIndex1 = NB;

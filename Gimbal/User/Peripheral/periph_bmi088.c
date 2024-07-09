@@ -16,8 +16,8 @@
  */
 void BMI088_Decode(BMI088_DataTypeDef *bmi088)
 {
-    uint8_t buff[8] = {0, 0, 0, 0, 0, 0};
-    int16_t raw_temp;
+    uint8_t buff[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    int16_t raw_temp = 0;
 
     bmi088->state = BMI088_STATE_PENDING;
     bmi088->update_dt = DWT_GetDeltaT(&(bmi088->last_update_tick));
@@ -63,9 +63,9 @@ void BMI088_Decode(BMI088_DataTypeDef *bmi088)
  */
 void BMI088_SetOffset(BMI088_DataTypeDef *bmi088)
 {
-    float gyroMax[3], gyroMin[3];
-    float gNormTemp, gNormMax, gNormMin, gNormDiff, gyroDiff[3];
-    uint8_t buff[8] = {0, 0, 0, 0, 0, 0};
+    float gyroMax[3] = {0, 0, 0}, gyroMin[3] = {0, 0, 0}, gyroDiff[3] = {0, 0, 0};
+    float gNormTemp = 0.0f, gNormMax = 0.0f, gNormMin = 0.0f, gNormDiff = 0.0f;
+    uint8_t buff[8] = {0, 0, 0, 0, 0, 0, 0, 0};
     static uint16_t CaliTimes = 6000;
     int16_t caliCount = 0;
     float start_time = DWT_GetTimeline_s();
@@ -320,7 +320,7 @@ static uint8_t BMI088_GyroInit(BMI088_DataTypeDef *bmi088)
 static uint8_t BMI088_AccelTest(BMI088_DataTypeDef *bmi088)
 {
     uint8_t res = 0;
-    int16_t self_test_accel[2][3];
+    int16_t self_test_accel[2][3] = {0, 0, 0, 0, 0, 0};
     uint8_t buff[6] = {0, 0, 0, 0, 0, 0};
 
     // check commiunication is normal

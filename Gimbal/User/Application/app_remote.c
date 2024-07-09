@@ -142,7 +142,7 @@ static void Remote_Update()
         Remote_Chassis_Gyro_State = 0;
     }
 
-    float yaw_ref, pitch_ref, temp_pitch_ref;
+    float yaw_ref = 0.0f, pitch_ref = 0.0f, temp_pitch_ref = 0.0f;
     yaw_ref = (float)remote->remote.ch[LEFT_X] * Remote_Yaw_To_Ref;
     pitch_ref = (float)remote->remote.ch[LEFT_Y] * Remote_Pitch_To_Ref;
 
@@ -260,21 +260,21 @@ static void Keymouse_Update()
     mouse_r_last = remote->mouse.r;
     if (gimbal->present_mode == GIMBAL_NO_AUTO || (autoaim->target_state != AUTOAIM_TARGET_FOLLOWING))
     {
-        float yaw, pitch, temp_pitch_ref;
+        float yaw_ref = 0.0f, pitch_ref = 0.0f, temp_pitch_ref = 0.0f;
         if (quiet_flag)
         {
-            yaw = (float)remote->mouse.x * Mouse_Yaw_To_Ref_Quiet;
-            pitch = -(float)remote->mouse.y * Mouse_Pitch_To_Ref_Quiet;
+            yaw_ref = (float)remote->mouse.x * Mouse_Yaw_To_Ref_Quiet;
+            pitch_ref = -(float)remote->mouse.y * Mouse_Pitch_To_Ref_Quiet;
         }
         else
         {
-            yaw = (float)remote->mouse.x * Mouse_Yaw_To_Ref;
-            pitch = -(float)remote->mouse.y * Mouse_Pitch_To_Ref;
+            yaw_ref = (float)remote->mouse.x * Mouse_Yaw_To_Ref;
+            pitch_ref = -(float)remote->mouse.y * Mouse_Pitch_To_Ref;
         }
 
-        LimitMaxMin(yaw, 0.5f, -0.5f);
-        gimbal->yaw_position_ref = gimbal->yaw_position_ref - yaw;
-        temp_pitch_ref = gimbal->pitch_position_ref + pitch;
+        LimitMaxMin(yaw_ref, 0.5f, -0.5f);
+        gimbal->yaw_position_ref = gimbal->yaw_position_ref - yaw_ref;
+        temp_pitch_ref = gimbal->pitch_position_ref + pitch_ref;
         LimitMaxMin(temp_pitch_ref, Elevation_Angle, Depression_Angle);
         gimbal->pitch_position_ref = temp_pitch_ref;
     }
@@ -417,7 +417,7 @@ static void Remote_ShootModeSet()
 {
     Remote_DataTypeDef *remote = Remote_GetDataPtr();
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
-    static uint32_t wait_tick;
+    static uint32_t wait_tick = 0;
     switch (remote->remote.s[SWITCH_LEFT])
     {
     case REMOTE_SWITCH_UP:

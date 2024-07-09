@@ -54,7 +54,7 @@ void DWT_SysTimeUpdate()
     DWT_DataTypeDef *dwt = DWT_GetDataPtr();
 
     volatile uint32_t cnt_now = DWT->CYCCNT;
-    uint64_t CNT_TEMP1, CNT_TEMP2, CNT_TEMP3;
+    uint64_t CNT_TEMP1 = 0, CNT_TEMP2 = 0, CNT_TEMP3 = 0;
 
     DWT_CNT_Update();
 

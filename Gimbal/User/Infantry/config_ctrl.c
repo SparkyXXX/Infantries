@@ -138,10 +138,7 @@ void Init_All(void)
 {
     DWT_Init(CPU_Clock);
     Servo_Init(&Servo_MagServo, &htim15, TIM_CHANNEL_1, CPU_Clock * 1000000, Servo_Close);
-    while(BMI088_Init(&BMI088_Data, BMI088_SPI_HANDLER, &CS_ACCEL, &CS_GYRO))
-    {
-        ;
-    }
+    while (BMI088_Init(&BMI088_Data, BMI088_SPI_HANDLER, &CS_ACCEL, &CS_GYRO)) {;}
     MiniPC_Init();
     ADC_Init();
     Init_All_Motors();

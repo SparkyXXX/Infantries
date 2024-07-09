@@ -139,7 +139,6 @@ int test_shoot_frq = 150;
 void Shoot_FeederControl()
 {
     Shoot_ControlTypeDef* shooter = Shoot_GetControlPtr();
-
     switch(shooter->feeder_mode)
     {
     case FEEDER_STOP:
@@ -259,7 +258,6 @@ void Shoot_Output()
     //     Motor_shooterMotors.motor_handle[1]->output = 0;
     // }
     shooter_adc_flag_last = shooter_adc_flag;
-
     Motor_PWM_SendOutput(&Motor_shooterMotorLeft);
     Motor_PWM_SendOutput(&Motor_shooterMotorRight);
     Motor_CAN_SendGroupOutput(&Motor_feederMotors);

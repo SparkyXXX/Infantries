@@ -17,7 +17,7 @@ int Buff_Trigger = 1;
 uint16_t referee_spd = 0;
 float bullet[5] = {28.0f, 28.0f, 28.0f, 28.0f, 28.0f};
 float average_bullet_spd = 28.0f;
-uint16_t bullet_speed;
+uint16_t bullet_speed = 0;
 uint8_t MiniPC_TxData[32];
 GPIO_HandleTypeDef TRIGGER = {GPIO_PIN_RESET, GPIOB, GPIO_PIN_15};
 

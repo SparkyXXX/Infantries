@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Infantry_Oreo\Infantry_Oreo.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Infantry_Oreo\Infantry_Oreo.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Tue Jul  9 15:47:28 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Tue Jul  9 16:07:38 2024
 <BR><P>
 <H3>Maximum Stack Usage =        744 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -967,7 +967,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[19]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CDC_Receive_FS
 </UL>
 
-<P><STRONG><a name="[e3]"></a>BMI088_Decode</STRONG> (Thumb, 662 bytes, Stack size 40 bytes, periph_bmi088.o(.text.BMI088_Decode))
+<P><STRONG><a name="[e3]"></a>BMI088_Decode</STRONG> (Thumb, 666 bytes, Stack size 40 bytes, periph_bmi088.o(.text.BMI088_Decode))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = BMI088_Decode &rArr; SPI_ReadMuliReg &rArr; SPI_SwapAbyte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Set
@@ -986,7 +986,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[e7]"></a>BMI088_Init</STRONG> (Thumb, 188 bytes, Stack size 40 bytes, periph_bmi088.o(.text.BMI088_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 344<LI>Call Chain = BMI088_Init &rArr; BMI088_AccelTest &rArr; SPI_ReadMuliReg &rArr; SPI_SwapAbyte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
+<BR><BR>[Stack]<UL><LI>Max Depth = 352<LI>Call Chain = BMI088_Init &rArr; BMI088_AccelTest &rArr; SPI_ReadMuliReg &rArr; SPI_SwapAbyte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BMI088_Reset
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BMI088_GetOffset
@@ -1005,8 +1005,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BMI088_Init
 </UL>
 
-<P><STRONG><a name="[e9]"></a>BMI088_SetOffset</STRONG> (Thumb, 1472 bytes, Stack size 96 bytes, periph_bmi088.o(.text.BMI088_SetOffset))
-<BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = BMI088_SetOffset &rArr; SPI_ReadMuliReg &rArr; SPI_SwapAbyte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
+<P><STRONG><a name="[e9]"></a>BMI088_SetOffset</STRONG> (Thumb, 1500 bytes, Stack size 104 bytes, periph_bmi088.o(.text.BMI088_SetOffset))
+<BR><BR>[Stack]<UL><LI>Max Depth = 304<LI>Call Chain = BMI088_SetOffset &rArr; SPI_ReadMuliReg &rArr; SPI_SwapAbyte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DWT_Delay
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DWT_GetTimeline_s
@@ -1240,7 +1240,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Init_All
 </UL>
 
-<P><STRONG><a name="[107]"></a>DWT_SysTimeUpdate</STRONG> (Thumb, 198 bytes, Stack size 56 bytes, sys_dwt.o(.text.DWT_SysTimeUpdate))
+<P><STRONG><a name="[107]"></a>DWT_SysTimeUpdate</STRONG> (Thumb, 212 bytes, Stack size 56 bytes, sys_dwt.o(.text.DWT_SysTimeUpdate))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = DWT_SysTimeUpdate &rArr; __aeabi_uldivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[104]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DWT_CNT_Update
@@ -1252,8 +1252,8 @@ Global Symbols
 <LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DWT_GetTimeline_ms
 </UL>
 
-<P><STRONG><a name="[11e]"></a>DeFuzzy</STRONG> (Thumb, 968 bytes, Stack size 48 bytes, alg_pid.o(.text.DeFuzzy))
-<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = DeFuzzy
+<P><STRONG><a name="[11e]"></a>DeFuzzy</STRONG> (Thumb, 990 bytes, Stack size 44 bytes, alg_pid.o(.text.DeFuzzy))
+<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = DeFuzzy
 </UL>
 <BR>[Called By]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FuzzyPID_Calc
 </UL>
@@ -1369,7 +1369,7 @@ Global Symbols
 <LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FuzzyPID_Init
 </UL>
 
-<P><STRONG><a name="[11c]"></a>FuzzyPID_Calc</STRONG> (Thumb, 688 bytes, Stack size 72 bytes, alg_pid.o(.text.FuzzyPID_Calc))
+<P><STRONG><a name="[11c]"></a>FuzzyPID_Calc</STRONG> (Thumb, 696 bytes, Stack size 72 bytes, alg_pid.o(.text.FuzzyPID_Calc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = FuzzyPID_Calc &rArr; Filter_Lowpass &rArr; __aeabi_dmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DeFuzzy
@@ -2793,7 +2793,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[1f6]"></a>Init_All</STRONG> (Thumb, 184 bytes, Stack size 16 bytes, config_ctrl.o(.text.Init_All))
-<BR><BR>[Stack]<UL><LI>Max Depth = 360 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 368 + Unknown Stack Size
 <LI>Call Chain = Init_All &rArr; BMI088_Init &rArr; BMI088_AccelTest &rArr; SPI_ReadMuliReg &rArr; SPI_SwapAbyte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Remote_Init
@@ -3054,7 +3054,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[11d]"></a>Math_Differential</STRONG> (Thumb, 98 bytes, Stack size 16 bytes, lib_math.o(.text.Math_Differential))
+<P><STRONG><a name="[11d]"></a>Math_Differential</STRONG> (Thumb, 102 bytes, Stack size 16 bytes, lib_math.o(.text.Math_Differential))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = Math_Differential
 </UL>
 <BR>[Called By]<UL><LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Calc
@@ -3252,7 +3252,7 @@ Global Symbols
 <P><STRONG><a name="[1c]"></a>NMI_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32g4xx_it.o(.text.NMI_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32g473xx.o(RESET)
 </UL>
-<P><STRONG><a name="[23f]"></a>PID_Calc</STRONG> (Thumb, 1064 bytes, Stack size 120 bytes, alg_pid.o(.text.PID_Calc))
+<P><STRONG><a name="[23f]"></a>PID_Calc</STRONG> (Thumb, 1080 bytes, Stack size 120 bytes, alg_pid.o(.text.PID_Calc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = PID_Calc &rArr; Filter_Lowpass &rArr; __aeabi_dmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Math_Differential
@@ -5784,7 +5784,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[258]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Shoot_FeederControl
 </UL>
 
-<P><STRONG><a name="[251]"></a>Remote_Update</STRONG> (Thumb, 480 bytes, Stack size 40 bytes, app_remote.o(.text.Remote_Update))
+<P><STRONG><a name="[251]"></a>Remote_Update</STRONG> (Thumb, 488 bytes, Stack size 40 bytes, app_remote.o(.text.Remote_Update))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = Remote_Update
 </UL>
 <BR>[Calls]<UL><LI><a href="#[211]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Remote_GetDataPtr
@@ -5805,7 +5805,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Remote_DriveModeSet
 </UL>
 
-<P><STRONG><a name="[212]"></a>Keymouse_Update</STRONG> (Thumb, 1716 bytes, Stack size 56 bytes, app_remote.o(.text.Keymouse_Update))
+<P><STRONG><a name="[212]"></a>Keymouse_Update</STRONG> (Thumb, 1724 bytes, Stack size 56 bytes, app_remote.o(.text.Keymouse_Update))
 <BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = Keymouse_Update &rArr; Servo_SetAngle &rArr; PWM_SetDuty &rArr; PWM_Start &rArr; HAL_TIM_PWM_Start &rArr; TIM_CCxChannelCmd
 </UL>
 <BR>[Calls]<UL><LI><a href="#[211]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Remote_GetDataPtr
@@ -5984,8 +5984,8 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[1f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;QEKF_Update
 </UL>
 
-<P><STRONG><a name="[e1]"></a>BMI088_AccelTest</STRONG> (Thumb, 1280 bytes, Stack size 104 bytes, periph_bmi088.o(.text.BMI088_AccelTest))
-<BR><BR>[Stack]<UL><LI>Max Depth = 304<LI>Call Chain = BMI088_AccelTest &rArr; SPI_ReadMuliReg &rArr; SPI_SwapAbyte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
+<P><STRONG><a name="[e1]"></a>BMI088_AccelTest</STRONG> (Thumb, 1284 bytes, Stack size 112 bytes, periph_bmi088.o(.text.BMI088_AccelTest))
+<BR><BR>[Stack]<UL><LI>Max Depth = 312<LI>Call Chain = BMI088_AccelTest &rArr; SPI_ReadMuliReg &rArr; SPI_SwapAbyte &rArr; HAL_SPI_TransmitReceive &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFifoStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DWT_Delayms
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Set

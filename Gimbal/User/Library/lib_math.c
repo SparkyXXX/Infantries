@@ -90,7 +90,7 @@ float Math_InvSqrt(float x)
  */
 float Math_Differential(float arr[], uint8_t order)
 {
-    float value;
+    float value = 0.0f;
     switch (order)
     {
         case 1:
@@ -131,7 +131,7 @@ void Math_InitSlopeParam(Math_SlopeParamTypeDef *pparam, float acc, float dec)
  */
 float Math_CalcSlopeRef(float rawref, float targetref, Math_SlopeParamTypeDef *pparam)
 {
-    float newref;
+    float newref =0.0f;
     if (pparam->acc == 0 | pparam->dec == 0)
         return targetref;
     if (rawref < targetref - pparam->acc)
@@ -158,7 +158,7 @@ float Math_CalcSlopeRef(float rawref, float targetref, Math_SlopeParamTypeDef *p
  */
 float Math_CalcAbsSlopeRef(float rawref, float targetref, Math_SlopeParamTypeDef *pparam)
 {
-    float newref;
+    float newref = 0.0f;
     if (pparam->acc == 0 | pparam->dec == 0)
         return targetref;
     if (rawref > 0)
