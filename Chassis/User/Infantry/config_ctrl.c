@@ -61,10 +61,10 @@ void GimbalYaw_ParamInit(void)
 {
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
 
-    PID_Init(&gimbalyaw->spd_no_auto, PID_POSITION, 18000.0f, 10.0f, 8000.0f, 50000.0f, 0.0f, 0.0f, 300.0f, 30000.0f, 0.1f, 0.1f, 0.1f, 0.1f);
-    PID_Init(&gimbalyaw->pos_no_auto, PID_POSITION, 0.23f, 0.002f, 2.0f, 1.2f, 0.0f, 0.0f, 50.0f, 20.0f, 0.1f, 0.1f, 0.1f, 0.1f);
+    PID_Init(&gimbalyaw->spd_no_auto, PID_POSITION, 12000.0f, 10.0f, 8000.0f, 50000.0f, 0.0f, 0.0f, 300.0f, 30000.0f, 0.1f, 0.1f, 0.1f, 0.1f);
+    PID_Init(&gimbalyaw->pos_no_auto, PID_POSITION, 0.2f, 0.002f, 2.0f, 1.2f, 0.0f, 0.0f, 50.0f, 20.0f, 0.1f, 0.1f, 0.1f, 0.1f);
 
-    PID_Init(&gimbalyaw->spd_armor, PID_POSITION, 18000.0f, 60.0f, 10000.0f, 50000.0f, 0.0f, 0.0f, 15.0f, 30000.0f, 0.1f, 0.1f, 0.1f, 0.1f);
+    PID_Init(&gimbalyaw->spd_armor, PID_POSITION, 12000.0f, 60.0f, 10000.0f, 50000.0f, 0.0f, 0.0f, 15.0f, 30000.0f, 0.1f, 0.1f, 0.1f, 0.1f);
     PID_Init(&gimbalyaw->pos_armor, PID_POSITION, 0.35f, 0.005f, 4.0f, 15.0f, 0.0f, 0.0f, 80.0f, 20.0f, 0.1f, 0.05f, 0.1f, 0.1f);
 
     PID_Init(&gimbalyaw->spd_big_energy, PID_POSITION, 18000.0f, 150.0f, 8000.0f, 50000.0f, 0.0f, 0.0f, 100.0f, 30000.0f, 0.1f, 0.1f, 0.1f, 0.1f);

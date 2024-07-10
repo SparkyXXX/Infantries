@@ -29,7 +29,7 @@ void Remote_Decode(Remote_DataTypeDef *rc, uint8_t *buff, int rxdatalen)
 
     rc->remote.ch[RIGHT_X] = Cancel_Offset(((uint16_t)buff[0] | (uint16_t)buff[1] << 8) & 0x07FF);
     rc->remote.ch[RIGHT_Y] = Cancel_Offset(((uint16_t)buff[1] >> 3 | (uint16_t)buff[2] << 5) & 0x07FF);
-    rc->remote.ch[LEFT_X] = Cancel_Offset(((uint16_t)buff[2] >> 6 | (uint16_t)buff[3] << 2 | (uint16_t)buff[4] << 10) & 0x07FF);
+    rc->remote.ch[LEFT_X] = 3 + Cancel_Offset(((uint16_t)buff[2] >> 6 | (uint16_t)buff[3] << 2 | (uint16_t)buff[4] << 10) & 0x07FF);
     rc->remote.ch[LEFT_Y] = Cancel_Offset(((uint16_t)buff[4] >> 1 | (uint16_t)buff[5] << 7) & 0x07FF);
     rc->remote.ch[PADDLE_WHEEL] = Cancel_Offset(((uint16_t)buff[16] | (uint16_t)buff[17] << 8) & 0x07FF);
     rc->remote.s[SWITCH_LEFT] = Switch_ToState((buff[5] >> 6) & 0x03);

@@ -44,7 +44,7 @@ const float Correction_Matrix[9] = {1, 0, 0,
 void Gimbal_ParamInit(void)
 {
     Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();
-	PID_Init(&gimbal->pitch_spd, PID_POSITION, 18000.0f, 20.0f, 8000.0f, 0.0f, 0.0f, 0.0f, 100.0f, 30000.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+	PID_Init(&gimbal->pitch_spd, PID_POSITION, 12000.0f, 20.0f, 8000.0f, 0.0f, 0.0f, 0.0f, 100.0f, 30000.0f, 1.0f, 1.0f, 1.0f, 1.0f);
     PID_Init(&gimbal->pitch_pos, PID_POSITION, 0.6f, 0.001f, 3.0f, 0.0f, 0.0f, 0.0f, 100.0f, 30000.0f, 0.1f, 1.0f, 1.0f, 1.0f);
     //                                 mode        p     i     d     kf1   kf2   kf3   sum_max  output_max d_fil  kf1_fil  kf2_fil  kf3_fil
 }
