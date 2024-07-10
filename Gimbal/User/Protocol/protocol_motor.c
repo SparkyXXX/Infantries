@@ -134,8 +134,8 @@ void Motor_PWM_ReadEncoder(MotorPWM_DataTypeDef *pmotor, uint8_t multiple)
         fdb = 0;
     }
     __HAL_TIM_SET_COUNTER(pmotor->encoder.htim, 0);
-    pmotor->encoder.speed = (float)fdb * 2 * 3.1415926f * 1000 * 0.0235 / 4096;
-    // register_counter * (numbers of turns to rads:2 * PI) * (ms_to_s:1000) * (radius:0.0235m) / (4 * 1024 lines)
+    pmotor->encoder.speed = (float)fdb * 2 * 3.1415926f * 1000 * 0.0235 / (4 * 4096);
+    // register_counter * (numbers of turns to rads:2 * PI) * (ms_to_s:1000) * (radius:0.0235m) / (4 * 4096 lines)
 }
 
 void Motor_CAN_SendGroupOutput(Motor_GroupDataTypeDef *pgroup)
