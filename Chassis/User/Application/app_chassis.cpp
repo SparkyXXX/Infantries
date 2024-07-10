@@ -97,47 +97,24 @@ static void Chassis_CalcMoveRef()
  * @retval     NULL
  */
 
+float dead_zone = 3.0f;
 static void Chassis_CalcOmmiFollowRef()
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
 	GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
+	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
 
 	chassis->move_ref.rotate_ref = chassis->raw_ref.rotate_ref;
 	float fdb = Math_Consequent_To_180(Install_Angle, Motor_GimbalYaw.encoder.limited_angle);
 	PID_SetFdb(&(chassis->Chassis_AngfollowPID), fdb);
-	PID_SetRef(&chassis->Chassis_AngfollowPID, Install_Angle);
-//	if (chassis->present_mode == CHASSIS_NORMAL)
-//	{
-//		if (fdb < Install_Angle + 45 && fdb >= Install_Angle - 45)
-//		{
-//			PID_SetRef(&chassis->Chassis_AngfollowPID, Install_Angle + 0);
-//		}
-//		else if (fdb < Install_Angle + 135 && fdb >= Install_Angle + 45)
-//		{
-//			PID_SetRef(&chassis->Chassis_AngfollowPID, Install_Angle + 90);
-//		}
-
-//		else if (fdb < Install_Angle - 45 && fdb >= Install_Angle - 135)
-//		{
-//			PID_SetRef(&chassis->Chassis_AngfollowPID, Install_Angle - 90);
-//		}
-//		else if (fdb >= Install_Angle + 135)
-//		{
-//			PID_SetRef(&chassis->Chassis_AngfollowPID, Install_Angle + 180);
-//		}
-//		else if (fdb < Install_Angle - 135)
-//		{
-//			PID_SetRef(&chassis->Chassis_AngfollowPID, Install_Angle - 180);
-//		}
-//	}
-//	else if (chassis->present_mode == CHASSIS_GYRO)
-//	{
-//		PID_SetRef(&chassis->Chassis_AngfollowPID, Install_Angle);
-//	}
-	PID_SetFdb(&chassis->Chassis_SpdfollowPID, Motor_GimbalYaw.encoder.speed);
-	PID_SetRef(&chassis->Chassis_SpdfollowPID, PID_Calc(&chassis->Chassis_AngfollowPID));
+	PID_SetRef(&(chassis->Chassis_AngfollowPID), Install_Angle);
+	PID_SetFdb(&(chassis->Chassis_SpdfollowPID), Motor_GimbalYaw.encoder.speed);
+	PID_SetRef(&(chassis->Chassis_SpdfollowPID), PID_Calc(&(chassis->Chassis_AngfollowPID)));
 	chassis->move_ref.rotate_ref += PID_Calc(&(chassis->Chassis_SpdfollowPID));
-	chassis->last_yaw_ref = gimbalyaw->yaw_ref;
+	if (abs(chassis->Chassis_AngfollowPID.ref - chassis->Chassis_AngfollowPID.fdb) < dead_zone)
+	{
+		chassis->move_ref.rotate_ref = 0;
+	}
 }
 
 /*
