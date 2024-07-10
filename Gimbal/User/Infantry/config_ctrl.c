@@ -6,9 +6,9 @@
  * @LastEditors: Please set LastEditors
  * @LastEditTime: 2024-05-06 23:29:55
  */
+//SWING_DANCE
 
 #include "config_ctrl.h"
-
 /********** START OF PARAMETER SETTING **********/
 uint8_t CPU_Clock = 170; //(MHz)
 uint16_t Shooter_Freq = 500;

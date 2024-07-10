@@ -120,7 +120,11 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>JL2CM3</Key>
+<<<<<<< HEAD
           <Name>-U602712710 -O78 -S2 -ZTIFSpeedSel5000 -A0 -C0 -JU1 -JI127.0.0.1 -JP0 -RST0 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -TB1 -TFE0 -FO7 -FD20000000 -FC8000 -FN1 -FF0STM32G47x-8x_512.FLM -FS08000000 -FL080000 -FP0($$Device:STM32G474CETx$CMSIS\Flash\STM32G47x-8x_512.FLM)</Name>
+=======
+          <Name>-U69543073 -O78 -S2 -ZTIFSpeedSel5000 -A0 -C0 -JU1 -JI127.0.0.1 -JP0 -RST0 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -TB1 -TFE0 -FO7 -FD20000000 -FC8000 -FN1 -FF0STM32G47x-8x_512.FLM -FS08000000 -FL080000 -FP0($$Device:STM32G474CETx$CMSIS\Flash\STM32G47x-8x_512.FLM)</Name>
+>>>>>>> 519ca53fab4b630158c980833ea3989cc6f92ce4
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -135,6 +139,10 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
+<<<<<<< HEAD
+=======
+          <Name>?</Name>
+>>>>>>> 519ca53fab4b630158c980833ea3989cc6f92ce4
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
