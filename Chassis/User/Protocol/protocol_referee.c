@@ -207,6 +207,9 @@ uint8_t P_ext_robot_status(Referee_DataTypeDef *referee, void *data_ptr)
     referee->shooter_barrel_cooling_value = struct_ptr->shooter_barrel_cooling_value;
     referee->shooter_barrel_heat_limit = struct_ptr->shooter_barrel_heat_limit;
     referee->chassis_power_limit = struct_ptr->chassis_power_limit;
+	referee->power_management_gimbal_output = struct_ptr->power_management_gimbal_output;
+    referee->power_management_chassis_output = struct_ptr->power_management_chassis_output;
+    referee->power_management_shooter_output = struct_ptr->power_management_shooter_output;
     for (int8_t i = 0; i < 2; i++)
        {
            if (struct_ptr->chassis_power_limit == level_maxpower_table[referee->robot_level - 1][i])

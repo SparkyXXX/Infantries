@@ -36,7 +36,8 @@ extern "C"
         REMOTE_BIG_BUFF,
         REMOTE_SMALL_BUFF,
         REMOTE_GYRO,
-        REMOTE_ARMOR_TEMP
+        REMOTE_ARMOR_TEMP,
+		REMOTE_BUFF_TEMP
     } Remote_AutoAimModeEnum;
 
     typedef struct

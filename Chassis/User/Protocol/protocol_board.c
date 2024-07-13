@@ -19,14 +19,16 @@
 #define BOARDCOM_RX_LEN 64
 #define BOARDCOM_LOST_TIME 200
 
-#define SEND_REFEREE_DATA_TIMEOUT 5
+#define SEND_REFEREE_DATA1_TIMEOUT 5
+#define SEND_REFEREE_DATA2_TIMEOUT 5
 #define SEND_CAP_DATA_TIMEOUT 5
 
-#define CHASSIS_SEND_TO_GIMBAL_PKG_AMOUNT 2
+#define CHASSIS_SEND_TO_GIMBAL_PKG_AMOUNT 3
 #define CHASSIS_RECEIVE_FROM_GIMBAL_PKG_AMOUNT 4
 #define CHASSIS_RECEIVE_FROM_CAP_PKG_AMOUNT 1
 
-#define ID_SEND_REFEREE_DATA 0x205
+#define ID_SEND_REFEREE_DATA1 0x205
+#define ID_SEND_REFEREE_DATA2 0x206
 #define ID_SEND_CAP_DATA 0x98
 #define ID_RECEIVE_CONTROL 0x201
 #define ID_RECEIVE_IMU_YAW 0x202
@@ -41,7 +43,8 @@ uint8_t BoardCom_RxData[BOARDCOM_RX_LEN];
 uint8_t boardcom_decoded_count = 0;
 
 Board_SendTableEntryTypeDef Chassis_Send_to_Gimbal[CHASSIS_SEND_TO_GIMBAL_PKG_AMOUNT] =
-							{&_send_referee_data,
+							{&_send_referee_data1,
+							 &_send_referee_data2,
 							 &_send_cap_data};
 
 Board_ReceiveTableEntryTypeDef Chassis_Receive_from_Gimbal[CHASSIS_RECEIVE_FROM_GIMBAL_PKG_AMOUNT] =
@@ -56,7 +59,8 @@ Board_ReceiveTableEntryTypeDef Chassis_Receive_from_Cap[CHASSIS_RECEIVE_FROM_CAP
 FDCAN_HandleTypeDef *BOARD_CAN_HANDLER = &hfdcan2;
 FDCAN_HandleTypeDef *CAP_CAN_HANDLER = &hfdcan3;
 
-FDCAN_TxHeaderTypeDef TxHeader_Chassis_to_Gimbal;
+FDCAN_TxHeaderTypeDef TxHeader_Chassis_to_Gimbal1;
+FDCAN_TxHeaderTypeDef TxHeader_Chassis_to_Gimbal2;
 FDCAN_TxHeaderTypeDef TxHeader_Chassis_to_Cap;
 
 
@@ -67,7 +71,8 @@ BoardCom_DataTypeDef *BoardCom_GetDataPtr()
 
 void BoardCom_Init()
 {
-    FDCAN_InitTxHeader(&TxHeader_Chassis_to_Gimbal, ID_SEND_REFEREE_DATA);
+    FDCAN_InitTxHeader(&TxHeader_Chassis_to_Gimbal1, ID_SEND_REFEREE_DATA1);
+	FDCAN_InitTxHeader(&TxHeader_Chassis_to_Gimbal2, ID_SEND_REFEREE_DATA2);
     FDCAN_InitTxHeader(&TxHeader_Chassis_to_Cap, ID_SEND_CAP_DATA);
 }
 
@@ -86,6 +91,12 @@ void BoardCom_Update()
     boardcom->power_level_limit = referee->chassis_power_level_limit;
     boardcom->power_buffer = referee->buffer_energy;
     boardcom->chassis_power = referee->chassis_power;
+	boardcom->power_management_shooter_output = referee->power_management_shooter_output;
+	boardcom->game_progress = referee->game_progress;
+	if (referee->stage_remain_time != 0)
+	{
+		boardcom->stage_remain_time = referee->stage_remain_time;
+	}
 }
 
 void BoardCom_Send()
@@ -146,26 +157,46 @@ uint8_t BoardCom_IsLost(uint8_t index)
 }
 
 /*************** SEND *****************/
-int counta[2];
-float ratea[2];
-static void _send_referee_data(uint8_t buff[])
+int counta[3];
+float ratea[3];
+static void _send_referee_data1(uint8_t buff[])
 {
     static uint32_t last_send_time = 0;
-    if ((HAL_GetTick() - last_send_time) <= SEND_REFEREE_DATA_TIMEOUT)
+    if ((HAL_GetTick() - last_send_time) <= SEND_REFEREE_DATA1_TIMEOUT)
     {
         return;
     }
     last_send_time = HAL_GetTick();
     BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-    FDCAN_TxHeaderTypeDef *pheader = &TxHeader_Chassis_to_Gimbal;
+    FDCAN_TxHeaderTypeDef *pheader = &TxHeader_Chassis_to_Gimbal1;
     counta[0]++;
     ratea[0] = 1000 * counta[0] / HAL_GetTick();
     memset(buff, 0, 8);
 
     buff[0] = (1 << 7) + boardcom->robot_id;
+	buff[1] = boardcom->power_management_shooter_output << 7;
     i162buff(boardcom->heat_limit, buff + 2);
-    i162buff((int16_t)(boardcom->shoot_spd_referee * 100), buff + 4);
+    ui162buff((uint16_t)(boardcom->shoot_spd_referee * 100), buff + 4);
     ui162buff(boardcom->cooling_per_second, buff + 6);
+    FDCAN_Send(BOARD_CAN_HANDLER, pheader, buff);
+}
+
+static void _send_referee_data2(uint8_t buff[])
+{
+    static uint32_t last_send_time = 0;
+    if ((HAL_GetTick() - last_send_time) <= SEND_REFEREE_DATA2_TIMEOUT)
+    {
+        return;
+    }
+    last_send_time = HAL_GetTick();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+    FDCAN_TxHeaderTypeDef *pheader = &TxHeader_Chassis_to_Gimbal2;
+    counta[1]++;
+    ratea[1] = 1000 * counta[1] / HAL_GetTick();
+    memset(buff, 0, 8);
+	
+	ui162buff(boardcom->stage_remain_time, buff);
+	buff[2] = boardcom->game_progress;
     FDCAN_Send(BOARD_CAN_HANDLER, pheader, buff);
 }
 
@@ -179,8 +210,8 @@ static void _send_cap_data(uint8_t buff[])
     last_send_time = HAL_GetTick();
     BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     FDCAN_TxHeaderTypeDef *pheader = &TxHeader_Chassis_to_Cap;
-    counta[1]++;
-    ratea[1] = 1000 * counta[1] / HAL_GetTick();
+    counta[2]++;
+    ratea[2] = 1000 * counta[2] / HAL_GetTick();
     memset(buff, 0, 8);
 
     buff[0] = boardcom->cap_mode_flag | (0x77 << 1);

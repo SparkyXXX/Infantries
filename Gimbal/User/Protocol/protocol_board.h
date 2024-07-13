@@ -76,9 +76,12 @@ extern "C"
 
         // Gimbal Receive from Chassis
         uint8_t robot_id;
+		uint8_t power_management_shooter_output;
         uint16_t heat_limit;
         float shoot_spd_referee;
         uint16_t cooling_per_second;
+		uint16_t stage_remain_time;
+		uint8_t game_progress;
     } BoardCom_DataTypeDef;
 
     typedef struct
@@ -108,7 +111,8 @@ extern "C"
     static void _send_imu_yaw(uint8_t buff[]);
     static void _send_chassis_ref(uint8_t buff[]);
     static void _send_ui_state(uint8_t buff[]);
-    static void _receive_referee_data(uint8_t buff[]);
+    static void _receive_referee_data1(uint8_t buff[]);
+    static void _receive_referee_data2(uint8_t buff[]);
 
 #endif
 

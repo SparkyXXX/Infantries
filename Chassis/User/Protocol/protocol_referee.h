@@ -284,6 +284,10 @@ extern "C"
         uint8_t shooter_number;
         uint8_t launching_frequency;
         float initial_speed;
+		
+		uint8_t power_management_gimbal_output : 1;
+        uint8_t power_management_chassis_output : 1;
+        uint8_t power_management_shooter_output : 1;
     } Referee_DataTypeDef;
 
     typedef uint8_t (*Referee_RefereeCmdParseFuncDef)(Referee_DataTypeDef *referee, void *data_ptr);

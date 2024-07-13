@@ -62,6 +62,9 @@ extern "C"
         uint8_t power_limit;
         uint8_t power_buffer;
         float chassis_power;
+		uint8_t power_management_shooter_output : 1;
+		uint16_t stage_remain_time;
+		uint8_t game_progress;
 
         // Chassis Receive from Gimbal
         uint8_t yaw_mode;
@@ -112,7 +115,8 @@ extern "C"
     void BoardCom_Decode_Cap(uint8_t rxdata[], uint32_t stdid);
     uint8_t BoardCom_IsLost(uint8_t);
 
-    static void _send_referee_data(uint8_t buff[]);
+    static void _send_referee_data1(uint8_t buff[]);
+	static void _send_referee_data2(uint8_t buff[]);
     static void _send_cap_data(uint8_t buff[]);
     static void _receive_control(uint8_t buff[]);
     static void _receive_imu_yaw(uint8_t buff[]);

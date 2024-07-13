@@ -133,6 +133,7 @@ int test_shoot_frq = 150;
 void Shoot_FeederControl()
 {
     Shoot_ControlTypeDef* shooter = Shoot_GetControlPtr();
+	BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
     switch(shooter->feeder_mode)
     {
     case FEEDER_STOP:
@@ -173,7 +174,8 @@ void Shoot_FeederControl()
     if(shoot_mode == CONTINUOUS)
     {
         PID_SetRef(&(shooter->feed_spd), shooter->shoot_speed.feeder_shoot_speed);
-        if(Motor_shooterMotorLeft.encoder.speed < 20 || Motor_shooterMotorLeft.encoder.speed < 20 || ADC_Voltage < 15.0f)
+		if(Motor_shooterMotorLeft.encoder.speed < 20 || Motor_shooterMotorLeft.encoder.speed < 20 || boardcom->power_management_shooter_output == 0)
+//        if(Motor_shooterMotorLeft.encoder.speed < 20 || Motor_shooterMotorLeft.encoder.speed < 20 || ADC_Voltage < 15.0f)
         {
             PID_SetRef(&(shooter->feed_spd), 0);
         }
@@ -187,7 +189,8 @@ void Shoot_FeederControl()
     {
         PID_SetFdb(&(shooter->feed_ang), Motor_feederMotor.encoder.consequent_angle);
         PID_SetRef(&(shooter->feed_spd), PID_Calc(&shooter->feed_ang));
-        if(Motor_shooterMotorLeft.encoder.speed < 20 || Motor_shooterMotorLeft.encoder.speed < 20 || ADC_Voltage < 15.0f)
+		if(Motor_shooterMotorLeft.encoder.speed < 20 || Motor_shooterMotorLeft.encoder.speed < 20 || boardcom->power_management_shooter_output == 0)
+//        if(Motor_shooterMotorLeft.encoder.speed < 20 || Motor_shooterMotorLeft.encoder.speed < 20 || ADC_Voltage < 15.0f)
         {
             PID_SetRef(&(shooter->feed_spd), 0);
         }
@@ -222,13 +225,16 @@ uint8_t shooter_adc_flag_last = 1;
 void Shoot_Output()
 {
     Shoot_ControlTypeDef* shooter = Shoot_GetControlPtr();
-    if(ADC_Voltage <= 10)
+	BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
+	if (boardcom->power_management_shooter_output == 0)
+//    if (ADC_Voltage <= 10)
     {
         Motor_shooterMotors.motor_handle[0]->output = 0;
         Motor_shooterMotors.motor_handle[1]->output = 0;
         shooter_adc_flag = 1;
     }
-    else if(shooter_adc_flag == 1 && ADC_Voltage > 18)
+	else if(shooter_adc_flag == 1 && boardcom->power_management_shooter_output == 1)
+//    else if(shooter_adc_flag == 1 && ADC_Voltage > 18)
     {
         shooter_adc_flag = 0;
         shooter_cnt = HAL_GetTick();
@@ -247,12 +253,14 @@ void Shoot_Output()
 void Shoot_Single()
 {
     Shoot_ControlTypeDef* shooter = Shoot_GetControlPtr();
+	BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
 
     if(fabs(shooter->feed_ang.fdb - shooter->feed_ang.ref) > 5.0f)
     {
         return;
     }
-    if(!shooter->single_shoot_done && Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorLeft.encoder.speed > 20 && ADC_Voltage > 15.0f)
+	if(!shooter->single_shoot_done && Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorLeft.encoder.speed > 20 && boardcom->power_management_shooter_output == 1)
+//    if(!shooter->single_shoot_done && Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorLeft.encoder.speed > 20 && ADC_Voltage > 15.0f)
     {
         shooter->feed_ang.ref += 45.0f;
         shooter->single_shoot_done = 1;

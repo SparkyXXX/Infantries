@@ -20,13 +20,14 @@
 
 #define GIMBAL_SEND_TOCHASSIS_PKG1_AMOUNT 2
 #define GIMBAL_SEND_TOCHASSIS_PKG2_AMOUNT 2
-#define GIMBAL_RECEIVE_FROM_CHASSIS_PKG_AMOUNT 1
+#define GIMBAL_RECEIVE_FROM_CHASSIS_PKG_AMOUNT 2
 
 #define ID_SEND_CONTROL 0x201
 #define ID_SEND_IMU_YAW 0x202
 #define ID_SEND_CHASSIS_REF 0x203
 #define ID_SEND_UI_STATE 0x204
-#define ID_RECEIVE_REFEREE_DATA 0x205
+#define ID_RECEIVE_REFEREE_DATA1 0x205
+#define ID_RECEIVE_REFEREE_DATA2 0x206
 
 BoardCom_DataTypeDef BoardCom_Data;
 
@@ -47,7 +48,8 @@ Board_SendTableEntryTypeDef Gimbal_Send_to_Chassis_Pkg2[GIMBAL_SEND_TOCHASSIS_PK
 };
 
 Board_ReceiveTableEntryTypeDef Gimbal_Receive_from_Chassis[GIMBAL_RECEIVE_FROM_CHASSIS_PKG_AMOUNT] =
-{{ID_RECEIVE_REFEREE_DATA, &_receive_referee_data}};
+{{ID_RECEIVE_REFEREE_DATA1, &_receive_referee_data1},
+ {ID_RECEIVE_REFEREE_DATA2, &_receive_referee_data2}};
 
 FDCAN_HandleTypeDef* BOARD_CAN_HANDLER = &hfdcan2;
 
@@ -264,17 +266,29 @@ static void _send_ui_state(uint8_t buff[])
 }
 
 /*************** RECEIVE *****************/
-int countb;
-float rateb;
-static void _receive_referee_data(uint8_t buff[])
+int countb[2];
+float rateb[2];
+static void _receive_referee_data1(uint8_t buff[])
 {
-    countb++;
-    rateb = 1000 * countb / HAL_GetTick();
+    countb[0]++;
+    rateb[0] = 1000 * countb[0] / HAL_GetTick();
 
     BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
     boardcom->robot_id = buff[0] & 0x7F;
+	boardcom->power_management_shooter_output = buff[1] >> 7;
     boardcom->heat_limit = buff2i16(buff + 2);
-    boardcom->shoot_spd_referee = ((float)buff2i16(buff + 4)) / 100;
+    boardcom->shoot_spd_referee = ((float)buff2ui16(buff + 4)) / 100;
     boardcom->cooling_per_second = buff2ui16(buff + 6);
+    boardcom->last_update_time = HAL_GetTick();
+}
+
+static void _receive_referee_data2(uint8_t buff[])
+{
+    countb[1]++;
+    rateb[1] = 1000 * countb[1] / HAL_GetTick();
+
+    BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
+    boardcom->stage_remain_time = buff2ui16(buff);
+	boardcom->game_progress = buff[2];
     boardcom->last_update_time = HAL_GetTick();
 }
