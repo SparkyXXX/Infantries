@@ -8,6 +8,7 @@
  */
 
 #include "app_shoot.h"
+#include "lib_math.h"
 
 Shoot_ControlTypeDef Shoot_Control;
 Shoot_ControlTypeDef* Shoot_GetControlPtr()
@@ -45,8 +46,8 @@ void Shoot_Update()
     // shooter->heat_ctrl.shooter_heat_now = (float)boardcom->heat_now;
     shooter->heat_ctrl.shooter_heat_now = heat_now;
     shooter->heat_ctrl.shooter_heat_limit = (float)boardcom->heat_limit;
-    Motor_PWM_ReadEncoder(&Motor_shooterMotorLeft, 1);
-    Motor_PWM_ReadEncoder(&Motor_shooterMotorRight, 1);
+    Motor_PWM_ReadEncoder(&Motor_shooterMotorLeft);
+    Motor_PWM_ReadEncoder(&Motor_shooterMotorRight);
     ADC_Decode();
     if(boardcom->cooling_per_second == 10 && boardcom->heat_limit == 200)
     {
@@ -91,8 +92,7 @@ void Heat_Update()
 
 uint16_t encoder_spd_l = 0;
 uint16_t encoder_spd_r = 0;
-float shoot_ref = 22.5f;
-float open_loop_shoot_ref = 27.0f;
+float shoot_ref = 25.0f;
 void Shoot_ShooterControl()
 {
     Shoot_ControlTypeDef* shooter = Shoot_GetControlPtr();
@@ -101,16 +101,12 @@ void Shoot_ShooterControl()
     case SHOOTER_STOP:
         shooter->shoot_speed.left_shoot_speed = 0;
         shooter->shoot_speed.right_shoot_speed = 0;
+		shooter->shoot_left.sum = 0;
+		shooter->shoot_right.sum = 0;
         break;
     case SHOOTER_REFEREE:
-#if	IF_BULLET_SPD_TEST == NO_BULLET_SPD_TEST
         shooter->shoot_speed.left_shoot_speed = shoot_ref;
         shooter->shoot_speed.right_shoot_speed = shoot_ref;
-#endif
-#if	IF_BULLET_SPD_TEST == BULLET_SPD_TEST
-        shooter->shoot_speed.left_shoot_speed = open_loop_shoot_ref;
-        shooter->shoot_speed.right_shoot_speed = open_loop_shoot_ref;
-#endif
         break;
     default:
         break;
@@ -121,17 +117,15 @@ void Shoot_ShooterControl()
     PID_SetRef(&(shooter->shoot_right), shooter->shoot_speed.right_shoot_speed);
     PID_SetFdb(&(shooter->shoot_left), Filter_Lowpass(Motor_shooterMotorLeft.encoder.speed, &shooter->shooter_left_lpf));
     PID_SetFdb(&(shooter->shoot_right), Filter_Lowpass(Motor_shooterMotorRight.encoder.speed, &shooter->shooter_right_lpf));
-    MotorPWM_SetOutput(&Motor_shooterMotorLeft, PID_Calc(&(shooter->shoot_left)));
+	MotorPWM_SetOutput(&Motor_shooterMotorLeft, PID_Calc(&(shooter->shoot_left)));
     MotorPWM_SetOutput(&Motor_shooterMotorRight, PID_Calc(&(shooter->shoot_right)));
 #endif
 #if SHOOT_MODE == SHOOT_OPEN_LOOP
     MotorPWM_SetOutput(&Motor_shooterMotorLeft, shooter->shoot_speed.left_shoot_speed);
     MotorPWM_SetOutput(&Motor_shooterMotorRight, shooter->shoot_speed.right_shoot_speed);
 #endif
-#if	IF_BULLET_SPD_TEST == BULLET_SPD_TEST
     encoder_spd_l = Motor_shooterMotorLeft.encoder.speed * 100;
     encoder_spd_r = Motor_shooterMotorRight.encoder.speed * 100;
-#endif
 }
 
 int shoot_mode = 0;
@@ -170,12 +164,7 @@ void Shoot_FeederControl()
         break;
     case FEEDER_INITING:
         shoot_mode = CONTINUOUS;
-#if	IF_BULLET_SPD_TEST == NO_BULLET_SPD_TEST
         shooter->shoot_speed.feeder_shoot_speed = 10.0f;
-#endif
-#if IF_BULLET_SPD_TEST == BULLET_SPD_TEST
-        shooter->shoot_speed.feeder_shoot_speed = test_shoot_frq;
-#endif
         break;
     default:
         break;
@@ -184,18 +173,10 @@ void Shoot_FeederControl()
     if(shoot_mode == CONTINUOUS)
     {
         PID_SetRef(&(shooter->feed_spd), shooter->shoot_speed.feeder_shoot_speed);
-#if IF_BULLET_SPD_TEST == NO_BULLET_SPD_TEST
         if(Motor_shooterMotorLeft.encoder.speed < 20 || Motor_shooterMotorLeft.encoder.speed < 20 || ADC_Voltage < 15.0f)
         {
             PID_SetRef(&(shooter->feed_spd), 0);
         }
-#endif
-#if IF_BULLET_SPD_TEST == BULLET_SPD_TEST
-        if(Motor_shooterMotorLeft.encoder.speed < 10 || Motor_shooterMotorLeft.encoder.speed < 10 || ADC_Voltage < 15.0f)
-        {
-            PID_SetRef(&(shooter->feed_spd), 0);
-        }
-#endif
         PID_SetFdb(&(shooter->feed_spd), Motor_feederMotor.encoder.speed);
         PID_Calc(&(shooter->feed_spd));
         PID_SetRef(&(shooter->feed_ang),
@@ -281,7 +262,6 @@ void Shoot_Single()
 float INITDONE_CURRENT = 1000.0f;
 float INITDONE_SPEED = 10.0f;
 float INITDONE_TIME = 5.0f;
-float feeder_offset = 2.0f;
 void Shoot_FeederLockedJudge()
 {
     Shoot_ControlTypeDef* shooter = Shoot_GetControlPtr();
@@ -289,19 +269,19 @@ void Shoot_FeederLockedJudge()
     static uint8_t shooter_done = 0;
     if(shooter->feeder_mode == FEEDER_INITING)
     {
-        if(Motor_shooterMotorLeft.encoder.speed > 22.5 && Motor_shooterMotorLeft.encoder.speed < 25.0)
+        if(Motor_shooterMotorLeft.encoder.speed > 24.0f && Motor_shooterMotorLeft.encoder.speed < 27.0f)
         {
             shooter_done = 1;
         }
-        if((shooter_done == 1) && (Motor_shooterMotorLeft.encoder.speed < 21.0))
+        if((shooter_done == 1) && (Motor_shooterMotorLeft.encoder.speed < 23.0f))
         {
-            shooter->feeder_angle_init = Motor_feederMotor.encoder.consequent_angle + feeder_offset;
+            shooter->feeder_angle_init = Motor_feederMotor.encoder.consequent_angle + 2.0f;
             while(shooter->feeder_angle_init > 45.0f)
             {
                 shooter->feeder_angle_init -= 45.0f;
             }
             Shoot_FeederModeForceSet(FEEDER_STOP);
-            PID_SetRef(&(shooter->feed_ang), Motor_feederMotor.encoder.consequent_angle + feeder_offset);
+            PID_SetRef(&(shooter->feed_ang), Motor_feederMotor.encoder.consequent_angle + 2.0f);
         }
     }
     else if(shooter->feeder_mode != FEEDER_LOCKED)

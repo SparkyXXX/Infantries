@@ -70,16 +70,12 @@ void Shoot_ParamInit(void)
     Shoot_ControlTypeDef* shooter = Shoot_GetControlPtr();
     PID_Init(&(shooter->feed_spd), 500.0f, 10.0f, 0.0f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
     PID_Init(&(shooter->feed_ang), 8.35f, 0.0f, 0.00011f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
-#if IF_BULLET_SPD_TEST == BULLET_SPD_TEST
-    PID_Init(&(shooter->shoot_left), 10.0f, 20.0f, 0.0f, 0.0f, 30.0f, 35.0f, 159.154922f, 159.154922f);
-    PID_Init(&(shooter->shoot_right), 10.0f, 20.0f, 0.0f, 0.0f, 30.0f, 35.0f, 159.154922f, 159.154922f);
-#endif
-#if IF_BULLET_SPD_TEST == NO_BULLET_SPD_TEST
-    PID_Init(&(shooter->shoot_left), 10.0f, 20.0f, 0.0f, 0.0f, 30.0f, 30.0f, 159.154922f, 159.154922f);
-    PID_Init(&(shooter->shoot_right), 10.0f, 20.0f, 0.0f, 0.0f, 30.0f, 30.0f, 159.154922f, 159.154922f);
-#endif
-    Filter_Lowpass_Init(127.3239566f, &(shooter->shooter_left_lpf));
-    Filter_Lowpass_Init(127.3239566f, &(shooter->shooter_right_lpf));
+
+	PID_Init(&(shooter->shoot_left), 10.0f, 20.0f, 0.0f, 0.0f, 31.0f, 35.0f, 159.154922f, 159.154922f);
+	PID_Init(&(shooter->shoot_right), 10.0f, 20.0f, 0.0f, 0.0f, 31.0f, 35.0f, 159.154922f, 159.154922f);
+	
+    Filter_Lowpass_Init(200.0f, &(shooter->shooter_left_lpf));
+    Filter_Lowpass_Init(200.0f, &(shooter->shooter_right_lpf));
 }
 /********** END OF PARAMETER SETTING **********/
 
@@ -108,12 +104,7 @@ MotorPWM_DataTypeDef Motor_shooterMotorRight;
 static void Init_All_Motors()
 {
     Motor_groupHandle[1] = &Motor_gimbalMotors;
-#if	PITCH_CONTROL_MODE == VOLTAGE
     Motor_InitGroup(&Motor_gimbalMotors, 2, &hfdcan1, 0x1FF);
-#endif
-#if	PITCH_CONTROL_MODE == CURRENT
-    Motor_InitGroup(&Motor_gimbalMotors, 2, &hfdcan1, 0x1FE);
-#endif
     Motor_Init(&Motor_gimbalMotorPitch, PITCH_CAN_ID);
     Motor_gimbalMotors.motor_handle[PITCH_CAN_ID - 0x205] = &Motor_gimbalMotorPitch;
 

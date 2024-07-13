@@ -41,6 +41,7 @@ void Motor_SetOutput(Motor_DataTypeDef *pmotor, float output)
 {
     if (pmotor == NULL || pmotor->state == MOTOR_LOST) 
     {
+		pmotor->output = 0;
         return;
     }
     pmotor->output = output;
@@ -51,12 +52,12 @@ float Motor_GetOutput(Motor_DataTypeDef *pmotor)
     return pmotor->output;
 }
 
-uint8_t Motor_IsLost(Motor_DataTypeDef *pmotor)
+void Motor_IsLost(Motor_DataTypeDef *pmotor)
 {
-    if (pmotor == NULL || pmotor->state == MOTOR_CONNECTED) 
+    if (pmotor == NULL)
     {
-        return 0;
+        return ;
     }
     uint32_t now = HAL_GetTick();
-    return (now - pmotor->encoder.last_update_time) > MOTOR_OFFLINE_TIME;
+	pmotor->state = ((now - pmotor->encoder.last_update_time) > MOTOR_OFFLINE_TIME);
 }

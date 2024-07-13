@@ -12,10 +12,10 @@
 
 #define RESPONSE_MODE FREQ_RESPONSE
 
+// Add these three variables to watch
 float openloop_spd_ref = 0.0f;
 float openloop_spd_fdb = 0.0f;
-float openloop_cur_fdb = 0.0f;
-int openloop_spd_amplitude = 6000;
+uint8_t start_ident_flag = 0;
 
 static void Process_Freq(float freq)
 {
@@ -24,7 +24,7 @@ static void Process_Freq(float freq)
 	freq = 1000. / t_ms;
 	while (tick < (20 * t_ms))
 	{
-		openloop_spd_ref = openloop_spd_amplitude * sin( freq * 2 * PI * tick * 0.001f);
+		openloop_spd_ref = 6000 * sin( freq * 2 * PI * tick * 0.001f);
 		tick++;
 		osDelay(1);
 	}

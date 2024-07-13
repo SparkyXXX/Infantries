@@ -32,6 +32,8 @@ extern "C"
 
 #define CAP_NORMAL 0x00
 #define CAP_SPEEDUP 0x01
+	
+#define BOARDCOM_TIMEOUT_VALUE 20 //单位并非时间，而是控制电机次数（底盘+云台）
 
     typedef enum
     {
@@ -98,6 +100,8 @@ extern "C"
         uint32_t cmd_id;
         void (*bus_func)(uint8_t buff[]);
     } Board_ReceiveTableEntryTypeDef;
+	
+	extern uint8_t boardcom_decoded_count;
 
     BoardCom_DataTypeDef* BoardCom_GetDataPtr(void);
     void BoardCom_Init(void);

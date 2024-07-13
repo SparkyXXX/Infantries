@@ -183,11 +183,14 @@ void GimbalYaw_Output()
     }
 #if IF_SYS_IDENT == SYS_IDENT
     openloop_spd_fdb = gimbalyaw->yaw_speed_fdb;
-    openloop_cur_fdb = Motor_GimbalYaw.encoder.current;
 #endif
-    if(boardcom->check_in == 1)
+    if (boardcom->check_in == 1 || boardcom_decoded_count > BOARDCOM_TIMEOUT_VALUE)
     {
         Motor_SetOutput(&Motor_GimbalYaw, 0.0f);
+    }
+    else
+    {
+        boardcom_decoded_count++;
     }
     Motor_CAN_SendGroupOutput(&Motor_GimbalMotors);
 }

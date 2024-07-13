@@ -26,7 +26,11 @@ void Chassis_Task(void const *argument)
 {
     for (;;)
     {
-        OmmiChassis_Output();
+		Motor_IsLost(&Motor_ForwardLeft);
+		Motor_IsLost(&Motor_ForwardRight);
+		Motor_IsLost(&Motor_BackwardRight);
+		Motor_IsLost(&Motor_BackwardLeft);
+        OmniChassis_Output();
         osDelay(1);
     }
 }
@@ -36,10 +40,13 @@ void Chassis_Task(void const *argument)
  * @param          NULL
  * @retval         NULL
  */
+extern uint8_t start_ident_flag;
 void Gimbal_Task(void const *argument)
 {
     for (;;)
     {
+		Motor_IsLost(&Motor_GimbalYaw);
+		// start_ident_flag = 1;
         GimbalYaw_Output();
         osDelay(1);
     }
@@ -77,20 +84,25 @@ void Cap_Task(void const *argument)
 uint8_t ui_cmd_last = 0;
 void UI_Task(void const *argument)
 {
+#if IF_SYS_IDENT == NO_SYS_IDENT
     BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     for (;;)
     {
-#if IF_SYS_IDENT == SYS_IDENT
-        Test_Response();
-#endif
         if (boardcom->ui_cmd != ui_cmd_last)
         {
             UI_Refresh();
         }
-
         ui_cmd_last = boardcom->ui_cmd;
         HomeHurt_Detect();
         UI_Update();
         osDelay(20);
     }
+#endif
+#if IF_SYS_IDENT == SYS_IDENT
+	for (;;)
+	{
+		Test_Response();
+		osDelay(1);
+	}
+#endif
 }

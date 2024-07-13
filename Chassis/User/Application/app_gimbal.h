@@ -49,7 +49,6 @@ extern "C"
 	
 	extern float openloop_spd_ref;
 	extern float openloop_spd_fdb;
-	extern float openloop_cur_fdb;
 
     GimbalYaw_ControlTypeDef *GimbalYaw_GetControlPtr(void);
     void GimbalYaw_Init(void);

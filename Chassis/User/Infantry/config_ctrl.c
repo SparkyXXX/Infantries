@@ -75,7 +75,7 @@ void GimbalYaw_ParamInit(void)
 
 	PID_Init(&(gimbalyaw->spd_small_energy), 7860.98773778112f, 24876.1388107406f, 10.9682598257439f, 0.0f,  5000.0f, 30000.0f, 32.78987f, 1.0f);
     PID_Init(&(gimbalyaw->pos_small_energy), 25.1943607025437f, 1.81996401951577f, 0.335675508f, 0.0f, 0.001f, 6.0f, 249.999985f, 159.154922f);
-	//                                     kp    ki    kd    kf  sum_max  output_max   d_frq     kf_frq
+	//                                     	       kp    ki    kd    kf  sum_max  output_max   d_frq     kf_frq
 	Filter_Lowpass_Init(200.0f, &(gimbalyaw->spd_ref_filter));
 }
 /********** END OF PARAMETER SETTING **********/

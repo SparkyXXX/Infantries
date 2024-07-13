@@ -17,7 +17,7 @@ extern "C"
 
 #include "util_fdcan.h"
 
-#define MOTOR_OFFLINE_TIME 1000
+#define MOTOR_OFFLINE_TIME 10
 
     typedef enum
     {
@@ -60,7 +60,9 @@ extern "C"
     void Motor_InitGroup(Motor_GroupDataTypeDef *pgroup, uint8_t motor_num, FDCAN_HandleTypeDef *phcan, uint16_t stdid);
     void Motor_SetOutput(Motor_DataTypeDef *pmotor, float output);
     float Motor_GetOutput(Motor_DataTypeDef *pmotor);
-    uint8_t Motor_IsLost(Motor_DataTypeDef *pmotor);
+//    uint8_t Motor_IsLost(Motor_DataTypeDef *pmotor);
+	    void Motor_IsLost(Motor_DataTypeDef *pmotor);
+
 
 #endif
 

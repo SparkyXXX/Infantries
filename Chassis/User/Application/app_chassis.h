@@ -73,7 +73,7 @@ extern "C"
     void Chassis_ModeSet(Chassis_ModeEnum mode);
     void Chassis_SetMoveRef(float forward_back_ref, float left_right_ref);
     void MecChassis_Output(void);
-	void OmmiChassis_Output(void);
+	void OmniChassis_Output(void);
     static void Chassis_CalcMoveRef(void);
 	static void Chassis_CalcGyroRef(void);
     static void Chassis_CalcMecFollowRef(void);

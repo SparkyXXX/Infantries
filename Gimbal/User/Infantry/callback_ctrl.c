@@ -12,6 +12,31 @@
 static FDCAN_RxHeaderTypeDef FDCAN_RxHeader;
 static uint8_t FDCAN_RxData[FDCAN_RX_LEN];
 
+float uart_pe_count = 0;
+float uart_fe_count = 0;
+float uart_ore_count = 0;
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+{
+    if (huart->ErrorCode & HAL_UART_ERROR_PE)
+    {
+        __HAL_UART_CLEAR_PEFLAG(huart);
+        uart_pe_count++;
+    }
+    if (huart->ErrorCode & HAL_UART_ERROR_FE)
+    {
+        __HAL_UART_CLEAR_FEFLAG(huart);
+        uart_fe_count++;
+    }
+    if (huart->ErrorCode & HAL_UART_ERROR_ORE)
+    {
+        __HAL_UART_CLEAR_OREFLAG(huart);
+        uart_ore_count++;
+    }
+    if (huart == &huart3)
+    {
+        Remote_Init(huart);
+    }
+}
 /**
  * @brief      UART RX callback receiver function
  * @param      huart: Point to uart handle
@@ -52,3 +77,4 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *phfdcan, uint32_t RxFifo0ITs
         }
     }
 }
+

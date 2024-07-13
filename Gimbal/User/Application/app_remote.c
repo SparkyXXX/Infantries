@@ -434,10 +434,10 @@ static void Remote_ShootModeSet()
     }
     case REMOTE_SWITCH_DOWN:
     {
-#if IF_TEST_SHOOT == NO_SHOOT_TEST
+#if	IF_BULLET_SPD_TEST == NO_BULLET_SPD_TEST
         AutoAim_ShootModeSet();
 #endif
-#if IF_TEST_SHOOT == SHOOT_TEST
+#if	IF_BULLET_SPD_TEST == BULLET_SPD_TEST
 		Shoot_FeederModeSet(FEEDER_REFEREE);
 #endif
         break;
@@ -510,9 +510,10 @@ static void AutoAim_ShootModeSet()
                  Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorRight.encoder.speed > 20)
             {
                 Shoot_FeederModeSet(FEEDER_SINGLE);
+				shooter->single_shoot_done = 0;
+                have_shooted = 1;
                 wait_tick = 0;
             }
-            // Shoot_FeederModeSet(FEEDER_REFEREE);//use to test the shoot, DO NOT OPEN!
         }
         else if (autoaim->hit_mode == AUTOAIM_HIT_BUFF)
         {

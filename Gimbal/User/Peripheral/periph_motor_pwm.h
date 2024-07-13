@@ -29,7 +29,7 @@ extern "C"
         TIM_HandleTypeDef *htim;
         uint32_t ch;
         uint8_t direction;
-        uint16_t counter;
+        uint32_t counter;
         uint32_t last_update_time;
     } EncoderPWM_DataTypeDef;
 
@@ -38,7 +38,6 @@ extern "C"
         MotorPWM_StateEnum state;
         EncoderPWM_DataTypeDef encoder;
         PWM_HandleTypeDef pwm;
-        uint16_t fdb;
         float output;
     } MotorPWM_DataTypeDef;
 

@@ -23,7 +23,7 @@ void OnProjectLoad (void) {
   // Dialog-generated settings
   //
   Project.SetDevice ("STM32G473CB");
-  Project.SetHostIF ("USB", "69543073");
+  Project.SetHostIF ("USB", "69665299");
   Project.SetTargetIF ("SWD");
   Project.SetTIFSpeed ("4 MHz");
   Project.AddPathSubstitute ("F:/RM Code/NB_QX/infantry-2024-debug-gimbal", "$(ProjectDir)");
@@ -33,7 +33,6 @@ void OnProjectLoad (void) {
   //
   // User settings
   //
-  Edit.SysVar (VAR_HSS_SPEED, BP_STATE_OFF);
   File.Open ("$(ProjectDir)/MDK-ARM/Infantry_Oreo/Infantry_Oreo.axf");
 }
 

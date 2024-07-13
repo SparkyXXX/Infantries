@@ -38,6 +38,7 @@ BoardCom_DataTypeDef BoardCom_Data;
 
 uint8_t BoardCom_TxData[BOARDCOM_TX_LEN];
 uint8_t BoardCom_RxData[BOARDCOM_RX_LEN];
+uint8_t boardcom_decoded_count = 0;
 
 Board_SendTableEntryTypeDef Chassis_Send_to_Gimbal[CHASSIS_SEND_TO_GIMBAL_PKG_AMOUNT] =
 							{&_send_referee_data,
@@ -104,15 +105,11 @@ void BoardCom_Send()
     boardcom->state = BOARDCOM_CONNECTED;
 }
 
-uint32_t decode_count[2];
-float decode_rate[2];
-
 void BoardCom_Decode(FDCAN_HandleTypeDef *pfdhcan, uint32_t stdid, uint8_t rxdata[], uint32_t len)
 {
     if (pfdhcan == BOARD_CAN_HANDLER)
     {
-        decode_count[0]++;
-		decode_rate[0] = decode_count[0] / HAL_GetTick();
+        boardcom_decoded_count = 0;
 		memcpy(BoardCom_RxData, rxdata, len);
 		for (int i = 0; i < CHASSIS_RECEIVE_FROM_GIMBAL_PKG_AMOUNT; i++)
 		{
@@ -125,8 +122,6 @@ void BoardCom_Decode(FDCAN_HandleTypeDef *pfdhcan, uint32_t stdid, uint8_t rxdat
     }
     else if (pfdhcan == CAP_CAN_HANDLER)
     {
-        decode_count[1]++;
-		decode_rate[1] = decode_count[1] / HAL_GetTick();
 		memcpy(BoardCom_RxData, rxdata, len);
 
 		for (int i = 0; i < CHASSIS_RECEIVE_FROM_CAP_PKG_AMOUNT; i++)

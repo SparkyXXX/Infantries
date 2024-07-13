@@ -33,6 +33,7 @@ void Gimbal_Task(void const* argument)
 {
     for(;;)
     {
+		Motor_IsLost(&Motor_gimbalMotorPitch);
         Gimbal_PitchOutput();
         Gimbal_YawModeSet();
 		Check_Task_Freq();
@@ -44,6 +45,7 @@ void Shoot_Task(void const* argument)
 {
     for(;;)
     {
+		Motor_IsLost(&Motor_feederMotor);
         Shoot_Update();
         Heat_Update();
         Shoot_FeederLockedJudge();

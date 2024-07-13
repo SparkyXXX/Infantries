@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-06-02 22:48:00
+ * @LastEditTime: 2024-07-13 13:56:21
  */
 
 #include "config_ctrl.h"
@@ -112,7 +112,7 @@ static void Chassis_CalcGyroRef()
 }
 
 float dead_zone = 0.0f;
-static void Chassis_CalcOmmiFollowRef()
+static void Chassis_CalcOmniFollowRef()
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
 	GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
@@ -151,12 +151,12 @@ static void Chassis_CalcOmmiFollowRef()
 }
 
 /*
- * 限制线速度，平动使用这个
+ * 限制线速度，平动使用这�?
  * @param omega 电机角速度输出数组
  * @param vx x轴线速度
  * @param vy y轴线速度
  * @param wz 期望角速度
- * @param wm 最大角速度
+ * @param wm 最大�?�速度
  */
 void ConstrainedTranslationVelocity(float omega[4], float vx, float vy, float wz, float wm)
 {
@@ -185,11 +185,11 @@ void ConstrainedTranslationVelocity(float omega[4], float vx, float vy, float wz
 }
 
 /*
- * 限制角速度，小陀螺使用这个
+ * 限制角速度，小陀螺使用这�?
  * @param omega 电机角速度输出数组
  * @param vx x轴线速度
  * @param vy y轴线速度
- * @param wm 最大角速度
+ * @param wm 最大�?�速度
  */
 void ConstrainedGyroVelocity(float omega[4], float vx, float vy, float wm)
 {
@@ -220,7 +220,7 @@ static void Chassis_CalcWheelRef()
 	Referee_DataTypeDef *referee = Referee_GetDataPtr();
 	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
 	Cap_DataTypeDef *cap = Cap_GetDataPtr();
-	
+
 	for (int i = 0; i < 4; i++)
 	{
 		chassis->last_wheel_ref[i] = chassis->Chassis_MotorSpdPID[i].fdb;
@@ -259,7 +259,7 @@ static void Chassis_CalcWheelRef()
 			}
 			else if (boardcom->cap_speedup_flag == CAP_SPEEDUP)
 			{
-				ConstrainedTranslationVelocity(chassis->wheel_ref, l_r_ref, f_b_ref, (referee->chassis_power_limit * 0.5 + 200) * gyro_dir, (referee->chassis_power_limit * 0.5 + 250));
+				ConstrainedTranslationVelocity(chassis->wheel_ref, l_r_ref, f_b_ref, (referee->chassis_power_limit * 0.5 + 340) * gyro_dir, (referee->chassis_power_limit * 0.5 + 440));
 			}
 		}
 		break;
@@ -287,7 +287,7 @@ static void Chassis_CalcWheelRef()
  * @retval     NULL
  */
 float PC_Limit = 0.0f;
-void OmmiChassis_Output()
+void OmniChassis_Output()
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
 	Referee_DataTypeDef *referee = Referee_GetDataPtr();
@@ -328,7 +328,7 @@ switch (boardcom->chassis_mode)
 		break;
 	case CHASSIS_NORMAL:
 		Chassis_CalcMoveRef();		 // Headless translation solution
-		Chassis_CalcOmmiFollowRef(); // Chassis following soGYROlution
+		Chassis_CalcOmniFollowRef(); // Chassis following soGYROlution
 		break;
 	case CHASSIS_GYRO:
 		Chassis_CalcMoveRef(); // Headless translation solution
@@ -341,9 +341,9 @@ switch (boardcom->chassis_mode)
 	Chassis_CalcWheelRef();
 	for (int i = 0; i < 4; i++)
 	{
-		PID_SetFdb(&(chassis->Chassis_MotorSpdPID[i]), Motor_ChassisMotors.motor_handle[i]->encoder.speed);		   // 速度环 pid
-		chassis->chassis_I[i] = (PID_Calc(&(chassis->Chassis_MotorSpdPID[i]))) * 20.0f / 16384.0f;					   // 读取电流，单位 A
-		chassis->chassis_W[i] = (Motor_ChassisMotors.motor_handle[i]->encoder.speed * Wheel_Dec_Ratio / 9.549296596425384f); // 读取转速（无减速比），单位 rad/s
+		PID_SetFdb(&(chassis->Chassis_MotorSpdPID[i]), Motor_ChassisMotors.motor_handle[i]->encoder.speed);		   // 速度�? pid
+		chassis->chassis_I[i] = (PID_Calc(&(chassis->Chassis_MotorSpdPID[i]))) * 20.0f / 16384.0f;					   // 读取电流，单�? A
+		chassis->chassis_W[i] = (Motor_ChassisMotors.motor_handle[i]->encoder.speed * Wheel_Dec_Ratio / 9.549296596425384f); // 读取�?速（无减速比），单位 rad/s
 	}
 
 	PC_Limit = referee->chassis_power_limit * PC_Limit_K + PC_Limit_B;
@@ -363,7 +363,18 @@ switch (boardcom->chassis_mode)
 
 	for (int i = 0; i < 4; i++)
 	{
-		Motor_SetOutput(Motor_ChassisMotors.motor_handle[i], chassis->chassis_I[i] / 20.0f * 16384.0f); // 设置输出，注意单位
+		Motor_SetOutput(Motor_ChassisMotors.motor_handle[i], chassis->chassis_I[i] / 20.0f * 16384.0f); // 设置输出，注意单�?
+	}
+	if (boardcom_decoded_count > BOARDCOM_TIMEOUT_VALUE)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			Motor_SetOutput(Motor_ChassisMotors.motor_handle[i], 0.0f);
+		}
+	}
+	else
+	{
+		boardcom_decoded_count++;
 	}
 	Motor_CAN_SendGroupOutput(&Motor_ChassisMotors);
 }

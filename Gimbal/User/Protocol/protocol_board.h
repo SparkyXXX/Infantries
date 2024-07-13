@@ -45,7 +45,8 @@ extern "C"
         BOARDCOM_LOST = 2,
         BOARDCOM_ERROR = 3,
         BOARDCOM_PENDING = 4
-    } BoardCom_StateEnum;
+    }
+                       BoardCom_StateEnum;
 
     typedef struct
     {
@@ -68,10 +69,10 @@ extern "C"
         float chassis_fb_ref;
         float chassis_lr_ref;
         float pitch_angle;
-		uint8_t magazine_state;
+        uint8_t magazine_state;
         uint8_t shooter_state;
         uint8_t auto_shoot_state;
-		float autoaim_yaw_spd_ref;
+        float autoaim_yaw_spd_ref;
 
         // Gimbal Receive from Chassis
         uint8_t robot_id;
@@ -84,22 +85,22 @@ extern "C"
     {
         void (*bus_func)(uint8_t buff[]);
     } Board_SendTableEntryTypeDef;
-	
-	typedef struct
+
+    typedef struct
     {
         uint32_t cmd_id;
         void (*bus_func)(uint8_t buff[]);
     } Board_ReceiveTableEntryTypeDef;
 
-	extern float bullet[5];
-    extern FDCAN_HandleTypeDef *BOARD_CAN_HANDLER;
-    extern FDCAN_HandleTypeDef *CAP_CAN_HANDLER;
+    extern float bullet[5];
+    extern FDCAN_HandleTypeDef* BOARD_CAN_HANDLER;
+    extern FDCAN_HandleTypeDef* CAP_CAN_HANDLER;
 
-    BoardCom_DataTypeDef *BoardCom_GetDataPtr(void);
+    BoardCom_DataTypeDef* BoardCom_GetDataPtr(void);
     void BoardCom_Init(void);
-	void BoardCom_Update(void);
+    void BoardCom_Update(void);
     void BoardComPkg1_Send(void);
-	void BoardComPkg2_Send(void);
+    void BoardComPkg2_Send(void);
     void BoardCom_Decode(uint8_t buff[], uint32_t stdid, uint16_t rxdatalen);
     uint8_t BoardCom_IsLost(void);
 
@@ -107,8 +108,8 @@ extern "C"
     static void _send_imu_yaw(uint8_t buff[]);
     static void _send_chassis_ref(uint8_t buff[]);
     static void _send_ui_state(uint8_t buff[]);
-	static void _receive_referee_data(uint8_t buff[]);
-	
+    static void _receive_referee_data(uint8_t buff[]);
+
 #endif
 
 #ifdef __cplusplus

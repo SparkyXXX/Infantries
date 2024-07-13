@@ -52,14 +52,18 @@ void MiniPC_Send()
 	{
 		bullet_speed = 28 * 100;
 	}
-	if (bullet[0] == bullet[1])
-	{
-		referee_spd = 0;
-	}
-	else
-	{
-		referee_spd = bullet[0] * 100;
-	}
+	
+//	if (bullet[0] == bullet[1])
+//	{
+//		referee_spd = 0;
+//	}
+//	else
+//	{
+//		referee_spd = bullet[0] * 100;
+//	}
+	
+	referee_spd = bullet[0] * 100;
+	
     uint32_t MiniPC_FrameTime = HAL_GetTick() % 60000;
     minipc->state = MINIPC_PENDING;
 

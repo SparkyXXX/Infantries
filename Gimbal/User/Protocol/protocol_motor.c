@@ -9,14 +9,13 @@
 
 #include "protocol_motor.h"
 
-FDCAN_HandleTypeDef *MOTOR_CAN_HANDLER = &hfdcan1;
-
+FDCAN_HandleTypeDef* MOTOR_CAN_HANDLER = &hfdcan1;
 /**
  * @brief      Gimbal motor encoder callback
  * @param      pmotor: Pointer to motor object
  * @retval     NULL
  */
-void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
+void GM6020_Decode(Motor_DataTypeDef* pmotor, uint8_t* rxdata)
 {
     pmotor->encoder.last_angle = pmotor->encoder.angle;
     pmotor->encoder.angle = (float)((int16_t)((uint16_t)rxdata[0] << 8 | (uint16_t)rxdata[1]));
@@ -26,11 +25,11 @@ void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
 
     // Calculate angle difference and number of cycles
     int diff = pmotor->encoder.angle - pmotor->encoder.last_angle; // The increase of mechanical angle is positive
-    if (diff < -5500)
+    if(diff < -5500)
     {
         pmotor->encoder.round_count++;
     }
-    else if (diff > 5500)
+    else if(diff > 5500)
     {
         pmotor->encoder.round_count--;
     }
@@ -49,7 +48,7 @@ void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
  * @retval     NULL
  */
 float angle_diff, last_consequent_angle;
-void M2006_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
+void M2006_Decode(Motor_DataTypeDef* pmotor, uint8_t* rxdata)
 {
     pmotor->encoder.last_angle = pmotor->encoder.angle;
     pmotor->encoder.angle = (float)((int16_t)((uint16_t)rxdata[0] << 8 | (uint16_t)rxdata[1]));
@@ -58,27 +57,33 @@ void M2006_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata)
     pmotor->encoder.temp = rxdata[6];
     // Calculate the angle difference and the number of turns
     int diff = pmotor->encoder.angle - pmotor->encoder.last_angle;
-    if (diff < -5500)
+    if(diff < -5500)
     {
         pmotor->encoder.round_count++;
     }
-    else if (diff > 5500)
+    else if(diff > 5500)
     {
         pmotor->encoder.round_count--;
     }
     // Calculate the shaft angle because the reduction ratio needs to be divided by 36
     pmotor->encoder.consequent_angle = (float)pmotor->encoder.round_count * 10.0f + (float)pmotor->encoder.angle / 8192.0f * 10.0f;
-	angle_diff = Motor_feederMotor.encoder.consequent_angle - last_consequent_angle;
-	last_consequent_angle = Motor_feederMotor.encoder.consequent_angle;
+    angle_diff = Motor_feederMotor.encoder.consequent_angle - last_consequent_angle;
+    last_consequent_angle = Motor_feederMotor.encoder.consequent_angle;
     pmotor->encoder.last_update_time = HAL_GetTick();
 }
 
-void Motor_CAN_Decode(FDCAN_HandleTypeDef *phfdcan, uint32_t stdid, uint8_t rxdata[])
+void Motor_CAN_Decode(FDCAN_HandleTypeDef* phfdcan, uint32_t stdid, uint8_t rxdata[])
 {
-    if (phfdcan == &hfdcan1)
+    if(phfdcan == &hfdcan1)
     {
-		if (stdid == PITCH_CAN_ID) {GM6020_Decode(&Motor_gimbalMotorPitch, rxdata);}
-		if (stdid == FEEDER_CAN_ID) {M2006_Decode(&Motor_feederMotor, rxdata);}
+        if(stdid == PITCH_CAN_ID)
+        {
+            GM6020_Decode(&Motor_gimbalMotorPitch, rxdata);
+        }
+        if(stdid == FEEDER_CAN_ID)
+        {
+            M2006_Decode(&Motor_feederMotor, rxdata);
+        }
     }
 }
 
@@ -87,18 +92,18 @@ void Motor_CAN_Decode(FDCAN_HandleTypeDef *phfdcan, uint32_t stdid, uint8_t rxda
  * @param      pmotor: The pointer points to the motor to be sent
  * @retval     NULL
  */
-void Motor_PWM_SendOutput(MotorPWM_DataTypeDef *pmotor)
+void Motor_PWM_SendOutput(MotorPWM_DataTypeDef* pmotor)
 {
-    if (pmotor == NULL)
+    if(pmotor == NULL)
     {
         return;
     }
-    float duty = MotorPWM_GetOutput(pmotor) * 0.008f + 0.5f;
-    if (duty < 0.5f)
+    float duty = MotorPWM_GetOutput(pmotor) * 0.4 / 50 + 0.5f;
+    if(duty < 0.5f)
     {
         duty = 0.5f;
     }
-    if (duty > 0.9f)
+    if(duty > 0.9f)
     {
         duty = 0.9f;
     }
@@ -111,36 +116,27 @@ void Motor_PWM_SendOutput(MotorPWM_DataTypeDef *pmotor)
  * @param      pmotor: The pointer points to the motor group to be sent
  * @retval     NULL
  **/
-void Motor_PWM_ReadEncoder(MotorPWM_DataTypeDef *pmotor, uint8_t multiple)
+void Motor_PWM_ReadEncoder(MotorPWM_DataTypeDef* pmotor)
 {
-    uint16_t fdb = 0;
-    if (pmotor == NULL)
+    uint32_t temp = 0;
+    if(pmotor == NULL)
     {
         return;
     }
-    pmotor->encoder.direction = __HAL_TIM_IS_TIM_COUNTING_DOWN(pmotor->encoder.htim);
-    pmotor->encoder.counter = __HAL_TIM_GET_COUNTER(pmotor->encoder.htim);
-
-    if (pmotor->encoder.direction == 0)
-    {
-        fdb = pmotor->encoder.counter;
-    }
-    else
-    {
-        fdb = 65535 - pmotor->encoder.counter;
-    }
-    if (fdb == 65535)
-    {
-        fdb = 0;
-    }
+    pmotor->encoder.counter = __HAL_TIM_GET_COUNTER(pmotor->encoder.htim);;
+	temp = pmotor->encoder.counter;
     __HAL_TIM_SET_COUNTER(pmotor->encoder.htim, 0);
-    pmotor->encoder.speed = (float)fdb * 2 * 3.1415926f * 1000 * 0.0235 / (4 * 4096);
+	if (temp > 32768)
+	{
+		temp = 65535 - temp;
+	}
+    pmotor->encoder.speed = (float)temp * 2 * 3.1415926f * 1000 * 0.0235 / 16384;
     // register_counter * (numbers of turns to rads:2 * PI) * (ms_to_s:1000) * (radius:0.0235m) / (4 * 4096 lines)
 }
 
-void Motor_CAN_SendGroupOutput(Motor_GroupDataTypeDef *pgroup)
+void Motor_CAN_SendGroupOutput(Motor_GroupDataTypeDef* pgroup)
 {
-    if (pgroup == NULL)
+    if(pgroup == NULL)
     {
         return;
     }
