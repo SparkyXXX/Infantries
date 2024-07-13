@@ -20,6 +20,7 @@
 #include "periph_cap.h"
 #include "alg_pid.h"
 #include "sys_dwt.h"
+#include "tim.h"
 
 /********** START OF PARAMETER SETTING **********/
 uint8_t CPU_Clock = 170; //(MHz)
@@ -112,6 +113,7 @@ static void Init_AllMotors(void)
 void Init_All(void)
 {
     DWT_Init(CPU_Clock);
+	HAL_TIM_Base_Start_IT(&htim4);
     Referee_Init(&huart2);
     Init_AllMotors();
     BoardCom_Init();

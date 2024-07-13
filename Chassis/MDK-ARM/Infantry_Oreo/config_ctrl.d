@@ -61,4 +61,4 @@ infantry_oreo/config_ctrl.o: ..\User\Infantry\config_ctrl.c \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
   ..\User\Application\app_gimbal.h ..\User\Application\app_ui.h \
   ..\User\Peripheral\periph_cap.h ..\User\Protocol\protocol_motor.h \
-  ..\User\System\sys_dwt.h
+  ..\User\System\sys_dwt.h ..\Core\Inc\tim.h

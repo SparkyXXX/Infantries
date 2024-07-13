@@ -55,6 +55,7 @@ void DebugMon_Handler(void);
 void PVD_PVM_IRQHandler(void);
 void DMA1_Channel3_IRQHandler(void);
 void FDCAN1_IT0_IRQHandler(void);
+void TIM4_IRQHandler(void);
 void USART2_IRQHandler(void);
 void TIM20_UP_IRQHandler(void);
 void FDCAN2_IT0_IRQHandler(void);

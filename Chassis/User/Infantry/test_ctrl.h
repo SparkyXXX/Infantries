@@ -4,8 +4,8 @@
 
 #define FOLLOW 1
 #define NO_FOLLOW 0
-#define IF_FOLLOW FOLLOW
+#define IF_FOLLOW NO_FOLLOW
 
 #define YAW_REMOTE 1
 #define YAW_STEP 0
-#define YAW_MOVE YAW_REMOTE
+#define YAW_MOVE YAW_STEP
