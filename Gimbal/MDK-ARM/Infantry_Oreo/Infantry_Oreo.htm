@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Infantry_Oreo\Infantry_Oreo.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Infantry_Oreo\Infantry_Oreo.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Sat Jul 13 17:18:51 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Sat Jul 13 19:41:28 2024
 <BR><P>
 <H3>Maximum Stack Usage =        744 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1063,9 +1063,9 @@ Global Symbols
 <LI><a href="#[a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_send_imu_yaw
 <LI><a href="#[9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_send_control
 <LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Remote_Chassis_ModeSet
-<LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AutoAim_ShootModeSet
 <LI><a href="#[218]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Remote_AutoaimModeSet
 <LI><a href="#[217]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Remote_Gyro_ModeSet
+<LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AutoAim_ShootModeSet
 <LI><a href="#[213]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Keymouse_ShootModeSet
 <LI><a href="#[215]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Keymouse_Update
 <LI><a href="#[254]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Remote_Update
@@ -3577,7 +3577,7 @@ Global Symbols
 <LI><a href="#[252]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Remote_DriveModeSet
 </UL>
 
-<P><STRONG><a name="[25b]"></a>Shoot_FeederControl</STRONG> (Thumb, 604 bytes, Stack size 32 bytes, app_shoot.o(.text.Shoot_FeederControl))
+<P><STRONG><a name="[25b]"></a>Shoot_FeederControl</STRONG> (Thumb, 588 bytes, Stack size 32 bytes, app_shoot.o(.text.Shoot_FeederControl))
 <BR><BR>[Stack]<UL><LI>Max Depth = 224<LI>Call Chain = Shoot_FeederControl &rArr; PID_Calc &rArr; Filter_Lowpass &rArr; __aeabi_dmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[25c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Shoot_Single
@@ -5831,10 +5831,11 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[252]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Remote_DriveModeSet
 </UL>
 
-<P><STRONG><a name="[255]"></a>Remote_ShootModeSet</STRONG> (Thumb, 86 bytes, Stack size 24 bytes, app_remote.o(.text.Remote_ShootModeSet))
-<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = Remote_ShootModeSet &rArr; Shoot_FeederModeSet &rArr; PID_SetRef
+<P><STRONG><a name="[255]"></a>Remote_ShootModeSet</STRONG> (Thumb, 84 bytes, Stack size 24 bytes, app_remote.o(.text.Remote_ShootModeSet))
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = Remote_ShootModeSet &rArr; AutoAim_ShootModeSet &rArr; Shoot_FeederModeSet &rArr; PID_SetRef
 </UL>
 <BR>[Calls]<UL><LI><a href="#[214]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Remote_GetDataPtr
+<LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AutoAim_ShootModeSet
 <LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Shoot_FeederModeSet
 <LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Shoot_GetControlPtr
 </UL>
@@ -5888,6 +5889,20 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[252]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Remote_DriveModeSet
 </UL>
 
+<P><STRONG><a name="[d5]"></a>AutoAim_ShootModeSet</STRONG> (Thumb, 712 bytes, Stack size 40 bytes, app_remote.o(.text.AutoAim_ShootModeSet))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = AutoAim_ShootModeSet &rArr; Shoot_FeederModeSet &rArr; PID_SetRef
+</UL>
+<BR>[Calls]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MiniPC_GetDataPtr
+<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AutoAim_GetControlPtr
+<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Shoot_FeederModeSet
+<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Shoot_FeederModeForceSet
+<LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BoardCom_GetDataPtr
+<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Shoot_GetControlPtr
+</UL>
+<BR>[Called By]<UL><LI><a href="#[213]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Keymouse_ShootModeSet
+<LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Remote_ShootModeSet
+</UL>
+
 <P><STRONG><a name="[217]"></a>Remote_Gyro_ModeSet</STRONG> (Thumb, 90 bytes, Stack size 16 bytes, app_remote.o(.text.Remote_Gyro_ModeSet))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Remote_Gyro_ModeSet &rArr; Remote_Chassis_ModeSet
 </UL>
@@ -5912,19 +5927,6 @@ Local Symbols
 <BR>[Calls]<UL><LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Remote_GetControlPtr
 </UL>
 <BR>[Called By]<UL><LI><a href="#[215]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Keymouse_Update
-</UL>
-
-<P><STRONG><a name="[d5]"></a>AutoAim_ShootModeSet</STRONG> (Thumb, 712 bytes, Stack size 40 bytes, app_remote.o(.text.AutoAim_ShootModeSet))
-<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = AutoAim_ShootModeSet &rArr; Shoot_FeederModeSet &rArr; PID_SetRef
-</UL>
-<BR>[Calls]<UL><LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MiniPC_GetDataPtr
-<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AutoAim_GetControlPtr
-<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Shoot_FeederModeSet
-<LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Shoot_FeederModeForceSet
-<LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BoardCom_GetDataPtr
-<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Shoot_GetControlPtr
-</UL>
-<BR>[Called By]<UL><LI><a href="#[213]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Keymouse_ShootModeSet
 </UL>
 
 <P><STRONG><a name="[11d]"></a>Remote_Chassis_ModeSet</STRONG> (Thumb, 60 bytes, Stack size 16 bytes, app_remote.o(.text.Remote_Chassis_ModeSet))

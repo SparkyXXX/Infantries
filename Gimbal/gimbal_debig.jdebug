@@ -33,6 +33,7 @@ void OnProjectLoad (void) {
   //
   // User settings
   //
+  Edit.SysVar (VAR_HSS_SPEED, BP_STATE_OFF);
   File.Open ("$(ProjectDir)/MDK-ARM/Infantry_Oreo/Infantry_Oreo.axf");
 }
 
