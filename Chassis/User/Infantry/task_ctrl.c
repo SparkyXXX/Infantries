@@ -30,6 +30,7 @@ void Chassis_Task(void const *argument)
 		Motor_IsLost(&Motor_ForwardRight);
 		Motor_IsLost(&Motor_BackwardRight);
 		Motor_IsLost(&Motor_BackwardLeft);
+		Calc_ChassisVel(wheelvel, Vx, Vy, Wm, 0.076f, 0.223f);
         OmniChassis_Output();
         osDelay(1);
     }

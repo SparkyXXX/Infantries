@@ -378,3 +378,17 @@ switch (boardcom->chassis_mode)
 	}
 	Motor_CAN_SendGroupOutput(&Motor_ChassisMotors);
 }
+
+float wheelvel[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+float Vx = 0.0f, Vy = 0.0f, Wm = 0.0f;
+void Calc_ChassisVel(float omega[4], float vx, float vy, float wm, float r, float R)
+{
+	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
+	for (int i = 0; i < 4; i++)
+	{
+		omega[i] = chassis->Chassis_MotorSpdPID[i].fdb;
+	}
+	vx = 0.25 * 1.414f * r * (omega[0] - omega[1] - omega[2] + omega[3]) * 0.10472f;  // m/s
+	vy = 0.25 * 1.414f * r * (omega[0] + omega[1] - omega[2] - omega[3]) * 0.10472f; // m/s
+	wm = 0.25 * r / R * (omega[0] + omega[1] + omega[2] + omega[3]) * 0.10472f; // rad/s (1 rpm = 0.10472 rad/s)
+}
