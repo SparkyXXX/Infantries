@@ -1,6 +1,6 @@
 infantry_oreo/app_gimbal.o: ..\User\Application\app_gimbal.c \
-  ..\User\Infantry\config_ctrl.h ..\User\Peripheral\periph_motor_can.h \
-  ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h ..\Core\Inc\main.h \
+  ..\User\Application\app_gimbal.h ..\User\Algorithm\alg_pid.h \
+  ..\User\Library\lib_math.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h \
   ..\Core\Inc\stm32g4xx_hal_conf.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h \
@@ -35,8 +35,7 @@ infantry_oreo/app_gimbal.o: ..\User\Application\app_gimbal.c \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
-  ..\User\Application\app_gimbal.h ..\User\Algorithm\alg_pid.h \
-  ..\User\Library\lib_math.h ..\Drivers\CMSIS\DSP\Include\arm_math.h \
+  ..\Drivers\CMSIS\DSP\Include\arm_math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\float.h \
@@ -56,4 +55,6 @@ infantry_oreo/app_gimbal.o: ..\User\Application\app_gimbal.c \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
+  ..\User\Infantry\config_ctrl.h ..\User\Peripheral\periph_motor_can.h \
+  ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h ..\Core\Inc\main.h \
   ..\User\Protocol\protocol_motor.h

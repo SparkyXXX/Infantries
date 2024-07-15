@@ -34,5 +34,5 @@ infantry_oreo/stm32g4xx_it.o: ..\Core\Src\stm32g4xx_it.c \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
   ..\Core\Inc\stm32g4xx_it.h ..\User\Infantry\callback_ctrl.h \
-  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
-  ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h
+  ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h \
+  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h

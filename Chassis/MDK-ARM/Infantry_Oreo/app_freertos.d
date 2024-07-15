@@ -47,15 +47,15 @@ infantry_oreo/app_freertos.o: ..\Core\Src\app_freertos.c \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
-  ..\User\Application\app_chassis.h ..\User\Infantry\config_ctrl.h \
-  ..\User\Peripheral\periph_motor_can.h ..\User\Utility\util_fdcan.h \
-  ..\Core\Inc\fdcan.h ..\User\Protocol\protocol_referee.h \
-  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
-  ..\User\Protocol\protocol_board.h ..\User\Algorithm\alg_pid.h \
+  ..\User\Application\app_chassis.h ..\User\Algorithm\alg_pid.h \
   ..\User\Library\lib_math.h ..\Drivers\CMSIS\DSP\Include\arm_math.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\float.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \
   ..\User\Library\lib_filter.h ..\User\Library\lib_power_ctrl.h \
+  ..\User\Protocol\protocol_board.h ..\User\Protocol\protocol_referee.h \
+  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
+  ..\User\Infantry\config_ctrl.h ..\User\Peripheral\periph_motor_can.h \
+  ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h \
   ..\User\Application\app_gimbal.h ..\User\Peripheral\periph_cap.h

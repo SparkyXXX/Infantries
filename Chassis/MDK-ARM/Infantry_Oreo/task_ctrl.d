@@ -38,14 +38,13 @@ infantry_oreo/task_ctrl.o: ..\User\Infantry\task_ctrl.c \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
   ..\User\Infantry\callback_ctrl.h ..\User\Utility\util_uart.h \
   ..\Core\Inc\usart.h ..\User\Application\app_chassis.h \
-  ..\User\Protocol\protocol_referee.h \
+  ..\User\Algorithm\alg_pid.h ..\User\Library\lib_math.h \
+  ..\Drivers\CMSIS\DSP\Include\arm_math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
-  ..\User\Protocol\protocol_board.h ..\User\Algorithm\alg_pid.h \
-  ..\User\Library\lib_math.h ..\Drivers\CMSIS\DSP\Include\arm_math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\float.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \
-  ..\User\Library\lib_filter.h ..\User\Library\lib_power_ctrl.h \
+  ..\User\Library\lib_filter.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
   ..\Core\Inc\FreeRTOSConfig.h \
@@ -60,5 +59,6 @@ infantry_oreo/task_ctrl.o: ..\User\Infantry\task_ctrl.c \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
-  ..\User\Application\app_gimbal.h ..\User\Application\app_ui.h \
-  ..\User\Peripheral\periph_cap.h
+  ..\User\Library\lib_power_ctrl.h ..\User\Protocol\protocol_board.h \
+  ..\User\Protocol\protocol_referee.h ..\User\Application\app_gimbal.h \
+  ..\User\Application\app_ui.h ..\User\Peripheral\periph_cap.h

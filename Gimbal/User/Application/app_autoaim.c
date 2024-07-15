@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-04-20 01:41:34
+ * @LastEditors: Hatrix 3113624526@qq.com
+ * @LastEditTime: 2024-07-15 22:18:37
  */
 
 #include "app_autoaim.h"
@@ -47,8 +47,8 @@ void AutoAim_Output()
     {
         if (autoaim->hit_mode == AUTOAIM_HIT_ARMOR)
         {
-			Feeder_Fast_Speed = Armor_Feeder_Fast_Speed;
-			Feeder_Slow_Speed = Armor_Feeder_Slow_Speed;
+            Feeder_Fast_Speed = Armor_Feeder_Fast_Speed;
+            Feeder_Slow_Speed = Armor_Feeder_Slow_Speed;
             autoaim->armor_yaw = -(float)minipc->yaw_ref / 100;
             autoaim->armor_pitch = -(float)minipc->pitch_ref / 100;
             LimitMaxMin(autoaim->armor_pitch, Elevation_Angle, Depression_Angle);
@@ -68,8 +68,8 @@ void AutoAim_Output()
         }
         else if (autoaim->hit_mode == AUTOAIM_HIT_BUFF)
         {
-			Feeder_Fast_Speed = Buff_Feeder_Fast_Speed;
-			Feeder_Slow_Speed = Buff_Feeder_Slow_Speed;
+            Feeder_Fast_Speed = Buff_Feeder_Fast_Speed;
+            Feeder_Slow_Speed = Buff_Feeder_Slow_Speed;
             autoaim->buff_yaw = -(float)minipc->buff_yaw / 100;
             autoaim->buff_pitch = -(float)minipc->buff_pitch / 100;
             LimitMaxMin(autoaim->buff_pitch, Elevation_Angle, Depression_Angle);
@@ -88,11 +88,11 @@ void AutoAim_Output()
             }
         }
     }
-	else
-	{
-		Feeder_Fast_Speed = Armor_Feeder_Fast_Speed;
-		Feeder_Slow_Speed = Armor_Feeder_Slow_Speed;
-	}
+    else
+    {
+        Feeder_Fast_Speed = Armor_Feeder_Fast_Speed;
+        Feeder_Slow_Speed = Armor_Feeder_Slow_Speed;
+    }
 }
 
 /**
@@ -110,16 +110,16 @@ void AutoAim_ModeSet(AutoAim_ModeEnum mode)
 
 void AutoAim_UpdateTime()
 {
-	AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
-	MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
-	if (minipc->is_get_target == 0)
-	{
-		return;
-	}
-	else
-	{
-		autoaim->get_target_time = HAL_GetTick();
-	}
+    AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
+    MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
+    if (minipc->is_get_target == 0)
+    {
+        return;
+    }
+    else
+    {
+        autoaim->get_target_time = HAL_GetTick();
+    }
 }
 
 /**

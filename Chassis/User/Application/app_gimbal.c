@@ -3,14 +3,15 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-04-20 00:38:01
+ * @LastEditors: Hatrix 3113624526@qq.com
+ * @LastEditTime: 2024-07-16 01:29:53
  */
- 
-#include "config_ctrl.h"
+
 #include "app_gimbal.h"
-#include "protocol_motor.h"
+
+#include "config_ctrl.h"
 #include "lib_math.h"
+#include "protocol_motor.h"
 
 GimbalYaw_ControlTypeDef GimbalYaw_Control;
 
@@ -81,7 +82,9 @@ void GimbalYaw_Output()
     {
     case GimbalYaw_NO_AUTO:
         PID_SetRef(&gimbalyaw->pos_no_auto, gimbalyaw->yaw_ref);
-        PID_SetFdb(&gimbalyaw->pos_no_auto, Math_Consequent_To_180(gimbalyaw->yaw_ref, gimbalyaw->yaw_position_fdb));
+        PID_SetFdb(&gimbalyaw->pos_no_auto,
+                   Math_Consequent_To_180(gimbalyaw->yaw_ref,
+                                          gimbalyaw->yaw_position_fdb));
         PID_SetRef(&gimbalyaw->spd_no_auto, PID_Calc(&gimbalyaw->pos_no_auto));
         PID_SetFdb(&gimbalyaw->spd_no_auto, gimbalyaw->yaw_speed_fdb);
         Motor_SetOutput(&Motor_GimbalYaw, PID_Calc(&gimbalyaw->spd_no_auto));
@@ -89,7 +92,9 @@ void GimbalYaw_Output()
         break;
     case GimbalYaw_ARMOR:
         PID_SetRef(&gimbalyaw->pos_armor, gimbalyaw->yaw_ref);
-        PID_SetFdb(&gimbalyaw->pos_armor, Math_Consequent_To_180(gimbalyaw->yaw_ref, gimbalyaw->yaw_position_fdb));
+        PID_SetFdb(&gimbalyaw->pos_armor,
+                   Math_Consequent_To_180(gimbalyaw->yaw_ref,
+                                          gimbalyaw->yaw_position_fdb));
         PID_SetRef(&gimbalyaw->spd_armor, PID_Calc(&gimbalyaw->pos_armor));
         PID_SetFdb(&gimbalyaw->spd_armor, gimbalyaw->yaw_speed_fdb);
         Motor_SetOutput(&Motor_GimbalYaw, PID_Calc(&gimbalyaw->spd_armor));
@@ -97,16 +102,22 @@ void GimbalYaw_Output()
         break;
     case GimbalYaw_BIG_ENERGY:
         PID_SetRef(&gimbalyaw->pos_big_energy, gimbalyaw->yaw_ref);
-        PID_SetFdb(&gimbalyaw->pos_big_energy, Math_Consequent_To_180(gimbalyaw->yaw_ref, gimbalyaw->yaw_position_fdb));
-        PID_SetRef(&gimbalyaw->spd_big_energy, PID_Calc(&gimbalyaw->pos_big_energy));
+        PID_SetFdb(&gimbalyaw->pos_big_energy,
+                   Math_Consequent_To_180(gimbalyaw->yaw_ref,
+                                          gimbalyaw->yaw_position_fdb));
+        PID_SetRef(&gimbalyaw->spd_big_energy,
+                   PID_Calc(&gimbalyaw->pos_big_energy));
         PID_SetFdb(&gimbalyaw->spd_big_energy, gimbalyaw->yaw_speed_fdb);
         Motor_SetOutput(&Motor_GimbalYaw, PID_Calc(&gimbalyaw->spd_big_energy));
         yaw_pos_error_watch = gimbalyaw->pos_big_energy.err_watch;
         break;
     case GimbalYaw_SMALL_ENERGY:
         PID_SetRef(&gimbalyaw->pos_small_energy, gimbalyaw->yaw_ref);
-        PID_SetFdb(&gimbalyaw->pos_small_energy, Math_Consequent_To_180(gimbalyaw->yaw_ref, gimbalyaw->yaw_position_fdb));
-        PID_SetRef(&gimbalyaw->spd_small_energy, PID_Calc(&gimbalyaw->pos_small_energy));
+        PID_SetFdb(&gimbalyaw->pos_small_energy,
+                   Math_Consequent_To_180(gimbalyaw->yaw_ref,
+                                          gimbalyaw->yaw_position_fdb));
+        PID_SetRef(&gimbalyaw->spd_small_energy,
+                   PID_Calc(&gimbalyaw->pos_small_energy));
         PID_SetFdb(&gimbalyaw->spd_small_energy, gimbalyaw->yaw_speed_fdb);
         Motor_SetOutput(&Motor_GimbalYaw, PID_Calc(&gimbalyaw->spd_small_energy));
         yaw_pos_error_watch = gimbalyaw->pos_small_energy.err_watch;

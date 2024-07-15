@@ -44,7 +44,7 @@ infantry_oreo/protocol_board.o: ..\User\Protocol\protocol_board.c \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\float.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \
-  ..\User\Library\lib_filter.h ..\User\Library\lib_power_ctrl.h \
+  ..\User\Library\lib_filter.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
   ..\Core\Inc\FreeRTOSConfig.h \
@@ -59,4 +59,5 @@ infantry_oreo/protocol_board.o: ..\User\Protocol\protocol_board.c \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
-  ..\User\Application\app_gimbal.h ..\User\Library\lib_buff.h
+  ..\User\Library\lib_power_ctrl.h ..\User\Application\app_gimbal.h \
+  ..\User\Library\lib_buff.h

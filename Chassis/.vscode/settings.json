@@ -1,0 +1,54 @@
+{
+  "files.autoSave": "onFocusChange",
+  "editor.fontSize": 18,
+  "editor.tabCompletion": "on",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "always"
+  },
+  "workbench.iconTheme": "vscode-icons",
+  "explorer.confirmDelete": false,
+  "projectManager.git.baseFolders": [
+    "",
+    "F:\\RM Code\\infantries\\Gimbal",
+    "F:\\RM Code\\infantries\\Chassis"
+  ],
+  "workbench.startupEditor": "none",
+  "workbench.colorTheme": "GitHub Dark",
+  "files.autoGuessEncoding": true,
+  "explorer.confirmDragAndDrop": false,
+  "Codegeex.Privacy": true,
+  "editor.formatOnSave": true,
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#fa1b49",
+    "activityBar.background": "#fa1b49",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#155e02",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "commandCenter.border": "#e7e7e799",
+    "sash.hoverBorder": "#fa1b49",
+    "statusBar.background": "#dd0531",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#fa1b49",
+    "statusBarItem.remoteBackground": "#dd0531",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#dd0531",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#dd053199",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "peacock.color": "#dd0531",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[cpp]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "[c]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "files.associations": {
+    "util_fdcan.h": "c",
+    "util_uart.h": "c",
+    "protocol_referee.h": "c",
+    "stm32g4xx_hal.h": "c"
+  }
+}

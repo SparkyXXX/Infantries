@@ -40,11 +40,8 @@ infantry_oreo/app_ui.o: ..\User\Application\app_ui.cpp \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
   ..\User\Peripheral\periph_cap.h ..\User\Application\app_chassis.h \
-  ..\User\Infantry\config_ctrl.h ..\User\Peripheral\periph_motor_can.h \
-  ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h ..\Core\Inc\main.h \
-  ..\User\Protocol\protocol_referee.h ..\User\Utility\util_uart.h \
-  ..\Core\Inc\usart.h ..\User\Algorithm\alg_pid.h \
-  ..\User\Library\lib_math.h ..\Drivers\CMSIS\DSP\Include\arm_math.h \
+  ..\User\Algorithm\alg_pid.h ..\User\Library\lib_math.h \
+  ..\Drivers\CMSIS\DSP\Include\arm_math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\promote.h \
@@ -185,7 +182,7 @@ infantry_oreo/app_ui.o: ..\User\Application\app_ui.cpp \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\float.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\float.h \
-  ..\User\Library\lib_filter.h ..\User\Library\lib_power_ctrl.h \
+  ..\User\Library\lib_filter.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
   ..\Core\Inc\FreeRTOSConfig.h \
@@ -200,6 +197,8 @@ infantry_oreo/app_ui.o: ..\User\Application\app_ui.cpp \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
+  ..\User\Library\lib_power_ctrl.h ..\User\Protocol\protocol_referee.h \
+  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h ..\Core\Inc\main.h \
   ..\User\Application\app_gimbal.h ..\User\Library\lib_ui.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\list \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__algorithm\comp.h \

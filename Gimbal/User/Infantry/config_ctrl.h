@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-03-18 12:07:39
+ * @LastEditors: Hatrix 3113624526@qq.com
+ * @LastEditTime: 2024-07-15 22:11:57
  */
 
 #ifndef INIT_CTRL_H
@@ -56,7 +56,7 @@ extern "C"
     extern float pitch_pos_ref_watch;
     extern float pitch_pos_fdb_watch;
     extern float pitch_pos_error_watch;
-	extern uint8_t infantry_id;
+    extern uint8_t infantry_id;
 
     void Gimbal_ParamInit(void);
     void Shoot_ParamInit(void);

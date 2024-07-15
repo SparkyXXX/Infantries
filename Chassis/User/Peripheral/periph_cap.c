@@ -44,7 +44,6 @@ void Cap_Update(void)
     cap->sum_current = boardcom->cap_current;
     cap->mode = boardcom->cap_mode_user;
 	realtime_power_watch = cap->sum_power;
-	rest_energy_watch = cap->rest_energy;
 	if (referee->game_progress == 4) // 4表示比赛进行中
 	{
 		cap->SD_flag = 1;

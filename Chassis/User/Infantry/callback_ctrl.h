@@ -4,7 +4,7 @@
  * @Author: Hatrix
  * @Date: 2023-11-07 14:28:30
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-01-14 22:46:42
+ * @LastEditTime: 2024-07-16 01:33:30
  */
 
 #ifndef CALLBACK_CTRL_H
@@ -15,8 +15,8 @@ extern "C"
 {
 #endif
 
-#include "util_uart.h"
 #include "util_fdcan.h"
+#include "util_uart.h"
 
 #define REFEREE_RX_BUFF_LEN 500
 #define FDCAN_RX_DATA 200
