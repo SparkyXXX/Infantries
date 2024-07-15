@@ -44,9 +44,7 @@ infantry_oreo/app_gimbal.o: ..\User\Application\app_gimbal.c \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \
   ..\User\Library\lib_filter.h ..\User\Protocol\protocol_board.h \
   ..\User\Protocol\protocol_motor.h ..\User\System\sys_dwt.h \
-  ..\User\Application\app_chassis.h ..\User\Protocol\protocol_referee.h \
-  ..\User\Infantry\callback_ctrl.h ..\User\Utility\util_uart.h \
-  ..\Core\Inc\usart.h ..\User\Library\lib_power_ctrl.h \
+  ..\User\Application\app_chassis.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
   ..\Core\Inc\FreeRTOSConfig.h \
@@ -60,4 +58,7 @@ infantry_oreo/app_gimbal.o: ..\User\Application\app_gimbal.c \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\timers.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
+  ..\User\Library\lib_power_ctrl.h ..\User\Protocol\protocol_referee.h \
+  ..\User\Infantry\callback_ctrl.h ..\User\Utility\util_uart.h \
+  ..\Core\Inc\usart.h

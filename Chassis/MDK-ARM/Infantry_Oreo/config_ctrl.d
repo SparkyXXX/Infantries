@@ -36,15 +36,13 @@ infantry_oreo/config_ctrl.o: ..\User\Infantry\config_ctrl.c \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
-  ..\User\Application\app_chassis.h ..\User\Protocol\protocol_referee.h \
-  ..\User\Infantry\callback_ctrl.h ..\User\Utility\util_uart.h \
-  ..\Core\Inc\usart.h D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
-  ..\User\Protocol\protocol_board.h ..\User\Algorithm\alg_pid.h \
+  ..\User\Application\app_chassis.h ..\User\Algorithm\alg_pid.h \
   ..\User\Library\lib_math.h ..\Drivers\CMSIS\DSP\Include\arm_math.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\float.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \
-  ..\User\Library\lib_filter.h ..\User\Library\lib_power_ctrl.h \
+  ..\User\Library\lib_filter.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
   ..\Core\Inc\FreeRTOSConfig.h \
@@ -59,6 +57,9 @@ infantry_oreo/config_ctrl.o: ..\User\Infantry\config_ctrl.c \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
+  ..\User\Library\lib_power_ctrl.h ..\User\Protocol\protocol_board.h \
+  ..\User\Protocol\protocol_referee.h ..\User\Infantry\callback_ctrl.h \
+  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
   ..\User\Application\app_gimbal.h ..\User\Application\app_ui.h \
   ..\User\Peripheral\periph_cap.h ..\User\Protocol\protocol_motor.h \
   ..\User\System\sys_dwt.h ..\Core\Inc\tim.h

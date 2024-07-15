@@ -15,8 +15,8 @@ extern "C"
 {
 #endif
 
-#include "util_uart.h"
 #include "util_fdcan.h"
+#include "util_uart.h"
 
 #define REFEREE_RX_BUFF_LEN 500
 #define FDCAN_RX_DATA 200

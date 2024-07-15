@@ -15,6 +15,7 @@ extern "C"
 {
 #endif
 
+#include "config_ctrl.h"
 #include "protocol_board.h"
 #include "periph_cap.h"
 	

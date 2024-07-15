@@ -3,18 +3,18 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-13 13:56:21
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-16 01:55:04
  */
 
-#include "config_ctrl.h"
 #include "app_chassis.h"
 #include "app_gimbal.h"
-#include "protocol_referee.h"
-#include "protocol_motor.h"
+#include "config_ctrl.h"
 #include "lib_math.h"
-#include "periph_motor_can.h"
 #include "periph_cap.h"
+#include "periph_motor_can.h"
+#include "protocol_motor.h"
+#include "protocol_referee.h"
 
 Chassis_ControlTypeDef Chassis_Control;
 
@@ -151,12 +151,12 @@ static void Chassis_CalcOmniFollowRef()
 }
 
 /*
- * 限制线速度，平动使用这�?
+ * 限制线速度，平动使用这�?
  * @param omega 电机角速度输出数组
  * @param vx x轴线速度
  * @param vy y轴线速度
  * @param wz 期望角速度
- * @param wm 最大�?�速度
+ * @param wm 最大�?�速度
  */
 void ConstrainedTranslationVelocity(float omega[4], float vx, float vy, float wz, float wm)
 {
@@ -185,11 +185,11 @@ void ConstrainedTranslationVelocity(float omega[4], float vx, float vy, float wz
 }
 
 /*
- * 限制角速度，小陀螺使用这�?
+ * 限制角速度，小陀螺使用这�?
  * @param omega 电机角速度输出数组
  * @param vx x轴线速度
  * @param vy y轴线速度
- * @param wm 最大�?�速度
+ * @param wm 最大�?�速度
  */
 void ConstrainedGyroVelocity(float omega[4], float vx, float vy, float wm)
 {
@@ -268,17 +268,18 @@ static void Chassis_CalcWheelRef()
 	}
 	if (cap->rest_energy < 25)
 	{
-			for (int i = 0; i < 4; i++)
-	{
-		PID_SetRef(&(chassis->Chassis_MotorSpdPID[i]), 0.0);
-	}
+		for (int i = 0; i < 4; i++)
+		{
+			PID_SetRef(&(chassis->Chassis_MotorSpdPID[i]), 0.0);
+		}
 	}
 	else
 	{
-	for (int i = 0; i < 4; i++)
-	{
-		PID_SetRef(&(chassis->Chassis_MotorSpdPID[i]), chassis->wheel_ref[i]);
-	}}
+		for (int i = 0; i < 4; i++)
+		{
+			PID_SetRef(&(chassis->Chassis_MotorSpdPID[i]), chassis->wheel_ref[i]);
+		}
+	}
 }
 
 /**
@@ -293,29 +294,29 @@ void OmniChassis_Output()
 	Referee_DataTypeDef *referee = Referee_GetDataPtr();
 	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
 	Cap_DataTypeDef *cap = Cap_GetDataPtr();
-switch (boardcom->chassis_mode)
-    {
-    case CHASSIS_CTRL_STOP:
-    {
-        Chassis_ModeSet(CHASSIS_STOP);
-        Chassis_SetMoveRef(0, 0);
-        break;
-    }
-    case CHASSIS_CTRL_NORMAL:
-    {
-        Chassis_ModeSet(CHASSIS_NORMAL);
-        Chassis_SetMoveRef(boardcom->chassis_fb_ref, boardcom->chassis_lr_ref);
-        break;
-    }
-    case CHASSIS_CTRL_GYRO:
-    {
-        Chassis_ModeSet(CHASSIS_GYRO);
-        Chassis_SetMoveRef(boardcom->chassis_fb_ref, boardcom->chassis_lr_ref);
-        break;
-    }
-    default:
-        return;
-    }
+	switch (boardcom->chassis_mode)
+	{
+	case CHASSIS_CTRL_STOP:
+	{
+		Chassis_ModeSet(CHASSIS_STOP);
+		Chassis_SetMoveRef(0, 0);
+		break;
+	}
+	case CHASSIS_CTRL_NORMAL:
+	{
+		Chassis_ModeSet(CHASSIS_NORMAL);
+		Chassis_SetMoveRef(boardcom->chassis_fb_ref, boardcom->chassis_lr_ref);
+		break;
+	}
+	case CHASSIS_CTRL_GYRO:
+	{
+		Chassis_ModeSet(CHASSIS_GYRO);
+		Chassis_SetMoveRef(boardcom->chassis_fb_ref, boardcom->chassis_lr_ref);
+		break;
+	}
+	default:
+		return;
+	}
 	switch (chassis->present_mode)
 	{
 	case CHASSIS_STOP:
@@ -341,9 +342,9 @@ switch (boardcom->chassis_mode)
 	Chassis_CalcWheelRef();
 	for (int i = 0; i < 4; i++)
 	{
-		PID_SetFdb(&(chassis->Chassis_MotorSpdPID[i]), Motor_ChassisMotors.motor_handle[i]->encoder.speed);		   // 速度�? pid
-		chassis->chassis_I[i] = (PID_Calc(&(chassis->Chassis_MotorSpdPID[i]))) * 20.0f / 16384.0f;					   // 读取电流，单�? A
-		chassis->chassis_W[i] = (Motor_ChassisMotors.motor_handle[i]->encoder.speed * Wheel_Dec_Ratio / 9.549296596425384f); // 读取�?速（无减速比），单位 rad/s
+		PID_SetFdb(&(chassis->Chassis_MotorSpdPID[i]), Motor_ChassisMotors.motor_handle[i]->encoder.speed);					 // 速度�? pid
+		chassis->chassis_I[i] = (PID_Calc(&(chassis->Chassis_MotorSpdPID[i]))) * 20.0f / 16384.0f;							 // 读取电流，单�? A
+		chassis->chassis_W[i] = (Motor_ChassisMotors.motor_handle[i]->encoder.speed * Wheel_Dec_Ratio / 9.549296596425384f); // 读取�?速（无减速比），单位 rad/s
 	}
 
 	PC_Limit = referee->chassis_power_limit * PC_Limit_K + PC_Limit_B;
@@ -363,7 +364,7 @@ switch (boardcom->chassis_mode)
 
 	for (int i = 0; i < 4; i++)
 	{
-		Motor_SetOutput(Motor_ChassisMotors.motor_handle[i], chassis->chassis_I[i] / 20.0f * 16384.0f); // 设置输出，注意单�?
+		Motor_SetOutput(Motor_ChassisMotors.motor_handle[i], chassis->chassis_I[i] / 20.0f * 16384.0f); // 设置输出，注意单�?
 	}
 	if (boardcom_decoded_count > BOARDCOM_TIMEOUT_VALUE)
 	{
@@ -388,7 +389,7 @@ void Calc_ChassisVel(float omega[4], float vx, float vy, float wm, float r, floa
 	{
 		omega[i] = chassis->Chassis_MotorSpdPID[i].fdb;
 	}
-	vx = 0.25 * 1.414f * r * (omega[0] - omega[1] - omega[2] + omega[3]) * 0.10472f;  // m/s
+	vx = 0.25 * 1.414f * r * (omega[0] - omega[1] - omega[2] + omega[3]) * 0.10472f; // m/s
 	vy = 0.25 * 1.414f * r * (omega[0] + omega[1] - omega[2] - omega[3]) * 0.10472f; // m/s
-	wm = 0.25 * r / R * (omega[0] + omega[1] + omega[2] + omega[3]) * 0.10472f; // rad/s (1 rpm = 0.10472 rad/s)
+	wm = 0.25 * r / R * (omega[0] + omega[1] + omega[2] + omega[3]) * 0.10472f;		 // rad/s (1 rpm = 0.10472 rad/s)
 }
