@@ -29,8 +29,10 @@ extern "C"
         TIM_HandleTypeDef *htim;
         uint32_t ch;
         uint8_t direction;
-        uint32_t counter;
+        uint16_t counter;
+        uint16_t last_counter;
         uint32_t last_update_time;
+        uint32_t diff_tick;
     } EncoderPWM_DataTypeDef;
 
     typedef struct

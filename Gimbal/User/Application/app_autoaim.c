@@ -20,7 +20,6 @@ void AutoAim_Output()
     AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
     MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
     Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();
-
     if (gimbal->present_mode != GIMBAL_NO_AUTO)
     {
         if (autoaim->hit_mode == AUTOAIM_HIT_ARMOR)
