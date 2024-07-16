@@ -198,8 +198,8 @@ infantry_oreo/app_chassis.o: ..\User\Application\app_chassis.cpp \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
   ..\User\Library\lib_power_ctrl.h ..\User\Protocol\protocol_board.h \
   ..\User\Protocol\protocol_referee.h ..\User\Infantry\callback_ctrl.h \
-  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h ..\Core\Inc\main.h \
-  ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h \
+  ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h ..\Core\Inc\main.h \
+  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
   ..\User\Application\app_gimbal.h ..\User\Infantry\config_ctrl.h \
   ..\User\Infantry\test_ctrl.h ..\User\Peripheral\periph_motor_can.h \
   ..\User\Peripheral\periph_cap.h ..\User\Protocol\protocol_motor.h

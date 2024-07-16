@@ -3651,9 +3651,9 @@
       </Doc>
       <Doc>
         <Name>..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_fdcan.h</Name>
-        <ColumnNumber>15</ColumnNumber>
-        <TopLine>10</TopLine>
-        <CurrentLine>30</CurrentLine>
+        <ColumnNumber>21</ColumnNumber>
+        <TopLine>19</TopLine>
+        <CurrentLine>36</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>

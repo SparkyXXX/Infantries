@@ -1,6 +1,6 @@
 infantry_oreo/callback_ctrl.o: ..\User\Infantry\callback_ctrl.c \
-  ..\User\Infantry\callback_ctrl.h ..\User\Utility\util_uart.h \
-  ..\Core\Inc\usart.h ..\Core\Inc\main.h \
+  ..\User\Infantry\callback_ctrl.h ..\User\Utility\util_fdcan.h \
+  ..\Core\Inc\fdcan.h ..\Core\Inc\main.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h \
   ..\Core\Inc\stm32g4xx_hal_conf.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h \
@@ -35,9 +35,9 @@ infantry_oreo/callback_ctrl.o: ..\User\Infantry\callback_ctrl.c \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
-  ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h \
-  ..\User\Protocol\protocol_motor.h \
-  ..\User\Peripheral\periph_motor_can.h \
+  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
   ..\User\Protocol\protocol_board.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
+  ..\User\Protocol\protocol_motor.h \
+  ..\User\Peripheral\periph_motor_can.h \
   ..\User\Protocol\protocol_referee.h

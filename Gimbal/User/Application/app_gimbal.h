@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-03-06 00:41:23
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-16 16:23:34
  */
 
 #ifndef APP_GIMBAL_H
@@ -15,9 +15,8 @@ extern "C"
 {
 #endif
 
-#include "config_ctrl.h"
-#include "app_ins.h"
 #include "alg_pid.h"
+#include "app_ins.h"
 #include "cmsis_os.h"
 #include "config_ctrl.h"
 

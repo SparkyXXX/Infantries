@@ -4,12 +4,12 @@
  * @Author: Hatrix
  * @Date: 2023-11-07 14:28:30
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-01-15 00:41:13
+ * @LastEditTime: 2024-07-16 02:34:11
  */
 
 #include "callback_ctrl.h"
-#include "protocol_motor.h"
 #include "protocol_board.h"
+#include "protocol_motor.h"
 #include "protocol_referee.h"
 
 static FDCAN_RxHeaderTypeDef FDCAN_RxHeader;

@@ -544,5 +544,7 @@ infantry_oreo/lib_power_ctrl.o: ..\User\Library\lib_power_ctrl.cpp \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__memory\shared_ptr.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__functional\reference_wrapper.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__functional\weak_result_type.h \
-  D:\Keil\ARM\Pack\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h \
-  D:\Keil\ARM\Pack\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armclang.h
+  ..\Drivers\CMSIS\Include\cmsis_compiler.h \
+  ..\Drivers\CMSIS\Include\cmsis_armclang.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\arm_compat.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\arm_acle.h

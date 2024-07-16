@@ -36,13 +36,13 @@ infantry_oreo/config_ctrl.o: ..\User\Infantry\config_ctrl.c \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
-  ..\User\Application\app_chassis.h ..\User\Algorithm\alg_pid.h \
-  ..\User\Library\lib_math.h ..\Drivers\CMSIS\DSP\Include\arm_math.h \
+  ..\User\Algorithm\alg_pid.h ..\User\Library\lib_math.h \
+  ..\Drivers\CMSIS\DSP\Include\arm_math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\float.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \
-  ..\User\Library\lib_filter.h \
+  ..\User\Library\lib_filter.h ..\User\Application\app_chassis.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
   ..\Core\Inc\FreeRTOSConfig.h \

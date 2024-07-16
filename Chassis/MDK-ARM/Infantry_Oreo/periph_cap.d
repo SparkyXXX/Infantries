@@ -58,5 +58,5 @@ infantry_oreo/periph_cap.o: ..\User\Peripheral\periph_cap.c \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
   ..\User\Library\lib_power_ctrl.h ..\User\Protocol\protocol_board.h \
   ..\User\Protocol\protocol_referee.h ..\User\Infantry\callback_ctrl.h \
-  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h ..\Core\Inc\main.h \
-  ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h
+  ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h ..\Core\Inc\main.h \
+  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h

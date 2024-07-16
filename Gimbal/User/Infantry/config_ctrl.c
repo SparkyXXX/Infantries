@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-05-24 16:14:52
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-16 16:30:28
  */
 
 #include "config_ctrl.h"
@@ -40,24 +40,23 @@ float Servo_Close = 170.0f;
 
 const float Correction_Matrix[9] = {0, -1, 0,
                                     1, 0, 0,
-                                    0, 0, 1
-                                   };
+                                    0, 0, 1};
 
 float Pitch_Spd_KpSet[7] = {10000.0f, 10000.0f, 10000.0f, 10000.0f, 10000.0f, 10000.0f, 10000.0f};
 float Pitch_Spd_KiSet[7] = {20000.0f, 20000.0f, 20000.0f, 20000.0f, 50000.0f, 50000.0f, 50000.0f};
 float Pitch_Spd_KdSet[7] = {30.0f, 30.0f, 30.0f, 30.0f, 20.0f, 20.0f, 20.0f};
-Interval Pitch_Spd_Error_Range = { -8.0f, 8.0f};
-Interval Pitch_Spd_ErrorChange_Range = { -8.0f, 8.0f};
+Interval Pitch_Spd_Error_Range = {-8.0f, 8.0f};
+Interval Pitch_Spd_ErrorChange_Range = {-8.0f, 8.0f};
 
 float Pitch_Pos_KpSet[7] = {80.0f, 60.0f, 40.0f, 30.0f, 40.0f, 60.0f, 80.0f};
 float Pitch_Pos_KiSet[7] = {20.0f, 20.0f, 20.0f, 15.0f, 10.0f, 10.0f, 10.0f};
 float Pitch_Pos_KdSet[7] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-Interval Pitch_Pos_Error_Range = { -0.54f, 0.48f};
-Interval Pitch_Pos_ErrorChange_Range = { -0.54f, 0.48f};
+Interval Pitch_Pos_Error_Range = {-0.54f, 0.48f};
+Interval Pitch_Pos_ErrorChange_Range = {-0.54f, 0.48f};
 
 void Gimbal_ParamInit(void)
 {
-    Gimbal_ControlTypeDef* gimbal = Gimbal_GetControlPtr();
+    Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();
     FuzzyPID_Init(&(gimbal->pitch_spd), Pitch_Spd_KpSet, Pitch_Spd_KiSet, Pitch_Spd_KdSet,
                   &Pitch_Spd_Error_Range, &Pitch_Spd_ErrorChange_Range, 20000.0f, 8000.0f, 25000.0f, 100000000.0f, 159.154922f);
     //																	kf        sum_max  output_max d_cutoff_frq kf_cutoff_frq
@@ -67,13 +66,13 @@ void Gimbal_ParamInit(void)
 
 void Shoot_ParamInit(void)
 {
-    Shoot_ControlTypeDef* shooter = Shoot_GetControlPtr();
+    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
     PID_Init(&(shooter->feed_spd), 500.0f, 10.0f, 0.0f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
     PID_Init(&(shooter->feed_ang), 8.35f, 0.0f, 0.00011f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
 
-	PID_Init(&(shooter->shoot_left), 10.0f, 20.0f, 0.0f, 0.0f, 31.0f, 35.0f, 159.154922f, 159.154922f);
-	PID_Init(&(shooter->shoot_right), 10.0f, 20.0f, 0.0f, 0.0f, 31.0f, 35.0f, 159.154922f, 159.154922f);
-	
+    PID_Init(&(shooter->shoot_left), 10.0f, 20.0f, 0.0f, 0.0f, 31.0f, 35.0f, 159.154922f, 159.154922f);
+    PID_Init(&(shooter->shoot_right), 10.0f, 20.0f, 0.0f, 0.0f, 31.0f, 35.0f, 159.154922f, 159.154922f);
+
     Filter_Lowpass_Init(200.0f, &(shooter->shooter_left_lpf));
     Filter_Lowpass_Init(200.0f, &(shooter->shooter_right_lpf));
 }
@@ -82,11 +81,11 @@ void Shoot_ParamInit(void)
 Servo_DataTypeDef Servo_MagServo;
 
 BMI088_DataTypeDef BMI088_Data;
-SPI_HandleTypeDef* BMI088_SPI_HANDLER = &hspi1;
-GPIO_HandleTypeDef CS_ACCEL = {GPIO_PIN_RESET, GPIOC, GPIO_PIN_15};
+SPI_HandleTypeDef *BMI088_SPI_HANDLER = &hspi1;
+GPIO_HandleTypeDef CS_ACCEL = {GPIO_PIN_RESET, GPI OC, GPIO_PIN_15};
 GPIO_HandleTypeDef CS_GYRO = {GPIO_PIN_RESET, GPIOC, GPIO_PIN_14};
 
-Motor_GroupDataTypeDef* Motor_groupHandle[3];
+Motor_GroupDataTypeDef *Motor_groupHandle[3];
 Motor_GroupDataTypeDef Motor_gimbalMotors;
 Motor_GroupDataTypeDef Motor_feederMotors;
 MotorPWM_GroupDataTypeDef Motor_shooterMotors;
@@ -129,7 +128,10 @@ void Init_All(void)
 {
     DWT_Init(CPU_Clock);
     Servo_Init(&Servo_MagServo, &htim15, TIM_CHANNEL_1, CPU_Clock * 1000000, Servo_Close);
-    while (BMI088_Init(&BMI088_Data, BMI088_SPI_HANDLER, &CS_ACCEL, &CS_GYRO)) {;}
+    while (BMI088_Init(&BMI088_Data, BMI088_SPI_HANDLER, &CS_ACCEL, &CS_GYRO))
+    {
+        ;
+    }
     MiniPC_Init();
     ADC_Init();
     Init_All_Motors();
