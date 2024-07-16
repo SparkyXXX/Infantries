@@ -15,23 +15,23 @@ extern "C"
 {
 #endif
 
-#include "app_gimbal.h"
-#include "app_shoot.h"
 #include "app_autoaim.h"
-#include "app_remote.h"
+#include "app_gimbal.h"
 #include "app_ins.h"
+#include "app_remote.h"
+#include "app_shoot.h"
 
+#include "periph_bmi088.h"
+#include "periph_minipc.h"
 #include "periph_motor_can.h"
 #include "periph_motor_pwm.h"
-#include "periph_servo.h"
-#include "periph_bmi088.h"
 #include "periph_remote.h"
-#include "periph_minipc.h"
+#include "periph_servo.h"
 
-#include "protocol_motor.h"
-#include "protocol_board.h"
-#include "sys_dwt.h"
 #include "cmsis_os.h"
+#include "protocol_board.h"
+#include "protocol_motor.h"
+#include "sys_dwt.h"
 #include "usb_device.h"
 
     extern Servo_DataTypeDef Servo_MagServo;
