@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-16 21:23:38
+ * @LastEditTime: 2024-07-17 17:51:59
  */
 
 #include "app_chassis.h"
@@ -403,7 +403,7 @@ void OmniChassis_Output()
 }
 
 float wheelvel[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-float Vz = 0.0f, Vx = 0.0f, Wm = 0.0f;
+float Vz = 0.0f, Vx = 0.0f, Wm = 0.0f, Vzz = 0.0f, Vxx = 0.0f;
 void Calc_ChassisVel(float r, float R)
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
@@ -413,17 +413,7 @@ void Calc_ChassisVel(float r, float R)
 	}
 	Vz = 0.25 * 1.414f * r * (+wheelvel[0] - wheelvel[1] - wheelvel[2] + wheelvel[3]) * 0.10472f; // m/s
 	Vx = 0.25 * 1.414f * r * (+wheelvel[0] + wheelvel[1] - wheelvel[2] - wheelvel[3]) * 0.10472f; // m/s
-	Wm = 0.25 * r / R * (wheelvel[0] + wheelvel[1] + wheelvel[2] + wheelvel[3]) * 0.10472f;		 // rad/s (1 rpm = 0.10472 rad/s)
-}
-
-void Calc_ChassisVelWithGyro(float r, float R)
-{
-	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	for (int i = 0; i < 4; i++)
-	{
-		wheelvel[i] = chassis->Chassis_MotorSpdPID[i].fdb;
-	}
-	Vz = 0.25 * 1.414f * r * (+wheelvel[0] * (cos(theta_rad) - sin(theta_rad)) - wheelvel[1] * (cos(theta_rad) + sin(theta_rad)) - wheelvel[2] * (cos(theta_rad) - sin(theta_rad)) + wheelvel[3] * (cos(theta_rad) + sin(theta_rad))) * 0.10472f; // m/s
-	Vx = 0.25 * 1.414f * r * (+wheelvel[0] * (cos(theta_rad) + sin(theta_rad)) + wheelvel[1] * (cos(theta_rad) - sin(theta_rad)) - wheelvel[2] * (cos(theta_rad) + sin(theta_rad)) - wheelvel[3] * (cos(theta_rad) - sin(theta_rad))) * 0.10472f; // m/s
-	Wm = 0.25 * r / R * (wheelvel[0] + wheelvel[1] + wheelvel[2] + wheelvel[3]) * 0.10472f;		 // rad/s (1 rpm = 0.10472 rad/s)
+	Wm = 0.25 * r / R * (wheelvel[0] + wheelvel[1] + wheelvel[2] + wheelvel[3]) * 0.10472f;		  // rad/s (1 rpm = 0.10472 rad/s)
+	Vzz = +sin(theta_rad) * Vx + cos(theta_rad) * Vz;
+	Vxx = +cos(theta_rad) * Vx - sin(theta_rad) * Vz;
 }

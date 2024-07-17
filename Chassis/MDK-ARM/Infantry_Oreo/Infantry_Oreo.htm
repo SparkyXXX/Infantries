@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Infantry_Oreo\Infantry_Oreo.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Infantry_Oreo\Infantry_Oreo.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Wed Jul 17 14:12:45 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Wed Jul 17 18:10:40 2024
 <BR><P>
 <H3>Maximum Stack Usage =        696 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -895,16 +895,16 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[14a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Referee_Decode
 </UL>
 
-<P><STRONG><a name="[c8]"></a>Calc_ChassisVelWithGyro</STRONG> (Thumb, 1000 bytes, Stack size 176 bytes, app_chassis.o(.text.Calc_ChassisVelWithGyro))
-<BR><BR>[Stack]<UL><LI>Max Depth = 228<LI>Call Chain = Calc_ChassisVelWithGyro &rArr; sin[abi:v16000](float) &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
+<P><STRONG><a name="[c8]"></a>Calc_ChassisVel</STRONG> (Thumb, 720 bytes, Stack size 120 bytes, app_chassis.o(.text.Calc_ChassisVel))
+<BR><BR>[Stack]<UL><LI>Max Depth = 172<LI>Call Chain = Calc_ChassisVel &rArr; sin[abi:v16000](float) &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
 </UL>
-<BR>[Calls]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cos[abi:v16000](float)
-<LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sin[abi:v16000](float)
+<BR>[Calls]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cos[abi:v16000](float)
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sin[abi:v16000](float)
 <LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_GetControlPtr
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
+<LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
+<LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 </UL>
 <BR>[Called By]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_Task
 </UL>
@@ -960,7 +960,7 @@ Global Symbols
 <LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Cap_Update
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GimbalYaw_Output
 <LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OmniChassis_Output
-<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Calc_ChassisVelWithGyro
+<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Calc_ChassisVel
 </UL>
 
 <P><STRONG><a name="[d3]"></a>Chassis_Init</STRONG> (Thumb, 110 bytes, Stack size 16 bytes, app_chassis.o(.text.Chassis_Init))
@@ -1003,7 +1003,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 <LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OmniChassis_Output
-<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Calc_ChassisVelWithGyro
+<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Calc_ChassisVel
 <LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor_IsLost
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> app_freertos.o(.rodata..L__const.MX_FREERTOS_Init.os_thread_def_Chassis)
@@ -1112,9 +1112,9 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
+<LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
+<LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Calc
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GimbalYaw_Output
@@ -1125,9 +1125,9 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
+<LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
+<LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 </UL>
 <BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GimbalYaw_Init
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GimbalYaw_ParamInit
@@ -2215,7 +2215,7 @@ Global Symbols
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
+<LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 </UL>
 <BR>[Called By]<UL><LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_CalcOmniFollowRef()
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GimbalYaw_Output
@@ -2388,7 +2388,7 @@ Global Symbols
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[186]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dcmpge
 <LI><a href="#[187]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dcmpgt
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
+<LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 </UL>
 <BR>[Called By]<UL><LI><a href="#[17a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PowerControl
 </UL>
@@ -2643,7 +2643,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz
-<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
+<LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 </UL>
 <BR>[Called By]<UL><LI><a href="#[199]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UI_Update
 </UL>
@@ -2653,7 +2653,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[1c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz
-<LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
+<LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 </UL>
 <BR>[Called By]<UL><LI><a href="#[199]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UI_Update
 </UL>
@@ -2680,22 +2680,22 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[177]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_CalcOmniFollowRef()
 </UL>
 
-<P><STRONG><a name="[cc]"></a>cos[abi:v16000](float)</STRONG> (Thumb, 20 bytes, Stack size 16 bytes, app_chassis.o(.text._Z3cosB6v16000f))
+<P><STRONG><a name="[cf]"></a>cos[abi:v16000](float)</STRONG> (Thumb, 20 bytes, Stack size 16 bytes, app_chassis.o(.text._Z3cosB6v16000f))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = cos[abi:v16000](float) &rArr; __hardfp_cosf &rArr; __mathlib_rredf2
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cosf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[176]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_CalcMoveRef()
-<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Calc_ChassisVelWithGyro
+<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Calc_ChassisVel
 </UL>
 
-<P><STRONG><a name="[cd]"></a>sin[abi:v16000](float)</STRONG> (Thumb, 20 bytes, Stack size 16 bytes, app_chassis.o(.text._Z3sinB6v16000f))
+<P><STRONG><a name="[ce]"></a>sin[abi:v16000](float)</STRONG> (Thumb, 20 bytes, Stack size 16 bytes, app_chassis.o(.text._Z3sinB6v16000f))
 <BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = sin[abi:v16000](float) &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sinf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[176]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_CalcMoveRef()
-<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Calc_ChassisVelWithGyro
+<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Calc_ChassisVel
 </UL>
 
 <P><STRONG><a name="[184]"></a>fabs[abi:v16000](float)</STRONG> (Thumb, 18 bytes, Stack size 4 bytes, app_chassis.o(.text._Z4fabsB6v16000f))
@@ -3362,7 +3362,7 @@ Global Symbols
 <LI><a href="#[209]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__mathlib_flt_infnan
 <LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
-<BR>[Called By]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cos[abi:v16000](float)
+<BR>[Called By]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cos[abi:v16000](float)
 </UL>
 
 <P><STRONG><a name="[1c8]"></a>__hardfp_sinf</STRONG> (Thumb, 344 bytes, Stack size 16 bytes, sinf.o(i.__hardfp_sinf))
@@ -3375,7 +3375,7 @@ Global Symbols
 <LI><a href="#[20a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_fpclassifyf
 <LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__set_errno
 </UL>
-<BR>[Called By]<UL><LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sin[abi:v16000](float)
+<BR>[Called By]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sin[abi:v16000](float)
 </UL>
 
 <P><STRONG><a name="[1c9]"></a>__hardfp_sqrtf</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, sqrtf.o(i.__hardfp_sqrtf))
@@ -3407,7 +3407,7 @@ Global Symbols
 <LI><a href="#[1c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_cosf
 </UL>
 
-<P><STRONG><a name="[ce]"></a>__aeabi_d2f</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, d2f.o(x$fpl$d2f))
+<P><STRONG><a name="[cc]"></a>__aeabi_d2f</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, d2f.o(x$fpl$d2f))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_d2f
 </UL>
 <BR>[Called By]<UL><LI><a href="#[182]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PredictPower
@@ -3415,7 +3415,7 @@ Global Symbols
 <LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Calc
 <LI><a href="#[179]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_CalcWheelRef()
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Filter_Lowpass_Init
-<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Calc_ChassisVelWithGyro
+<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Calc_ChassisVel
 </UL>
 
 <P><STRONG><a name="[20c]"></a>_d2f</STRONG> (Thumb, 98 bytes, Stack size 32 bytes, d2f.o(x$fpl$d2f), UNUSED)
@@ -3444,14 +3444,14 @@ Global Symbols
 <LI><a href="#[213]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_dcmpeq
 </UL>
 
-<P><STRONG><a name="[cf]"></a>__aeabi_ddiv</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, ddiv.o(x$fpl$ddiv))
+<P><STRONG><a name="[cd]"></a>__aeabi_ddiv</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, ddiv.o(x$fpl$ddiv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_ddiv
 </UL>
 <BR>[Called By]<UL><LI><a href="#[19d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_table_cos(float)
 <LI><a href="#[19c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_table_sin(float)
 <LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Filter_Lowpass
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Filter_Lowpass_Init
-<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Calc_ChassisVelWithGyro
+<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Calc_ChassisVel
 </UL>
 
 <P><STRONG><a name="[212]"></a>_ddiv</STRONG> (Thumb, 556 bytes, Stack size 32 bytes, ddiv.o(x$fpl$ddiv), UNUSED)
@@ -3516,7 +3516,7 @@ Global Symbols
 <LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Calc
 <LI><a href="#[179]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_CalcWheelRef()
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Filter_Lowpass_Init
-<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Calc_ChassisVelWithGyro
+<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Calc_ChassisVel
 </UL>
 
 <P><STRONG><a name="[218]"></a>_dmul</STRONG> (Thumb, 332 bytes, Stack size 32 bytes, dmul.o(x$fpl$dmul), UNUSED)
@@ -3560,7 +3560,7 @@ Global Symbols
 <LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Calc
 <LI><a href="#[179]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_CalcWheelRef()
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Filter_Lowpass_Init
-<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Calc_ChassisVelWithGyro
+<LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Calc_ChassisVel
 </UL>
 
 <P><STRONG><a name="[21b]"></a>_f2d</STRONG> (Thumb, 86 bytes, Stack size 16 bytes, f2d.o(x$fpl$f2d), UNUSED)
@@ -3893,8 +3893,8 @@ Local Symbols
 <P><STRONG><a name="[176]"></a>Chassis_CalcMoveRef()</STRONG> (Thumb, 176 bytes, Stack size 24 bytes, app_chassis.o(.text._ZL19Chassis_CalcMoveRefv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = Chassis_CalcMoveRef() &rArr; sin[abi:v16000](float) &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
 </UL>
-<BR>[Calls]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cos[abi:v16000](float)
-<LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sin[abi:v16000](float)
+<BR>[Calls]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cos[abi:v16000](float)
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sin[abi:v16000](float)
 <LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis_GetControlPtr
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OmniChassis_Output
@@ -3938,7 +3938,7 @@ Local Symbols
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[1ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
+<LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OmniChassis_Output
 </UL>

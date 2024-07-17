@@ -30,7 +30,8 @@ void Chassis_Task(void const *argument)
 		Motor_IsLost(&Motor_ForwardRight);
 		Motor_IsLost(&Motor_BackwardRight);
 		Motor_IsLost(&Motor_BackwardLeft);
-		Calc_ChassisVelWithGyro(0.076f, 0.223f);
+		Calc_ChassisVel(0.076f, 0.223f);
+		// wheel radius = 0.076m, wheel center to chassis center's distance = 0.223m
         OmniChassis_Output();
         osDelay(1);
     }

@@ -82,7 +82,6 @@ extern "C"
 	static void Chassis_CalcOmniFollowRef(void);
     static void Chassis_CalcWheelRef(void);
 	void Calc_ChassisVel(float r, float R);
-	void Calc_ChassisVelWithGyro(float r, float R);
 
 #ifdef __cplusplus
 }
