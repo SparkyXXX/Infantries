@@ -67,6 +67,8 @@ extern "C"
 	extern float PowerUp_Coef;
 	extern float Install_Angle;
 	extern float FLY_ANGLE;
+    extern float Vx, Vy, Wm;
+    extern float wheelvel[4];
 
     Chassis_ControlTypeDef *Chassis_GetControlPtr(void);
     void Chassis_Init(void);
@@ -79,6 +81,8 @@ extern "C"
     static void Chassis_CalcMecFollowRef(void);
 	static void Chassis_CalcOmniFollowRef(void);
     static void Chassis_CalcWheelRef(void);
+	void Calc_ChassisVel(float r, float R);
+	void Calc_ChassisVelWithGyro(float r, float R);
 
 #ifdef __cplusplus
 }

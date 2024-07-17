@@ -1,7 +1,7 @@
 infantry_oreo/app_chassis.o: ..\User\Application\app_chassis.cpp \
-  ..\User\Infantry\config_ctrl.h ..\User\Infantry\test_ctrl.h \
-  ..\User\Peripheral\periph_motor_can.h ..\User\Utility\util_fdcan.h \
-  ..\Core\Inc\fdcan.h ..\Core\Inc\main.h \
+  ..\User\Application\app_chassis.h ..\User\Infantry\config_ctrl.h \
+  ..\User\Infantry\test_ctrl.h ..\User\Peripheral\periph_motor_can.h \
+  ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h ..\Core\Inc\main.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h \
   ..\Core\Inc\stm32g4xx_hal_conf.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h \
@@ -39,9 +39,8 @@ infantry_oreo/app_chassis.o: ..\User\Application\app_chassis.cpp \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
-  ..\User\Application\app_chassis.h ..\User\Protocol\protocol_referee.h \
-  ..\User\Infantry\callback_ctrl.h ..\User\Utility\util_uart.h \
-  ..\Core\Inc\usart.h \
+  ..\User\Protocol\protocol_referee.h ..\User\Infantry\callback_ctrl.h \
+  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\string.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
   ..\User\Protocol\protocol_board.h ..\User\Algorithm\alg_pid.h \
@@ -201,5 +200,5 @@ infantry_oreo/app_chassis.o: ..\User\Application\app_chassis.cpp \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
-  ..\User\Application\app_gimbal.h ..\User\Protocol\protocol_motor.h \
-  ..\User\Peripheral\periph_cap.h
+  ..\User\Application\app_gimbal.h ..\User\Peripheral\periph_cap.h \
+  ..\User\Protocol\protocol_motor.h
