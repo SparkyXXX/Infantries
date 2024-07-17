@@ -16,7 +16,6 @@ extern "C" {
 #endif
 
 #include "config_ctrl.h"
-#include "protocol_motor.h"
 #include "callback_ctrl.h"
 
 #ifdef __cplusplus

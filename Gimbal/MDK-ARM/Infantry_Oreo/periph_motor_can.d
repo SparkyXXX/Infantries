@@ -42,4 +42,46 @@ infantry_oreo/periph_motor_can.o: ..\User\Peripheral\periph_motor_can.c \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
-  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h
+  ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
+  ..\User\Infantry\config_ctrl.h ..\User\Application\app_autoaim.h \
+  ..\User\Application\app_shoot.h ..\User\Algorithm\alg_pid.h \
+  ..\User\Library\lib_math.h ..\Drivers\CMSIS\DSP\Include\arm_math.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\float.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \
+  ..\User\Library\lib_filter.h ..\User\Protocol\protocol_board.h \
+  ..\User\Application\app_gimbal.h ..\User\Application\app_ins.h \
+  ..\User\Algorithm\alg_qekf.h ..\User\Algorithm\alg_kf.h \
+  ..\User\Peripheral\periph_bmi088.h ..\User\Peripheral\BMI088reg.h \
+  ..\User\Utility\util_spi.h ..\Core\Inc\spi.h ..\Core\Inc\dma.h \
+  ..\User\Utility\util_gpio.h ..\Core\Inc\gpio.h \
+  ..\User\Library\lib_buff.h ..\User\System\sys_dwt.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
+  ..\Core\Inc\FreeRTOSConfig.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\deprecated_definitions.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F\portmacro.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\timers.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
+  ..\User\Application\app_remote.h ..\User\Peripheral\periph_remote.h \
+  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
+  ..\User\Peripheral\periph_servo.h ..\User\Utility\util_pwm.h \
+  ..\Core\Inc\tim.h ..\User\Infantry\callback_ctrl.h \
+  ..\User\Protocol\protocol_minipc.h ..\USB_Device\App\usbd_cdc_if.h \
+  ..\Middlewares\ST\STM32_USB_Device_Library\Class\CDC\Inc\usbd_cdc.h \
+  ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_ioreq.h \
+  ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_def.h \
+  ..\USB_Device\Target\usbd_conf.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\stdio.h \
+  ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_core.h \
+  ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_ctlreq.h \
+  ..\User\Infantry\test_ctrl.h ..\User\Peripheral\periph_motor_pwm.h \
+  ..\USB_Device\App\usb_device.h

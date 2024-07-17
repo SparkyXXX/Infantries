@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-06 19:26:18
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-18 01:33:10
  */
 
 #include "protocol_board.h"
@@ -36,29 +36,27 @@ uint8_t BoardCom_TxData2[BOARDCOM_TX_LEN];
 uint8_t BoardCom_RxData[BOARDCOM_RX_LEN];
 
 Board_SendTableEntryTypeDef Gimbal_Send_to_Chassis_Pkg1[GIMBAL_SEND_TOCHASSIS_PKG1_AMOUNT] =
-{
-    {&_send_control},
-    {&_send_imu_yaw}
-};
+    {
+        {&_send_control},
+        {&_send_imu_yaw}};
 
 Board_SendTableEntryTypeDef Gimbal_Send_to_Chassis_Pkg2[GIMBAL_SEND_TOCHASSIS_PKG2_AMOUNT] =
-{
-    {&_send_chassis_ref},
-    {&_send_ui_state}
-};
+    {
+        {&_send_chassis_ref},
+        {&_send_ui_state}};
 
 Board_ReceiveTableEntryTypeDef Gimbal_Receive_from_Chassis[GIMBAL_RECEIVE_FROM_CHASSIS_PKG_AMOUNT] =
-{{ID_RECEIVE_REFEREE_DATA1, &_receive_referee_data1},
- {ID_RECEIVE_REFEREE_DATA2, &_receive_referee_data2}};
+    {{ID_RECEIVE_REFEREE_DATA1, &_receive_referee_data1},
+     {ID_RECEIVE_REFEREE_DATA2, &_receive_referee_data2}};
 
-FDCAN_HandleTypeDef* BOARD_CAN_HANDLER = &hfdcan2;
+FDCAN_HandleTypeDef *BOARD_CAN_HANDLER = &hfdcan2;
 
 FDCAN_TxHeaderTypeDef TxHeader_Gimbal_Control;
 FDCAN_TxHeaderTypeDef TxHeader_Gimbal_ImuYaw;
 FDCAN_TxHeaderTypeDef TxHeader_Gimbal_ChassisRef;
 FDCAN_TxHeaderTypeDef TxHeader_Gimbal_UIState;
 
-BoardCom_DataTypeDef* BoardCom_GetDataPtr()
+BoardCom_DataTypeDef *BoardCom_GetDataPtr()
 {
     return &BoardCom_Data;
 }
@@ -71,38 +69,25 @@ void BoardCom_Init()
     FDCAN_InitTxHeader(&TxHeader_Gimbal_UIState, ID_SEND_UI_STATE);
 }
 
-extern uint32_t buff_tick_start;
-uint32_t buff_tick_end = 0;
-uint32_t buff_tick_diff = 0;
 void BoardCom_Update()
 {
-    BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
-    Gimbal_ControlTypeDef* gimbal = Gimbal_GetControlPtr();
-    Shoot_ControlTypeDef* shooter = Shoot_GetControlPtr();
-    Remote_ControlTypeDef* remote_control = Remote_GetControlPtr();
-    AutoAim_ControlTypeDef* autoaim = AutoAim_GetControlPtr();
-    MiniPC_DataTypeDef* minipc = MiniPC_GetDataPtr();
-    INS_DataTypeDef* ins = INS_GetControlPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+    Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();
+    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
+    Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
+    AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
+    MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
+    INS_DataTypeDef *ins = INS_GetControlPtr();
 
     boardcom->yaw_mode = gimbal->yaw_mode;
     boardcom->yaw_ref = gimbal->yaw_position_ref;
     boardcom->yaw_pos_fdb = ins->yaw_consequent;
     boardcom->yaw_spd_fdb = ins->gyro[YAW];
     boardcom->pitch_angle = -ins->pitch;
-    boardcom->autoaim_yaw_spd_ref = minipc->yaw_spd / 57.3f;
-    boardcom->magazine_state = Remote_Mag_State;
+    boardcom->autoaim_yaw_spd_ref = minipc->armor_yaw_spd_ref / 100 / 57.3f;
+    boardcom->magazine_state = remote_control->mag_state;
     boardcom->shooter_state = (shooter->shoot_left.fdb > 10) && (shooter->shoot_right.fdb > 10);
-    boardcom->auto_shoot_state = autoaim->AutoShootFlag;
-    if(boardcom->shoot_spd_referee != bullet[0])
-    {
-        buff_tick_end = DWT->CYCCNT;
-        buff_tick_diff = buff_tick_end - buff_tick_start;
-    }
-    bullet[4] = bullet[3];
-    bullet[3] = bullet[2];
-    bullet[2] = bullet[1];
-    bullet[1] = bullet[0];
-    bullet[0] = boardcom->shoot_spd_referee;
+    boardcom->auto_shoot_state = remote_control->autoshoot_flag;
 }
 
 uint32_t can_free_level1 = 0;
@@ -110,13 +95,13 @@ uint32_t can_free_level2 = 0;
 void BoardComPkg1_Send()
 {
     BoardCom_Update();
-    BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     boardcom->state = BOARDCOM_PENDING;
-    for(int i = 0; i < GIMBAL_SEND_TOCHASSIS_PKG1_AMOUNT; i++)
+    for (int i = 0; i < GIMBAL_SEND_TOCHASSIS_PKG1_AMOUNT; i++)
     {
-        if(Gimbal_Send_to_Chassis_Pkg1[i].bus_func != NULL)
+        if (Gimbal_Send_to_Chassis_Pkg1[i].bus_func != NULL)
         {
-            if(BOARD_CAN_HANDLER->ErrorCode & HAL_FDCAN_ERROR_FIFO_FULL)
+            if (BOARD_CAN_HANDLER->ErrorCode & HAL_FDCAN_ERROR_FIFO_FULL)
             {
                 HAL_FDCAN_Stop(BOARD_CAN_HANDLER);
                 BOARD_CAN_HANDLER->Instance->TXFQS = 0x03;
@@ -132,13 +117,13 @@ void BoardComPkg1_Send()
 void BoardComPkg2_Send()
 {
     BoardCom_Update();
-    BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     boardcom->state = BOARDCOM_PENDING;
-    for(int i = 0; i < GIMBAL_SEND_TOCHASSIS_PKG2_AMOUNT; i++)
+    for (int i = 0; i < GIMBAL_SEND_TOCHASSIS_PKG2_AMOUNT; i++)
     {
-        if(Gimbal_Send_to_Chassis_Pkg2[i].bus_func != NULL)
+        if (Gimbal_Send_to_Chassis_Pkg2[i].bus_func != NULL)
         {
-            if(BOARD_CAN_HANDLER->ErrorCode & HAL_FDCAN_ERROR_FIFO_FULL)
+            if (BOARD_CAN_HANDLER->ErrorCode & HAL_FDCAN_ERROR_FIFO_FULL)
             {
                 HAL_FDCAN_Stop(BOARD_CAN_HANDLER);
                 BOARD_CAN_HANDLER->Instance->TXFQS = 0x03;
@@ -153,11 +138,11 @@ void BoardComPkg2_Send()
 
 void BoardCom_Decode(uint8_t buff[], uint32_t stdid, uint16_t rxdatalen)
 {
-    BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     memcpy(BoardCom_RxData, buff, rxdatalen);
-    for(int i = 0; i < (GIMBAL_RECEIVE_FROM_CHASSIS_PKG_AMOUNT); i++)
+    for (int i = 0; i < (GIMBAL_RECEIVE_FROM_CHASSIS_PKG_AMOUNT); i++)
     {
-        if((stdid == Gimbal_Receive_from_Chassis[i].cmd_id) && (Gimbal_Receive_from_Chassis[i].bus_func != NULL))
+        if ((stdid == Gimbal_Receive_from_Chassis[i].cmd_id) && (Gimbal_Receive_from_Chassis[i].bus_func != NULL))
         {
             Gimbal_Receive_from_Chassis[i].bus_func(buff);
             return;
@@ -167,11 +152,11 @@ void BoardCom_Decode(uint8_t buff[], uint32_t stdid, uint16_t rxdatalen)
 
 uint8_t BoardCom_IsLost()
 {
-    BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
 
-    if(HAL_GetTick() - boardcom->last_update_time > BOARDCOM_LOST_TIME)
+    if (HAL_GetTick() - boardcom->last_update_time > BOARDCOM_LOST_TIME)
     {
-        while(1)
+        while (1)
         {
             ;
         }
@@ -180,22 +165,21 @@ uint8_t BoardCom_IsLost()
 }
 
 /*************** SEND *****************/
-int counta[7];
-float ratea[7];
-
+int counta[4];
+float ratea[4];
 static void _send_control(uint8_t buff[])
 {
     static uint32_t last_send_time = 0;
-    if((HAL_GetTick() - last_send_time) <= SEND_CONTROL_TIMEOUT)
+    if ((HAL_GetTick() - last_send_time) <= SEND_CONTROL_TIMEOUT)
     {
         return;
     }
     last_send_time = HAL_GetTick();
-    BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
-    FDCAN_TxHeaderTypeDef* pheader = &TxHeader_Gimbal_Control;
-    MiniPC_DataTypeDef* minipc = MiniPC_GetDataPtr();
-    counta[3]++;
-    ratea[3] = 1000 * counta[3] / HAL_GetTick();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+    FDCAN_TxHeaderTypeDef *pheader = &TxHeader_Gimbal_Control;
+    MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
+    counta[0]++;
+    ratea[0] = 1000 * counta[0] / HAL_GetTick();
     memset(buff, 0, 8);
 
     buff[0] = (boardcom->yaw_mode << 4) + (boardcom->chassis_mode << 1) + boardcom->power_limit_mode;
@@ -208,15 +192,15 @@ static void _send_control(uint8_t buff[])
 static void _send_imu_yaw(uint8_t buff[])
 {
     static uint32_t last_send_time = 0;
-    if((HAL_GetTick() - last_send_time) <= SEND_IMU_YAW_TIMEOUT)
+    if ((HAL_GetTick() - last_send_time) <= SEND_IMU_YAW_TIMEOUT)
     {
         return;
     }
     last_send_time = HAL_GetTick();
-    BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
-    FDCAN_TxHeaderTypeDef* pheader = &TxHeader_Gimbal_ImuYaw;
-    counta[4]++;
-    ratea[4] = 1000 * counta[4] / HAL_GetTick();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+    FDCAN_TxHeaderTypeDef *pheader = &TxHeader_Gimbal_ImuYaw;
+    counta[1]++;
+    ratea[1] = 1000 * counta[1] / HAL_GetTick();
     memset(buff, 0, 8);
 
     float2buff(boardcom->yaw_spd_fdb, buff);
@@ -227,15 +211,15 @@ static void _send_imu_yaw(uint8_t buff[])
 static void _send_chassis_ref(uint8_t buff[])
 {
     static uint32_t last_send_time = 0;
-    if((HAL_GetTick() - last_send_time) <= SEND_CHAREF_TIMEOUT)
+    if ((HAL_GetTick() - last_send_time) <= SEND_CHAREF_TIMEOUT)
     {
         return;
     }
     last_send_time = HAL_GetTick();
-    BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
-    FDCAN_TxHeaderTypeDef* pheader = &TxHeader_Gimbal_ChassisRef;
-    counta[5]++;
-    ratea[5] = 1000 * counta[5] / HAL_GetTick();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+    FDCAN_TxHeaderTypeDef *pheader = &TxHeader_Gimbal_ChassisRef;
+    counta[2]++;
+    ratea[2] = 1000 * counta[2] / HAL_GetTick();
     memset(buff, 0, 8);
 
     i162buff((int16_t)(boardcom->chassis_fb_ref * 10), buff);
@@ -246,16 +230,16 @@ static void _send_chassis_ref(uint8_t buff[])
 static void _send_ui_state(uint8_t buff[])
 {
     static uint32_t last_send_time = 0;
-    if((HAL_GetTick() - last_send_time) <= SEND_UI_STATE_TIMEOUT)
+    if ((HAL_GetTick() - last_send_time) <= SEND_UI_STATE_TIMEOUT)
     {
         return;
     }
     last_send_time = HAL_GetTick();
-    BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
-    MiniPC_DataTypeDef* minipc = MiniPC_GetDataPtr();
-    FDCAN_TxHeaderTypeDef* pheader = &TxHeader_Gimbal_UIState;
-    counta[6]++;
-    ratea[6] = 1000 * counta[6] / HAL_GetTick();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+    MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
+    FDCAN_TxHeaderTypeDef *pheader = &TxHeader_Gimbal_UIState;
+    counta[3]++;
+    ratea[3] = 1000 * counta[3] / HAL_GetTick();
     memset(buff, 0, 8);
 
     i162buff((int16_t)(boardcom->pitch_angle * 100), buff);
@@ -273,9 +257,9 @@ static void _receive_referee_data1(uint8_t buff[])
     countb[0]++;
     rateb[0] = 1000 * countb[0] / HAL_GetTick();
 
-    BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     boardcom->robot_id = buff[0] & 0x7F;
-	boardcom->power_management_shooter_output = buff[1] >> 7;
+    boardcom->power_management_shooter_output = buff[1] >> 7;
     boardcom->heat_limit = buff2i16(buff + 2);
     boardcom->shoot_spd_referee = ((float)buff2ui16(buff + 4)) / 100;
     boardcom->cooling_per_second = buff2ui16(buff + 6);
@@ -287,8 +271,8 @@ static void _receive_referee_data2(uint8_t buff[])
     countb[1]++;
     rateb[1] = 1000 * countb[1] / HAL_GetTick();
 
-    BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     boardcom->stage_remain_time = buff2ui16(buff);
-	boardcom->game_progress = buff[2];
+    boardcom->game_progress = buff[2];
     boardcom->last_update_time = HAL_GetTick();
 }

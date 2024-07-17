@@ -3,19 +3,18 @@
  *
  * @Author: Hatrix
  * @Date: 2023-11-07 14:28:30
- * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-07-16 02:22:19
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-17 19:49:24
  */
 
 #include "task_ctrl.h"
-#include "config_ctrl.h"
 #include "app_chassis.h"
 #include "app_gimbal.h"
 #include "app_ui.h"
-#include "protocol_referee.h"
-#include "protocol_board.h"
+#include "cmsis_os.h"
+#include "config_ctrl.h"
 #include "periph_cap.h"
-#include "sys_dwt.h"
+#include "protocol_board.h"
 
 /**
  * @brief          Chassis task
@@ -26,13 +25,14 @@ void Chassis_Task(void const *argument)
 {
     for (;;)
     {
-		Motor_IsLost(&Motor_ForwardLeft);
-		Motor_IsLost(&Motor_ForwardRight);
-		Motor_IsLost(&Motor_BackwardRight);
-		Motor_IsLost(&Motor_BackwardLeft);
-		Calc_ChassisVel(0.076f, 0.223f);
-		// wheel radius = 0.076m, wheel center to chassis center's distance = 0.223m
-        OmniChassis_Output();
+        Motor_IsLost(&Motor_ForwardLeft);
+        Motor_IsLost(&Motor_ForwardRight);
+        Motor_IsLost(&Motor_BackwardRight);
+        Motor_IsLost(&Motor_BackwardLeft);
+        OmniChassis_EstimateSpeed();
+        OmniChassis_GetInstruct();
+        OmniChassis_CalcOutput();
+        OmniChassis_PowerControl();
         osDelay(1);
     }
 }
@@ -47,8 +47,8 @@ void Gimbal_Task(void const *argument)
 {
     for (;;)
     {
-		Motor_IsLost(&Motor_GimbalYaw);
-		// start_ident_flag = 1;
+        Motor_IsLost(&Motor_GimbalYaw);
+        start_ident_flag = 1;
         GimbalYaw_Output();
         osDelay(1);
     }
@@ -101,10 +101,10 @@ void UI_Task(void const *argument)
     }
 #endif
 #if IF_SYS_IDENT == SYS_IDENT
-	for (;;)
-	{
-		Test_Response();
-		osDelay(1);
-	}
+    for (;;)
+    {
+        Test_Response();
+        osDelay(1);
+    }
 #endif
 }

@@ -19,6 +19,9 @@ extern "C"
 
 #define MOTOR_OFFLINE_TIME 10
 
+#define PITCH_CAN_ID 0x206
+#define FEEDER_CAN_ID 0x201
+
     typedef enum
     {
         MOTOR_CONNECTED = 0,
@@ -56,13 +59,16 @@ extern "C"
         FDCAN_TxHeaderTypeDef can_header;
     } Motor_GroupDataTypeDef;
 
+    void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata);
+    void M2006_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata);
+    void Motor_CAN_Decode(FDCAN_HandleTypeDef *phfdcan, uint32_t stdid, uint8_t rxdata[]);
+    void Motor_CAN_SendGroupOutput(Motor_GroupDataTypeDef *pgroup);
     void Motor_Init(Motor_DataTypeDef *pmotor, uint32_t stdid);
     void Motor_InitGroup(Motor_GroupDataTypeDef *pgroup, uint8_t motor_num, FDCAN_HandleTypeDef *phcan, uint16_t stdid);
     void Motor_SetOutput(Motor_DataTypeDef *pmotor, float output);
     float Motor_GetOutput(Motor_DataTypeDef *pmotor);
-//    uint8_t Motor_IsLost(Motor_DataTypeDef *pmotor);
-	    void Motor_IsLost(Motor_DataTypeDef *pmotor);
-
+    //    uint8_t Motor_IsLost(Motor_DataTypeDef *pmotor);
+    void Motor_IsLost(Motor_DataTypeDef *pmotor);
 
 #endif
 

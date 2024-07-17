@@ -4,10 +4,18 @@ infantry_oreo/lib_power_ctrl.o: ..\User\Library\lib_power_ctrl.cpp \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__config \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\stdint.h \
   ..\User\Library\lib_ringbuff.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\cstddef \
+  ..\Drivers\CMSIS\Include\cmsis_compiler.h \
+  ..\Drivers\CMSIS\Include\cmsis_armclang.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\arm_compat.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\arm_acle.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\algorithm \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__assert \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__verbose_abort \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__availability \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__bits \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__undef_macros \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__debug \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\cstddef \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\enable_if.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\integral_constant.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\is_integral.h \
@@ -17,10 +25,6 @@ infantry_oreo/lib_power_ctrl.o: ..\User\Library\lib_power_ctrl.cpp \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\version \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\stddef.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\stddef.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\algorithm \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__bits \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__undef_macros \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__debug \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\type_traits \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__functional\invoke.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\add_lvalue_reference.h \
@@ -543,8 +547,4 @@ infantry_oreo/lib_power_ctrl.o: ..\User\Library\lib_power_ctrl.cpp \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__memory\raw_storage_iterator.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__memory\shared_ptr.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__functional\reference_wrapper.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__functional\weak_result_type.h \
-  ..\Drivers\CMSIS\Include\cmsis_compiler.h \
-  ..\Drivers\CMSIS\Include\cmsis_armclang.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\arm_compat.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\arm_acle.h
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__functional\weak_result_type.h

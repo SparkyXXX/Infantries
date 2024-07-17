@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-06 19:24:52
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-18 01:36:09
  */
 
 #ifndef PROTOCOL_BOARDCOM_H
@@ -15,16 +15,16 @@ extern "C"
 {
 #endif
 
+#include "app_autoaim.h"
 #include "app_gimbal.h"
+#include "app_ins.h"
 #include "app_remote.h"
 #include "app_shoot.h"
-#include "app_autoaim.h"
-#include "app_ins.h"
-#include "lib_buff.h"
-#include "util_fdcan.h"
-#include "string.h"
-#include "stm32g4xx_hal.h"
 #include "callback_ctrl.h"
+#include "lib_buff.h"
+#include "stm32g4xx_hal.h"
+#include "string.h"
+#include "util_fdcan.h"
 
 #define POWER_UNLIMIT 0x00
 #define POWER_LIMIT 0x01
@@ -36,8 +36,6 @@ extern "C"
 #define ROLL 1
 #define YAW 2
 
-#define FDCAN_RX_LEN 200
-
     typedef enum
     {
         BOARDCOM_NULL = 0,
@@ -45,8 +43,7 @@ extern "C"
         BOARDCOM_LOST = 2,
         BOARDCOM_ERROR = 3,
         BOARDCOM_PENDING = 4
-    }
-                       BoardCom_StateEnum;
+    } BoardCom_StateEnum;
 
     typedef struct
     {
@@ -59,7 +56,7 @@ extern "C"
         uint8_t power_limit_mode;
         uint8_t check_in;
         uint8_t is_get_target;
-        uint8_t gyro_dir;
+        int8_t gyro_dir;
         uint8_t fly_flag;
         uint8_t ui_cmd;
         uint8_t cap_speedup_flag;
@@ -76,12 +73,12 @@ extern "C"
 
         // Gimbal Receive from Chassis
         uint8_t robot_id;
-		uint8_t power_management_shooter_output;
+        uint8_t power_management_shooter_output;
         uint16_t heat_limit;
         float shoot_spd_referee;
         uint16_t cooling_per_second;
-		uint16_t stage_remain_time;
-		uint8_t game_progress;
+        uint16_t stage_remain_time;
+        uint8_t game_progress;
     } BoardCom_DataTypeDef;
 
     typedef struct
@@ -95,11 +92,10 @@ extern "C"
         void (*bus_func)(uint8_t buff[]);
     } Board_ReceiveTableEntryTypeDef;
 
-    extern float bullet[5];
-    extern FDCAN_HandleTypeDef* BOARD_CAN_HANDLER;
-    extern FDCAN_HandleTypeDef* CAP_CAN_HANDLER;
+    extern FDCAN_HandleTypeDef *BOARD_CAN_HANDLER;
+    extern FDCAN_HandleTypeDef *CAP_CAN_HANDLER;
 
-    BoardCom_DataTypeDef* BoardCom_GetDataPtr(void);
+    BoardCom_DataTypeDef *BoardCom_GetDataPtr(void);
     void BoardCom_Init(void);
     void BoardCom_Update(void);
     void BoardComPkg1_Send(void);

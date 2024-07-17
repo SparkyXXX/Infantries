@@ -20,6 +20,13 @@
   },
   "peacock.color": "#dd0531",
   "files.associations": {
-    "callback_ctrl.h": "c"
+    "callback_ctrl.h": "c",
+    "lib_filter.h": "c",
+    "list": "cpp",
+    "cstddef": "cpp",
+    "app_gimbal.h": "c",
+    "protocol_board.h": "c",
+    "periph_motor_can.h": "c",
+    "cmath": "cpp"
   }
 }

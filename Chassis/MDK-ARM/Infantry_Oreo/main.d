@@ -49,5 +49,5 @@ infantry_oreo/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
   ..\Core\Inc\dma.h ..\Core\Inc\fdcan.h ..\Core\Inc\tim.h \
   ..\Core\Inc\usart.h ..\Core\Inc\gpio.h ..\User\Infantry\config_ctrl.h \
-  ..\User\Infantry\test_ctrl.h ..\User\Peripheral\periph_motor_can.h \
-  ..\User\Utility\util_fdcan.h
+  ..\User\Peripheral\periph_motor_can.h ..\User\Utility\util_fdcan.h \
+  ..\User\Infantry\test_ctrl.h

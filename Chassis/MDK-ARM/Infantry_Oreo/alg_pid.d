@@ -1,5 +1,5 @@
 infantry_oreo/alg_pid.o: ..\User\Algorithm\alg_pid.c \
-  ..\User\Algorithm\alg_pid.h ..\User\Library\lib_math.h \
+  ..\User\Algorithm\alg_pid.h ..\User\Library\lib_filter.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h \
   ..\Core\Inc\stm32g4xx_hal_conf.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h \
@@ -34,9 +34,8 @@ infantry_oreo/alg_pid.o: ..\User\Algorithm\alg_pid.c \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
-  ..\Drivers\CMSIS\DSP\Include\arm_math.h \
+  ..\User\Library\lib_math.h ..\Drivers\CMSIS\DSP\Include\arm_math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\float.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \
-  ..\User\Library\lib_filter.h
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h

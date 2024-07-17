@@ -8,7 +8,7 @@
  */
 
 #include "callback_ctrl.h"
-#include "protocol_motor.h"
+#include "periph_motor_can.h"
 #include "protocol_board.h"
 #include "protocol_referee.h"
 

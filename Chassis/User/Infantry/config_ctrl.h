@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-03-16 04:30:28
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-17 19:45:23
  */
 
 #ifndef INIT_CTRL_H
@@ -15,9 +15,9 @@ extern "C"
 {
 #endif
 
-#include "test_ctrl.h"
 #include "periph_motor_can.h"
 #include "stdint.h"
+#include "test_ctrl.h"
 
     extern Motor_GroupDataTypeDef *Motor_groupHandle[2];
     extern Motor_GroupDataTypeDef Motor_ChassisMotors;

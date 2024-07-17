@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-03-23 00:21:52
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-17 19:32:56
  */
 
 #ifndef APP_FUCK_UI_H
@@ -15,9 +15,9 @@ extern "C"
 {
 #endif
 
-#include "protocol_board.h"
 #include "periph_cap.h"
-	
+#include "protocol_board.h"
+
 #define COLOR_RED 0x00
 #define COLOR_BLUE 0x01
 
@@ -37,25 +37,25 @@ extern "C"
 		uint8_t fly_state;
 		uint8_t is_get_target;
 	} UI_DataTypeDef;
-	
+
 	typedef struct
 	{
 		uint16_t red_7_robot_HP;
-        uint16_t red_outpost_HP;
-        uint16_t red_base_HP;        
+		uint16_t red_outpost_HP;
+		uint16_t red_base_HP;
 		uint16_t blue_7_robot_HP;
-        uint16_t blue_outpost_HP;
-        uint16_t blue_base_HP;
-		
+		uint16_t blue_outpost_HP;
+		uint16_t blue_base_HP;
+
 		uint16_t red_7_robot_HP_last;
-        uint16_t red_outpost_HP_last;
-        uint16_t red_base_HP_last;        
+		uint16_t red_outpost_HP_last;
+		uint16_t red_base_HP_last;
 		uint16_t blue_7_robot_HP_last;
-        uint16_t blue_outpost_HP_last;
-        uint16_t blue_base_HP_last;
+		uint16_t blue_outpost_HP_last;
+		uint16_t blue_base_HP_last;
 	} HP_DataTypeDef;
 
-    UI_DataTypeDef *UI_GetDataPtr(void);
+	UI_DataTypeDef *UI_GetDataPtr(void);
 	HP_DataTypeDef *HP_GetDataPtr(void);
 	void UI_Init();
 	void UI_Update();

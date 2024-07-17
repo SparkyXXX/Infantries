@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-06 22:32:59
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-18 01:18:29
  */
 
 #ifndef APP_REMOTE_H
@@ -16,9 +16,9 @@ extern "C"
 #endif
 
 #include "config_ctrl.h"
-#include "protocol_board.h"
-#include "periph_servo.h"
 #include "periph_remote.h"
+#include "periph_servo.h"
+#include "protocol_board.h"
 
 #define CHASSIS_STOP 0x00
 #define CHASSIS_NORMAL 0x01
@@ -37,52 +37,46 @@ extern "C"
         REMOTE_SMALL_BUFF,
         REMOTE_GYRO,
         REMOTE_ARMOR_TEMP,
-		REMOTE_BUFF_TEMP
+        REMOTE_BUFF_TEMP
     } Remote_AutoAimModeEnum;
 
     typedef struct
     {
+        Remote_AutoAimModeEnum aim_mode;
         uint8_t pending;
         uint8_t on_aim;
-        Remote_AutoAimModeEnum aim_mode;
-    } Remote_ControlTypeDef;
+        uint8_t mag_state;
+        uint8_t gyro_flag;
+        uint8_t quiet_flag;
+        uint8_t flyslope_flag;
+        uint8_t cap_speedup_flag;
+        uint8_t autoshoot_flag;
 
-    extern uint8_t Remote_Mag_State;
-	extern float Remote_Acc;
-	extern float Remote_Dec;
-	extern float KeyMouse_NormalSpeed;
-	extern float KeyMouse_UpperSpeed;
-	extern float KeyMouse_FlySlopeSpeed;
-    extern float Remote_Pitch_To_Ref;
-    extern float Remote_Yaw_To_Ref;
-    extern float Mouse_Pitch_To_Ref;
-    extern float Mouse_Yaw_To_Ref;
-    extern float Mouse_Pitch_To_Ref_Quiet;
-    extern float Mouse_Yaw_To_Ref_Quiet;
+        float keymouse_normal_speed;
+        float keymouse_upper_speed;
+        float keymouse_flyslope_speed;
+
+        float keymouse_pitch_to_ref;
+        float keymouse_yaw_to_ref;
+        float keymouse_pitch_to_ref_quiet;
+        float keymouse_yaw_to_ref_quiet;
+        float remote_pitch_to_ref;
+        float remote_yaw_to_ref;
+    } Remote_ControlTypeDef;
 
     extern float Servo_Open;
     extern float Servo_Close;
-    extern float Elevation_Angle;
-    extern float Depression_Angle;
-    extern float AutoShoot_Wait_ms;
-    extern uint16_t AutoShootSmallEnergy_Wait_ms;
-    extern uint16_t AutoShootBigEnergy_Wait_ms;
-    extern uint8_t is_shoot_changed;
-	extern uint8_t shoot_strategy;
 
     Remote_ControlTypeDef *Remote_GetControlPtr(void);
     void Remote_DriveModeSet(void);
     static void Remote_Update(void);
     static void Keymouse_Update(void);
-    static void Remote_AutoaimModeSet(uint8_t mode);
-    static void Keymouse_AutoaimModeSet(uint8_t mode);
+    static void KeyMouse_BuffModeSet(uint8_t mode);
+    static void KeyMouse_ArmorModeSet(uint8_t mode);
     static void Following_AutoaimModeSet(void);
-    static void Remote_Gyro_ModeSet(void);
-    static void Remote_Chassis_ModeSet(uint8_t chassis_mode);
+    static void KeyMouse_GyroModeSet(void);
+    static void KeyMouse_ChassisModeSet(uint8_t chassis_mode);
 
-    static void Remote_ShootModeSet(void);
-    static void Keymouse_ShootModeSet(void);
-	static void AutoAim_ShootModeSet(void);
 #ifdef __cplusplus
 }
 #endif

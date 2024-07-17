@@ -1,7 +1,6 @@
 infantry_oreo/config_ctrl.o: ..\User\Infantry\config_ctrl.c \
-  ..\User\Infantry\config_ctrl.h ..\User\Infantry\test_ctrl.h \
-  ..\User\Peripheral\periph_motor_can.h ..\User\Utility\util_fdcan.h \
-  ..\Core\Inc\fdcan.h ..\Core\Inc\main.h \
+  ..\User\Infantry\config_ctrl.h ..\User\Peripheral\periph_motor_can.h \
+  ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h ..\Core\Inc\main.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h \
   ..\Core\Inc\stm32g4xx_hal_conf.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h \
@@ -36,30 +35,12 @@ infantry_oreo/config_ctrl.o: ..\User\Infantry\config_ctrl.c \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
-  ..\User\Algorithm\alg_pid.h ..\User\Library\lib_math.h \
-  ..\Drivers\CMSIS\DSP\Include\arm_math.h \
+  ..\User\Infantry\test_ctrl.h ..\User\Application\app_chassis.h \
+  ..\User\Algorithm\alg_pid.h ..\User\Library\lib_filter.h \
+  ..\User\Library\lib_power_ctrl.h ..\User\Application\app_gimbal.h \
+  ..\User\Application\app_ui.h ..\User\Peripheral\periph_cap.h \
+  ..\User\Protocol\protocol_board.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\float.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \
-  ..\User\Library\lib_filter.h ..\User\Application\app_chassis.h \
   ..\User\Protocol\protocol_referee.h ..\User\Infantry\callback_ctrl.h \
   ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
-  ..\User\Protocol\protocol_board.h ..\User\Library\lib_power_ctrl.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
-  ..\Core\Inc\FreeRTOSConfig.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\deprecated_definitions.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F\portmacro.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\timers.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
-  ..\User\Application\app_gimbal.h ..\User\Application\app_ui.h \
-  ..\User\Peripheral\periph_cap.h ..\User\Protocol\protocol_motor.h \
   ..\User\System\sys_dwt.h

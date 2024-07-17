@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-07-16 02:23:57
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-18 01:53:19
  */
 
 #ifndef PROTOCOL_BOARDCOM_H
@@ -15,8 +15,8 @@ extern "C"
 {
 #endif
 
-#include "string.h"
 #include "stm32g4xx_hal.h"
+#include "string.h"
 
 #define CHASSIS_CTRL_STOP 0x00
 #define CHASSIS_CTRL_NORMAL 0x01
@@ -32,8 +32,6 @@ extern "C"
 
 #define CAP_NORMAL 0x00
 #define CAP_SPEEDUP 0x01
-
-#define BOARDCOM_TIMEOUT_VALUE 20 // 单位并非时间，而是控制电机次数（底盘+云台）
 
 #define BOARDCOM_TIMEOUT_VALUE 20 // 单位并非时间，而是控制电机次数（底盘+云台）
 
@@ -72,7 +70,7 @@ extern "C"
         uint8_t power_limit_mode;
         uint8_t ui_cmd;
         uint8_t fly_flag;
-        uint8_t gyro_dir;
+        int8_t gyro_dir;
         uint8_t is_get_target;
         uint8_t check_in;
         uint8_t cap_speedup_flag;
@@ -112,8 +110,6 @@ extern "C"
     void BoardCom_Update(void);
     void BoardCom_Send(void);
     void BoardCom_Decode(FDCAN_HandleTypeDef *pfdhcan, uint32_t stdid, uint8_t rxdata[], uint32_t len);
-    void BoardCom_Decode_Gimbal(uint8_t rxdata[], uint32_t stdid);
-    void BoardCom_Decode_Cap(uint8_t rxdata[], uint32_t stdid);
     uint8_t BoardCom_IsLost(uint8_t);
 
     static void _send_referee_data1(uint8_t buff[]);

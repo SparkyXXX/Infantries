@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-01-10 11:14:40
+ * @LastEditTime: 2024-07-17 21:36:41
  */
 
 #include "sys_dwt.h"
@@ -116,8 +116,10 @@ void DWT_Delay(float Delay)
     DWT_DataTypeDef *dwt = DWT_GetDataPtr();
     uint32_t tickstart = DWT->CYCCNT;
     float wait = Delay;
-    while ((DWT->CYCCNT - tickstart) < wait * (float)dwt->CPU_FREQ_Hz) 
-    {;}
+    while ((DWT->CYCCNT - tickstart) < wait * (float)dwt->CPU_FREQ_Hz)
+    {
+        ;
+    }
 }
 
 void DWT_Delayms(float Delay)
@@ -126,7 +128,9 @@ void DWT_Delayms(float Delay)
     uint32_t tickstart = DWT->CYCCNT;
     float wait = Delay;
     while ((DWT->CYCCNT - tickstart) < wait * (float)dwt->CPU_FREQ_Hz_ms)
-    {;}
+    {
+        ;
+    }
 }
 
 void DWT_Delayus(float Delay)
@@ -135,65 +139,64 @@ void DWT_Delayus(float Delay)
     uint32_t tickstart = DWT->CYCCNT;
     float wait = Delay;
     while ((DWT->CYCCNT - tickstart) < wait * (float)dwt->CPU_FREQ_Hz_us)
-    {;}
+    {
+        ;
+    }
 }
 
-float task_freq = 0.0f;
+float task_ms = 0.0f;
 uint64_t tick_last = 0;
-uint32_t big_num = 0;
-uint32_t small_num = 0;
 void Check_Task_Freq(void)
 {
-    task_freq = (DWT_GetTimeline_us() - tick_last) / 1000.0f;
+    task_ms = (DWT_GetTimeline_us() - tick_last) / 1000.0f;
     tick_last = DWT_GetTimeline_us();
-    if (task_freq < 0.9f)
-    {
-        small_num++;
-    }
-    else
-    {
-        big_num++;
-    }
 }
-
 
 uint64_t GlobalTime = 0; // 170'000'000 ++
 uint64_t time_last;
 uint64_t time_now;
 uint8_t time_update_mutex = 0;
-void GlobalTimeUpdate() {
-	uint32_t time_diff;
-	
-	if(time_update_mutex) return;
-	
-	time_update_mutex = 1;
-	
-	time_now = DWT->CYCCNT;
-	if(time_now < time_last) {
-		time_diff = (uint32_t)0xFFFFFFFF - time_last + time_now;
-	} else {
-		time_diff = time_now - time_last;
-	}
-	time_last = DWT->CYCCNT;
-	
-	time_update_mutex = 0;
-	
-	GlobalTime += time_diff;
+void GlobalTimeUpdate()
+{
+    uint32_t time_diff;
+
+    if (time_update_mutex)
+        return;
+
+    time_update_mutex = 1;
+
+    time_now = DWT->CYCCNT;
+    if (time_now < time_last)
+    {
+        time_diff = (uint32_t)0xFFFFFFFF - time_last + time_now;
+    }
+    else
+    {
+        time_diff = time_now - time_last;
+    }
+    time_last = DWT->CYCCNT;
+
+    time_update_mutex = 0;
+
+    GlobalTime += time_diff;
 }
 
-uint32_t GetTime_s() {
-	GlobalTimeUpdate();
-	
-	return GlobalTime / 170000000;
+uint32_t GetTime_s()
+{
+    GlobalTimeUpdate();
+
+    return GlobalTime / 170000000;
 }
 
-uint32_t GetTime_ms() {
-	GlobalTimeUpdate();
+uint32_t GetTime_ms()
+{
+    GlobalTimeUpdate();
 
-	return GlobalTime / 170000;
+    return GlobalTime / 170000;
 }
-uint64_t GetTime_us() {
-	GlobalTimeUpdate();
-	
-	return GlobalTime / 170;
+uint64_t GetTime_us()
+{
+    GlobalTimeUpdate();
+
+    return GlobalTime / 170;
 }

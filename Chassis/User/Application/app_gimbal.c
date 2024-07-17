@@ -3,27 +3,24 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-04-20 00:38:01
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-17 20:07:58
  */
 
-#include "config_ctrl.h"
 #include "app_gimbal.h"
-#include "protocol_board.h"
-#include "protocol_motor.h"
-#include "lib_math.h"
-#include "sys_dwt.h"
 #include "app_chassis.h"
+#include "config_ctrl.h"
+#include "lib_math.h"
+#include "protocol_board.h"
 
 GimbalYaw_ControlTypeDef GimbalYaw_Control;
-Filter_Lowpass_TypeDef autoaim_yaw_filter;
 
 /**
  * @brief      Get the pointer of gimbal control object
  * @param      NULL
  * @retval     Pointer to gimbal control object
  */
-GimbalYaw_ControlTypeDef* GimbalYaw_GetControlPtr()
+GimbalYaw_ControlTypeDef *GimbalYaw_GetControlPtr()
 {
     return &GimbalYaw_Control;
 }
@@ -35,14 +32,13 @@ GimbalYaw_ControlTypeDef* GimbalYaw_GetControlPtr()
  */
 void GimbalYaw_Init()
 {
-    GimbalYaw_ControlTypeDef* gimbalyaw = GimbalYaw_GetControlPtr();
+    GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
     gimbalyaw->mode_change_flag = 0;
     gimbalyaw->yaw_ref = 0;
     gimbalyaw->present_mode = GimbalYaw_NO_AUTO;
     gimbalyaw->last_mode = GimbalYaw_NO_AUTO;
     Motor_GimbalYaw.encoder.angle = 4000;
     GimbalYaw_ParamInit();
-    Filter_Lowpass_Init(500.0f, &autoaim_yaw_filter);
 }
 
 /**
@@ -52,34 +48,22 @@ void GimbalYaw_Init()
  */
 void GimbalYaw_ModeSet(GimbalYaw_ModeEnum mode)
 {
-    GimbalYaw_ControlTypeDef* gimbalyaw = GimbalYaw_GetControlPtr();
+    GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
     gimbalyaw->last_mode = gimbalyaw->present_mode;
     gimbalyaw->present_mode = mode;
 
-    if(gimbalyaw->last_mode != gimbalyaw->present_mode)
+    if (gimbalyaw->last_mode != gimbalyaw->present_mode)
     {
         gimbalyaw->mode_change_flag = 1;
     }
 }
 
-/**
- * @brief      Control function of gimbal yaw
- * @param      NULL
- * @retval     NULL
- */
-float test_ref = 0.0f;
-float processed_yaw_ref;
-void GimbalYaw_Output()
+void GimbalYaw_ModeProcess()
 {
-    GimbalYaw_ControlTypeDef* gimbalyaw = GimbalYaw_GetControlPtr();
-    BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
-    Chassis_ControlTypeDef* chassis = Chassis_GetControlPtr();
+    GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
 
-    GimbalYaw_SetRef(boardcom->yaw_ref);
-    GimbalYaw_SetAngleFdb(boardcom->yaw_pos_fdb);
-    GimbalYaw_SetSpeedFdb(boardcom->yaw_spd_fdb);
-
-    switch(boardcom->yaw_mode)
+    switch (boardcom->yaw_mode)
     {
     case GIMBAL_YAW_NO_AUTO:
         GimbalYaw_ModeSet(GimbalYaw_NO_AUTO);
@@ -96,7 +80,7 @@ void GimbalYaw_Output()
     default:
         return;
     }
-    if(gimbalyaw->mode_change_flag == 1)
+    if (gimbalyaw->mode_change_flag == 1)
     {
         PID_Clear(&(gimbalyaw->spd_no_auto));
         PID_Clear(&(gimbalyaw->pos_no_auto));
@@ -107,31 +91,35 @@ void GimbalYaw_Output()
         PID_Clear(&(gimbalyaw->spd_small_energy));
         PID_Clear(&(gimbalyaw->pos_small_energy));
 
-        if(gimbalyaw->present_mode == GimbalYaw_NO_AUTO)
+        if (gimbalyaw->present_mode == GimbalYaw_NO_AUTO)
         {
             gimbalyaw->spd_no_auto.ref = gimbalyaw->last_yaw_spd_ref;
             gimbalyaw->pos_no_auto.ref = gimbalyaw->last_yaw_pos_ref;
         }
-        if(gimbalyaw->present_mode == GimbalYaw_ARMOR)
+        if (gimbalyaw->present_mode == GimbalYaw_ARMOR)
         {
             gimbalyaw->spd_armor.ref = gimbalyaw->last_yaw_spd_ref;
             gimbalyaw->pos_armor.ref = gimbalyaw->last_yaw_pos_ref;
         }
-        if(gimbalyaw->present_mode == GimbalYaw_BIG_ENERGY)
+        if (gimbalyaw->present_mode == GimbalYaw_BIG_ENERGY)
         {
             gimbalyaw->spd_big_energy.ref = gimbalyaw->last_yaw_spd_ref;
             gimbalyaw->pos_big_energy.ref = gimbalyaw->last_yaw_pos_ref;
         }
-        if(gimbalyaw->present_mode == GimbalYaw_SMALL_ENERGY)
+        if (gimbalyaw->present_mode == GimbalYaw_SMALL_ENERGY)
         {
             gimbalyaw->spd_small_energy.ref = gimbalyaw->last_yaw_spd_ref;
             gimbalyaw->pos_small_energy.ref = gimbalyaw->last_yaw_pos_ref;
         }
-
         gimbalyaw->mode_change_flag = 0;
     }
+}
 
-    switch(gimbalyaw->present_mode)
+float test_ref = 0.0f;
+void GimbalYaw_CalcOutput()
+{
+    GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
+    switch (gimbalyaw->present_mode)
     {
     case GimbalYaw_NO_AUTO:
 #if YAW_MOVE == YAW_REMOTE
@@ -151,8 +139,7 @@ void GimbalYaw_Output()
 #endif
         break;
     case GimbalYaw_ARMOR:
-        processed_yaw_ref = Filter_Lowpass(gimbalyaw->yaw_ref, &autoaim_yaw_filter);
-        PID_SetRef(&gimbalyaw->pos_armor, processed_yaw_ref);
+        PID_SetRef(&gimbalyaw->pos_armor, Filter_Lowpass(gimbalyaw->yaw_ref, &(gimbalyaw->autoaim_yaw_filter)));
         PID_SetFdb(&gimbalyaw->pos_armor, Math_Consequent_To_Limited(gimbalyaw->yaw_ref, gimbalyaw->yaw_position_fdb));
         PID_SetRef(&gimbalyaw->spd_armor, Filter_Lowpass(PID_Calc(&gimbalyaw->pos_armor), &(gimbalyaw->spd_ref_filter)));
         PID_SetFdb(&gimbalyaw->spd_armor, gimbalyaw->yaw_speed_fdb);
@@ -181,6 +168,26 @@ void GimbalYaw_Output()
     default:
         break;
     }
+}
+
+/**
+ * @brief      Control function of gimbal yaw
+ * @param      NULL
+ * @retval     NULL
+ */
+void GimbalYaw_Output()
+{
+    GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+    Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
+
+    GimbalYaw_SetRef(boardcom->yaw_ref);
+    GimbalYaw_SetAngleFdb(boardcom->yaw_pos_fdb);
+    GimbalYaw_SetSpeedFdb(boardcom->yaw_spd_fdb);
+
+    GimbalYaw_ModeProcess();
+    GimbalYaw_CalcOutput();
+
 #if IF_SYS_IDENT == SYS_IDENT
     openloop_spd_fdb = gimbalyaw->yaw_speed_fdb;
 #endif
@@ -202,7 +209,7 @@ void GimbalYaw_Output()
  */
 void GimbalYaw_SetRef(float yaw_ref)
 {
-    GimbalYaw_ControlTypeDef* gimbalyaw = GimbalYaw_GetControlPtr();
+    GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
     gimbalyaw->yaw_ref = yaw_ref * 3.1415926f / 180;
 }
 
@@ -213,7 +220,7 @@ void GimbalYaw_SetRef(float yaw_ref)
  */
 void GimbalYaw_SetAngleFdb(float yaw_pos_fdb)
 {
-    GimbalYaw_ControlTypeDef* gimbalyaw = GimbalYaw_GetControlPtr();
+    GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
     gimbalyaw->yaw_position_fdb = yaw_pos_fdb * 3.1415926f / 180;
 }
 
@@ -224,6 +231,6 @@ void GimbalYaw_SetAngleFdb(float yaw_pos_fdb)
  */
 void GimbalYaw_SetSpeedFdb(float yaw_pos_fdb)
 {
-    GimbalYaw_ControlTypeDef* gimbalyaw = GimbalYaw_GetControlPtr();
+    GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
     gimbalyaw->yaw_speed_fdb = yaw_pos_fdb;
 }

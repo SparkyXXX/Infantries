@@ -36,5 +36,4 @@ infantry_oreo/protocol_referee.o: ..\User\Protocol\protocol_referee.c \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
   ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
-  ..\User\Peripheral\periph_cap.h ..\User\Library\lib_crc.h
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h ..\User\Library\lib_crc.h

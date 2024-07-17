@@ -1,8 +1,9 @@
 infantry_oreo/app_ui.o: ..\User\Application\app_ui.cpp \
-  ..\User\Application\app_ui.h ..\User\Protocol\protocol_board.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\string.h \
+  ..\User\Application\app_ui.h ..\User\Peripheral\periph_cap.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\stdint.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__config \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\stdint.h \
+  ..\User\Protocol\protocol_board.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h \
   ..\Core\Inc\stm32g4xx_hal_conf.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h \
@@ -10,8 +11,6 @@ infantry_oreo/app_ui.o: ..\User\Application\app_ui.cpp \
   ..\Drivers\CMSIS\Device\ST\STM32G4xx\Include\stm32g4xx.h \
   ..\Drivers\CMSIS\Device\ST\STM32G4xx\Include\stm32g473xx.h \
   ..\Drivers\CMSIS\Include\core_cm4.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\stdint.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\stdint.h \
   ..\Drivers\CMSIS\Include\cmsis_version.h \
   ..\Drivers\CMSIS\Include\cmsis_compiler.h \
   ..\Drivers\CMSIS\Include\cmsis_armclang.h \
@@ -39,31 +38,47 @@ infantry_oreo/app_ui.o: ..\User\Application\app_ui.cpp \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
-  ..\User\Peripheral\periph_cap.h ..\User\Application\app_chassis.h \
-  ..\User\Infantry\config_ctrl.h ..\User\Infantry\test_ctrl.h \
-  ..\User\Peripheral\periph_motor_can.h ..\User\Utility\util_fdcan.h \
-  ..\Core\Inc\fdcan.h ..\Core\Inc\main.h \
-  ..\User\Protocol\protocol_referee.h ..\User\Infantry\callback_ctrl.h \
-  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h \
-  ..\User\Algorithm\alg_pid.h ..\User\Library\lib_math.h \
-  ..\Drivers\CMSIS\DSP\Include\arm_math.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\math.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\promote.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\integral_constant.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\string.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
+  ..\User\Application\app_chassis.h ..\User\Algorithm\alg_pid.h \
+  ..\User\Library\lib_filter.h ..\User\Library\lib_power_ctrl.h \
+  ..\User\Application\app_gimbal.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
+  ..\Core\Inc\FreeRTOSConfig.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\deprecated_definitions.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F\portmacro.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\timers.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
+  ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
+  ..\User\Infantry\config_ctrl.h ..\User\Peripheral\periph_motor_can.h \
+  ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h ..\Core\Inc\main.h \
+  ..\User\Infantry\test_ctrl.h ..\User\Library\lib_ui.h \
+  ..\User\Library\lib_crc.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\list \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__algorithm\comp.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__algorithm\equal.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__iterator\distance.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__iterator\concepts.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__iterator\incrementable_traits.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\is_primary_template.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\enable_if.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\is_same.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__utility\declval.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\cstddef \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\integral_constant.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\is_valid_expansion.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\concepts \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__assert \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__verbose_abort \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__availability \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\enable_if.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\is_integral.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\remove_cv.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\remove_const.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\remove_volatile.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\version \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\limits \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__concepts\arithmetic.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\is_signed_integer.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\is_unsigned_integer.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\type_traits \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__functional\invoke.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\add_lvalue_reference.h \
@@ -72,6 +87,12 @@ infantry_oreo/app_ui.o: ..\User\Application\app_ui.cpp \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\is_const.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\is_volatile.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\remove_reference.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\cstddef \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\is_integral.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\remove_cv.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\remove_const.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\remove_volatile.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\version \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\conditional.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\decay.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\add_pointer.h \
@@ -86,6 +107,7 @@ infantry_oreo/app_ui.o: ..\User\Application\app_ui.cpp \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\is_member_object_pointer.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\is_reference_wrapper.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\nat.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__utility\declval.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__utility\forward.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__fwd\hash.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\add_const.h \
@@ -182,39 +204,6 @@ infantry_oreo/app_ui.o: ..\User\Application\app_ui.cpp \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\result_of.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\type_identity.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\cstdint \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__undef_macros \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\stdlib.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\float.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\float.h \
-  ..\User\Library\lib_filter.h ..\User\Library\lib_power_ctrl.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
-  ..\Core\Inc\FreeRTOSConfig.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\deprecated_definitions.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F\portmacro.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\timers.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
-  ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
-  ..\User\Application\app_gimbal.h ..\User\Library\lib_ui.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\list \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__algorithm\comp.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__algorithm\equal.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__iterator\distance.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__iterator\concepts.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__iterator\incrementable_traits.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\is_primary_template.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\is_valid_expansion.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\concepts \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__concepts\arithmetic.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\is_signed_integer.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\is_unsigned_integer.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__concepts\assignable.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__concepts\common_reference_with.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__concepts\convertible_to.h \
@@ -258,6 +247,7 @@ infantry_oreo/app_ui.o: ..\User\Application\app_ui.cpp \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__algorithm\min.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__algorithm\min_element.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__functional\identity.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__undef_macros \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__format\enable_insertable.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__iterator\move_iterator.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__compare\compare_three_way_result.h \
@@ -271,6 +261,9 @@ infantry_oreo/app_ui.o: ..\User\Application\app_ui.cpp \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__utility\convert_to_integral.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__utility\unreachable.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\cstdlib \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\stdlib.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\limits \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__iterator\prev.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__iterator\reverse_iterator.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__algorithm\unwrap_iter.h \
@@ -321,6 +314,9 @@ infantry_oreo/app_ui.o: ..\User\Application\app_ui.cpp \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__bit\bit_cast.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__utility\priority_tag.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\cmath \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\math.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__type_traits\promote.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__compare\compare_strong_order_fallback.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__compare\compare_weak_order_fallback.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__compare\is_eq.h \
@@ -635,4 +631,5 @@ infantry_oreo/app_ui.o: ..\User\Application\app_ui.cpp \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__functional\pointer_to_binary_function.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__functional\pointer_to_unary_function.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\libcxx\__functional\unary_negate.h \
-  ..\User\Library\lib_crc.h
+  ..\User\Protocol\protocol_referee.h ..\User\Infantry\callback_ctrl.h \
+  ..\User\Utility\util_uart.h ..\Core\Inc\usart.h

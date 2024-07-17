@@ -4,8 +4,8 @@
  * @Descripttion :
  * @Author       : GDDG08
  * @Date         : 2021-12-31 17:37:14
- * @LastEditors  : GDDG08
- * @LastEditTime : 2022-08-23 23:29:54
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-18 02:33:01
  */
 
 #ifndef ADC_UTIL_H
@@ -16,9 +16,8 @@ extern "C"
 {
 #endif
 
-
 #include "adc.h"
-#include "string.h"
+#include "stdint.h"
 
     extern uint32_t ADC_ValueBuf[30];
     extern float ADC_Voltage;

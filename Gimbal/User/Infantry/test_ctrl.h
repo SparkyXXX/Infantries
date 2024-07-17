@@ -1,3 +1,10 @@
+/*
+ * @Project: Infantry Code
+ * @Author: GDDG08
+ * @Date: 2024-07-17 19:11:39
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-18 02:51:04
+ */
 #define DEBUG 1
 #define TRAIN 2
 #define REMOTE_MODE TRAIN
@@ -6,10 +13,6 @@
 #define PITCH_STEP 0
 #define PITCH_MODE PITCH_REMOTE
 
-#define SHOOT_CLOSE_LOOP 1
-#define SHOOT_OPEN_LOOP 0
-#define SHOOT_MODE SHOOT_CLOSE_LOOP
-
 #define NO_BULLET_SPD_TEST 1
 #define BULLET_SPD_TEST 0
-#define IF_BULLET_SPD_TEST BULLET_SPD_TEST
+#define IF_BULLET_SPD_TEST NO_BULLET_SPD_TEST

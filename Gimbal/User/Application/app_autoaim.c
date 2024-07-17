@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-06 21:50:12
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-18 01:04:02
  */
 
 #include "app_autoaim.h"
@@ -20,16 +20,17 @@ void AutoAim_Output()
     AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
     MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
     Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();
+    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
 
     if (gimbal->present_mode != GIMBAL_NO_AUTO)
     {
         if (autoaim->hit_mode == AUTOAIM_HIT_ARMOR)
         {
-			Feeder_Fast_Speed = Armor_Feeder_Fast_Speed;
-			Feeder_Slow_Speed = Armor_Feeder_Slow_Speed;
-            autoaim->armor_yaw = -(float)minipc->yaw_ref / 100;
-            autoaim->armor_pitch = -(float)minipc->pitch_ref / 100;
-            LimitMaxMin(autoaim->armor_pitch, Elevation_Angle, Depression_Angle);
+            shooter->fast_shoot_freq = autoaim->armor_fast_freq;
+            shooter->slow_shoot_freq = autoaim->armor_slow_freq;
+            autoaim->armor_yaw = -(float)minipc->armor_yaw_ref / 100;
+            autoaim->armor_pitch = -(float)minipc->armor_pitch_ref / 100;
+            LimitMaxMin(autoaim->armor_pitch, gimbal->elevation_angle, gimbal->depression_angle);
             while (autoaim->armor_yaw >= 180)
             {
                 autoaim->armor_yaw -= 360;
@@ -46,11 +47,11 @@ void AutoAim_Output()
         }
         else if (autoaim->hit_mode == AUTOAIM_HIT_BUFF)
         {
-			Feeder_Fast_Speed = Buff_Feeder_Fast_Speed;
-			Feeder_Slow_Speed = Buff_Feeder_Slow_Speed;
-            autoaim->buff_yaw = -(float)minipc->buff_yaw / 100;
-            autoaim->buff_pitch = -(float)minipc->buff_pitch / 100;
-            LimitMaxMin(autoaim->buff_pitch, Elevation_Angle, Depression_Angle);
+            shooter->fast_shoot_freq = autoaim->buff_freq;
+            shooter->slow_shoot_freq = autoaim->buff_freq;
+            autoaim->buff_yaw = -(float)minipc->buff_yaw_ref / 100;
+            autoaim->buff_pitch = -(float)minipc->buff_pitch_ref / 100;
+            LimitMaxMin(autoaim->buff_pitch, gimbal->elevation_angle, gimbal->depression_angle);
             while (autoaim->buff_yaw >= 180)
             {
                 autoaim->buff_yaw -= 360;
@@ -66,11 +67,11 @@ void AutoAim_Output()
             }
         }
     }
-	else
-	{
-		Feeder_Fast_Speed = Armor_Feeder_Fast_Speed;
-		Feeder_Slow_Speed = Armor_Feeder_Slow_Speed;
-	}
+    else
+    {
+        shooter->fast_shoot_freq = autoaim->armor_fast_freq;
+        shooter->slow_shoot_freq = autoaim->armor_slow_freq;
+    }
 }
 
 void AutoAim_ModeSet(AutoAim_ModeEnum mode)
@@ -83,16 +84,16 @@ void AutoAim_ModeSet(AutoAim_ModeEnum mode)
 
 void AutoAim_UpdateTime()
 {
-	AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
-	MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
-	if (minipc->is_get_target == 0)
-	{
-		return;
-	}
-	else
-	{
-		autoaim->get_target_time = HAL_GetTick();
-	}
+    AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
+    MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
+    if (minipc->is_get_target == 0)
+    {
+        return;
+    }
+    else
+    {
+        autoaim->get_target_time = HAL_GetTick();
+    }
 }
 
 void AutoAim_IsLost()

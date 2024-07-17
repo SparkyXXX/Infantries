@@ -1,29 +1,21 @@
-/***
-*
-*   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
-* ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
-* ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
-* ░▓█▒  ░▓▓█  ░██░▒▓▓▄ ▄██▒▓██ █▄        ██╔══██╗██║   ██║██║   ██║
-* ░▒█░   ▒▒█████▓ ▒ ▓███▀ ░▒██▒ █▄       ██████╔╝╚██████╔╝╚██████╔╝
-*  ▒ ░   ░▒▓▒ ▒ ▒ ░ ░▒ ▒  ░▒ ▒▒ ▓▒       ╚═════╝  ╚═════╝  ╚═════╝
-*  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
-*  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
-*           ░     ░ ░      ░  ░
-*
-* @Date: 2024-04-07 20:40:50
-* @LastEditors: KraHsu && 1191393280@qq.com
-* @LastEditTime: 2024-04-07 20:40:50
-* Copyright (c) 2024 by KraHsu, All Rights Reserved.
-*/
-
+/*
+ * @Project: Infantry Code
+ *
+ * @Author: GDDG08
+ * @Date: 2021-12-31 17:37:14
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-17 19:21:06
+ */
 #pragma once
 
-#include <cstddef>
-#include <algorithm>
 #include "cmsis_compiler.h"
+#include <algorithm>
+#include <cstddef>
 
-namespace sheriff {
-    constexpr uint16_t RoundUpToPowerOfTwo(uint16_t x) {
+namespace sheriff
+{
+    constexpr uint16_t RoundUpToPowerOfTwo(uint16_t x)
+    {
         if ((x & (x - 1)) == 0)
             return x;
         x--;
@@ -36,7 +28,8 @@ namespace sheriff {
     }
 
     template <typename T, uint16_t Len_T>
-    class RingBuffer {
+    class RingBuffer
+    {
         static_assert(Len_T >= 2, "Length must be greater than or equal to 2");
         static_assert(Len_T <= 2048, "Length must be less than or equal to 2048");
 
@@ -47,12 +40,13 @@ namespace sheriff {
     private:
         uint16_t _in{0};
         uint16_t _out{0};
-        T        _buffer[Capacity];
+        T _buffer[Capacity];
 
     public:
         RingBuffer() = default;
 
-        uint16_t Write(const T *buffer, uint16_t len) {
+        uint16_t Write(const T *buffer, uint16_t len)
+        {
             uint16_t l;
             len = std::min(len, uint16_t(Capacity - _in + _out));
 
@@ -70,11 +64,13 @@ namespace sheriff {
             return len;
         }
 
-        uint16_t Write(const T &in) {
+        uint16_t Write(const T &in)
+        {
             return Write(&in, 1);
         }
 
-        uint16_t Read(T *buffer, uint16_t len) {
+        uint16_t Read(T *buffer, uint16_t len)
+        {
             uint16_t l;
 
             len = std::min(len, uint16_t(_in - _out));
@@ -93,57 +89,69 @@ namespace sheriff {
             return len;
         }
 
-        T Read() {
+        T Read()
+        {
             T res;
             Read(&res, 1);
             return std::move(res);
         }
 
-        uint16_t Read(T &out) {
+        uint16_t Read(T &out)
+        {
             return Read(&out, 1);
         }
 
-        T operator[](uint16_t i) {
+        T operator[](uint16_t i)
+        {
             return _buffer[(_in + i) & (Capacity - 1)];
         }
 
-        RingBuffer &operator<<(const T &in) {
+        RingBuffer &operator<<(const T &in)
+        {
             Write(in);
             return *this;
         }
 
-        RingBuffer &operator>>(T &out) {
+        RingBuffer &operator>>(T &out)
+        {
             Read(out);
             return *this;
         }
     };
 
     template <typename T, size_t Len_T>
-    class SlidingWindow {
+    class SlidingWindow
+    {
     private:
         RingBuffer<T, Len_T> _ring_buffer;
 
     public:
-        explicit SlidingWindow(const T &init_value) {
-            for (size_t i = 0; i < Len_T; i++) {
+        explicit SlidingWindow(const T &init_value)
+        {
+            for (size_t i = 0; i < Len_T; i++)
+            {
                 _ring_buffer.Write(init_value);
             }
         }
 
-        explicit SlidingWindow() {
+        explicit SlidingWindow()
+        {
             T t{};
-            for (size_t i = 0; i < Len_T; i++) {
+            for (size_t i = 0; i < Len_T; i++)
+            {
                 _ring_buffer.Write(t);
             }
         }
 
-        SlidingWindow &operator<<(const T &in) {
+        SlidingWindow &operator<<(const T &in)
+        {
             _ring_buffer.Write(in);
             _ring_buffer.Read();
             return *this;
         }
 
-        T operator[](size_t i) {
+        T operator[](size_t i)
+        {
             return _ring_buffer[i];
         }
     };

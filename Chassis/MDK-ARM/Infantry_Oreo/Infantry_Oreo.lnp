@@ -46,7 +46,6 @@
 "infantry_oreo\app_chassis.o"
 "infantry_oreo\app_gimbal.o"
 "infantry_oreo\app_ui.o"
-"infantry_oreo\protocol_motor.o"
 "infantry_oreo\protocol_board.o"
 "infantry_oreo\protocol_referee.o"
 "infantry_oreo\alg_pid.o"

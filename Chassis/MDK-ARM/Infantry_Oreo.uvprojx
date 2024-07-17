@@ -1693,11 +1693,6 @@
           <GroupName>Protocol</GroupName>
           <Files>
             <File>
-              <FileName>protocol_motor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\Protocol\protocol_motor.c</FilePath>
-            </File>
-            <File>
               <FileName>protocol_board.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Protocol\protocol_board.c</FilePath>

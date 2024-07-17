@@ -1,8 +1,5 @@
 infantry_oreo/app_shoot.o: ..\User\Application\app_shoot.c \
-  ..\User\Application\app_shoot.h ..\User\Protocol\protocol_motor.h \
-  ..\User\Infantry\config_ctrl.h ..\User\Infantry\test_ctrl.h \
-  ..\User\Application\app_gimbal.h ..\User\Application\app_ins.h \
-  ..\User\Algorithm\alg_qekf.h ..\User\Algorithm\alg_kf.h \
+  ..\User\Application\app_shoot.h ..\User\Algorithm\alg_pid.h \
   ..\User\Library\lib_math.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h \
   ..\Core\Inc\stm32g4xx_hal_conf.h \
@@ -51,11 +48,27 @@ infantry_oreo/app_shoot.o: ..\User\Application\app_shoot.c \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\float.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \
-  ..\User\Peripheral\periph_bmi088.h ..\User\Peripheral\BMI088reg.h \
-  ..\Core\Inc\main.h ..\User\Utility\util_spi.h ..\Core\Inc\spi.h \
-  ..\Core\Inc\dma.h ..\User\Utility\util_gpio.h ..\Core\Inc\gpio.h \
-  ..\User\Library\lib_buff.h ..\User\System\sys_dwt.h \
-  ..\User\Algorithm\alg_pid.h ..\User\Library\lib_filter.h \
+  ..\User\Library\lib_filter.h ..\User\Peripheral\periph_motor_pwm.h \
+  ..\User\Utility\util_pwm.h ..\Core\Inc\tim.h ..\Core\Inc\main.h \
+  ..\User\Protocol\protocol_board.h ..\User\Application\app_autoaim.h \
+  ..\User\Protocol\protocol_minipc.h ..\USB_Device\App\usbd_cdc_if.h \
+  ..\Middlewares\ST\STM32_USB_Device_Library\Class\CDC\Inc\usbd_cdc.h \
+  ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_ioreq.h \
+  ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_def.h \
+  ..\USB_Device\Target\usbd_conf.h \
+  D:\Keil\ARM\ARMCLANG\Bin\..\include\stdio.h \
+  ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_core.h \
+  ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_ctlreq.h \
+  ..\User\Application\app_gimbal.h ..\User\Application\app_ins.h \
+  ..\User\Infantry\config_ctrl.h ..\User\Application\app_remote.h \
+  ..\User\Peripheral\periph_remote.h ..\User\Utility\util_uart.h \
+  ..\Core\Inc\usart.h ..\User\Peripheral\periph_servo.h \
+  ..\User\Infantry\test_ctrl.h ..\User\Peripheral\periph_bmi088.h \
+  ..\User\Peripheral\BMI088reg.h ..\User\Utility\util_spi.h \
+  ..\Core\Inc\spi.h ..\Core\Inc\dma.h ..\User\Utility\util_gpio.h \
+  ..\Core\Inc\gpio.h ..\User\Library\lib_buff.h ..\User\System\sys_dwt.h \
+  ..\User\Peripheral\periph_motor_can.h ..\User\Utility\util_fdcan.h \
+  ..\Core\Inc\fdcan.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
   ..\Core\Inc\FreeRTOSConfig.h \
@@ -70,20 +83,6 @@ infantry_oreo/app_shoot.o: ..\User\Application\app_shoot.c \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h \
-  ..\User\Application\app_autoaim.h ..\User\Protocol\protocol_board.h \
-  ..\User\Application\app_remote.h ..\User\Peripheral\periph_servo.h \
-  ..\User\Utility\util_pwm.h ..\Core\Inc\tim.h \
-  ..\User\Peripheral\periph_remote.h ..\User\Utility\util_uart.h \
-  ..\Core\Inc\usart.h ..\User\Utility\util_fdcan.h ..\Core\Inc\fdcan.h \
-  ..\User\Infantry\callback_ctrl.h ..\User\Peripheral\periph_minipc.h \
-  ..\USB_Device\App\usbd_cdc_if.h \
-  ..\Middlewares\ST\STM32_USB_Device_Library\Class\CDC\Inc\usbd_cdc.h \
-  ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_ioreq.h \
-  ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_def.h \
-  ..\USB_Device\Target\usbd_conf.h \
-  D:\Keil\ARM\ARMCLANG\Bin\..\include\stdio.h \
-  ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_core.h \
-  ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_ctlreq.h \
-  ..\User\Peripheral\periph_motor_can.h \
-  ..\User\Peripheral\periph_motor_pwm.h ..\USB_Device\App\usb_device.h \
+  ..\USB_Device\App\usb_device.h ..\User\Algorithm\alg_qekf.h \
+  ..\User\Algorithm\alg_kf.h ..\User\Infantry\callback_ctrl.h \
   ..\User\Utility\util_adc.h ..\Core\Inc\adc.h

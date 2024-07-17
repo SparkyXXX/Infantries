@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-07-06 21:11:35
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-17 19:18:14
  */
 
 #ifndef ALG_PID_H
@@ -15,22 +15,14 @@ extern "C"
 {
 #endif
 
-#include "lib_math.h"
 #include "lib_filter.h"
-
-    typedef enum
-    {
-        PID_POSITION = 0u,
-        PID_DELTA = 1u
-    } PID_ModeEnum;
 
     typedef struct
     {
-        PID_ModeEnum pid_mode;
         float kp;
         float ki;
         float kd;
-		float dt;
+        float dt;
         float kf;
         float sum_max;
         float output_max;
@@ -43,13 +35,12 @@ extern "C"
         float output;
 
         float err[3];
-        float err_fdf[3]; // Feedforard
-        float err_lim;    // Integral anti-windup
-        float output_fdf; // Feedforard output
+        float err_fdf[3];
+        float output_fdf;
     } PID_TypeDef;
 
     void PID_Init(PID_TypeDef *pid, float kp, float ki, float kd, float kf,
-	          float sum_max, float output_max, float kd_cutoff_frq, float kf_cutoff_frq);
+                  float sum_max, float output_max, float kd_cutoff_frq, float kf_cutoff_frq);
     void PID_Clear(PID_TypeDef *pid);
     float PID_Calc(PID_TypeDef *pid);
     void PID_SetRef(PID_TypeDef *pid, float ref);

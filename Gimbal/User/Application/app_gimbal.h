@@ -15,9 +15,8 @@ extern "C"
 {
 #endif
 
-#include "config_ctrl.h"
-#include "app_ins.h"
 #include "alg_pid.h"
+#include "app_ins.h"
 #include "cmsis_os.h"
 #include "config_ctrl.h"
 
@@ -49,6 +48,9 @@ extern "C"
         float last_pitch_pos_ref;
         float yaw_position_ref;
         float pitch_position_ref;
+
+        float elevation_angle;
+        float depression_angle;
 
         FuzzyPID_TypeDef pitch_spd;
         FuzzyPID_TypeDef pitch_pos;

@@ -4,11 +4,14 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-16 21:23:26
+ * @LastEditTime: 2024-07-18 03:08:47
  */
 
 #include "app_shoot.h"
 #include "lib_math.h"
+#include "periph_motor_pwm.h"
+#include "protocol_board.h"
+#include "util_adc.h"
 
 Shoot_ControlTypeDef Shoot_Control;
 Shoot_ControlTypeDef *Shoot_GetControlPtr()
@@ -19,13 +22,18 @@ Shoot_ControlTypeDef *Shoot_GetControlPtr()
 void Shoot_Init()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     shooter->shooter_mode = SHOOTER_STOP;
     shooter->feeder_mode = FEEDER_INITING;
-    shooter->heat_ctrl.shooter_heat_now = 0;
-    shooter->heat_ctrl.shooter_heat_limit = 0;
-    shooter->shoot_speed.left_shoot_speed = 0;
-    shooter->shoot_speed.right_shoot_speed = 0;
-    shooter->shoot_speed.feeder_shoot_speed = 0;
+    shooter->heat_now = 0;
+    shooter->heat_limit = 0;
+    shooter->shoot_speed.left_speed_ref = 0;
+    shooter->shoot_speed.right_speed_ref = 0;
+    shooter->shoot_freq_ref = 0;
+    for (int i = 0; i < 5; i++)
+    {
+        shooter->shoot_speed.referee_bullet_speed[i] = 28.0f;
+    }
     for (int i = 0; i < 7; i++)
     {
         Motor_shooterMotorLeft.pwm.duty = 0.1 * i;
@@ -34,46 +42,53 @@ void Shoot_Init()
         Motor_PWM_SendOutput(&Motor_shooterMotorRight);
         HAL_Delay(200);
     }
-    Shoot_ParamInit();
-}
-
-float heat_now = 0.0f;
-uint8_t shoot_strategy = COOLING_FIRST;
-void Shoot_Update()
-{
-    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
-    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-    // shooter->heat_ctrl.shooter_heat_now = (float)boardcom->heat_now;
-    shooter->heat_ctrl.shooter_heat_now = heat_now;
-    shooter->heat_ctrl.shooter_heat_limit = (float)boardcom->heat_limit;
-    Motor_PWM_ReadEncoder(&Motor_shooterMotorLeft);
-    Motor_PWM_ReadEncoder(&Motor_shooterMotorRight);
-    ADC_Decode();
     if (boardcom->cooling_per_second == 10 && boardcom->heat_limit == 200)
     {
-        shoot_strategy = PENGPENG_FIRST;
+        shooter->shoot_strategy = OUTBURST_FIRST;
     }
     else if (boardcom->cooling_per_second == 40 && boardcom->heat_limit == 50)
     {
-        shoot_strategy = COOLING_FIRST;
+        shooter->shoot_strategy = COOLING_FIRST;
     }
+    Shoot_ParamInit();
+}
+
+void ShootSpeed_Update()
+{
+    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+	
+    shooter->shoot_speed.referee_bullet_speed[4] = shooter->shoot_speed.referee_bullet_speed[3];
+    shooter->shoot_speed.referee_bullet_speed[3] = shooter->shoot_speed.referee_bullet_speed[2];
+    shooter->shoot_speed.referee_bullet_speed[2] = shooter->shoot_speed.referee_bullet_speed[1];
+    shooter->shoot_speed.referee_bullet_speed[1] = shooter->shoot_speed.referee_bullet_speed[0];
+    shooter->shoot_speed.referee_bullet_speed[0] = boardcom->shoot_spd_referee;
+    float sum;
+    for (int i = 0; i < 5; i++)
+    {
+        sum += shooter->shoot_speed.referee_bullet_speed[i];
+    }
+    shooter->shoot_speed.average_bullet_speed = sum / 5;
+    Motor_PWM_ReadEncoder(&Motor_shooterMotorLeft);
+    Motor_PWM_ReadEncoder(&Motor_shooterMotorRight);
 }
 
 float feeder_tick_last = 0.0f;
 float angle_diff_sum = 0.0f;
 int ammunition = 0;
 uint8_t if_bullet = 0;
-void Heat_Update()
+void Heat_Control()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
     BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+    // shooter->heat_now = (float)boardcom->heat_now;
 
     angle_diff_sum += angle_diff;
     if (shooter->feeder_mode == FEEDER_LOCKED)
     {
         angle_diff_sum = angle_diff_sum < 0.0f ? angle_diff_sum + 45 : angle_diff_sum;
-        heat_now += -boardcom->cooling_per_second * (DWT_GetTimeline_ms() - feeder_tick_last) / 1000;
-        heat_now += (heat_now < 0) ? 0 : heat_now;
+        shooter->heat_now += -boardcom->cooling_per_second * (DWT_GetTimeline_ms() - feeder_tick_last) / 1000;
+        shooter->heat_now += (shooter->heat_now < 0) ? 0 : shooter->heat_now;
     }
     else
     {
@@ -83,15 +98,27 @@ void Heat_Update()
             angle_diff_sum = angle_diff_sum - 45.0f;
         }
         ammunition += if_bullet;
-        heat_now += -boardcom->cooling_per_second * (DWT_GetTimeline_ms() - feeder_tick_last) / 1000 + 10 * if_bullet;
-        heat_now = (heat_now < 0) ? 0 : heat_now;
+        shooter->heat_now += -boardcom->cooling_per_second * (DWT_GetTimeline_ms() - feeder_tick_last) / 1000 + 10 * if_bullet;
+        shooter->heat_now = (shooter->heat_now < 0) ? 0 : shooter->heat_now;
     }
     feeder_tick_last = DWT_GetTimeline_ms();
     if_bullet = 0;
+    shooter->heat_limit = (float)boardcom->heat_limit;
+
+    if ((shooter->heat_limit - shooter->heat_now) >= HEAT_FAST_LIMIT)
+    {
+        shooter->shoot_freq_ref = shooter->fast_shoot_freq;
+    }
+    else if ((shooter->heat_limit - shooter->heat_now) > HEAT_SLOW_LIMIT)
+    {
+        shooter->shoot_freq_ref = shooter->slow_shoot_freq;
+    }
+    else if ((shooter->heat_limit - shooter->heat_now) <= HEAT_SLOW_LIMIT)
+    {
+        shooter->shoot_freq_ref = 0;
+    }
 }
 
-uint16_t encoder_spd_l = 0;
-uint16_t encoder_spd_r = 0;
 float shoot_ref = 22.5f;
 void Shoot_ShooterControl()
 {
@@ -99,37 +126,28 @@ void Shoot_ShooterControl()
     switch (shooter->shooter_mode)
     {
     case SHOOTER_STOP:
-        shooter->shoot_speed.left_shoot_speed = 0;
-        shooter->shoot_speed.right_shoot_speed = 0;
+        shooter->shoot_speed.left_speed_ref = 0;
+        shooter->shoot_speed.right_speed_ref = 0;
         shooter->shoot_left.sum = 0;
         shooter->shoot_right.sum = 0;
         break;
     case SHOOTER_REFEREE:
-        shooter->shoot_speed.left_shoot_speed = shoot_ref;
-        shooter->shoot_speed.right_shoot_speed = shoot_ref;
+        shooter->shoot_speed.left_speed_ref = shoot_ref;
+        shooter->shoot_speed.right_speed_ref = shoot_ref;
         break;
     default:
         break;
     }
 
-#if SHOOT_MODE == SHOOT_CLOSE_LOOP
-    PID_SetRef(&(shooter->shoot_left), shooter->shoot_speed.left_shoot_speed);
-    PID_SetRef(&(shooter->shoot_right), shooter->shoot_speed.right_shoot_speed);
+    PID_SetRef(&(shooter->shoot_left), shooter->shoot_speed.left_speed_ref);
+    PID_SetRef(&(shooter->shoot_right), shooter->shoot_speed.right_speed_ref);
     PID_SetFdb(&(shooter->shoot_left), Filter_Lowpass(Motor_shooterMotorLeft.encoder.speed, &shooter->shooter_left_lpf));
     PID_SetFdb(&(shooter->shoot_right), Filter_Lowpass(Motor_shooterMotorRight.encoder.speed, &shooter->shooter_right_lpf));
     MotorPWM_SetOutput(&Motor_shooterMotorLeft, PID_Calc(&(shooter->shoot_left)));
     MotorPWM_SetOutput(&Motor_shooterMotorRight, PID_Calc(&(shooter->shoot_right)));
-#endif
-#if SHOOT_MODE == SHOOT_OPEN_LOOP
-    MotorPWM_SetOutput(&Motor_shooterMotorLeft, shooter->shoot_speed.left_shoot_speed);
-    MotorPWM_SetOutput(&Motor_shooterMotorRight, shooter->shoot_speed.right_shoot_speed);
-#endif
-    encoder_spd_l = Motor_shooterMotorLeft.encoder.speed * 100;
-    encoder_spd_r = Motor_shooterMotorRight.encoder.speed * 100;
 }
 
-int shoot_mode = 0;
-int test_shoot_frq = 150;
+int test_shoot_freq = 150;
 void Shoot_FeederControl()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
@@ -137,45 +155,59 @@ void Shoot_FeederControl()
     switch (shooter->feeder_mode)
     {
     case FEEDER_STOP:
-        shoot_mode = SINGLE;
-        shooter->shoot_speed.feeder_shoot_speed = 0.0f;
+        shooter->shoot_mode = SINGLE;
+        shooter->shoot_freq_ref = 0.0f;
         shooter->feed_spd.sum = 0;
         break;
     case FEEDER_SINGLE:
-        shoot_mode = SINGLE;
+        shooter->shoot_mode = SINGLE;
         Shoot_Single();
         break;
     case FEEDER_LOCKED:
-        shoot_mode = CONTINUOUS;
+        shooter->shoot_mode = CONTINUOUS;
         Shoot_FeederLockedHandle();
         break;
     case FEEDER_REFEREE:
-        shoot_mode = CONTINUOUS;
-        Shoot_HeatControl();
-#if IF_BULLET_SPD_TEST == NO_BULLET_SPD_TEST
-        shooter->shoot_speed.feeder_shoot_speed = shooter->heat_ctrl.feeder_speed;
-#endif
+        shooter->shoot_mode = CONTINUOUS;
 #if IF_BULLET_SPD_TEST == BULLET_SPD_TEST
-        shooter->shoot_speed.feeder_shoot_speed = test_shoot_frq;
+        shooter->shoot_freq_ref = test_shoot_freq;
 #endif
         break;
     case FEEDER_FINISH:
-        shoot_mode = CONTINUOUS;
-        Shoot_HeatControl();
+        shooter->shoot_mode = CONTINUOUS;
         break;
     case FEEDER_INITING:
-        shoot_mode = CONTINUOUS;
-        shooter->shoot_speed.feeder_shoot_speed = 10.0f;
+        shooter->shoot_mode = CONTINUOUS;
+        shooter->shoot_freq_ref = 10.0f;
         break;
     default:
         break;
     }
+}
 
-    if (shoot_mode == CONTINUOUS)
+void Shoot_ShooterOutput()
+{
+    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+    if (boardcom->power_management_shooter_output == 0)
     {
-        PID_SetRef(&(shooter->feed_spd), shooter->shoot_speed.feeder_shoot_speed);
+        Motor_shooterMotors.motor_handle[0]->output = 0;
+        Motor_shooterMotors.motor_handle[1]->output = 0;
+    }
+    Motor_PWM_SendOutput(&Motor_shooterMotorLeft);
+    Motor_PWM_SendOutput(&Motor_shooterMotorRight);
+    Motor_CAN_SendGroupOutput(&Motor_feederMotors);
+}
+
+void Shoot_FeederOutput()
+{
+    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+
+    if (shooter->shoot_mode == CONTINUOUS)
+    {
+        PID_SetRef(&(shooter->feed_spd), shooter->shoot_freq_ref);
         if (Motor_shooterMotorLeft.encoder.speed < 20 || Motor_shooterMotorLeft.encoder.speed < 20 || boardcom->power_management_shooter_output == 0)
-        //        if(Motor_shooterMotorLeft.encoder.speed < 20 || Motor_shooterMotorLeft.encoder.speed < 20 || ADC_Voltage < 15.0f)
         {
             PID_SetRef(&(shooter->feed_spd), 0);
         }
@@ -187,69 +219,17 @@ void Shoot_FeederControl()
                                                       45) *
                                                     45);
     }
-    else if (shoot_mode == SINGLE)
+    else if (shooter->shoot_mode == SINGLE)
     {
         PID_SetFdb(&(shooter->feed_ang), Motor_feederMotor.encoder.consequent_angle);
         PID_SetRef(&(shooter->feed_spd), PID_Calc(&shooter->feed_ang));
         if (Motor_shooterMotorLeft.encoder.speed < 20 || Motor_shooterMotorLeft.encoder.speed < 20 || boardcom->power_management_shooter_output == 0)
-        //        if(Motor_shooterMotorLeft.encoder.speed < 20 || Motor_shooterMotorLeft.encoder.speed < 20 || ADC_Voltage < 15.0f)
         {
             PID_SetRef(&(shooter->feed_spd), 0);
         }
         PID_SetFdb(&(shooter->feed_spd), Motor_feederMotor.encoder.speed);
     }
     Motor_SetOutput(&Motor_feederMotor, PID_Calc(&(shooter->feed_spd)));
-}
-
-float Feeder_Fast_Speed = 0.0f;
-float Feeder_Slow_Speed = 0.0f;
-static void Shoot_HeatControl()
-{
-    Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
-    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
-    if ((shooter->heat_ctrl.shooter_heat_limit - shooter->heat_ctrl.shooter_heat_now) >= HEAT_FAST_LIMIT)
-    {
-        shooter->heat_ctrl.feeder_speed = Feeder_Fast_Speed;
-    }
-    else if ((shooter->heat_ctrl.shooter_heat_limit - shooter->heat_ctrl.shooter_heat_now) > HEAT_SLOW_LIMIT)
-    {
-        shooter->heat_ctrl.feeder_speed = Feeder_Slow_Speed;
-    }
-    else if ((shooter->heat_ctrl.shooter_heat_limit - shooter->heat_ctrl.shooter_heat_now) <= HEAT_SLOW_LIMIT)
-    {
-        shooter->heat_ctrl.feeder_speed = 0;
-    }
-}
-
-uint64_t shooter_cnt = 0;
-uint8_t shooter_adc_flag = 1;
-uint8_t shooter_adc_flag_last = 1;
-void Shoot_Output()
-{
-    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
-    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-    if (boardcom->power_management_shooter_output == 0)
-    //    if (ADC_Voltage <= 10)
-    {
-        Motor_shooterMotors.motor_handle[0]->output = 0;
-        Motor_shooterMotors.motor_handle[1]->output = 0;
-        shooter_adc_flag = 1;
-    }
-    else if (shooter_adc_flag == 1 && boardcom->power_management_shooter_output == 1)
-    //    else if(shooter_adc_flag == 1 && ADC_Voltage > 18)
-    {
-        shooter_adc_flag = 0;
-        shooter_cnt = HAL_GetTick();
-    }
-    // if ((HAL_GetTick() - shooter_cnt) < 7000)
-    // {
-    //     Motor_shooterMotors.motor_handle[0]->output = 0;
-    //     Motor_shooterMotors.motor_handle[1]->output = 0;
-    // }
-    shooter_adc_flag_last = shooter_adc_flag;
-    Motor_PWM_SendOutput(&Motor_shooterMotorLeft);
-    Motor_PWM_SendOutput(&Motor_shooterMotorRight);
-    Motor_CAN_SendGroupOutput(&Motor_feederMotors);
 }
 
 void Shoot_Single()
@@ -262,16 +242,12 @@ void Shoot_Single()
         return;
     }
     if (!shooter->single_shoot_done && Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorLeft.encoder.speed > 20 && boardcom->power_management_shooter_output == 1)
-    //    if(!shooter->single_shoot_done && Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorLeft.encoder.speed > 20 && ADC_Voltage > 15.0f)
     {
         shooter->feed_ang.ref += 45.0f;
         shooter->single_shoot_done = 1;
     }
 }
 
-float INITDONE_CURRENT = 1000.0f;
-float INITDONE_SPEED = 10.0f;
-float INITDONE_TIME = 5.0f;
 void Shoot_FeederLockedJudge()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
@@ -315,7 +291,7 @@ static void Shoot_FeederLockedHandle()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
     static int count_reverse = 0;
-    shooter->shoot_speed.feeder_shoot_speed = REVERSE_SPEED;
+    shooter->shoot_freq_ref = REVERSE_SPEED;
     count_reverse++;
     if (count_reverse >= RELOCKED_TIME)
     {
@@ -341,13 +317,152 @@ void Shoot_FeederModeSet(Feeder_ModeEnum mode)
     }
 }
 
-/**
- * @brief      Force change shooter mode
- * @param      mode: Feeder mode
- * @retval     NULL
- */
 void Shoot_FeederModeForceSet(Feeder_ModeEnum mode)
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
     shooter->feeder_mode = mode;
+}
+
+/***************Shoot Mode Set***************************************************************************************/
+void Remote_ShootModeSet()
+{
+    Remote_DataTypeDef *remote = Remote_GetDataPtr();
+    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
+    static uint32_t wait_tick = 0;
+    switch (remote->remote.s[SWITCH_LEFT])
+    {
+    case REMOTE_SWITCH_UP:
+    {
+        shooter->shooter_mode = SHOOTER_STOP;
+        Shoot_FeederModeSet(FEEDER_STOP);
+        break;
+    }
+    case REMOTE_SWITCH_MIDDLE:
+    {
+        shooter->shooter_mode = SHOOTER_REFEREE;
+        Shoot_FeederModeSet(FEEDER_STOP);
+        break;
+    }
+    case REMOTE_SWITCH_DOWN:
+    {
+#if IF_BULLET_SPD_TEST == NO_BULLET_SPD_TEST
+        AutoAim_ShootModeSet();
+#endif
+#if IF_BULLET_SPD_TEST == BULLET_SPD_TEST
+        Shoot_FeederModeSet(FEEDER_REFEREE);
+#endif
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+int press_time = 0;
+void Keymouse_ShootModeSet()
+{
+    Remote_DataTypeDef *remote = Remote_GetDataPtr();
+    MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
+    AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
+    Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();
+    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+
+    if (remote->mouse.l == 1)
+    {
+        press_time++;
+        if (press_time > 150)
+        {
+            Shoot_FeederModeSet(FEEDER_REFEREE);
+        }
+        else
+        {
+            Shoot_FeederModeSet(FEEDER_SINGLE);
+        }
+    }
+    else
+    {
+        Shoot_FeederModeSet(FEEDER_STOP);
+        shooter->single_shoot_done = 0;
+        press_time = 0;
+    }
+
+    AutoAim_ShootModeSet();
+}
+
+uint16_t wait_tick = 0;
+uint8_t have_shooted = 0; // this is_shoot=1 time is have shooted to avoid one is_shoot time shoot twice
+//  set when is_shoot==1 and shooted, and reset when is_shoot==0
+void AutoAim_ShootModeSet()
+{
+    Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
+    MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
+    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
+    AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+
+    /***************AutoShoot T_ms Judge Start***********/
+    uint16_t wait_ms = 1000;
+    if (shooter->shoot_strategy == COOLING_FIRST)
+    {
+        shooter->armor_wait_ms = 10.0f / boardcom->cooling_per_second * 1000;
+    }
+    else if (shooter->shoot_strategy == OUTBURST_FIRST)
+    {
+        shooter->armor_wait_ms = 200.0f;
+    }
+    if (autoaim->aim_mode == AUTOAIM_ARMOR)
+    {
+        wait_ms = shooter->armor_wait_ms;
+    }
+    else if (autoaim->aim_mode == AUTOAIM_SMALL_BUFF)
+    {
+        wait_ms = shooter->buff_wait_ms;
+    }
+    else if (autoaim->aim_mode == AUTOAIM_BIG_BUFF)
+    {
+        wait_ms = shooter->buff_wait_ms;
+    }
+    /***************AutoShoot T_ms Judge End***********/
+
+    /***************AutoShoot Start***************/
+    if (remote_control->autoshoot_flag)
+    {
+        if (autoaim->hit_mode == AUTOAIM_HIT_ARMOR)
+        {
+            if ((shooter->heat_limit - shooter->heat_now) <= HEAT_SLOW_LIMIT)
+            {
+                Shoot_FeederModeSet(FEEDER_STOP);
+                return;
+            }
+            wait_tick++;
+            if (minipc->is_get_target == 1 && minipc->is_shoot == 1 && remote_control->autoshoot_flag == 1 && wait_tick >= wait_ms &&
+                (shooter->heat_limit - shooter->heat_now) >= HEAT_FAST_LIMIT &&
+                Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorRight.encoder.speed > 20)
+            {
+                Shoot_FeederModeSet(FEEDER_SINGLE);
+                shooter->single_shoot_done = 0;
+                have_shooted = 1;
+                wait_tick = 0;
+            }
+        }
+        else if (autoaim->hit_mode == AUTOAIM_HIT_BUFF)
+        {
+            if (minipc->is_get_target == 1 && minipc->is_shoot == 1 && have_shooted == 0 &&
+                (shooter->heat_limit - shooter->heat_now) >= HEAT_FAST_LIMIT &&
+                Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorRight.encoder.speed > 20)
+            {
+                Shoot_FeederModeForceSet(FEEDER_SINGLE);
+                shooter->single_shoot_done = 0;
+                have_shooted = 1;
+            }
+            else if (minipc->is_shoot == 0)
+            {
+                Shoot_FeederModeSet(FEEDER_STOP);
+                shooter->single_shoot_done = 0;
+                have_shooted = 0;
+            }
+        }
+    }
+    /***************AutoShoot End***************/
 }

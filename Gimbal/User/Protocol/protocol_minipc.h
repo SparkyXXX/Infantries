@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-02-26 07:32:04
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-18 00:40:52
  */
 
 #ifndef PERIPH_MINIPC_H
@@ -59,44 +59,53 @@ extern "C"
     typedef struct
     {
         MiniPC_StateEnum state;
-        // up stream
+        uint32_t last_update_time;
+        uint16_t armor_trigger_ms;
+        uint16_t buff_trigger_ms;
+
+        // Gimbal Send to MiniPC
+        uint8_t address;
         uint8_t team_color;
         uint8_t mode;
+        float yaw_send_to_minipc;
+        int16_t pitch_send_to_minipc;
+        int16_t roll_send_to_minipc;
+        float bullet_speed_send_to_minipc;
+
+        //  Gimbal Receive from MiniPC
+        uint8_t recieve_packet_type;
         uint8_t is_get_target;
         uint8_t is_shoot;
-		
-        // down stream energy
-        float buff_yaw;
-        float buff_pitch;
-        float buff_distance;
-
-        // down stream armor
         uint16_t timestamp;
-		int16_t yaw_ref;
-		int16_t pitch_ref;
-		float yaw_spd;
 
-        uint8_t address;
-        uint32_t last_update_time;
-        uint8_t recieve_packet_type;
-        uint8_t explosure_time;
+        int16_t armor_yaw_ref;
+        int16_t armor_pitch_ref;
+        float armor_yaw_spd_ref;
+        float buff_yaw_ref;
+        float buff_pitch_ref;
     } MiniPC_DataTypeDef;
 
+    typedef struct __attribute__((packed))
+    {
+        uint16_t timestamp;
+        uint16_t is_get;
+        uint16_t is_shoot;
+        int16_t yaw_ref;
+        int16_t pitch_ref;
+        int16_t null0, null1, yaw_spd, null3, null4, null5, null6;
+    } AutoAim_ArmorPacketDataTypeDef;
+
+    MiniPC_DataTypeDef *MiniPC_GetDataPtr(void);
+    void MiniPC_Init(void);
     void MiniPC_Send(void);
     void MiniPC_Decode(uint8_t *buff, uint16_t rxdatalen);
     static void MiniPC_ArmorPacketDecode(void *buff, uint16_t rxdatalen);
     static void MiniPC_BuffPacketDecode(uint8_t *buff, uint16_t rxdatalen);
-
-    MiniPC_DataTypeDef *MiniPC_GetDataPtr(void);
-    void MiniPC_Init(void);
-    void MiniPC_Update(void);
     static uint8_t MiniPC_Verify(uint8_t *buff, uint16_t rxdatalen);
     uint8_t MiniPC_IsLost(void);
 
-    
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif

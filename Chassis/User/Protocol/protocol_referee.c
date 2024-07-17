@@ -3,12 +3,11 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-07-16 02:24:45
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-17 19:44:08
  */
 
 #include "protocol_referee.h"
-#include "periph_cap.h"
 #include "lib_crc.h"
 
 Referee_DataTypeDef Referee_Data;
@@ -229,7 +228,6 @@ uint8_t P_ext_robot_status(Referee_DataTypeDef *referee, void *data_ptr)
 uint8_t P_ext_power_heat_data(Referee_DataTypeDef *referee, void *data_ptr)
 {
     ext_power_heat_data_t *struct_ptr = data_ptr;
-    Cap_DataTypeDef *cap = Cap_GetDataPtr();
     referee->chassis_voltage = struct_ptr->chassis_voltage;
     referee->chassis_current = struct_ptr->chassis_current;
     referee->chassis_power = struct_ptr->chassis_power;

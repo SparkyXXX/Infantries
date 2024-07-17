@@ -2665,14 +2665,14 @@
           <GroupName>Protocol</GroupName>
           <Files>
             <File>
-              <FileName>protocol_motor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\Protocol\protocol_motor.c</FilePath>
-            </File>
-            <File>
               <FileName>protocol_board.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Protocol\protocol_board.c</FilePath>
+            </File>
+            <File>
+              <FileName>protocol_minipc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Protocol\protocol_minipc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2719,11 +2719,6 @@
               <FileType>1</FileType>
               <FilePath>..\User\Library\lib_crc.c</FilePath>
             </File>
-            <File>
-              <FileName>lib_timer_tim1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\Library\lib_timer_tim1.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -2753,11 +2748,6 @@
               <FileName>periph_remote.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Peripheral\periph_remote.c</FilePath>
-            </File>
-            <File>
-              <FileName>periph_minipc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\Peripheral\periph_minipc.c</FilePath>
             </File>
           </Files>
         </Group>

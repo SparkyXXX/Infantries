@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-01-10 11:14:40
+ * @LastEditTime: 2024-07-17 19:20:02
  */
 
 #include "sys_dwt.h"
@@ -116,7 +116,10 @@ void DWT_Delay(float Delay)
     DWT_DataTypeDef *dwt = DWT_GetDataPtr();
     uint32_t tickstart = DWT->CYCCNT;
     float wait = Delay;
-    while ((DWT->CYCCNT - tickstart) < wait * (float)dwt->CPU_FREQ_Hz) {;}
+    while ((DWT->CYCCNT - tickstart) < wait * (float)dwt->CPU_FREQ_Hz)
+    {
+        ;
+    }
 }
 
 void DWT_Delayms(float Delay)
@@ -124,7 +127,10 @@ void DWT_Delayms(float Delay)
     DWT_DataTypeDef *dwt = DWT_GetDataPtr();
     uint32_t tickstart = DWT->CYCCNT;
     float wait = Delay;
-    while ((DWT->CYCCNT - tickstart) < wait * (float)dwt->CPU_FREQ_Hz_ms){;}
+    while ((DWT->CYCCNT - tickstart) < wait * (float)dwt->CPU_FREQ_Hz_ms)
+    {
+        ;
+    }
 }
 
 void DWT_Delayus(float Delay)
@@ -132,23 +138,16 @@ void DWT_Delayus(float Delay)
     DWT_DataTypeDef *dwt = DWT_GetDataPtr();
     uint32_t tickstart = DWT->CYCCNT;
     float wait = Delay;
-    while ((DWT->CYCCNT - tickstart) < wait * (float)dwt->CPU_FREQ_Hz_us){;}
+    while ((DWT->CYCCNT - tickstart) < wait * (float)dwt->CPU_FREQ_Hz_us)
+    {
+        ;
+    }
 }
 
-float task_freq = 0.0f;
+float task_ms = 0.0f;
 uint64_t tick_last = 0;
-uint32_t big_num = 0;
-uint32_t small_num = 0;
 void Check_Task_Freq(void)
 {
-    task_freq = (DWT_GetTimeline_us() - tick_last) / 1000.0f;
+    task_ms = (DWT_GetTimeline_us() - tick_last) / 1000.0f;
     tick_last = DWT_GetTimeline_us();
-    if (task_freq < 0.9f)
-    {
-        small_num++;
-    }
-    else
-    {
-        big_num++;
-    }
 }

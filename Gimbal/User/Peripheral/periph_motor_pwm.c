@@ -4,10 +4,58 @@
  * @Author: Hatrix
  * @Date: 2023-11-07 14:28:30
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-01-17 20:28:15
+ * @LastEditTime: 2024-07-17 21:38:19
  */
 
 #include "periph_motor_pwm.h"
+
+/**
+ * @brief      Sending motor PWM output
+ * @param      pmotor: The pointer points to the motor to be sent
+ * @retval     NULL
+ */
+void Motor_PWM_SendOutput(MotorPWM_DataTypeDef *pmotor)
+{
+    if (pmotor == NULL)
+    {
+        return;
+    }
+    float duty = MotorPWM_GetOutput(pmotor) * 0.4 / 50 + 0.5f;
+    if (duty < 0.5f)
+    {
+        duty = 0.5f;
+    }
+    if (duty > 0.9f)
+    {
+        duty = 0.9f;
+    }
+    pmotor->output = duty;
+    PWM_SetDuty(&(pmotor->pwm), pmotor->output);
+}
+
+/**
+ * @brief      Read motor PWM encoder
+ * @param      pmotor: The pointer points to the motor group to be sent
+ * @retval     NULL
+ **/
+void Motor_PWM_ReadEncoder(MotorPWM_DataTypeDef *pmotor)
+{
+    uint32_t temp = 0;
+    if (pmotor == NULL)
+    {
+        return;
+    }
+    pmotor->encoder.counter = __HAL_TIM_GET_COUNTER(pmotor->encoder.htim);
+    ;
+    temp = pmotor->encoder.counter;
+    __HAL_TIM_SET_COUNTER(pmotor->encoder.htim, 0);
+    if (temp > 32768)
+    {
+        temp = 65535 - temp;
+    }
+    pmotor->encoder.speed = (float)temp * 2 * 3.1415926f * 1000 * 0.0235 / 4096;
+    // register_counter * (numbers of turns to rads:2 * PI) * (ms_to_s:1000) * (radius:0.0235m) / (4 * 4096 lines)
+}
 
 /**
  * @brief      Initialize the motor
@@ -27,12 +75,12 @@ void MotorPWM_Init(MotorPWM_DataTypeDef *pmotor, TIM_HandleTypeDef *htim, uint32
     }
     pmotor->state = MOTORPWM_CONNECTED;
     pmotor->encoder.last_update_time = HAL_GetTick();
-    
+
     PWM_Init(&(pmotor->pwm), htim, ch, clk);
     PWM_SetFreq(&(pmotor->pwm), freq);
     PWM_SetDuty(&(pmotor->pwm), 0);
     PWM_Start(&(pmotor->pwm));
-    
+
     pmotor->encoder.htim = htim_enc;
     if (htim_enc != NULL)
     {
@@ -48,13 +96,13 @@ void MotorPWM_Init(MotorPWM_DataTypeDef *pmotor, TIM_HandleTypeDef *htim, uint32
  */
 void MotorPWM_InitGroup(MotorPWM_GroupDataTypeDef *pgroup, uint8_t motor_num)
 {
-    if (pgroup == NULL) 
+    if (pgroup == NULL)
     {
         return;
     }
     pgroup->motor_num = motor_num;
 
-    for (int i = 0; i < motor_num; i++) 
+    for (int i = 0; i < motor_num; i++)
     {
         pgroup->motor_handle[i] = NULL;
     }
@@ -68,7 +116,7 @@ void MotorPWM_InitGroup(MotorPWM_GroupDataTypeDef *pgroup, uint8_t motor_num)
  */
 void MotorPWM_SetOutput(MotorPWM_DataTypeDef *pmotor, float output)
 {
-    if (pmotor == NULL) 
+    if (pmotor == NULL)
     {
         return;
     }

@@ -3,16 +3,13 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-07-16 02:23:19
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-17 19:42:44
  */
 
-#include "config_ctrl.h"
 #include "protocol_board.h"
-#include "protocol_referee.h"
-#include "app_chassis.h"
-#include "app_gimbal.h"
 #include "lib_buff.h"
+#include "protocol_referee.h"
 #include "util_fdcan.h"
 
 #define BOARDCOM_TX_LEN 64
@@ -78,7 +75,6 @@ void BoardCom_Init()
 void BoardCom_Update()
 {
     BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-    GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
     Referee_DataTypeDef *referee = Referee_GetDataPtr();
 
     boardcom->robot_id = referee->robot_id;
