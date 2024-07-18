@@ -129,7 +129,7 @@ static void Remote_Update()
     if (remote->remote.ch[PADDLE_WHEEL] <= -500.0f)
     {
         remote_control->gyro_flag = 1;
-        boardcom->gyro_dir = -1;
+        boardcom->gyro_dir = 0;
     }
     else if (remote->remote.ch[PADDLE_WHEEL] >= 500.0f)
     {
@@ -450,7 +450,7 @@ static void KeyMouse_GyroModeSet(void)
     if (remote_control->gyro_flag == 0)
     {
         KeyMouse_ChassisModeSet(CHASSIS_GYRO);
-        boardcom->gyro_dir = -boardcom->gyro_dir;
+        boardcom->gyro_dir = !boardcom->gyro_dir;
         remote_control->gyro_flag = 1;
     }
     else

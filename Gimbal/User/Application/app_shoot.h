@@ -52,6 +52,8 @@ extern "C"
     {
         float left_speed_ref;
         float right_speed_ref;
+		float left_speed_fdb;
+        float right_speed_fdb;
         float referee_bullet_speed[5];
         float average_bullet_speed;
     } Shooter_SpeedDataTypeDef;

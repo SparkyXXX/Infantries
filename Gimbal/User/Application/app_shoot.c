@@ -86,7 +86,7 @@ void Heat_Control()
     angle_diff_sum += angle_diff;
     if (shooter->feeder_mode == FEEDER_LOCKED)
     {
-        angle_diff_sum = angle_diff_sum < 0.0f ? angle_diff_sum + 45 : angle_diff_sum;
+        angle_diff_sum = (angle_diff_sum < 0.0f) ? angle_diff_sum + 45 : angle_diff_sum;
         shooter->heat_now += -boardcom->cooling_per_second * (DWT_GetTimeline_ms() - feeder_tick_last) / 1000;
         shooter->heat_now += (shooter->heat_now < 0) ? 0 : shooter->heat_now;
     }
@@ -141,13 +141,14 @@ void Shoot_ShooterControl()
 
     PID_SetRef(&(shooter->shoot_left), shooter->shoot_speed.left_speed_ref);
     PID_SetRef(&(shooter->shoot_right), shooter->shoot_speed.right_speed_ref);
+	shooter->shoot_speed.left_speed_fdb = Motor_shooterMotorLeft.encoder.speed;
+	shooter->shoot_speed.right_speed_fdb = Motor_shooterMotorRight.encoder.speed;
     PID_SetFdb(&(shooter->shoot_left), Filter_Lowpass(Motor_shooterMotorLeft.encoder.speed, &shooter->shooter_left_lpf));
     PID_SetFdb(&(shooter->shoot_right), Filter_Lowpass(Motor_shooterMotorRight.encoder.speed, &shooter->shooter_right_lpf));
     MotorPWM_SetOutput(&Motor_shooterMotorLeft, PID_Calc(&(shooter->shoot_left)));
     MotorPWM_SetOutput(&Motor_shooterMotorRight, PID_Calc(&(shooter->shoot_right)));
 }
 
-int test_shoot_freq = 150;
 void Shoot_FeederControl()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
@@ -169,9 +170,6 @@ void Shoot_FeederControl()
         break;
     case FEEDER_REFEREE:
         shooter->shoot_mode = CONTINUOUS;
-#if IF_BULLET_SPD_TEST == BULLET_SPD_TEST
-        shooter->shoot_freq_ref = test_shoot_freq;
-#endif
         break;
     case FEEDER_FINISH:
         shooter->shoot_mode = CONTINUOUS;
@@ -255,11 +253,11 @@ void Shoot_FeederLockedJudge()
     static uint8_t shooter_done = 0;
     if (shooter->feeder_mode == FEEDER_INITING)
     {
-        if (Motor_shooterMotorLeft.encoder.speed > 24.0f && Motor_shooterMotorLeft.encoder.speed < 27.0f)
+        if (Motor_shooterMotorLeft.encoder.speed > 22.0f && Motor_shooterMotorLeft.encoder.speed < 25.0f)
         {
             shooter_done = 1;
         }
-        if ((shooter_done == 1) && (Motor_shooterMotorLeft.encoder.speed < 23.0f))
+        if ((shooter_done == 1) && (Motor_shooterMotorLeft.encoder.speed < 21.0f))
         {
             shooter->feeder_angle_init = Motor_feederMotor.encoder.consequent_angle + 2.0f;
             while (shooter->feeder_angle_init > 45.0f)

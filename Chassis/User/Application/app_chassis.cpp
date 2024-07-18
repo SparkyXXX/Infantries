@@ -121,11 +121,12 @@ void OmniChassis_CalcOutput()
 		break;
 	case CHASSIS_GYRO:
 		Chassis_CalcMoveRef(); // Headless translation solution
+		Chassis_CalcGyroRef(); // Solution of gyro sign
 		if (boardcom->power_limit_mode == POWER_UNLIMIT)
 		{
 			InverseKinematics_Translation(chassis->wheel_ref,
 										  chassis->chassis_coordinate_ref.vx, chassis->chassis_coordinate_ref.vz,
-										  200 * boardcom->gyro_dir, 450);
+										  200 * chassis->gyro_dir, 450);
 		}
 		else
 		{
@@ -139,7 +140,7 @@ void OmniChassis_CalcOutput()
 			{
 				InverseKinematics_Translation(chassis->wheel_ref,
 											  chassis->chassis_coordinate_ref.vx, chassis->chassis_coordinate_ref.vz,
-											  (referee->chassis_power_limit * 0.5 + 340) * boardcom->gyro_dir, (referee->chassis_power_limit * 0.5 + 440));
+											  (referee->chassis_power_limit * 0.5 + 340) * chassis->gyro_dir, (referee->chassis_power_limit * 0.5 + 440));
 			}
 		}
 		break;
@@ -217,6 +218,20 @@ static void Chassis_CalcMoveRef()
 	chassis->chassis_coordinate_ref.vx = chassis->gimbal_coordinate_ref.vz * sin_tl + chassis->gimbal_coordinate_ref.vx * cos_tl;
 }
 
+static void Chassis_CalcGyroRef()
+{
+	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
+	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+	if (boardcom->gyro_dir == CW)
+	{
+		chassis->gyro_dir = 1;
+	}
+	else if (boardcom->gyro_dir == CCW)
+	{
+		chassis->gyro_dir = -1;
+	}
+}
+
 float dead_zone = 0.0f;
 static void Chassis_CalcOmniFollowRef()
 {
@@ -284,7 +299,7 @@ static void InverseKinematics_Translation(float omega[4], float vx, float vy, fl
  */
 static void InverseKinematics_Rotation(float omega[4], float vx, float vy, float wm)
 {
-	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
 	float wz;
 	float k;
 	k = (fabs(vx) + fabs(vy)) / (0.7f * wm);
@@ -299,7 +314,7 @@ static void InverseKinematics_Rotation(float omega[4], float vx, float vy, float
 		vy /= MAX(k, 1);
 	}
 	wz = wm - (fabs(vx) + fabs(vy));
-	wz *= boardcom->gyro_dir;
+	wz *= chassis->gyro_dir;
 	omega[0] = +vx + vy + wz;
 	omega[1] = +vx - vy + wz;
 	omega[2] = -vx - vy + wz;

@@ -23,7 +23,7 @@ extern "C"
 #define BACKWARD_RIGHT 2
 #define BACKWARD_LEFT 3
 
-#define CW -1
+#define CW 0
 #define CCW 1
 
     typedef enum
@@ -51,6 +51,7 @@ extern "C"
         float wheel_ref[4];                            // calc from chassis_coordinate_ref
         float wheel_fdb[4];                            // read from encoder
         float separate_rad;                            // gimbal chassis intersection angle
+		int gyro_dir;                              // gyro direction, clockwise(CW) is 1, counterclockwise(CCW) is -1
         PID_TypeDef Chassis_MotorSpdPID[4];
         PID_TypeDef Chassis_SpdfollowPID, Chassis_AngfollowPID;
 
@@ -78,6 +79,7 @@ extern "C"
     void OmniChassis_EstimateSpeed(void);
 
     static void Chassis_CalcMoveRef(void);
+	static void Chassis_CalcGyroRef(void);
     static void Chassis_CalcOmniFollowRef(void);
     static void InverseKinematics_Translation(float omega[4], float vx, float vy, float wz, float wm);
     static void InverseKinematics_Rotation(float omega[4], float vx, float vy, float wm);

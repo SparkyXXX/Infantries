@@ -70,7 +70,7 @@ extern "C"
         uint8_t power_limit_mode;
         uint8_t ui_cmd;
         uint8_t fly_flag;
-        int8_t gyro_dir;
+        uint8_t gyro_dir;
         uint8_t is_get_target;
         uint8_t check_in;
         uint8_t cap_speedup_flag;
