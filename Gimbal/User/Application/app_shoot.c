@@ -119,7 +119,6 @@ void Heat_Control()
     }
 }
 
-float shoot_ref = 22.5f;
 void Shoot_ShooterControl()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
@@ -132,8 +131,8 @@ void Shoot_ShooterControl()
         shooter->shoot_right.sum = 0;
         break;
     case SHOOTER_REFEREE:
-        shooter->shoot_speed.left_speed_ref = shoot_ref;
-        shooter->shoot_speed.right_speed_ref = shoot_ref;
+        shooter->shoot_speed.left_speed_ref = SHOOT_REF;
+        shooter->shoot_speed.right_speed_ref = SHOOT_REF;
         break;
     default:
         break;

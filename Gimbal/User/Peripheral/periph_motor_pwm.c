@@ -52,8 +52,8 @@ void Motor_PWM_ReadEncoder(MotorPWM_DataTypeDef *pmotor)
     {
         temp = 65535 - temp;
     }
-    pmotor->encoder.speed = (float)temp * 2 * 3.1415926f * 1000 * 0.0235 / 4096;
-    // register_counter * (numbers of turns to rads:2 * PI) * (ms_to_s:1000) * (radius:0.0235m) / (4 * 4096 lines)
+    pmotor->encoder.speed = (float)temp * 2 * 3.1415926f * 1000 * 0.0235 / (4 * pmotor->encoder.encoder_lines);
+    // register_counter * (numbers of turns to rads:2 * PI) * (ms_to_s:1000) * (radius:0.0235m) / (4 * lines)
 }
 
 /**
@@ -66,7 +66,7 @@ void Motor_PWM_ReadEncoder(MotorPWM_DataTypeDef *pmotor)
  * @param      htim_enc: Pwm motor encoder handle
  * @retval     NULL
  */
-void MotorPWM_Init(MotorPWM_DataTypeDef *pmotor, TIM_HandleTypeDef *htim, uint32_t ch, uint32_t clk, uint32_t freq, TIM_HandleTypeDef *htim_enc)
+void MotorPWM_Init(MotorPWM_DataTypeDef *pmotor, TIM_HandleTypeDef *htim, uint32_t ch, uint32_t clk, uint32_t freq, TIM_HandleTypeDef *htim_enc, uint16_t encoder_lines)
 {
     if (pmotor == NULL)
     {
@@ -74,7 +74,7 @@ void MotorPWM_Init(MotorPWM_DataTypeDef *pmotor, TIM_HandleTypeDef *htim, uint32
     }
     pmotor->state = MOTORPWM_CONNECTED;
     pmotor->encoder.last_update_time = HAL_GetTick();
-
+	pmotor->encoder.encoder_lines = encoder_lines;
     PWM_Init(&(pmotor->pwm), htim, ch, clk);
     PWM_SetFreq(&(pmotor->pwm), freq);
     PWM_SetDuty(&(pmotor->pwm), 0);

@@ -12,7 +12,7 @@
 /********** START OF PARAMETER SETTING **********/
 uint8_t CPU_Clock = 170; //(MHz)
 uint16_t Shooter_Freq = 500;
-
+uint16_t Encoder_Lines = 1024;
 float Elevation_Angle = 35.0f;
 float Depression_Angle = -27.0f;
 float Servo_Open = 85.0f;
@@ -21,10 +21,12 @@ float Servo_Close = 170.0f;
 const float Correction_Matrix[9] = {0, -1, 0,
                                     1, 0, 0,
                                     0, 0, 1};
-
+									
 float Armor_Feeder_Fast_Freq = 150.0f;
 float Armor_Feeder_Slow_Freq = 60.0f;
 float Buff_Feeder_Freq = 6.5f;
+float AutoShoot_Wait_ms = 250.0f;
+uint16_t AutoShootBuff_Wait_ms = 310;
 
 float KeyMouse_NormalSpeed = 200.0f;
 float KeyMouse_UpperSpeed = 500.0f;
@@ -35,9 +37,6 @@ float Mouse_Pitch_To_Ref_Quiet = 0.0001f;
 float Mouse_Yaw_To_Ref_Quiet = 0.0002f;
 float Remote_Pitch_To_Ref = 0.0005f;
 float Remote_Yaw_To_Ref = 0.0005f;
-
-float AutoShoot_Wait_ms = 250.0f;
-uint16_t AutoShootBuff_Wait_ms = 310;
 
 float Pitch_Spd_KpSet[7] = {10000.0f, 10000.0f, 10000.0f, 10000.0f, 10000.0f, 10000.0f, 10000.0f};
 float Pitch_Spd_KiSet[7] = {20000.0f, 20000.0f, 20000.0f, 20000.0f, 50000.0f, 50000.0f, 50000.0f};
@@ -138,8 +137,8 @@ static void Init_All_Motors()
     Motor_feederMotors.motor_handle[FEEDER_CAN_ID - 0x201] = &Motor_feederMotor;
 
     MotorPWM_InitGroup(&Motor_shooterMotors, 2);
-    MotorPWM_Init(&Motor_shooterMotorLeft, &htim3, TIM_CHANNEL_4, CPU_Clock * 1000000, Shooter_Freq, &htim1);
-    MotorPWM_Init(&Motor_shooterMotorRight, &htim3, TIM_CHANNEL_3, CPU_Clock * 1000000, Shooter_Freq, &htim2);
+    MotorPWM_Init(&Motor_shooterMotorLeft, &htim3, TIM_CHANNEL_4, CPU_Clock * 1000000, Shooter_Freq, &htim1, Encoder_Lines);
+    MotorPWM_Init(&Motor_shooterMotorRight, &htim3, TIM_CHANNEL_3, CPU_Clock * 1000000, Shooter_Freq, &htim2, Encoder_Lines);
     Motor_shooterMotors.motor_handle[0] = &Motor_shooterMotorLeft;
     Motor_shooterMotors.motor_handle[1] = &Motor_shooterMotorRight;
 }

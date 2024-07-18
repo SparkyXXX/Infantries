@@ -210,7 +210,7 @@ void GimbalYaw_Output()
 void GimbalYaw_SetRef(float yaw_ref)
 {
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
-    gimbalyaw->yaw_ref = yaw_ref * 3.1415926f / 180;
+    gimbalyaw->yaw_ref = Math_AngleToRad(yaw_ref);
 }
 
 /**
@@ -221,7 +221,7 @@ void GimbalYaw_SetRef(float yaw_ref)
 void GimbalYaw_SetAngleFdb(float yaw_pos_fdb)
 {
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
-    gimbalyaw->yaw_position_fdb = yaw_pos_fdb * 3.1415926f / 180;
+    gimbalyaw->yaw_position_fdb = Math_AngleToRad(yaw_pos_fdb);
 }
 
 /**

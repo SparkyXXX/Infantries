@@ -41,12 +41,12 @@ void Gimbal_PitchOutput()
     }
 
 #if PITCH_MODE == PITCH_REMOTE
-    FuzzyPID_SetRef(&(gimbal->pitch_pos), -gimbal->pitch_position_ref * 3.1415926 / 180);
+    FuzzyPID_SetRef(&(gimbal->pitch_pos), Math_AngleToRad(-gimbal->pitch_position_ref));
 #endif
 #if PITCH_MODE == PITCH_STEP
     FuzzyPID_SetRef(&(gimbal->pitch_pos), -test_ref);
 #endif
-    FuzzyPID_SetFdb(&(gimbal->pitch_pos), -ins->pitch * 3.1415926 / 180);
+    FuzzyPID_SetFdb(&(gimbal->pitch_pos), Math_AngleToRad(-ins->pitch));
     FuzzyPID_SetRef(&(gimbal->pitch_spd), FuzzyPID_Calc(&gimbal->pitch_pos));
     FuzzyPID_SetFdb(&(gimbal->pitch_spd), -ins->gyro[PITCH]);
     Motor_SetOutput(&Motor_gimbalMotorPitch, FuzzyPID_Calc(&(gimbal->pitch_spd)));

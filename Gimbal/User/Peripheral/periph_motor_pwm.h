@@ -26,6 +26,7 @@ extern "C"
     typedef struct
     {
         float speed;
+		uint16_t encoder_lines;
         TIM_HandleTypeDef *htim;
         uint32_t ch;
         uint8_t direction;
@@ -49,8 +50,7 @@ extern "C"
 
     void Motor_PWM_ReadEncoder(MotorPWM_DataTypeDef *pmotor);
     void Motor_PWM_SendOutput(MotorPWM_DataTypeDef *pmotor);
-    void MotorPWM_Init(MotorPWM_DataTypeDef *pmotor, TIM_HandleTypeDef *htim, uint32_t ch, uint32_t clk, uint32_t freq, TIM_HandleTypeDef *htim_enc);
-    void MotorPWM_InitGroup(MotorPWM_GroupDataTypeDef *pgroup, uint8_t motor_num);
+	void MotorPWM_Init(MotorPWM_DataTypeDef *pmotor, TIM_HandleTypeDef *htim, uint32_t ch, uint32_t clk, uint32_t freq, TIM_HandleTypeDef *htim_enc, uint16_t encoder_lines);    void MotorPWM_InitGroup(MotorPWM_GroupDataTypeDef *pgroup, uint8_t motor_num);
     void MotorPWM_SetOutput(MotorPWM_DataTypeDef *pmotor, float output);
     float MotorPWM_GetOutput(MotorPWM_DataTypeDef *pmotor);
 

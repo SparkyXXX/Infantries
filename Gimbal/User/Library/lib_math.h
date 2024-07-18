@@ -67,6 +67,7 @@ extern "C"
     } Math_SlopeParamTypeDef;
 
     float Math_RadToAngle(float rad);
+	float Math_AngleToRad(float angle);
     float Math_Fal(float e, float alpha, float zeta);
     int16_t Math_Fsg(float x, float d);
     int16_t Math_Sign(float Input);

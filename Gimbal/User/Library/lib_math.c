@@ -20,6 +20,16 @@ float Math_RadToAngle(float rad)
 }
 
 /**
+ * @brief      Angle to Radian
+ * @param      Converted radian
+ * @retval     result
+ */
+float Math_AngleToRad(float angle)
+{
+    return (angle * PI / 180.0f);
+}
+
+/**
  * @brief      Continuous power function with linear segment near the origin
  * @param      NULL
  * @retval     result

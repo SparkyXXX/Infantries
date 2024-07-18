@@ -95,7 +95,7 @@ float Math_RadToAngle(float rad)
 }
 
 /**
- * @brief      Radian to angle
+ * @brief      Angle to Radian
  * @param      Converted radian
  * @retval     result
  */

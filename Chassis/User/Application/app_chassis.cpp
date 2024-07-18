@@ -206,8 +206,8 @@ void OmniChassis_EstimateSpeed()
 	temp_vz = 0.25 * 1.414f * chassis->wheel_radius * (+chassis->wheel_fdb[0] - chassis->wheel_fdb[1] - chassis->wheel_fdb[2] + chassis->wheel_fdb[3]) * 0.10472f;					// m/s
 	temp_vx = 0.25 * 1.414f * chassis->wheel_radius * (+chassis->wheel_fdb[0] + chassis->wheel_fdb[1] - chassis->wheel_fdb[2] - chassis->wheel_fdb[3]) * 0.10472f;					// m/s
 	chassis->real_spd.w = 0.25 * chassis->wheel_radius / chassis->center_distance * (chassis->wheel_fdb[0] + chassis->wheel_fdb[1] + chassis->wheel_fdb[2] + chassis->wheel_fdb[3]) * 0.10472f; // rad/s (1 rpm = 0.10472 rad/s)
-	chassis->real_spd.vz = +sin(chassis->separate_rad) * temp_vx + cos(chassis->separate_rad) * temp_vz;
-	chassis->real_spd.vx = +cos(chassis->separate_rad) * temp_vx - sin(chassis->separate_rad) * temp_vz;
+	chassis->real_spd.vz = +cos(chassis->separate_rad) * temp_vz - sin(chassis->separate_rad) * temp_vx;
+	chassis->real_spd.vx = +sin(chassis->separate_rad) * temp_vz + cos(chassis->separate_rad) * temp_vx;
 }
 
 static void Chassis_CalcMoveRef()
@@ -217,8 +217,8 @@ static void Chassis_CalcMoveRef()
 							Math_AngleToRad(Motor_GimbalYaw.encoder.limited_angle - chassis->install_angle));
 	float sin_tl = (float)sin(chassis->separate_rad);
 	float cos_tl = (float)cos(chassis->separate_rad);
-	chassis->chassis_coordinate_ref.vz = chassis->gimbal_coordinate_ref.vz * cos_tl + chassis->gimbal_coordinate_ref.vx * sin_tl;
-	chassis->chassis_coordinate_ref.vx = -chassis->gimbal_coordinate_ref.vz * sin_tl + chassis->gimbal_coordinate_ref.vx * cos_tl;
+	chassis->chassis_coordinate_ref.vz = +cos_tl * chassis->gimbal_coordinate_ref.vz + sin_tl * chassis->gimbal_coordinate_ref.vx;
+	chassis->chassis_coordinate_ref.vx = -sin_tl * chassis->gimbal_coordinate_ref.vz + cos_tl * chassis->gimbal_coordinate_ref.vx;
 }
 
 static void Chassis_CalcGyroRef()
