@@ -31,7 +31,8 @@ extern "C"
         CHASSIS_STOP = 0u,
         CHASSIS_NORMAL,
         CHASSIS_GYRO
-    } Chassis_ModeEnum;
+    }
+    Chassis_ModeEnum;
 
     typedef struct
     {
@@ -51,9 +52,10 @@ extern "C"
         float wheel_ref[4];                            // calc from chassis_coordinate_ref
         float wheel_fdb[4];                            // read from encoder
         float separate_rad;                            // gimbal chassis intersection angle
-		int gyro_dir;                              // gyro direction, clockwise(CW) is 1, counterclockwise(CCW) is -1
+        int gyro_dir;                              // gyro direction, clockwise(CW) is 1, counterclockwise(CCW) is -1
         PID_TypeDef Chassis_MotorSpdPID[4];
         PID_TypeDef Chassis_SpdfollowPID, Chassis_AngfollowPID;
+        Filter_Lowpass_TypeDef Spd_Follow_Fdb_lpf;
 
         PCArgsType Power_Control_Args;
         float chassis_I[4];
@@ -69,7 +71,7 @@ extern "C"
         float fly_angle;
     } Chassis_ControlTypeDef;
 
-    Chassis_ControlTypeDef *Chassis_GetControlPtr(void);
+    Chassis_ControlTypeDef* Chassis_GetControlPtr(void);
     void Chassis_Init(void);
     void Chassis_ModeSet(Chassis_ModeEnum mode);
     void Chassis_SetMoveRef(float forward_back_ref, float left_right_ref);
@@ -79,7 +81,7 @@ extern "C"
     void OmniChassis_EstimateSpeed(void);
 
     static void Chassis_CalcMoveRef(void);
-	static void Chassis_CalcGyroRef(void);
+    static void Chassis_CalcGyroRef(void);
     static void Chassis_CalcOmniFollowRef(void);
     static void InverseKinematics_Translation(float omega[4], float vx, float vy, float wz, float wm);
     static void InverseKinematics_Rotation(float omega[4], float vx, float vy, float wm);

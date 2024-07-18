@@ -19,7 +19,7 @@ extern "C"
 
 #define LOCKED_CURRENT 8000.0f
 #define LOCKED_SPEED 20.0f
-#define LOCKED_TIME 200.0f
+#define LOCKED_TIME 20.0f
 #define RELOCKED_TIME 100.0f
 #define REVERSE_SPEED -30.0f
 

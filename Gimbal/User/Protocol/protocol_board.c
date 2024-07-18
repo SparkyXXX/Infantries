@@ -252,8 +252,8 @@ static void _send_ui_state(uint8_t buff[])
 /*************** RECEIVE *****************/
 int countb[2];
 float rateb[2];
-uint16_t temp_heat_limit = 0;
-uint16_t temp_cool = 0;
+//uint16_t temp_heat_limit = 0;
+//uint16_t temp_cool = 0;
 static void _receive_referee_data1(uint8_t buff[])
 {
     countb[0]++;
@@ -262,11 +262,11 @@ static void _receive_referee_data1(uint8_t buff[])
     BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     boardcom->robot_id = buff[0] & 0x7F;
     boardcom->power_management_shooter_output = buff[1] >> 7;
-//    boardcom->heat_limit = buff2i16(buff + 2);
-	boardcom->heat_limit = temp_heat_limit;
+    boardcom->heat_limit = buff2i16(buff + 2);
+//	boardcom->heat_limit = temp_heat_limit;
     boardcom->shoot_spd_referee = ((float)buff2ui16(buff + 4)) / 100;
-//    boardcom->cooling_per_second = buff2ui16(buff + 6);
-	boardcom->cooling_per_second = temp_cool;
+    boardcom->cooling_per_second = buff2ui16(buff + 6);
+//	boardcom->cooling_per_second = temp_cool;
     boardcom->last_update_time = HAL_GetTick();
 }
 

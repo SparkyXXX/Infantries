@@ -194,6 +194,8 @@ void OmniChassis_PowerControl()
 	Motor_CAN_SendGroupOutput(&Motor_ChassisMotors);
 }
 
+float temp_vz = 0.0f;
+float temp_vx = 0.0f;
 void OmniChassis_EstimateSpeed()
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
@@ -201,21 +203,22 @@ void OmniChassis_EstimateSpeed()
 	{
 		chassis->wheel_fdb[i] = chassis->Chassis_MotorSpdPID[i].fdb;
 	}
-	static float temp_vz = 0.25 * 1.414f * chassis->wheel_radius * (+chassis->wheel_fdb[0] - chassis->wheel_fdb[1] - chassis->wheel_fdb[2] + chassis->wheel_fdb[3]) * 0.10472f;					// m/s
-	static float temp_vx = 0.25 * 1.414f * chassis->wheel_radius * (+chassis->wheel_fdb[0] + chassis->wheel_fdb[1] - chassis->wheel_fdb[2] - chassis->wheel_fdb[3]) * 0.10472f;					// m/s
+	temp_vz = 0.25 * 1.414f * chassis->wheel_radius * (+chassis->wheel_fdb[0] - chassis->wheel_fdb[1] - chassis->wheel_fdb[2] + chassis->wheel_fdb[3]) * 0.10472f;					// m/s
+	temp_vx = 0.25 * 1.414f * chassis->wheel_radius * (+chassis->wheel_fdb[0] + chassis->wheel_fdb[1] - chassis->wheel_fdb[2] - chassis->wheel_fdb[3]) * 0.10472f;					// m/s
 	chassis->real_spd.w = 0.25 * chassis->wheel_radius / chassis->center_distance * (chassis->wheel_fdb[0] + chassis->wheel_fdb[1] + chassis->wheel_fdb[2] + chassis->wheel_fdb[3]) * 0.10472f; // rad/s (1 rpm = 0.10472 rad/s)
-	chassis->real_spd.vz = -sin(chassis->separate_rad) * temp_vx + cos(chassis->separate_rad) * temp_vz;
-	chassis->real_spd.vx = +cos(chassis->separate_rad) * temp_vx + sin(chassis->separate_rad) * temp_vz;
+	chassis->real_spd.vz = +sin(chassis->separate_rad) * temp_vx + cos(chassis->separate_rad) * temp_vz;
+	chassis->real_spd.vx = +cos(chassis->separate_rad) * temp_vx - sin(chassis->separate_rad) * temp_vz;
 }
 
 static void Chassis_CalcMoveRef()
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	chassis->separate_rad = (Motor_GimbalYaw.encoder.limited_angle - chassis->install_angle) * PI / 180;
+	chassis->separate_rad = Math_Consequent_To_Limited(0.0f, 
+							Math_AngleToRad(Motor_GimbalYaw.encoder.limited_angle - chassis->install_angle));
 	float sin_tl = (float)sin(chassis->separate_rad);
 	float cos_tl = (float)cos(chassis->separate_rad);
-	chassis->chassis_coordinate_ref.vz = chassis->gimbal_coordinate_ref.vz * cos_tl - chassis->gimbal_coordinate_ref.vx * sin_tl;
-	chassis->chassis_coordinate_ref.vx = chassis->gimbal_coordinate_ref.vz * sin_tl + chassis->gimbal_coordinate_ref.vx * cos_tl;
+	chassis->chassis_coordinate_ref.vz = chassis->gimbal_coordinate_ref.vz * cos_tl + chassis->gimbal_coordinate_ref.vx * sin_tl;
+	chassis->chassis_coordinate_ref.vx = -chassis->gimbal_coordinate_ref.vz * sin_tl + chassis->gimbal_coordinate_ref.vx * cos_tl;
 }
 
 static void Chassis_CalcGyroRef()
@@ -240,14 +243,13 @@ static void Chassis_CalcOmniFollowRef()
 	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
 
 	chassis->chassis_coordinate_ref.w = chassis->gimbal_coordinate_ref.w;
-	float fdb = Math_Consequent_To_180(chassis->install_angle, Motor_GimbalYaw.encoder.limited_angle);
-	PID_SetFdb(&(chassis->Chassis_AngfollowPID), fdb);
-	Omni_FourHeadSetPosRef(fdb);
+	PID_SetFdb(&(chassis->Chassis_AngfollowPID), chassis->separate_rad);
+	Omni_FourHeadSetPosRef(chassis->separate_rad);
 	// if (boardcom->fly_flag == 1)
 	// {
-	// 	PID_SetRef(&(chassis->Chassis_AngfollowPID), FLY_ANGLE);
+	// 	PID_SetRef(&(chassis->Chassis_AngfollowPID), Math_AngleToRad(FLY_ANGLE));
 	// }
-	PID_SetFdb(&(chassis->Chassis_SpdfollowPID), Motor_GimbalYaw.encoder.speed);
+	PID_SetFdb(&(chassis->Chassis_SpdfollowPID), Filter_Lowpass(Motor_GimbalYaw.encoder.speed, &(chassis->Spd_Follow_Fdb_lpf)));
 	PID_SetRef(&(chassis->Chassis_SpdfollowPID), PID_Calc(&(chassis->Chassis_AngfollowPID)));
 	chassis->chassis_coordinate_ref.w += PID_Calc(&(chassis->Chassis_SpdfollowPID));
 	if (abs(chassis->Chassis_AngfollowPID.ref - chassis->Chassis_AngfollowPID.fdb) < dead_zone)
@@ -326,31 +328,30 @@ static void Omni_FourHeadSetPosRef(float fdb)
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
 	if (chassis->present_mode == CHASSIS_NORMAL)
 	{
-		if (fdb < chassis->install_angle + 45 && fdb >= chassis->install_angle - 45)
+		if (fdb < 0.25*PI && fdb >= -0.25*PI)
 		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, chassis->install_angle + 0);
+			PID_SetRef(&chassis->Chassis_AngfollowPID, 0*PI);
 		}
-		else if (fdb < chassis->install_angle + 135 && fdb >= chassis->install_angle + 45)
+		else if (fdb < 0.75*PI && fdb >= 0.25*PI)
 		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, chassis->install_angle + 90);
+			PID_SetRef(&chassis->Chassis_AngfollowPID, 0.5*PI);
 		}
-
-		else if (fdb < chassis->install_angle - 45 && fdb >= chassis->install_angle - 135)
+		else if (fdb < -0.25*PI && fdb >= -0.75*PI)
 		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, chassis->install_angle - 90);
+			PID_SetRef(&chassis->Chassis_AngfollowPID, -0.5*PI);
 		}
-		else if (fdb >= chassis->install_angle + 135)
+		else if (fdb >= 0.75*PI)
 		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, chassis->install_angle + 180);
+			PID_SetRef(&chassis->Chassis_AngfollowPID, PI);
 		}
-		else if (fdb < chassis->install_angle - 135)
+		else if (fdb < -0.75*PI)
 		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, chassis->install_angle - 180);
+			PID_SetRef(&chassis->Chassis_AngfollowPID, -PI);
 		}
 	}
 	else if (chassis->present_mode == CHASSIS_GYRO)
 	{
-		PID_SetRef(&(chassis->Chassis_AngfollowPID), chassis->install_angle);
+		PID_SetRef(&(chassis->Chassis_AngfollowPID), 0*PI);
 	}
 }
 

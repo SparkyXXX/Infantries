@@ -56,7 +56,7 @@ extern "C"
             input = min;             \
         }                            \
     }
-	
+
 #define GetMaxandMinRange(input, max, min) {    \
     if (input >= max) {                         \
         max = input;                            \
@@ -75,18 +75,19 @@ extern "C"
         float dec;
     } Math_SlopeParamTypeDef;
 
-	void Test_Response(void);
-	float Math_Normalize(float input, float minInput, float maxInput);
-	float Math_Consequent_To_180(float angle_ref, float angle_fdb);
-	float Math_Consequent_To_Limited(float angle_rad_ref, float angle_rad_fdb);
+    void Test_Response(void);
+    float Math_Normalize(float input, float minInput, float maxInput);
+    float Math_Consequent_To_180(float angle_ref, float angle_fdb);
+    float Math_Consequent_To_Limited(float angle_rad_ref, float angle_rad_fdb);
     float Math_RadToAngle(float rad);
+    float Math_AngleToRad(float angle);
     float Math_Fal(float e, float alpha, float zeta);
     int16_t Math_Fsg(float x, float d);
     int16_t Math_Sign(float Input);
     float Math_InvSqrt(float x);
-    void Math_InitSlopeParam(Math_SlopeParamTypeDef *pparam, float acc, float dec);
-    float Math_CalcSlopeRef(float rawref, float targetref, Math_SlopeParamTypeDef *pparam);
-    float Math_CalcAbsSlopeRef(float rawref, float targetref, Math_SlopeParamTypeDef *pparam);
+    void Math_InitSlopeParam(Math_SlopeParamTypeDef* pparam, float acc, float dec);
+    float Math_CalcSlopeRef(float rawref, float targetref, Math_SlopeParamTypeDef* pparam);
+    float Math_CalcAbsSlopeRef(float rawref, float targetref, Math_SlopeParamTypeDef* pparam);
     float Math_Differential(float arr[], uint8_t order);
 
 #ifdef __cplusplus

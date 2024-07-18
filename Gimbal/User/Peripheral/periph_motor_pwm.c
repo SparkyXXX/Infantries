@@ -46,7 +46,6 @@ void Motor_PWM_ReadEncoder(MotorPWM_DataTypeDef *pmotor)
         return;
     }
     pmotor->encoder.counter = __HAL_TIM_GET_COUNTER(pmotor->encoder.htim);
-    ;
     temp = pmotor->encoder.counter;
     __HAL_TIM_SET_COUNTER(pmotor->encoder.htim, 0);
     if (temp > 32768)

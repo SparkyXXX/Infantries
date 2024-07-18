@@ -56,9 +56,10 @@ void Chassis_ParamInit(void)
         PID_Init(&(chassis->Chassis_MotorSpdPID[i]), 75.0f, 10.0f, 0.0f, 0.0f, 500.0f, 10000.0f, 159.154922f, 159.154922f);
         //                                           kp    ki    kd    kf  sum_max  output_max   d_frq     kf_frq
     }
+	Filter_Lowpass_Init(100.0f, &(chassis->Spd_Follow_Fdb_lpf));
 #if IF_FOLLOW == FOLLOW
-    PID_Init(&(chassis->Chassis_SpdfollowPID), 8.0f, 0.0f, 0.0f, 0.0f, 1000.0f, 1000.0f, 159.154922f, 159.154922f);
-    PID_Init(&(chassis->Chassis_AngfollowPID), 2.1f, 0.0f, 0.0f, 0.0f, 200.0f, 120.0f, 159.154922f, 159.154922f);
+    PID_Init(&(chassis->Chassis_SpdfollowPID), 8.0f, 0.0f, 0.0f, 0.0f, 0.0f, 180.0f, 159.154922f, 159.154922f);
+    PID_Init(&(chassis->Chassis_AngfollowPID), 200.0f, 0.0f, 0.0f, 0.0f, 0.0f, 20.0f, 159.154922f, 159.154922f);
 #endif
 #if IF_FOLLOW == NO_FOLLOW
     PID_Init(&(chassis->Chassis_SpdfollowPID), 0.0f, 0.0f, 0.0f, 0.0f, 1000.0f, 1000.0f, 159.154922f, 159.154922f);

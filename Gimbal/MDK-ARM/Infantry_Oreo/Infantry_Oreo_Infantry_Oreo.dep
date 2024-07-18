@@ -74,7 +74,7 @@ I (D:\Keil\ARM\ARMCLANG\include\string.h)(0x63884908)
 I (..\Core\Inc\gpio.h)(0x669791F1)
 I (..\User\Infantry\config_ctrl.h)(0x6697CF0B)
 I (..\User\Application\app_autoaim.h)(0x6697FF1B)
-I (..\User\Application\app_shoot.h)(0x66987619)
+I (..\User\Application\app_shoot.h)(0x6698D97B)
 I (..\User\Algorithm\alg_pid.h)(0x6697A6EB)
 I (..\User\Library\lib_math.h)(0x6697A6EB)
 I (..\Drivers\CMSIS\DSP\Include\arm_math.h)(0x669791F1)
@@ -213,7 +213,7 @@ I (..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h)(0x669791F1)
 I (..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h)(0x669791F1)
 I (..\User\Protocol\protocol_board.h)(0x66987300)
 I (..\User\Application\app_autoaim.h)(0x6697FF1B)
-I (..\User\Application\app_shoot.h)(0x66987619)
+I (..\User\Application\app_shoot.h)(0x6698D97B)
 I (..\User\Algorithm\alg_pid.h)(0x6697A6EB)
 I (..\User\Library\lib_math.h)(0x6697A6EB)
 I (..\Drivers\CMSIS\DSP\Include\arm_math.h)(0x669791F1)
@@ -577,7 +577,7 @@ I (..\Core\Inc\stm32g4xx_it.h)(0x669791F1)
 I (..\User\Infantry\callback_ctrl.h)(0x669791F1)
 I (..\User\Protocol\protocol_board.h)(0x66987300)
 I (..\User\Application\app_autoaim.h)(0x6697FF1B)
-I (..\User\Application\app_shoot.h)(0x66987619)
+I (..\User\Application\app_shoot.h)(0x6698D97B)
 I (..\User\Algorithm\alg_pid.h)(0x6697A6EB)
 I (..\User\Library\lib_math.h)(0x6697A6EB)
 I (..\Drivers\CMSIS\DSP\Include\arm_math.h)(0x669791F1)
@@ -936,7 +936,7 @@ I (..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x669791F1)
 I (..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_core.h)(0x669791F1)
 I (..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_ctlreq.h)(0x669791F1)
 I (..\User\Protocol\protocol_minipc.h)(0x66980CE6)
-I (..\User\Application\app_shoot.h)(0x66987619)
+I (..\User\Application\app_shoot.h)(0x6698D97B)
 I (..\User\Algorithm\alg_pid.h)(0x6697A6EB)
 I (..\User\Library\lib_math.h)(0x6697A6EB)
 I (..\Drivers\CMSIS\DSP\Include\arm_math.h)(0x669791F1)
@@ -2461,7 +2461,7 @@ F (..\User\Infantry\callback_ctrl.c)(0x6697A6EB)(-xc -std=c11 --target=arm-arm-n
 I (..\User\Infantry\callback_ctrl.h)(0x669791F1)
 I (..\User\Protocol\protocol_board.h)(0x66987300)
 I (..\User\Application\app_autoaim.h)(0x6697FF1B)
-I (..\User\Application\app_shoot.h)(0x66987619)
+I (..\User\Application\app_shoot.h)(0x6698D97B)
 I (..\User\Algorithm\alg_pid.h)(0x6697A6EB)
 I (..\User\Library\lib_math.h)(0x6697A6EB)
 I (..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x669791F1)
@@ -2567,7 +2567,7 @@ F (..\User\Infantry\task_ctrl.c)(0x66981725)(-xc -std=c11 --target=arm-arm-none-
 I (..\User\Infantry\task_ctrl.h)(0x6697A6EB)
 I (..\User\Infantry\config_ctrl.h)(0x6697CF0B)
 I (..\User\Application\app_autoaim.h)(0x6697FF1B)
-I (..\User\Application\app_shoot.h)(0x66987619)
+I (..\User\Application\app_shoot.h)(0x6698D97B)
 I (..\User\Algorithm\alg_pid.h)(0x6697A6EB)
 I (..\User\Library\lib_math.h)(0x6697A6EB)
 I (..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x669791F1)
@@ -2673,7 +2673,7 @@ I (..\USB_Device\App\usb_device.h)(0x669791F1)
 F (..\User\Infantry\config_ctrl.c)(0x66981851)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../USB_Device/App -I ../USB_Device/Target -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Core/Inc -I ../User/Infantry -I ../User/Application -I ../User/Protocol -I ../User/Algorithm -I ../User/Library -I ../User/Peripheral -I ../User/Utility -I ../User/System -Wno-error=armcc-pragma-import -Wno-error=armcc-pragma-arm-I./RTE/_Infantry_Oreo-ID:/Keil/ARM/Pack/ARM/CMSIS/5.9.0/CMSIS/Core/Include-ID:/Keil/ARM/Pack/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32G473xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G473xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP-o infantry_oreo/config_ctrl.o -MD)
 I (..\User\Infantry\config_ctrl.h)(0x6697CF0B)
 I (..\User\Application\app_autoaim.h)(0x6697FF1B)
-I (..\User\Application\app_shoot.h)(0x66987619)
+I (..\User\Application\app_shoot.h)(0x6698D97B)
 I (..\User\Algorithm\alg_pid.h)(0x6697A6EB)
 I (..\User\Library\lib_math.h)(0x6697A6EB)
 I (..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x669791F1)
@@ -2833,7 +2833,7 @@ I (..\User\Library\lib_filter.h)(0x6697A6EB)
 I (..\User\Application\app_ins.h)(0x6697A6EB)
 I (..\User\Infantry\config_ctrl.h)(0x6697CF0B)
 I (..\User\Application\app_autoaim.h)(0x6697FF1B)
-I (..\User\Application\app_shoot.h)(0x66987619)
+I (..\User\Application\app_shoot.h)(0x6698D97B)
 I (..\User\Protocol\protocol_board.h)(0x66987300)
 I (..\User\Application\app_remote.h)(0x6698085D)
 I (..\User\Peripheral\periph_remote.h)(0x6697A6EB)
@@ -2884,8 +2884,8 @@ I (..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h)(0x669791F1
 I (..\USB_Device\App\usb_device.h)(0x669791F1)
 I (..\User\Algorithm\alg_qekf.h)(0x669791F1)
 I (..\User\Algorithm\alg_kf.h)(0x669791F1)
-F (..\User\Application\app_shoot.c)(0x669883ED)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../USB_Device/App -I ../USB_Device/Target -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Core/Inc -I ../User/Infantry -I ../User/Application -I ../User/Protocol -I ../User/Algorithm -I ../User/Library -I ../User/Peripheral -I ../User/Utility -I ../User/System -Wno-error=armcc-pragma-import -Wno-error=armcc-pragma-arm-I./RTE/_Infantry_Oreo-ID:/Keil/ARM/Pack/ARM/CMSIS/5.9.0/CMSIS/Core/Include-ID:/Keil/ARM/Pack/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32G473xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G473xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP-o infantry_oreo/app_shoot.o -MD)
-I (..\User\Application\app_shoot.h)(0x66987619)
+F (..\User\Application\app_shoot.c)(0x6698DE92)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../USB_Device/App -I ../USB_Device/Target -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Core/Inc -I ../User/Infantry -I ../User/Application -I ../User/Protocol -I ../User/Algorithm -I ../User/Library -I ../User/Peripheral -I ../User/Utility -I ../User/System -Wno-error=armcc-pragma-import -Wno-error=armcc-pragma-arm-I./RTE/_Infantry_Oreo-ID:/Keil/ARM/Pack/ARM/CMSIS/5.9.0/CMSIS/Core/Include-ID:/Keil/ARM/Pack/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32G473xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G473xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP-o infantry_oreo/app_shoot.o -MD)
+I (..\User\Application\app_shoot.h)(0x6698D97B)
 I (..\User\Algorithm\alg_pid.h)(0x6697A6EB)
 I (..\User\Library\lib_math.h)(0x6697A6EB)
 I (..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x669791F1)
@@ -2992,11 +2992,11 @@ I (..\User\Algorithm\alg_kf.h)(0x669791F1)
 I (..\User\Infantry\callback_ctrl.h)(0x669791F1)
 I (..\User\Utility\util_adc.h)(0x66980E5E)
 I (..\Core\Inc\adc.h)(0x669791F1)
-F (..\User\Application\app_remote.c)(0x66987300)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../USB_Device/App -I ../USB_Device/Target -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Core/Inc -I ../User/Infantry -I ../User/Application -I ../User/Protocol -I ../User/Algorithm -I ../User/Library -I ../User/Peripheral -I ../User/Utility -I ../User/System -Wno-error=armcc-pragma-import -Wno-error=armcc-pragma-arm-I./RTE/_Infantry_Oreo-ID:/Keil/ARM/Pack/ARM/CMSIS/5.9.0/CMSIS/Core/Include-ID:/Keil/ARM/Pack/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32G473xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G473xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP-o infantry_oreo/app_remote.o -MD)
+F (..\User\Application\app_remote.c)(0x66988FF2)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../USB_Device/App -I ../USB_Device/Target -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Core/Inc -I ../User/Infantry -I ../User/Application -I ../User/Protocol -I ../User/Algorithm -I ../User/Library -I ../User/Peripheral -I ../User/Utility -I ../User/System -Wno-error=armcc-pragma-import -Wno-error=armcc-pragma-arm-I./RTE/_Infantry_Oreo-ID:/Keil/ARM/Pack/ARM/CMSIS/5.9.0/CMSIS/Core/Include-ID:/Keil/ARM/Pack/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32G473xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G473xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP-o infantry_oreo/app_remote.o -MD)
 I (..\User\Application\app_remote.h)(0x6698085D)
 I (..\User\Infantry\config_ctrl.h)(0x6697CF0B)
 I (..\User\Application\app_autoaim.h)(0x6697FF1B)
-I (..\User\Application\app_shoot.h)(0x66987619)
+I (..\User\Application\app_shoot.h)(0x6698D97B)
 I (..\User\Algorithm\alg_pid.h)(0x6697A6EB)
 I (..\User\Library\lib_math.h)(0x6697A6EB)
 I (..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x669791F1)
@@ -3100,7 +3100,7 @@ I (..\User\Peripheral\periph_servo.h)(0x669791F1)
 I (..\USB_Device\App\usb_device.h)(0x669791F1)
 F (..\User\Application\app_autoaim.c)(0x6697F982)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../USB_Device/App -I ../USB_Device/Target -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Core/Inc -I ../User/Infantry -I ../User/Application -I ../User/Protocol -I ../User/Algorithm -I ../User/Library -I ../User/Peripheral -I ../User/Utility -I ../User/System -Wno-error=armcc-pragma-import -Wno-error=armcc-pragma-arm-I./RTE/_Infantry_Oreo-ID:/Keil/ARM/Pack/ARM/CMSIS/5.9.0/CMSIS/Core/Include-ID:/Keil/ARM/Pack/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32G473xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G473xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP-o infantry_oreo/app_autoaim.o -MD)
 I (..\User\Application\app_autoaim.h)(0x6697FF1B)
-I (..\User\Application\app_shoot.h)(0x66987619)
+I (..\User\Application\app_shoot.h)(0x6698D97B)
 I (..\User\Algorithm\alg_pid.h)(0x6697A6EB)
 I (..\User\Library\lib_math.h)(0x6697A6EB)
 I (..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x669791F1)
@@ -3208,7 +3208,7 @@ F (..\User\Application\app_ins.c)(0x6697A6EB)(-xc -std=c11 --target=arm-arm-none
 I (..\User\Application\app_ins.h)(0x6697A6EB)
 I (..\User\Infantry\config_ctrl.h)(0x6697CF0B)
 I (..\User\Application\app_autoaim.h)(0x6697FF1B)
-I (..\User\Application\app_shoot.h)(0x66987619)
+I (..\User\Application\app_shoot.h)(0x6698D97B)
 I (..\User\Algorithm\alg_pid.h)(0x6697A6EB)
 I (..\User\Library\lib_math.h)(0x6697A6EB)
 I (..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x669791F1)
@@ -3310,10 +3310,10 @@ I (..\User\Peripheral\periph_motor_pwm.h)(0x6697C989)
 I (..\USB_Device\App\usb_device.h)(0x669791F1)
 I (..\User\Algorithm\alg_qekf.h)(0x669791F1)
 I (..\User\Algorithm\alg_kf.h)(0x669791F1)
-F (..\User\Protocol\protocol_board.c)(0x66987F27)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../USB_Device/App -I ../USB_Device/Target -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Core/Inc -I ../User/Infantry -I ../User/Application -I ../User/Protocol -I ../User/Algorithm -I ../User/Library -I ../User/Peripheral -I ../User/Utility -I ../User/System -Wno-error=armcc-pragma-import -Wno-error=armcc-pragma-arm-I./RTE/_Infantry_Oreo-ID:/Keil/ARM/Pack/ARM/CMSIS/5.9.0/CMSIS/Core/Include-ID:/Keil/ARM/Pack/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32G473xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G473xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP-o infantry_oreo/protocol_board.o -MD)
+F (..\User\Protocol\protocol_board.c)(0x66988AA0)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../USB_Device/App -I ../USB_Device/Target -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Core/Inc -I ../User/Infantry -I ../User/Application -I ../User/Protocol -I ../User/Algorithm -I ../User/Library -I ../User/Peripheral -I ../User/Utility -I ../User/System -Wno-error=armcc-pragma-import -Wno-error=armcc-pragma-arm-I./RTE/_Infantry_Oreo-ID:/Keil/ARM/Pack/ARM/CMSIS/5.9.0/CMSIS/Core/Include-ID:/Keil/ARM/Pack/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32G473xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G473xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP-o infantry_oreo/protocol_board.o -MD)
 I (..\User\Protocol\protocol_board.h)(0x66987300)
 I (..\User\Application\app_autoaim.h)(0x6697FF1B)
-I (..\User\Application\app_shoot.h)(0x66987619)
+I (..\User\Application\app_shoot.h)(0x6698D97B)
 I (..\User\Algorithm\alg_pid.h)(0x6697A6EB)
 I (..\User\Library\lib_math.h)(0x6697A6EB)
 I (..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x669791F1)
@@ -3418,7 +3418,7 @@ I (..\User\Algorithm\alg_kf.h)(0x669791F1)
 I (..\User\Infantry\callback_ctrl.h)(0x669791F1)
 F (..\User\Protocol\protocol_minipc.c)(0x66980CF2)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../USB_Device/App -I ../USB_Device/Target -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Core/Inc -I ../User/Infantry -I ../User/Application -I ../User/Protocol -I ../User/Algorithm -I ../User/Library -I ../User/Peripheral -I ../User/Utility -I ../User/System -Wno-error=armcc-pragma-import -Wno-error=armcc-pragma-arm-I./RTE/_Infantry_Oreo-ID:/Keil/ARM/Pack/ARM/CMSIS/5.9.0/CMSIS/Core/Include-ID:/Keil/ARM/Pack/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32G473xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G473xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP-o infantry_oreo/protocol_minipc.o -MD)
 I (..\User\Protocol\protocol_minipc.h)(0x66980CE6)
-I (..\User\Application\app_shoot.h)(0x66987619)
+I (..\User\Application\app_shoot.h)(0x6698D97B)
 I (..\User\Algorithm\alg_pid.h)(0x6697A6EB)
 I (..\User\Library\lib_math.h)(0x6697A6EB)
 I (..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h)(0x669791F1)
@@ -3912,7 +3912,7 @@ I (..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h)(0x669791F1)
 I (..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h)(0x669791F1)
 I (..\User\Infantry\config_ctrl.h)(0x6697CF0B)
 I (..\User\Application\app_autoaim.h)(0x6697FF1B)
-I (..\User\Application\app_shoot.h)(0x66987619)
+I (..\User\Application\app_shoot.h)(0x6698D97B)
 I (..\User\Algorithm\alg_pid.h)(0x6697A6EB)
 I (..\User\Library\lib_math.h)(0x6697A6EB)
 I (..\Drivers\CMSIS\DSP\Include\arm_math.h)(0x669791F1)
@@ -3969,7 +3969,7 @@ I (..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_ctlreq.h)(0x669791F1
 I (..\User\Infantry\test_ctrl.h)(0x669880C1)
 I (..\User\Peripheral\periph_motor_pwm.h)(0x6697C989)
 I (..\USB_Device\App\usb_device.h)(0x669791F1)
-F (..\User\Peripheral\periph_motor_pwm.c)(0x6697CA35)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../USB_Device/App -I ../USB_Device/Target -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Core/Inc -I ../User/Infantry -I ../User/Application -I ../User/Protocol -I ../User/Algorithm -I ../User/Library -I ../User/Peripheral -I ../User/Utility -I ../User/System -Wno-error=armcc-pragma-import -Wno-error=armcc-pragma-arm-I./RTE/_Infantry_Oreo-ID:/Keil/ARM/Pack/ARM/CMSIS/5.9.0/CMSIS/Core/Include-ID:/Keil/ARM/Pack/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32G473xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G473xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP-o infantry_oreo/periph_motor_pwm.o -MD)
+F (..\User\Peripheral\periph_motor_pwm.c)(0x6698DEA1)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -Werror -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../USB_Device/App -I ../USB_Device/Target -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../Core/Inc -I ../User/Infantry -I ../User/Application -I ../User/Protocol -I ../User/Algorithm -I ../User/Library -I ../User/Peripheral -I ../User/Utility -I ../User/System -Wno-error=armcc-pragma-import -Wno-error=armcc-pragma-arm-I./RTE/_Infantry_Oreo-ID:/Keil/ARM/Pack/ARM/CMSIS/5.9.0/CMSIS/Core/Include-ID:/Keil/ARM/Pack/Keil/STM32G4xx_DFP/1.5.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32G473xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G473xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP-o infantry_oreo/periph_motor_pwm.o -MD)
 I (..\User\Peripheral\periph_motor_pwm.h)(0x6697C989)
 I (..\User\Utility\util_pwm.h)(0x669791F1)
 I (..\Core\Inc\tim.h)(0x669791F1)

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Infantry_Oreo\Infantry_Oreo.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Infantry_Oreo\Infantry_Oreo.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Thu Jul 18 11:13:53 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Thu Jul 18 17:21:41 2024
 <BR><P>
 <H3>Maximum Stack Usage =        744 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -2681,7 +2681,7 @@ Global Symbols
 <P><STRONG><a name="[1e]"></a>HardFault_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32g4xx_it.o(.text.HardFault_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32g473xx.o(RESET)
 </UL>
-<P><STRONG><a name="[1e6]"></a>Heat_Control</STRONG> (Thumb, 708 bytes, Stack size 40 bytes, app_shoot.o(.text.Heat_Control))
+<P><STRONG><a name="[1e6]"></a>Heat_Control</STRONG> (Thumb, 700 bytes, Stack size 40 bytes, app_shoot.o(.text.Heat_Control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = Heat_Control &rArr; DWT_GetTimeline_ms &rArr; DWT_SysTimeUpdate &rArr; __aeabi_uldivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DWT_GetTimeline_ms
@@ -3539,7 +3539,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Shoot_Task
 </UL>
 
-<P><STRONG><a name="[251]"></a>Shoot_FeederLockedJudge</STRONG> (Thumb, 484 bytes, Stack size 16 bytes, app_shoot.o(.text.Shoot_FeederLockedJudge))
+<P><STRONG><a name="[251]"></a>Shoot_FeederLockedJudge</STRONG> (Thumb, 480 bytes, Stack size 16 bytes, app_shoot.o(.text.Shoot_FeederLockedJudge))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Shoot_FeederLockedJudge &rArr; Shoot_FeederModeForceSet
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Shoot_FeederModeForceSet
@@ -4429,6 +4429,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = buff2i16
 </UL>
 <BR>[Called By]<UL><LI><a href="#[223]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MiniPC_BuffPacketDecode
+<LI><a href="#[7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_receive_referee_data1
 </UL>
 
 <P><STRONG><a name="[22b]"></a>buff2ui16</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, lib_buff.o(.text.buff2ui16))
@@ -5860,11 +5861,12 @@ Local Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> protocol_board.o(.data.Gimbal_Send_to_Chassis_Pkg2)
 </UL>
-<P><STRONG><a name="[7]"></a>_receive_referee_data1</STRONG> (Thumb, 168 bytes, Stack size 24 bytes, protocol_board.o(.text._receive_referee_data1))
+<P><STRONG><a name="[7]"></a>_receive_referee_data1</STRONG> (Thumb, 164 bytes, Stack size 24 bytes, protocol_board.o(.text._receive_referee_data1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = _receive_referee_data1 &rArr; buff2ui16
 </UL>
 <BR>[Calls]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 <LI><a href="#[22b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buff2ui16
+<LI><a href="#[225]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buff2i16
 <LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BoardCom_GetDataPtr
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> protocol_board.o(.data.Gimbal_Receive_from_Chassis)
@@ -5895,10 +5897,10 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[223]"></a>MiniPC_BuffPacketDecode</STRONG> (Thumb, 84 bytes, Stack size 24 bytes, protocol_minipc.o(.text.MiniPC_BuffPacketDecode))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = MiniPC_BuffPacketDecode &rArr; buff2i16
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = MiniPC_BuffPacketDecode &rArr; buff2float
 </UL>
-<BR>[Calls]<UL><LI><a href="#[225]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buff2i16
-<LI><a href="#[224]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buff2float
+<BR>[Calls]<UL><LI><a href="#[224]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buff2float
+<LI><a href="#[225]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;buff2i16
 <LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MiniPC_GetDataPtr
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MiniPC_Decode

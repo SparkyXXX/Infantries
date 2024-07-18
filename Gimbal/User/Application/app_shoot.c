@@ -88,7 +88,7 @@ void Heat_Control()
     {
         angle_diff_sum = (angle_diff_sum < 0.0f) ? angle_diff_sum + 45 : angle_diff_sum;
         shooter->heat_now += -boardcom->cooling_per_second * (DWT_GetTimeline_ms() - feeder_tick_last) / 1000;
-        shooter->heat_now += (shooter->heat_now < 0) ? 0 : shooter->heat_now;
+        shooter->heat_now = (shooter->heat_now < 0) ? 0 : shooter->heat_now;
     }
     else
     {
