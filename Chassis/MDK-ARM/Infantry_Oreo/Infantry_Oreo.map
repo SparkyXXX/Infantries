@@ -7926,57 +7926,57 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-       740          8          0          0          0       2161   alg_pid.o
-      4672        172          0          0        956      24706   app_chassis.o
-       440          0        204          0        620       3807   app_freertos.o
-      1210         28          0          0       1032       6458   app_gimbal.o
-      9916        104        335       1448        856      45650   app_ui.o
-       398          0          0          0        252       7053   callback_ctrl.o
-       262          0          0          0          0      16974   cmsis_os.o
-      1232        120          0         33        368       7710   config_ctrl.o
-        86          0          0          0          0       3712   dma.o
-       902          0          0          0        304       8576   fdcan.o
-        96          0          0          0          0       1604   gpio.o
-      1084          0          0          0      15392       4393   heap_4.o
-       118          0          0          0          0       1748   lib_buff.o
-       390          0        768          3          0       2179   lib_crc.o
-       436         36          0          0          0       2225   lib_filter.o
-       356         16          0          0          1       4079   lib_math.o
-      2670         24          0          0        332      25281   lib_power_ctrl.o
-       296          0          0          0          0       2191   list.o
-       228          0          0          0          0       5360   main.o
-       206          0          0          0         16       9204   periph_cap.o
-      1186         20          0          0          0       6111   periph_motor_can.o
-       996         16          0          4          5       3815   port.o
-      1990          8          0         60        421      13392   protocol_board.o
-      1404          0        190          0       1048      23966   protocol_referee.o
+       740          8          0          0          0       2167   alg_pid.o
+      4672        172          0          0        956      24712   app_chassis.o
+       440          0        204          0        620       3813   app_freertos.o
+      1210         28          0          0       1032       6464   app_gimbal.o
+      9916        104        335       1448        856      45656   app_ui.o
+       398          0          0          0        252       7059   callback_ctrl.o
+       262          0          0          0          0      16980   cmsis_os.o
+      1232        120          0         33        368       7716   config_ctrl.o
+        86          0          0          0          0       3718   dma.o
+       902          0          0          0        304       8582   fdcan.o
+        96          0          0          0          0       1610   gpio.o
+      1084          0          0          0      15392       4399   heap_4.o
+       118          0          0          0          0       1754   lib_buff.o
+       390          0        768          3          0       2185   lib_crc.o
+       436         36          0          0          0       2231   lib_filter.o
+       356         16          0          0          1       4085   lib_math.o
+      2670         24          0          0        332      25287   lib_power_ctrl.o
+       296          0          0          0          0       2197   list.o
+       228          0          0          0          0       5366   main.o
+       206          0          0          0         16       9210   periph_cap.o
+      1186         20          0          0          0       6117   periph_motor_can.o
+       996         16          0          4          5       3821   port.o
+      1990          8          0         60        421      13398   protocol_board.o
+      1404          0        190          0       1048      23972   protocol_referee.o
         64         26        472          0      12288        828   startup_stm32g473xx.o
-       220          0          0          8          4       8611   stm32g4xx_hal.o
-       380          0          0          0          0       9606   stm32g4xx_hal_cortex.o
-      1572          0          0          0          0       7715   stm32g4xx_hal_dma.o
-      3550          0         16          0          0      18413   stm32g4xx_hal_fdcan.o
-       872          0          0          0          0       5271   stm32g4xx_hal_gpio.o
-       120          0          0          0          0       3752   stm32g4xx_hal_msp.o
-         2          0          0          0          0       5091   stm32g4xx_hal_pwr.o
-       648          0          0          0          0       7747   stm32g4xx_hal_pwr_ex.o
-      3368          0          0          0          0       9481   stm32g4xx_hal_rcc.o
-      1316          0          0          0          0      11667   stm32g4xx_hal_rcc_ex.o
-      2614          0          0          0          0      37632   stm32g4xx_hal_tim.o
-       428          0          0          0          0      21631   stm32g4xx_hal_tim_ex.o
-       212          0          0          0         76       8089   stm32g4xx_hal_timebase_tim.o
-      5348         48         24          0          0      26987   stm32g4xx_hal_uart.o
-       766          0         16          0          0       8644   stm32g4xx_hal_uart_ex.o
-       124          0          0          0          0       1420   stm32g4xx_it.o
-       134          0          0          0         48       4490   sys_dwt.o
-        18          0         24          4          0       2662   system_stm32g4xx.o
-       240          0          0          0          1       2524   task_ctrl.o
-      2974          0          5          0        300      23528   tasks.o
-       382          0          0          0        152       6241   tim.o
-       400          0          0          0        240       8754   usart.o
-       316          0          0          0          1       4223   util_fdcan.o
+       220          0          0          8          4       8617   stm32g4xx_hal.o
+       380          0          0          0          0       9612   stm32g4xx_hal_cortex.o
+      1572          0          0          0          0       7721   stm32g4xx_hal_dma.o
+      3550          0         16          0          0      18419   stm32g4xx_hal_fdcan.o
+       872          0          0          0          0       5277   stm32g4xx_hal_gpio.o
+       120          0          0          0          0       3758   stm32g4xx_hal_msp.o
+         2          0          0          0          0       5097   stm32g4xx_hal_pwr.o
+       648          0          0          0          0       7753   stm32g4xx_hal_pwr_ex.o
+      3368          0          0          0          0       9487   stm32g4xx_hal_rcc.o
+      1316          0          0          0          0      11673   stm32g4xx_hal_rcc_ex.o
+      2614          0          0          0          0      37638   stm32g4xx_hal_tim.o
+       428          0          0          0          0      21637   stm32g4xx_hal_tim_ex.o
+       212          0          0          0         76       8095   stm32g4xx_hal_timebase_tim.o
+      5348         48         24          0          0      26993   stm32g4xx_hal_uart.o
+       766          0         16          0          0       8650   stm32g4xx_hal_uart_ex.o
+       124          0          0          0          0       1426   stm32g4xx_it.o
+       134          0          0          0         48       4496   sys_dwt.o
+        18          0         24          4          0       2668   system_stm32g4xx.o
+       240          0          0          0          1       2530   task_ctrl.o
+      2974          0          5          0        300      23534   tasks.o
+       382          0          0          0        152       6247   tim.o
+       400          0          0          0        240       8760   usart.o
+       316          0          0          0          1       4229   util_fdcan.o
 
     ----------------------------------------------------------------------
-     57720        638       2088       1564      34732     477362   Object Totals
+     57720        638       2088       1564      34732     477644   Object Totals
          0          0         32          0          0          0   (incl. Generated)
        338         12          2          4         19          0   (incl. Padding)
 
@@ -8069,8 +8069,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     63252       1104       2120       1564      34828     478786   Grand Totals
-     63252       1104       2120       1288      34828     478786   ELF Image Totals (compressed)
+     63252       1104       2120       1564      34828     479068   Grand Totals
+     63252       1104       2120       1288      34828     479068   ELF Image Totals (compressed)
      63252       1104       2120       1288          0          0   ROM Totals
 
 ==============================================================================
