@@ -1,10 +1,7 @@
 infantry_oreo/callback_ctrl.o: ..\User\Infantry\callback_ctrl.c \
   ..\User\Infantry\callback_ctrl.h ..\User\Protocol\protocol_board.h \
-  ..\User\Application\app_gimbal.h ..\User\Infantry\config_ctrl.h \
-  ..\User\Infantry\test_ctrl.h ..\User\Application\app_shoot.h \
-  ..\User\Protocol\protocol_motor.h \
-  ..\User\Peripheral\periph_motor_can.h ..\User\Utility\util_fdcan.h \
-  ..\Core\Inc\fdcan.h ..\Core\Inc\main.h \
+  ..\User\Application\app_gimbal.h ..\User\Algorithm\alg_pid.h \
+  ..\User\Library\lib_math.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h \
   ..\Core\Inc\stm32g4xx_hal_conf.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h \
@@ -47,15 +44,18 @@ infantry_oreo/callback_ctrl.o: ..\User\Infantry\callback_ctrl.c \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_tim_ex.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_uart_ex.h \
-  ..\User\Peripheral\periph_motor_pwm.h ..\User\Utility\util_pwm.h \
-  ..\Core\Inc\tim.h ..\User\Algorithm\alg_pid.h \
-  ..\User\Library\lib_math.h ..\Drivers\CMSIS\DSP\Include\arm_math.h \
+  ..\Drivers\CMSIS\DSP\Include\arm_math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\float.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \
-  ..\User\Library\lib_filter.h ..\User\Utility\util_adc.h \
-  ..\Core\Inc\adc.h \
+  ..\User\Library\lib_filter.h ..\User\Application\app_ins.h \
+  ..\User\Infantry\config_ctrl.h ..\User\Infantry\test_ctrl.h \
+  ..\User\Application\app_shoot.h ..\User\Protocol\protocol_motor.h \
+  ..\User\Peripheral\periph_motor_can.h ..\User\Utility\util_fdcan.h \
+  ..\Core\Inc\fdcan.h ..\Core\Inc\main.h \
+  ..\User\Peripheral\periph_motor_pwm.h ..\User\Utility\util_pwm.h \
+  ..\Core\Inc\tim.h ..\User\Utility\util_adc.h ..\Core\Inc\adc.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
   ..\Core\Inc\FreeRTOSConfig.h \
@@ -81,10 +81,9 @@ infantry_oreo/callback_ctrl.o: ..\User\Infantry\callback_ctrl.c \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_ctlreq.h \
   ..\User\Application\app_remote.h ..\User\Peripheral\periph_servo.h \
   ..\User\Peripheral\periph_remote.h ..\User\Utility\util_uart.h \
-  ..\Core\Inc\usart.h ..\User\Application\app_ins.h \
-  ..\User\Algorithm\alg_qekf.h ..\User\Algorithm\alg_kf.h \
-  ..\User\Peripheral\periph_bmi088.h ..\User\Peripheral\BMI088reg.h \
-  ..\User\Utility\util_spi.h ..\Core\Inc\spi.h ..\Core\Inc\dma.h \
-  ..\User\Utility\util_gpio.h ..\Core\Inc\gpio.h \
-  ..\User\Library\lib_buff.h ..\User\System\sys_dwt.h \
-  ..\USB_Device\App\usb_device.h
+  ..\Core\Inc\usart.h ..\User\Peripheral\periph_bmi088.h \
+  ..\User\Peripheral\BMI088reg.h ..\User\Utility\util_spi.h \
+  ..\Core\Inc\spi.h ..\Core\Inc\dma.h ..\User\Utility\util_gpio.h \
+  ..\Core\Inc\gpio.h ..\User\Library\lib_buff.h ..\User\System\sys_dwt.h \
+  ..\USB_Device\App\usb_device.h ..\User\Algorithm\alg_qekf.h \
+  ..\User\Algorithm\alg_kf.h

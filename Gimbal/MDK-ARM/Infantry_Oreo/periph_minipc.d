@@ -2,8 +2,7 @@ infantry_oreo/periph_minipc.o: ..\User\Peripheral\periph_minipc.c \
   ..\User\Peripheral\periph_minipc.h ..\User\Application\app_shoot.h \
   ..\User\Protocol\protocol_motor.h ..\User\Infantry\config_ctrl.h \
   ..\User\Infantry\test_ctrl.h ..\User\Application\app_gimbal.h \
-  ..\User\Application\app_ins.h ..\User\Algorithm\alg_qekf.h \
-  ..\User\Algorithm\alg_kf.h ..\User\Library\lib_math.h \
+  ..\User\Algorithm\alg_pid.h ..\User\Library\lib_math.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal.h \
   ..\Core\Inc\stm32g4xx_hal_conf.h \
   ..\Drivers\STM32G4xx_HAL_Driver\Inc\stm32g4xx_hal_rcc.h \
@@ -51,11 +50,12 @@ infantry_oreo/periph_minipc.o: ..\User\Peripheral\periph_minipc.c \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\float.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \
+  ..\User\Library\lib_filter.h ..\User\Application\app_ins.h \
+  ..\User\Algorithm\alg_qekf.h ..\User\Algorithm\alg_kf.h \
   ..\User\Peripheral\periph_bmi088.h ..\User\Peripheral\BMI088reg.h \
   ..\Core\Inc\main.h ..\User\Utility\util_spi.h ..\Core\Inc\spi.h \
   ..\Core\Inc\dma.h ..\User\Utility\util_gpio.h ..\Core\Inc\gpio.h \
   ..\User\Library\lib_buff.h ..\User\System\sys_dwt.h \
-  ..\User\Algorithm\alg_pid.h ..\User\Library\lib_filter.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h \
   ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h \
   ..\Core\Inc\FreeRTOSConfig.h \

@@ -8,4 +8,4 @@
 
 #define YAW_REMOTE 1
 #define YAW_STEP 0
-#define YAW_MOVE YAW_STEP
+#define YAW_MOVE YAW_REMOTE

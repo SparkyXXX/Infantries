@@ -6,7 +6,7 @@
  * @LastEditors: Hatrix
  * @LastEditTime: 2024-07-16 16:30:28
  */
-
+// STAR DUST
 #include "config_ctrl.h"
 #include "lib_timer_tim1.h"
 
@@ -82,7 +82,7 @@ Servo_DataTypeDef Servo_MagServo;
 
 BMI088_DataTypeDef BMI088_Data;
 SPI_HandleTypeDef *BMI088_SPI_HANDLER = &hspi1;
-GPIO_HandleTypeDef CS_ACCEL = {GPIO_PIN_RESET, GPI OC, GPIO_PIN_15};
+GPIO_HandleTypeDef CS_ACCEL = {GPIO_PIN_RESET, GPIOC, GPIO_PIN_15};
 GPIO_HandleTypeDef CS_GYRO = {GPIO_PIN_RESET, GPIOC, GPIO_PIN_14};
 
 Motor_GroupDataTypeDef *Motor_groupHandle[3];

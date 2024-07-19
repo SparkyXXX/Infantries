@@ -116,38 +116,22 @@ void Motor_PWM_SendOutput(MotorPWM_DataTypeDef* pmotor)
  * @param      pmotor: The pointer points to the motor group to be sent
  * @retval     NULL
  **/
+void Motor_PWM_ReadEncoder(MotorPWM_DataTypeDef *pmotor)
 {
-    uint16_t fdb = 0;
+    uint32_t temp = 0;
     if (pmotor == NULL)
     {
         return;
     }
     pmotor->encoder.counter = __HAL_TIM_GET_COUNTER(pmotor->encoder.htim);
-//    pmotor->encoder.diff_tick = HAL_GetTick() - pmotor->encoder.last_update_time;
-//	if (pmotor->encoder.counter > pmotor->encoder.last_counter)
-//	{
-//		fdb = pmotor->encoder.counter - pmotor->encoder.last_counter;
-//	}
-//	else
-//	{
-//		fdb = 65535 - pmotor->encoder.last_counter + pmotor->encoder.counter;
-//	}
-    if (pmotor->encoder.counter > pmotor->encoder.htim->Init.Period / 2)
-    {
-        pmotor->encoder.direction = 1;
-        fdb = pmotor->encoder.htim->Init.Period + 1 - pmotor->encoder.counter;
-    }
-    else if ((pmotor->encoder.counter < pmotor->encoder.htim->Init.Period / 2))
-    {
-        pmotor->encoder.direction = 0;  
-        fdb = pmotor->encoder.counter;
-    }
+    temp = pmotor->encoder.counter;
     __HAL_TIM_SET_COUNTER(pmotor->encoder.htim, 0);
-	pmotor->encoder.speed = (float)fdb * 2 * 3.1415926f * 1000 * 0.0235 / 4096;
-//  pmotor->encoder.speed = (float)fdb * 2 * 3.1415926f * 1000 * pmotor->encoder.diff_tick * 0.0235 / 4096;
-//	pmotor->encoder.last_counter = __HAL_TIM_GET_COUNTER(pmotor->encoder.htim);
-//	pmotor->encoder.last_counter = HAL_GetTick();
-    // register_counter * (numbers of turns to rads:2 * PI) * (ms_to_s:1000) * (radius:0.0235m) / (4 * 1024 lines)
+    if (temp > 32768)
+    {
+        temp = 65535 - temp;
+    }
+    pmotor->encoder.speed = (float)temp * 2 * 3.1415926f * 1000 * 0.0235 / 16384;
+    // register_counter * (numbers of turns to rads:2 * PI) * (ms_to_s:1000) * (radius:0.0235m) / (4 * 4096 lines)
 }
 
 void Motor_CAN_SendGroupOutput(Motor_GroupDataTypeDef* pgroup)

@@ -64,15 +64,15 @@ infantry_oreo/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\stdlib.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\string.h ..\Core\Inc\gpio.h \
   ..\User\Infantry\config_ctrl.h ..\User\Infantry\test_ctrl.h \
-  ..\User\Application\app_gimbal.h ..\User\Application\app_ins.h \
-  ..\User\Algorithm\alg_qekf.h ..\User\Algorithm\alg_kf.h \
+  ..\User\Application\app_gimbal.h ..\User\Algorithm\alg_pid.h \
   ..\User\Library\lib_math.h ..\Drivers\CMSIS\DSP\Include\arm_math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\math.h \
   D:\Keil\ARM\ARMCLANG\Bin\..\include\float.h \
+  ..\User\Library\lib_filter.h ..\User\Application\app_ins.h \
+  ..\User\Algorithm\alg_qekf.h ..\User\Algorithm\alg_kf.h \
   ..\User\Peripheral\periph_bmi088.h ..\User\Peripheral\BMI088reg.h \
   ..\User\Utility\util_spi.h ..\User\Utility\util_gpio.h \
   ..\User\Library\lib_buff.h ..\User\System\sys_dwt.h \
-  ..\User\Algorithm\alg_pid.h ..\User\Library\lib_filter.h \
   ..\User\Application\app_shoot.h ..\User\Protocol\protocol_motor.h \
   ..\User\Infantry\callback_ctrl.h ..\User\Protocol\protocol_board.h \
   ..\User\Application\app_remote.h ..\User\Peripheral\periph_servo.h \
