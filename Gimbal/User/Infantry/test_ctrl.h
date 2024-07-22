@@ -1,0 +1,19 @@
+#define OLD_WHEAT 1
+#define SWING_DANCE 2
+#define BIG_TITAN 3
+#define STAR_DUST 4
+#define HUGE_TITAN 5
+#define WHITE_MISTRESS 6
+#define ROBOT_ID STAR_DUST
+
+#define DEBUG 1
+#define TRAIN 2
+#define REMOTE_MODE TRAIN
+
+#define PITCH_REMOTE 1
+#define PITCH_STEP 0
+#define PITCH_MODE PITCH_REMOTE
+
+#define NO_BULLET_SPD_TEST 1
+#define BULLET_SPD_TEST 0
+#define IF_BULLET_SPD_TEST NO_BULLET_SPD_TEST

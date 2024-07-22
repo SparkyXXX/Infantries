@@ -1,0 +1,1 @@
+copy /Y patch\* Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F\
