@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Infantry_Oreo\Infantry_Oreo.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Infantry_Oreo\Infantry_Oreo.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Mon Jul 22 21:48:35 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6190004: Last Updated: Wed Jul 24 14:42:09 2024
 <BR><P>
 <H3>Maximum Stack Usage =        680 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1164,7 +1164,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[f1]"></a>GimbalYaw_Init</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, app_gimbal.o(.text.GimbalYaw_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = GimbalYaw_Init &rArr; GimbalYaw_ParamInit &rArr; PID_Init &rArr; Filter_Lowpass_Init &rArr; __aeabi_dmul
+<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = GimbalYaw_Init &rArr; GimbalYaw_ParamInit &rArr; PID_Init &rArr; Filter_Lowpass_Init &rArr; __aeabi_dmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GimbalYaw_GetControlPtr
 <LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GimbalYaw_ParamInit
@@ -1208,8 +1208,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Gimbal_Task
 </UL>
 
-<P><STRONG><a name="[f2]"></a>GimbalYaw_ParamInit</STRONG> (Thumb, 552 bytes, Stack size 120 bytes, config_ctrl.o(.text.GimbalYaw_ParamInit))
-<BR><BR>[Stack]<UL><LI>Max Depth = 232<LI>Call Chain = GimbalYaw_ParamInit &rArr; PID_Init &rArr; Filter_Lowpass_Init &rArr; __aeabi_dmul
+<P><STRONG><a name="[f2]"></a>GimbalYaw_ParamInit</STRONG> (Thumb, 548 bytes, Stack size 112 bytes, config_ctrl.o(.text.GimbalYaw_ParamInit))
+<BR><BR>[Stack]<UL><LI>Max Depth = 224<LI>Call Chain = GimbalYaw_ParamInit &rArr; PID_Init &rArr; Filter_Lowpass_Init &rArr; __aeabi_dmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GimbalYaw_GetControlPtr
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Filter_Lowpass_Init
@@ -1988,7 +1988,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[165]"></a>Init_All</STRONG> (Thumb, 90 bytes, Stack size 8 bytes, config_ctrl.o(.text.Init_All))
-<BR><BR>[Stack]<UL><LI>Max Depth = 256 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 248 + Unknown Stack Size
 <LI>Call Chain = Init_All &rArr; GimbalYaw_Init &rArr; GimbalYaw_ParamInit &rArr; PID_Init &rArr; Filter_Lowpass_Init &rArr; __aeabi_dmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[167]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UI_Init

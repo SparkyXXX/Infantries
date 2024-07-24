@@ -58,8 +58,8 @@ void Chassis_ParamInit(void)
     }
 	Filter_Lowpass_Init(100.0f, &(chassis->Spd_Follow_Fdb_lpf));
 #if IF_FOLLOW == FOLLOW
-    PID_Init(&(chassis->Chassis_SpdfollowPID), 7.0f, 0.0f, 0.0f, 0.0f, 0.0f, 150.0f, 159.154922f, 159.154922f);
-    PID_Init(&(chassis->Chassis_AngfollowPID), 65.0f, 0.0f, 0.0f, 0.0f, 0.0f, 18.0f, 159.154922f, 159.154922f);
+    PID_Init(&(chassis->Chassis_SpdfollowPID), 6.5f, 0.0f, 0.0f, 0.0f, 0.0f, 200.0f, 159.154922f, 159.154922f);
+    PID_Init(&(chassis->Chassis_AngfollowPID), 100.0f, 0.0f, 0.0f, 0.0f, 0.0f, 30.0f, 159.154922f, 159.154922f);
 #endif
 #if IF_FOLLOW == NO_FOLLOW
     PID_Init(&(chassis->Chassis_SpdfollowPID), 0.0f, 0.0f, 0.0f, 0.0f, 1000.0f, 1000.0f, 159.154922f, 159.154922f);
@@ -74,7 +74,7 @@ void GimbalYaw_ParamInit(void)
     Filter_Lowpass_Init(200.0f, &(gimbalyaw->spd_ref_filter));
     Filter_Lowpass_Init(500.0f, &(gimbalyaw->autoaim_yaw_filter));
     PID_Init(&(gimbalyaw->spd_no_auto), 30000.0f, 2000.0f, 0.0f, 500000.0f, 5000.0f, 30000.0f, 100000.0f, 100.0f);
-    PID_Init(&(gimbalyaw->pos_no_auto), 14.0f, 50.0f, 0.0f, 0.0f, 0.1f, 10.0f, 500.0f, 159.154922f);
+    PID_Init(&(gimbalyaw->pos_no_auto), 10.5f, 50.0f, 0.0f, 0.0f, 0.1f, 10.0f, 500.0f, 159.154922f);
     //                                   kp        ki        kd      kf       sum_max  output_max   d_frq     kf_frq
     PID_Init(&(gimbalyaw->spd_armor), 30000.0f, 2000.0f, 0.0f, 500000.0f, 5000.0f, 30000.0f, 100000.0f, 100.0f);
     PID_Init(&(gimbalyaw->pos_armor), 14.0f, 50.0f, 0.0f, 0.0f, 0.1f, 10.0f, 500.0f, 159.154922f);
@@ -191,7 +191,7 @@ void GimbalYaw_ParamInit(void)
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
 	Filter_Lowpass_Init(200.0f, &(gimbalyaw->spd_ref_filter));
     PID_Init(&(gimbalyaw->spd_no_auto), 12000.0f, 8000.0f, 30.0f, 100000.0f, 5000.0f, 25000.0f, 100000.0f, 159.154922f);
-    PID_Init(&(gimbalyaw->pos_no_auto), 18.5f, 20.0f, 0.15f, 0.0f, 0.1f, 9.0f, 500.0f, 159.154922f);
+    PID_Init(&(gimbalyaw->pos_no_auto), 14.0f, 20.0f, 0.15f, 0.0f, 0.1f, 9.0f, 500.0f, 159.154922f);
     //                                   kp        ki        kd      kf       sum_max  output_max   d_frq     kf_frq
     PID_Init(&(gimbalyaw->spd_armor), 12000.0f, 8000.0f, 30.0f, 100000.0f, 5000.0f, 25000.0f, 100000.0f, 159.154922f);
     PID_Init(&(gimbalyaw->pos_armor), 18.5f, 20.0f, 0.15f, 0.0f, 0.1f, 9.0f, 500.0f, 159.154922f);
