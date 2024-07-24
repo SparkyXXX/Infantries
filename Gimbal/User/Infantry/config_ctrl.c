@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-18 02:45:39
+ * @LastEditTime: 2024-07-24 18:10:30
  */
 
 #include "config_ctrl.h"
@@ -49,7 +49,7 @@ float Pitch_Pos_KpSet[7] = {80.0f, 60.0f, 40.0f, 30.0f, 40.0f, 60.0f, 80.0f};
 float Pitch_Pos_KiSet[7] = {20.0f, 20.0f, 20.0f, 15.0f, 10.0f, 10.0f, 10.0f};
 float Pitch_Pos_KdSet[7] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 Interval Pitch_Pos_Error_Range = {-0.54f, 0.48f};
-Interval Pitch_Pos_ErrorChange_Range = {-0.54f, 	0.48f};
+Interval Pitch_Pos_ErrorChange_Range = {-0.54f, 0.48f};
 
 void Gimbal_ParamInit(void)
 {
@@ -157,7 +157,6 @@ void Init_All(void)
     {
         ;
     }
-    MiniPC_Init();
     Init_All_Motors();
     BoardCom_Init();
     FDCAN_IntFilterAndStart(&hfdcan1);
@@ -169,6 +168,7 @@ void Init_All(void)
     RemoteControl_Init();
     AutoAim_Init();
     Remote_Init(&huart3);
+    MiniPC_Init();
 }
 #endif
 
@@ -185,7 +185,7 @@ float Servo_Close = 170.0f;
 const float Correction_Matrix[9] = {0, -1, 0,
                                     1, 0, 0,
                                     0, 0, 1};
-									
+
 float Armor_Feeder_Fast_Freq = 150.0f;
 float Armor_Feeder_Slow_Freq = 60.0f;
 float Buff_Feeder_Freq = 6.5f;
@@ -212,7 +212,7 @@ float Pitch_Pos_KpSet[7] = {80.0f, 60.0f, 40.0f, 30.0f, 40.0f, 60.0f, 80.0f};
 float Pitch_Pos_KiSet[7] = {20.0f, 20.0f, 20.0f, 15.0f, 10.0f, 10.0f, 10.0f};
 float Pitch_Pos_KdSet[7] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 Interval Pitch_Pos_Error_Range = {-0.54f, 0.48f};
-Interval Pitch_Pos_ErrorChange_Range = {-0.54f, 	0.48f};
+Interval Pitch_Pos_ErrorChange_Range = {-0.54f, 0.48f};
 
 void Gimbal_ParamInit(void)
 {

@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-18 02:26:46
+ * @LastEditTime: 2024-07-24 18:13:32
  */
 
 #include "protocol_minipc.h"
@@ -26,8 +26,6 @@ MiniPC_DataTypeDef *MiniPC_GetDataPtr()
 void MiniPC_Init()
 {
     MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
-    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-
     minipc->is_get_target = 0;
     minipc->is_shoot = 0;
     minipc->buff_yaw_ref = 0;
@@ -39,6 +37,14 @@ void MiniPC_Init()
     minipc->recieve_packet_type = 0;
     minipc->armor_trigger_ms = 1000 / ARMOR_CAMERA_FPS - ARMOR_SEND_DELAY - MINIPC_TASK_DELAY;
     minipc->buff_trigger_ms = 1000 / BUFF_CAMERA_FPS - BUFF_SEND_DELAY - MINIPC_TASK_DELAY;
+    MiniPC_CheckID();
+    minipc->last_update_time = HAL_GetTick();
+}
+
+void MiniPC_CheckID()
+{
+    MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     switch (boardcom->robot_id)
     {
     case 3:
@@ -64,7 +70,6 @@ void MiniPC_Init()
     default:
         break;
     }
-    minipc->last_update_time = HAL_GetTick();
 }
 
 void MiniPC_Send()
@@ -74,7 +79,7 @@ void MiniPC_Send()
     BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     INS_DataTypeDef *ins = INS_GetControlPtr();
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
-
+    MiniPC_CheckID();
     GPIO_Set(&TRIGGER);
     if (autoaim->hit_mode == AUTOAIM_HIT_ARMOR)
     {

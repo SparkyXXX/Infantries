@@ -31,8 +31,7 @@ extern "C"
         CHASSIS_STOP = 0u,
         CHASSIS_NORMAL,
         CHASSIS_GYRO
-    }
-    Chassis_ModeEnum;
+    } Chassis_ModeEnum;
 
     typedef struct
     {
@@ -52,12 +51,12 @@ extern "C"
         float wheel_ref[4];                            // calc from chassis_coordinate_ref
         float wheel_fdb[4];                            // read from encoder
         float separate_rad;                            // gimbal chassis intersection angle
-        int gyro_dir;                              // gyro direction, clockwise(CW) is 1, counterclockwise(CCW) is -1
+        int gyro_dir;                                  // gyro direction, clockwise(CW) is 1, counterclockwise(CCW) is -1
         PID_TypeDef Chassis_MotorSpdPID[4];
         PID_TypeDef Chassis_SpdfollowPID, Chassis_AngfollowPID;
         Filter_Lowpass_TypeDef Spd_Follow_Fdb_lpf;
 
-        PCArgsType Power_Control_Args;
+        PCArgsType power_control_args;
         float chassis_I[4];
         float chassis_W[4];
         float powercontrol_limit_k;
@@ -71,7 +70,7 @@ extern "C"
         float fly_angle;
     } Chassis_ControlTypeDef;
 
-    Chassis_ControlTypeDef* Chassis_GetControlPtr(void);
+    Chassis_ControlTypeDef *Chassis_GetControlPtr(void);
     void Chassis_Init(void);
     void Chassis_ModeSet(Chassis_ModeEnum mode);
     void Chassis_SetMoveRef(float forward_back_ref, float left_right_ref);

@@ -97,6 +97,7 @@ extern "C"
 
     MiniPC_DataTypeDef *MiniPC_GetDataPtr(void);
     void MiniPC_Init(void);
+    void MiniPC_CheckID(void);
     void MiniPC_Send(void);
     void MiniPC_Decode(uint8_t *buff, uint16_t rxdatalen);
     static void MiniPC_ArmorPacketDecode(void *buff, uint16_t rxdatalen);

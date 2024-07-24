@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-18 01:50:44
+ * @LastEditTime: 2024-07-25 00:04:21
  */
 
 #include "app_chassis.h"
@@ -166,15 +166,15 @@ void OmniChassis_PowerControl()
 
 	if (boardcom->power_limit_mode == POWER_LIMIT && boardcom->cap_speedup_flag == CAP_NORMAL)
 	{
-		PowerControl(chassis->Power_Control_Args, chassis->power_limit, chassis->chassis_I, chassis->chassis_W);
+		PowerControl(chassis->power_control_args, chassis->power_limit, chassis->chassis_I, chassis->chassis_W);
 	}
 	else if (boardcom->power_limit_mode == POWER_LIMIT && boardcom->cap_speedup_flag == CAP_SPEEDUP)
 	{
-		PowerControl(chassis->Power_Control_Args, chassis->power_limit * chassis->powerup_coef, chassis->chassis_I, chassis->chassis_W);
+		PowerControl(chassis->power_control_args, chassis->power_limit * chassis->powerup_coef, chassis->chassis_I, chassis->chassis_W);
 	}
 	else if (boardcom->power_limit_mode == POWER_UNLIMIT && boardcom->cap_speedup_flag == CAP_SPEEDUP && chassis->present_mode == CHASSIS_GYRO)
 	{
-		PowerControl(chassis->Power_Control_Args, chassis->power_limit * chassis->powerup_coef, chassis->chassis_I, chassis->chassis_W);
+		PowerControl(chassis->power_control_args, chassis->power_limit * chassis->powerup_coef, chassis->chassis_I, chassis->chassis_W);
 	}
 	for (int i = 0; i < 4; i++)
 	{
@@ -203,8 +203,8 @@ void OmniChassis_EstimateSpeed()
 	{
 		chassis->wheel_fdb[i] = chassis->Chassis_MotorSpdPID[i].fdb;
 	}
-	temp_vz = 0.25 * 1.414f * chassis->wheel_radius * (+chassis->wheel_fdb[0] - chassis->wheel_fdb[1] - chassis->wheel_fdb[2] + chassis->wheel_fdb[3]) * 0.10472f;					// m/s
-	temp_vx = 0.25 * 1.414f * chassis->wheel_radius * (+chassis->wheel_fdb[0] + chassis->wheel_fdb[1] - chassis->wheel_fdb[2] - chassis->wheel_fdb[3]) * 0.10472f;					// m/s
+	temp_vz = 0.25 * 1.414f * chassis->wheel_radius * (+chassis->wheel_fdb[0] - chassis->wheel_fdb[1] - chassis->wheel_fdb[2] + chassis->wheel_fdb[3]) * 0.10472f;								// m/s
+	temp_vx = 0.25 * 1.414f * chassis->wheel_radius * (+chassis->wheel_fdb[0] + chassis->wheel_fdb[1] - chassis->wheel_fdb[2] - chassis->wheel_fdb[3]) * 0.10472f;								// m/s
 	chassis->real_spd.w = 0.25 * chassis->wheel_radius / chassis->center_distance * (chassis->wheel_fdb[0] + chassis->wheel_fdb[1] + chassis->wheel_fdb[2] + chassis->wheel_fdb[3]) * 0.10472f; // rad/s (1 rpm = 0.10472 rad/s)
 	chassis->real_spd.vz = +cos(chassis->separate_rad) * temp_vz - sin(chassis->separate_rad) * temp_vx;
 	chassis->real_spd.vx = +sin(chassis->separate_rad) * temp_vz + cos(chassis->separate_rad) * temp_vx;
@@ -213,8 +213,8 @@ void OmniChassis_EstimateSpeed()
 static void Chassis_CalcMoveRef()
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	chassis->separate_rad = Math_Consequent_To_Limited(0.0f, 
-							Math_AngleToRad(Motor_GimbalYaw.encoder.limited_angle - chassis->install_angle));
+	chassis->separate_rad = Math_Consequent_To_Limited(0.0f,
+													   Math_AngleToRad(Motor_GimbalYaw.encoder.limited_angle - chassis->install_angle));
 	float sin_tl = (float)sin(chassis->separate_rad);
 	float cos_tl = (float)cos(chassis->separate_rad);
 	chassis->chassis_coordinate_ref.vz = +cos_tl * chassis->gimbal_coordinate_ref.vz + sin_tl * chassis->gimbal_coordinate_ref.vx;
@@ -329,30 +329,30 @@ static void Chassis_MultiHeadSetPosRef(float fdb)
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
 	if (chassis->present_mode == CHASSIS_NORMAL)
 	{
-		if (fdb < 0.25*PI && fdb >= -0.25*PI)
+		if (fdb < 0.25 * PI && fdb >= -0.25 * PI)
 		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, 0*PI);
+			PID_SetRef(&chassis->Chassis_AngfollowPID, 0 * PI);
 		}
-		else if (fdb < 0.75*PI && fdb >= 0.25*PI)
+		else if (fdb < 0.75 * PI && fdb >= 0.25 * PI)
 		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, 0.5*PI);
+			PID_SetRef(&chassis->Chassis_AngfollowPID, 0.5 * PI);
 		}
-		else if (fdb < -0.25*PI && fdb >= -0.75*PI)
+		else if (fdb < -0.25 * PI && fdb >= -0.75 * PI)
 		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, -0.5*PI);
+			PID_SetRef(&chassis->Chassis_AngfollowPID, -0.5 * PI);
 		}
-		else if (fdb >= 0.75*PI)
+		else if (fdb >= 0.75 * PI)
 		{
 			PID_SetRef(&chassis->Chassis_AngfollowPID, PI);
 		}
-		else if (fdb < -0.75*PI)
+		else if (fdb < -0.75 * PI)
 		{
 			PID_SetRef(&chassis->Chassis_AngfollowPID, -PI);
 		}
 	}
 	else if (chassis->present_mode == CHASSIS_GYRO)
 	{
-		PID_SetRef(&(chassis->Chassis_AngfollowPID), 0*PI);
+		PID_SetRef(&(chassis->Chassis_AngfollowPID), 0 * PI);
 	}
 }
 #endif
@@ -364,16 +364,16 @@ static void Chassis_MultiHeadSetPosRef(float fdb)
 	{
 		if (fdb <= PI && fdb >= 0)
 		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, 0.5*PI);
+			PID_SetRef(&chassis->Chassis_AngfollowPID, 0.5 * PI);
 		}
 		else if (fdb < 0 && fdb >= -PI)
 		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, -0.5*PI);
+			PID_SetRef(&chassis->Chassis_AngfollowPID, -0.5 * PI);
 		}
 	}
 	else if (chassis->present_mode == CHASSIS_GYRO)
 	{
-		PID_SetRef(&(chassis->Chassis_AngfollowPID), 0.5*PI);
+		PID_SetRef(&(chassis->Chassis_AngfollowPID), 0.5 * PI);
 	}
 }
 #endif
