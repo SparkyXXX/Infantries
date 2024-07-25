@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-25 22:05:39
+ * @LastEditTime: 2024-07-25 22:51:06
  */
 
 #include "app_chassis.h"
@@ -147,11 +147,11 @@ void OmniChassis_CalcOutput()
 	default:
 		break;
 	}
-	// Chassis_LowRestEnergyProtect();
 	for (int i = 0; i < 4; i++)
 	{
 		PID_SetRef(&(chassis->Chassis_MotorSpdPID[i]), chassis->wheel_ref[i]);
 	}
+	// Chassis_LowRestEnergyProtect();
 }
 
 void OmniChassis_PowerControl()
@@ -395,13 +395,6 @@ static void Chassis_LowRestEnergyProtect()
 		for (int i = 0; i < 4; i++)
 		{
 			PID_SetRef(&(chassis->Chassis_MotorSpdPID[i]), 0.0);
-		}
-	}
-	else
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			PID_SetRef(&(chassis->Chassis_MotorSpdPID[i]), chassis->wheel_ref[i]);
 		}
 	}
 }
