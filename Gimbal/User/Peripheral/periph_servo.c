@@ -4,25 +4,10 @@
  * @Author: Hatrix
  * @Date: 2023-11-07 14:28:30
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-01-10 16:31:28
+ * @LastEditTime: 2024-07-25 10:25:42
  */
 
 #include "periph_servo.h"
-
-/**
- * @brief      Set steering angle
- * @param      servo: The pointer points to the actuator object
- * @param      angle: Steering gear angle
- * @retval     NULL
- */
-void Servo_SetAngle(Servo_DataTypeDef *servo, float angle)
-{
-    if(servo->angle != angle)
-	{
-		servo->angle = angle;
-		PWM_SetDuty(&(servo->pwm), (angle / 1800 + 0.025f)); 
-	}
-}
 
 /**
  * @brief      Initialize the steering gear
@@ -35,7 +20,7 @@ void Servo_Init(Servo_DataTypeDef *servo, TIM_HandleTypeDef *htim, uint32_t ch, 
 {
     servo->state = SERVO_OFF;
     PWM_Init(&(servo->pwm), htim, ch, clk);
-	PWM_SetFreq(&(servo->pwm), 50);
+    PWM_SetFreq(&(servo->pwm), 50);
     PWM_Start(&(servo->pwm));
     servo->state = SERVO_ON;
     Servo_SetAngle(servo, angle);
@@ -73,3 +58,17 @@ float Servo_GetAngle(Servo_DataTypeDef *servo)
     return servo->angle;
 }
 
+/**
+ * @brief      Set steering angle
+ * @param      servo: The pointer points to the actuator object
+ * @param      angle: Steering gear angle
+ * @retval     NULL
+ */
+void Servo_SetAngle(Servo_DataTypeDef *servo, float angle)
+{
+    if (servo->angle != angle)
+    {
+        servo->angle = angle;
+        PWM_SetDuty(&(servo->pwm), (angle / 1800 + 0.025f));
+    }
+}

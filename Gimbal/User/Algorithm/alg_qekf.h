@@ -3,12 +3,12 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Hatrix 3113624526@qq.com
- * @LastEditTime: 2024-02-12 15:44:40
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-25 10:57:48
  */
 
-#ifndef LIB_QUATERNION_H
-#define LIB_QUATERNION_H
+#ifndef ALG_QEKF_H
+#define ALG_QEKF_H
 
 #ifdef __cplusplus
 extern "C"

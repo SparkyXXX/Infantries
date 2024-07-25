@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-07-16 02:26:15
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-25 11:09:19
  */
 
 #ifndef PERIPH_REFEREE_H
@@ -16,9 +16,9 @@ extern "C"
 #endif
 
 #include "callback_ctrl.h"
-#include "util_uart.h"
 #include "stdint.h"
 #include "string.h"
+#include "util_uart.h"
 
 #define REFEREE_TX_BUFF_LEN 300
 #define REFEREE_RX_BUFF_LEN 500
@@ -228,27 +228,16 @@ extern "C"
         UART_HandleTypeDef *huart;
         Referee_RefereeStateEnum state; // 裁判系统当前状态
         uint32_t last_update_time;      // 裁判系统上次更新时间
-
-        uint16_t client_id;                    // 客户端ID
-                                               //  client_custom_data_t custom_data;           // （已废弃）客户端自定义数据
-                                               //  ext_client_graphic_draw_t graphic_draw;     // （已废弃）客户端自定义绘图
-        graphic_data_struct_t graphic_buf[30]; // 客户端自定义绘图缓冲区
-        uint8_t graphic_buf_len;               // 客户端自定义绘图缓冲区已占用长度
-                                               //  uint32_t graphic_current_id;                // 客户端自定义绘图当前序号
-
-        uint8_t game_type;          //  游戏类型,    1:RoboMaster 机甲大师赛；
-                                    //              2:RoboMaster 机甲大师单项赛；
-                                    //      	    3：ICRA RoboMaster 人工智能挑战赛
-                                    //              4：RoboMaster 联盟赛3V3
-                                    //              5：RoboMaster 联盟赛1V1
+        uint16_t client_id;             // 客户端ID
+		
         uint8_t game_progress;      //  当前比赛阶段,0：未开始比赛；
                                     //              1：准备阶段；
                                     //              2：自检阶段；
                                     //              3：5s倒计时；
                                     //              4：对战中；
                                     //              5：比赛结算中
+		
         uint16_t stage_remain_time; //  当前阶段剩余时间，单位s
-        uint32_t rfid_status;       //  RFID 状态
 
         uint16_t red_7_robot_HP;
         uint16_t red_outpost_HP;
@@ -256,8 +245,6 @@ extern "C"
         uint16_t blue_7_robot_HP;
         uint16_t blue_outpost_HP;
         uint16_t blue_base_HP;
-
-        uint32_t event_data;
 
         uint8_t robot_id;
         uint8_t robot_level;
@@ -283,7 +270,7 @@ extern "C"
         uint8_t shooter_number;
         uint8_t launching_frequency;
         float initial_speed;
-        
+
         uint8_t power_management_gimbal_output : 1;
         uint8_t power_management_chassis_output : 1;
         uint8_t power_management_shooter_output : 1;
@@ -304,98 +291,12 @@ extern "C"
         uint16_t client_id;
     } Referee_RobotAndClientIDTypeDef;
 
-    typedef union
-    {
-        struct
-        {
-            uint32_t radius : 10;
-            uint32_t end_x : 11;
-            uint32_t end_y : 11;
-        } graphic_data;
-        uint32_t ui32_data;
-        float float_data;
-        int32_t int_data;
-    } Referee_GraphicDataConverterUnion;
-
-    typedef enum
-    {
-        Draw_OPERATE_NULL = 0,   // �ղ���
-        Draw_OPERATE_ADD = 1,    // ����
-        Draw_OPERATE_MODIFY = 2, // �޸�
-        Draw_OPERATE_DELETE = 3  // ɾ��
-    } Draw_OperateType;          // 绘画类型
-
-    typedef enum
-    {
-        Draw_TYPE_LINE = 0,      // ֱ��
-        Draw_TYPE_RECTANGLE = 1, // ����
-        Draw_TYPE_CIRCLE = 2,    // ��Բ
-        Draw_TYPE_ELLIPSE = 3,   // ��Բ
-        Draw_TYPE_ARC = 4,       // Բ��
-                                 // 5和6反了？现在根据郭浩锐的改
-        Draw_TYPE_FLOAT = 6,     // ������
-        Draw_TYPE_INT = 5,       // ������
-        Draw_TYPE_STRING = 7     // �ַ�
-    } Draw_GraphicType;          // 图形种类
-
-    typedef enum
-    {
-        Draw_COLOR_RED_BLUE = 0, // ������ɫ
-        Draw_COLOR_YELLOW = 1,   // ��ɫ
-        Draw_COLOR_GREEN = 2,    // ��ɫ
-        Draw_COLOR_ORANGE = 3,   // ��ɫ
-        Draw_COLOR_VIOLET = 4,   // �Ϻ�ɫ
-        Draw_COLOR_PINK = 5,     // ��ɫ
-        Draw_COLOR_CYAN = 6,     // ��ɫ
-        Draw_COLOR_BLACK = 7,    // ��ɫ
-        Draw_COLOR_WHITE = 8     // ��ɫ
-    } Draw_Color;                // 图形颜色
-
     Referee_DataTypeDef *Referee_GetDataPtr(void);
     void Referee_Init(UART_HandleTypeDef *huart);
     void Referee_Reset(void);
     void Referee_Decode(uint8_t *buff, uint16_t rxdatalen);
     uint8_t Referee_IsLost(void);
-
     uint16_t Referee_GetClientIDByRobotID(uint8_t robot_id);
-    void Referee_SendInteractiveData(uint16_t data_cmd_id, uint16_t receiver_ID, const uint8_t *interactive_data, uint16_t interactive_data_length);
-    void Referee_SendRobotCustomData(uint16_t data_cmd_id, uint16_t receiver_ID, const uint8_t *data, uint16_t data_length);
-    void Referee_SendDrawingCmd(graphic_data_struct_t graph[], uint8_t mode);
-    void Referee_SendDrawingStringCmd(graphic_data_struct_t *pgraph, const uint8_t str[], uint8_t len);
-    uint8_t Referee_IsDrawingBufferEmpty(void);
-    void Referee_DrawingBufferFlush(void);
-    void Referee_DrawingBufferPushDummy(void);
-    void Referee_DrawingBufferPush(graphic_data_struct_t *pgraph);
-    void Referee_DrawingTimeBaseCallback(void);
-    uint32_t Referee_PackGraphicData(graphic_data_struct_t *pgraph, uint32_t graph_id, Draw_OperateType operate_type, Draw_GraphicType graphic_type, uint8_t layer, Draw_Color color, uint16_t start_angle, uint16_t end_angle, uint8_t width, uint16_t start_x, uint16_t start_y, uint16_t radius, uint16_t end_x, uint16_t end_y);
-    uint32_t Referee_PackFloatGraphicData(graphic_data_struct_t *pgraph, uint32_t graph_id, Draw_OperateType operate_type, uint8_t layer, Draw_Color color, uint16_t font_size, uint16_t decimal_digit, uint8_t width, uint16_t start_x, uint16_t start_y, float value);
-    uint32_t Referee_PackIntGraphicData(graphic_data_struct_t *pgraph, uint32_t graph_id, Draw_OperateType operate_type, uint8_t layer, Draw_Color color, uint16_t font_size, uint8_t width, uint16_t start_x, uint16_t start_y, int value);
-    uint32_t Referee_PackStringGraphicData(graphic_data_struct_t *pgraph, uint32_t graph_id, Draw_OperateType operate_type, uint8_t layer, Draw_Color color, uint16_t font_size, uint8_t length, uint8_t width, uint16_t start_x, uint16_t start_y);
-
-    void Draw_ClearLayer(uint8_t layer);
-    // 清除所有图层
-    void Draw_ClearAll(void);
-    void Draw_Delete(uint32_t graph_id);
-    // 添加图形和修改图形是两个概念
-    void Draw_AddLine(uint32_t graph_id, uint8_t layer, Draw_Color color, uint8_t width, uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t end_y);
-    void Draw_ModifyLine(uint32_t graph_id, uint8_t layer, Draw_Color color, uint8_t width, uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t end_y);
-    void Draw_AddRectangle(uint32_t graph_id, uint8_t layer, Draw_Color color, uint8_t width, uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t end_y);
-    void Draw_ModifyRectangle(uint32_t graph_id, uint8_t layer, Draw_Color color, uint8_t width, uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t end_y);
-    void Draw_AddCircle(uint32_t graph_id, uint8_t layer, Draw_Color color, uint8_t width, uint16_t center_x, uint16_t center_y, uint16_t radius);
-    void Draw_ModifyCircle(uint32_t graph_id, uint8_t layer, Draw_Color color, uint8_t width, uint16_t center_x, uint16_t center_y, uint16_t radius);
-    void Draw_AddEllipse(uint32_t graph_id, uint8_t layer, Draw_Color color, uint8_t width, uint16_t center_x, uint16_t center_y, uint16_t radius_x, uint16_t radius_y);
-    void Draw_ModifyEllipse(uint32_t graph_id, uint8_t layer, Draw_Color color, uint8_t width, uint16_t center_x, uint16_t center_y, uint16_t radius_x, uint16_t radius_y);
-    void Draw_AddArc(uint32_t graph_id, uint8_t layer, Draw_Color color, uint16_t start_angle, uint16_t end_angle, uint8_t width, uint16_t center_x, uint16_t center_y, uint16_t radius_x, uint16_t radius_y);
-    void Draw_ModifyArc(uint32_t graph_id, uint8_t layer, Draw_Color color, uint16_t start_angle, uint16_t end_angle, uint8_t width, uint16_t center_x, uint16_t center_y, uint16_t radius_x, uint16_t radius_y);
-    void Draw_AddFloat(uint32_t graph_id, uint8_t layer, Draw_Color color, uint16_t font_size, uint16_t decimal_digit, uint8_t width, uint16_t start_x, uint16_t start_y, float value);
-    void Draw_ModifyFloat(uint32_t graph_id, uint8_t layer, Draw_Color color, uint16_t font_size, uint16_t decimal_digit, uint8_t width, uint16_t start_x, uint16_t start_y, float value);
-    void Draw_AddInt(uint32_t graph_id, uint8_t layer, Draw_Color color, uint16_t font_size, uint8_t width, uint16_t start_x, uint16_t start_y, int value);
-    void Draw_ModifyInt(uint32_t graph_id, uint8_t layer, Draw_Color color, uint16_t font_size, uint8_t width, uint16_t start_x, uint16_t start_y, int value);
-    void Draw_AddString(uint32_t graph_id, uint8_t layer, Draw_Color color, uint16_t font_size, uint8_t width, uint16_t start_x, uint16_t start_y, const char str[]);
-    void Draw_ModifyString(uint32_t graph_id, uint8_t layer, Draw_Color color, uint16_t font_size, uint8_t width, uint16_t start_x, uint16_t start_y, const char str[]);
-
-    uint8_t Referee_CheckDataLengthByCmdID(uint16_t cmd_id, uint16_t data_length);
-    uint8_t Referee_ParseRobotCustomData(uint8_t *data, uint16_t data_length);
     uint8_t Referee_ParseRefereeCmd(uint16_t cmd_id, uint8_t *data, uint16_t data_length);
 
 #ifdef __cplusplus

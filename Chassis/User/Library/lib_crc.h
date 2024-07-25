@@ -32,8 +32,8 @@ extern "C"
     unsigned int CRC_VerifyCRC8CheckSum(unsigned char *pchMessage, unsigned int dwLength);
     void CRC_AppendCRC8CheckSum(unsigned char *pchMessage, unsigned int dwLength);
     uint16_t CRC_GetCRC16CheckSum(uint8_t *pchMessage, uint32_t dwLength, uint16_t wCRC);
-    unsigned int CRC_VerifyCRC16CheckSum(unsigned char *pchMessage, unsigned int dwLength);
-    void CRC_AppendCRC16CheckSum(unsigned char *pchMessage, unsigned int dwLength);
+    uint32_t CRC_VerifyCRC16CheckSum(uint8_t *pchMessage, uint32_t dwLength);
+    void CRC_AppendCRC16CheckSum(uint8_t *pchMessage, uint32_t dwLength);
 
 #ifdef __cplusplus
 }

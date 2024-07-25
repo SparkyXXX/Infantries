@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-17 19:42:44
+ * @LastEditTime: 2024-07-25 19:48:27
  */
 
 #include "protocol_board.h"
@@ -84,7 +84,7 @@ void BoardCom_Update()
     boardcom->heat_limit = referee->shooter_barrel_heat_limit;
     boardcom->power_limit = referee->chassis_power_limit;
     boardcom->power_level_limit = referee->chassis_power_level_limit;
-	boardcom->shooter_heat_referee = referee->shooter_17mm_1_barrel_heat;
+    boardcom->shooter_heat_referee = referee->shooter_17mm_1_barrel_heat;
     boardcom->power_buffer = referee->buffer_energy;
     boardcom->chassis_power = referee->chassis_power;
     boardcom->power_management_shooter_output = referee->power_management_shooter_output;
@@ -196,7 +196,7 @@ static void _send_referee_data2(uint8_t buff[])
 
     ui162buff(boardcom->stage_remain_time, buff);
     buff[2] = boardcom->game_progress;
-	ui162buff(boardcom->shooter_heat_referee, buff + 3);
+    ui162buff(boardcom->shooter_heat_referee, buff + 3);
     FDCAN_Send(BOARD_CAN_HANDLER, pheader, buff);
 }
 
@@ -284,5 +284,7 @@ static void _receive_cap_data(uint8_t buff[])
     BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     boardcom->cap_power = buff2float(buff);
     boardcom->cap_rest_energy = buff[4];
+    boardcom->buck_version = buff[5] & 0x0F;
+    boardcom->boost_version = (buff[5] & 0xF0) >> 4;
     boardcom->last_update_time[4] = HAL_GetTick();
 }

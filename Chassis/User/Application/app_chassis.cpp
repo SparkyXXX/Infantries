@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-25 00:04:21
+ * @LastEditTime: 2024-07-25 22:05:39
  */
 
 #include "app_chassis.h"
@@ -134,7 +134,7 @@ void OmniChassis_CalcOutput()
 			{
 				InverseKinematics_Rotation(chassis->wheel_ref,
 										   chassis->chassis_coordinate_ref.vx, chassis->chassis_coordinate_ref.vz,
-										   referee->chassis_power_limit * 1.7 + 110);
+										   (referee->chassis_power_limit * 1.7 + 110));
 			}
 			else if (boardcom->cap_speedup_flag == CAP_SPEEDUP)
 			{
@@ -147,7 +147,11 @@ void OmniChassis_CalcOutput()
 	default:
 		break;
 	}
-	Chassis_LowRestEnergyProtect();
+	// Chassis_LowRestEnergyProtect();
+	for (int i = 0; i < 4; i++)
+	{
+		PID_SetRef(&(chassis->Chassis_MotorSpdPID[i]), chassis->wheel_ref[i]);
+	}
 }
 
 void OmniChassis_PowerControl()
@@ -155,6 +159,8 @@ void OmniChassis_PowerControl()
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
 	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
 	Referee_DataTypeDef *referee = Referee_GetDataPtr();
+	Cap_DataTypeDef *cap = Cap_GetDataPtr();
+
 	for (int i = 0; i < 4; i++)
 	{
 		PID_SetFdb(&(chassis->Chassis_MotorSpdPID[i]), Motor_ChassisMotors.motor_handle[i]->encoder.speed);													// 速度环 pid
@@ -162,20 +168,22 @@ void OmniChassis_PowerControl()
 		chassis->chassis_W[i] = (Motor_ChassisMotors.motor_handle[i]->encoder.speed * Motor_ChassisMotors.motor_handle[i]->dec_ratio / 9.549296596425384f); // 读取转速（无减速比），单位 rad/s
 	}
 
-	chassis->power_limit = referee->chassis_power_limit * chassis->powercontrol_limit_k + chassis->powercontrol_limit_b;
-
 	if (boardcom->power_limit_mode == POWER_LIMIT && boardcom->cap_speedup_flag == CAP_NORMAL)
 	{
+		chassis->power_limit = MIN(referee->chassis_power_limit, Max_Power_Cal(cap->rest_energy)) * chassis->powercontrol_limit_k + chassis->powercontrol_limit_b;
 		PowerControl(chassis->power_control_args, chassis->power_limit, chassis->chassis_I, chassis->chassis_W);
 	}
 	else if (boardcom->power_limit_mode == POWER_LIMIT && boardcom->cap_speedup_flag == CAP_SPEEDUP)
 	{
+		chassis->power_limit = MIN(referee->chassis_power_limit * chassis->powerup_coef, Max_Power_Cal(cap->rest_energy)) * chassis->powercontrol_limit_k + chassis->powercontrol_limit_b;
 		PowerControl(chassis->power_control_args, chassis->power_limit * chassis->powerup_coef, chassis->chassis_I, chassis->chassis_W);
 	}
 	else if (boardcom->power_limit_mode == POWER_UNLIMIT && boardcom->cap_speedup_flag == CAP_SPEEDUP && chassis->present_mode == CHASSIS_GYRO)
 	{
+		chassis->power_limit = MIN(300.0f, Max_Power_Cal(cap->rest_energy)) * chassis->powercontrol_limit_k + chassis->powercontrol_limit_b;
 		PowerControl(chassis->power_control_args, chassis->power_limit * chassis->powerup_coef, chassis->chassis_I, chassis->chassis_W);
 	}
+
 	for (int i = 0; i < 4; i++)
 	{
 		Motor_SetOutput(Motor_ChassisMotors.motor_handle[i], chassis->chassis_I[i] / 20.0f * 16384.0f); // 设置输出，注意单�?
@@ -395,5 +403,25 @@ static void Chassis_LowRestEnergyProtect()
 		{
 			PID_SetRef(&(chassis->Chassis_MotorSpdPID[i]), chassis->wheel_ref[i]);
 		}
+	}
+}
+
+static float Max_Power_Cal(uint8_t remain_energy)
+{
+	Referee_DataTypeDef *referee = Referee_GetDataPtr();
+	Cap_DataTypeDef *cap = Cap_GetDataPtr();
+	float VCC_Cap = sqrt((double)((remain_energy / 100.0f) * 27.0f * 27.0f));
+	float Power_Input_Max = cap->boost_input_current_max * VCC_Cap;
+	float VCC_Motor = MIN(24.0f, (Power_Input_Max / cap->boost_output_current_max));
+	float Power_Output_Max = cap->boost_output_current_max * VCC_Motor;
+	float Cap_Charging_Power_Max = MIN(VCC_Cap * cap->buck_output_current_max, referee->chassis_power_limit) * 0.75f;
+	if (remain_energy >= 15)
+	{
+		return Power_Output_Max;
+	}
+	else
+	{
+		float Low_Power_Output_Max = Power_Output_Max * (remain_energy * remain_energy) / 255.0f;
+		return MAX(Low_Power_Output_Max, Cap_Charging_Power_Max);
 	}
 }

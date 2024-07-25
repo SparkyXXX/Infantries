@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-17 19:21:01
+ * @LastEditTime: 2024-07-25 10:53:54
  */
 #pragma once
 
@@ -536,7 +536,7 @@ namespace UI
 
     public:
         String(const char *name, uint8_t layer, Color color, uint16_t font_size, uint8_t width, XY first_point)
-            : _name{name[0], name[1], name[2]}, _layer{layer}, _font_size{font_size}, Shape(color, width, first_point){};
+            : _name{name[0], name[1], name[2]}, _layer{layer}, _font_size{font_size}, Shape(color, width, first_point) {};
 
         void getInitBuffer(uint8_t *buffer, uint16_t id, uint16_t client_id, const char *str, uint16_t len)
         {

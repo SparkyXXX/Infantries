@@ -27,6 +27,7 @@
     "app_gimbal.h": "c",
     "protocol_board.h": "c",
     "periph_motor_can.h": "c",
-    "cmath": "cpp"
+    "cmath": "cpp",
+    "initializer_list": "cpp"
   }
 }

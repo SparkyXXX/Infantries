@@ -54,7 +54,7 @@ extern "C"
         uint16_t heat_limit;
         float shoot_spd_referee;
         uint16_t cooling_per_second;
-		uint16_t shooter_heat_referee;
+        uint16_t shooter_heat_referee;
 
         // Chassis Send to Cap
         uint8_t cap_mode_flag;
@@ -90,6 +90,8 @@ extern "C"
         // Chassis Receive from Cap
         float cap_power;
         uint8_t cap_rest_energy;
+        uint8_t buck_version;
+        uint8_t boost_version;
         uint8_t power_management_shooter_output : 1;
     } BoardCom_DataTypeDef;
 

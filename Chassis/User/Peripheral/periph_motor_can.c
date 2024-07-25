@@ -3,7 +3,7 @@
  * @Author: GDDG08
  * @Date: 2024-07-17 17:42:09
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-17 20:01:06
+ * @LastEditTime: 2024-07-25 11:34:27
  */
 /*
  * @Project: Infantry Code
@@ -16,8 +16,6 @@
 
 #include "periph_motor_can.h"
 #include "config_ctrl.h"
-
-FDCAN_HandleTypeDef *MOTOR_CAN_HANDLER = &hfdcan1;
 
 /**
  * @brief      Chassis motor encoder callback

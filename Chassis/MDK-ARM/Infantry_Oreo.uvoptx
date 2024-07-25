@@ -163,7 +163,7 @@
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>\\Infantry_Oreo\../User/Protocol/protocol_board.c\BoardCom_Data</ItemText>
+          <ItemText>\\Infantry_Oreo\../User/Protocol/protocol_board.c\BoardCom_Data,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
@@ -194,6 +194,31 @@
           <count>7</count>
           <WinNumber>1</WinNumber>
           <ItemText>dead_zone</ItemText>
+        </Ww>
+        <Ww>
+          <count>8</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>CapData,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>9</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Referee_Data,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>10</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Motor_ChassisMotors</ItemText>
+        </Ww>
+        <Ww>
+          <count>11</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Motor_ForwardLeft</ItemText>
+        </Ww>
+        <Ww>
+          <count>12</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Motor_ForwardRight</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
@@ -870,7 +895,7 @@
 
   <Group>
     <GroupName>Protocol</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -990,7 +1015,7 @@
 
   <Group>
     <GroupName>Peripheral</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

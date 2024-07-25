@@ -86,6 +86,8 @@ extern "C"
     static void InverseKinematics_Rotation(float omega[4], float vx, float vy, float wm);
     static void Chassis_MultiHeadSetPosRef(float fdb);
     static void Chassis_LowRestEnergyProtect(void);
+    static float Max_Power_Cal(uint8_t remain_energy);
+
 #ifdef __cplusplus
 }
 #endif

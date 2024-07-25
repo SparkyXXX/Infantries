@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-17 20:44:20
+ * @LastEditTime: 2024-07-25 11:34:16
  */
 
 #ifndef PERIPH_MOTOR_CAN_H
@@ -63,8 +63,6 @@ extern "C"
         FDCAN_HandleTypeDef *can_handle;
         FDCAN_TxHeaderTypeDef can_header;
     } Motor_GroupDataTypeDef;
-
-    extern FDCAN_HandleTypeDef *MOTOR_CAN_HANDLER;
 
     void M3508_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata);
     void GM6020_Decode(Motor_DataTypeDef *pmotor, uint8_t *rxdata);
