@@ -6,6 +6,7 @@
  * @LastEditors: Hatrix
  * @LastEditTime: 2024-07-17 20:45:28
  */
+
 #include "config_ctrl.h"
 #include "app_chassis.h"
 #include "app_gimbal.h"
@@ -21,18 +22,18 @@
 /********** START OF PARAMETER SETTING **********/
 uint8_t CPU_Clock = 170; //(MHz)
 PCArgsType Power_Control_Args = {
-    .mp = 0.01602f,
-    .kp = {0.06021f, 8.018e-06f},
-    .cp = 2.919f,
-    .lp = 0.003365f,
-    .mn = {-1.693e-06f, -0.01122f},
-    .kn = {0.1234f, -3.899e-05f},
-    .cn = 2.561f,
-    .ln = 0.02422f,
+    .mp = 0.01801f,
+    .kp = {0.07565f, 1.408e-05f},
+    .cp = -0.3674f,
+    .lp = -0.003606f,
+    .mn = {9.205e-07f, 0.02209f},
+    .kn = {0.08007f, 2.442e-05f},
+    .cn = 0.3149f,
+    .ln = -0.002046f,
 };
 float Wheel_Dec_Ratio = 14.0f;
 float PC_Limit_K = 0.9559f;
-float PC_Limit_B = -14.5318f;
+float PC_Limit_B = -8.5f;
 float PowerUp_Coef = 2;
 float Wheel_Radius = 0.076f;
 float Center_Distance = 0.223f;
@@ -140,18 +141,18 @@ void Init_All(void)
 /********** START OF PARAMETER SETTING **********/
 uint8_t CPU_Clock = 170; //(MHz)
 PCArgsType Power_Control_Args = {
-    .mp = 0.01602f,
-    .kp = {0.06021f, 8.018e-06f},
-    .cp = 2.919f,
-    .lp = 0.003365f,
-    .mn = {-1.693e-06f, -0.01122f},
-    .kn = {0.1234f, -3.899e-05f},
-    .cn = 2.561f,
-    .ln = 0.02422f,
+    .mp = 0.01801f,
+    .kp = {0.07565f, 1.408e-05f},
+    .cp = -0.3674f,
+    .lp = -0.003606f,
+    .mn = {9.205e-07f, 0.02209f},
+    .kn = {0.08007f, 2.442e-05f},
+    .cn = 0.3149f,
+    .ln = -0.002046f,
 };
 float Wheel_Dec_Ratio = 14.0f;
 float PC_Limit_K = 0.9559f;
-float PC_Limit_B = -14.5318f;
+float PC_Limit_B = -8.5f;
 float PowerUp_Coef = 2;
 float Wheel_Radius = 0.076f;
 float Center_Distance = 0.223f;
@@ -175,7 +176,7 @@ void Chassis_ParamInit(void)
         PID_Init(&(chassis->Chassis_MotorSpdPID[i]), 75.0f, 10.0f, 0.0f, 0.0f, 500.0f, 10000.0f, 159.154922f, 159.154922f);
         //                                           kp    ki    kd    kf  sum_max  output_max   d_frq     kf_frq
     }
-	chassis->power_control_args = Power_Control_Args;
+    chassis->power_control_args = Power_Control_Args;
     Filter_Lowpass_Init(100.0f, &(chassis->Spd_Follow_Fdb_lpf));
 #if IF_FOLLOW == FOLLOW
     PID_Init(&(chassis->Chassis_SpdfollowPID), 8.0f, 0.0f, 0.0f, 0.0f, 0.0f, 300.0f, 159.154922f, 159.154922f);

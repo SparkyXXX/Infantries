@@ -20,6 +20,8 @@
   },
   "peacock.color": "#215732",
   "files.associations": {
-    "callback_ctrl.h": "c"
+    "callback_ctrl.h": "c",
+    "util_pwm.h": "c",
+    "tim.h": "c"
   }
 }

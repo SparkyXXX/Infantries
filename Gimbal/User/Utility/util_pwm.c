@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-01-05 20:56:13
+ * @LastEditors: Chen Zhihong
+ * @LastEditTime: 2024-07-31 21:03:17
  */
  
 #include "util_pwm.h"
@@ -64,15 +64,19 @@ void PWM_Stop(PWM_HandleTypeDef *pwm)
  */
 void PWM_SetDuty(PWM_HandleTypeDef *pwm, float duty)
 {
+    // PWM_StateEnum last_state = pwm->state;
+    // PWM_Stop(pwm);
+    // pwm->duty = duty;
+    // pwm->conf.Pulse = pwm->duty * (pwm->htim->Init.Period + 1);
+    // HAL_TIM_PWM_ConfigChannel(pwm->htim, &(pwm->conf), pwm->ch);
+    // if (last_state == PWM_ON) 
+    // {
+    //     PWM_Start(pwm);
+    // }
     PWM_StateEnum last_state = pwm->state;
-    PWM_Stop(pwm);
     pwm->duty = duty;
     pwm->conf.Pulse = pwm->duty * (pwm->htim->Init.Period + 1);
-    HAL_TIM_PWM_ConfigChannel(pwm->htim, &(pwm->conf), pwm->ch);
-    if (last_state == PWM_ON) 
-    {
-        PWM_Start(pwm);
-    }
+    __HAL_TIM_SetCompare(pwm->htim, pwm->ch, pwm->conf.Pulse);
 }
 
 /**

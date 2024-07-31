@@ -43,14 +43,6 @@ void Shoot_Init()
         Motor_PWM_SendOutput(&Motor_shooterMotorRight);
         HAL_Delay(200);
     }
-    if(boardcom->cooling_per_second == 10 && boardcom->heat_limit == 200)
-    {
-        shooter->shoot_strategy = OUTBURST_FIRST;
-    }
-    else if(boardcom->cooling_per_second == 40 && boardcom->heat_limit == 50)
-    {
-        shooter->shoot_strategy = COOLING_FIRST;
-    }
     Shoot_ParamInit();
 }
 
@@ -70,8 +62,8 @@ void ShootSpeed_Update()
         sum += shooter->shoot_speed.referee_bullet_speed[i];
     }
     shooter->shoot_speed.average_bullet_speed = sum / 5;
-    Motor_PWM_ReadEncoder(&Motor_shooterMotorLeft);
-    Motor_PWM_ReadEncoder(&Motor_shooterMotorRight);
+    Motor_PWM_ReadEncoder_L(&Motor_shooterMotorLeft);
+    Motor_PWM_ReadEncoder_R(&Motor_shooterMotorRight);
 }
 
 float feeder_tick_last = 0.0f;
@@ -111,21 +103,18 @@ void Heat_Control()
         shooter->heat_now = shooter->heat_now_referee;
     }
 
-    if((shooter->heat_limit - shooter->heat_now) >= HEAT_FAST_LIMIT)
+    if((shooter->heat_limit - shooter->heat_now) >= HEAT_LIMIT)
     {
         shooter->shoot_freq_ref = shooter->fast_shoot_freq;
     }
-//    else if ((shooter->heat_limit - shooter->heat_now) > HEAT_SLOW_LIMIT)
-//    {
-//        shooter->shoot_freq_ref = shooter->slow_shoot_freq;
-//    }
-    else if((shooter->heat_limit - shooter->heat_now) < HEAT_SLOW_LIMIT)
+    else if((shooter->heat_limit - shooter->heat_now) < HEAT_LIMIT)
     {
         shooter->shoot_freq_ref = 0;
     }
 }
 
-float shoot_ref = 22.5f;
+float shoot_ref = 25.0f;
+float kf = 1.0f;
 void Shoot_ShooterControl()
 {
     Shoot_ControlTypeDef* shooter = Shoot_GetControlPtr();
@@ -149,10 +138,10 @@ void Shoot_ShooterControl()
     PID_SetRef(&(shooter->shoot_right), shooter->shoot_speed.right_speed_ref);
     shooter->shoot_speed.left_speed_fdb = Motor_shooterMotorLeft.encoder.speed;
     shooter->shoot_speed.right_speed_fdb = Motor_shooterMotorRight.encoder.speed;
-    PID_SetFdb(&(shooter->shoot_left), Filter_Lowpass(Motor_shooterMotorLeft.encoder.speed, &shooter->shooter_left_lpf));
-    PID_SetFdb(&(shooter->shoot_right), Filter_Lowpass(Motor_shooterMotorRight.encoder.speed, &shooter->shooter_right_lpf));
-    MotorPWM_SetOutput(&Motor_shooterMotorLeft, PID_Calc(&(shooter->shoot_left)));
-    MotorPWM_SetOutput(&Motor_shooterMotorRight, PID_Calc(&(shooter->shoot_right)));
+    PID_SetFdb(&(shooter->shoot_left), shooter->shoot_speed.left_speed_fdb);
+    PID_SetFdb(&(shooter->shoot_right), shooter->shoot_speed.right_speed_fdb);
+    MotorPWM_SetOutput(&Motor_shooterMotorLeft, kf * shooter->shoot_speed.left_speed_ref + PID_Calc(&(shooter->shoot_left)));
+    MotorPWM_SetOutput(&Motor_shooterMotorRight, kf * shooter->shoot_speed.right_speed_ref + PID_Calc(&(shooter->shoot_right)));
 }
 
 void Shoot_FeederControl()
@@ -259,11 +248,11 @@ void Shoot_FeederLockedJudge()
     static uint8_t shooter_done = 0;
     if(shooter->feeder_mode == FEEDER_INITING)
     {
-        if(Motor_shooterMotorLeft.encoder.speed > 22.0f && Motor_shooterMotorLeft.encoder.speed < 25.0f)
+        if(Motor_shooterMotorLeft.encoder.speed > 24.0f && Motor_shooterMotorLeft.encoder.speed < 25.0f)
         {
             shooter_done = 1;
         }
-        if((shooter_done == 1) && (Motor_shooterMotorLeft.encoder.speed < 21.0f))
+        if((shooter_done == 1) && (Motor_shooterMotorLeft.encoder.speed < 23.0f))
         {
             shooter->feeder_angle_init = Motor_feederMotor.encoder.consequent_angle + 2.0f;
             while(shooter->feeder_angle_init > 45.0f)
@@ -405,43 +394,19 @@ void AutoAim_ShootModeSet()
     AutoAim_ControlTypeDef* autoaim = AutoAim_GetControlPtr();
     BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
 
-    /***************AutoShoot T_ms Judge Start***********/
-    uint16_t wait_ms = 1000;
-    if(shooter->shoot_strategy == COOLING_FIRST)
-    {
-        shooter->armor_wait_ms = 10.0f / boardcom->cooling_per_second * 1000;
-    }
-    else if(shooter->shoot_strategy == OUTBURST_FIRST)
-    {
-        shooter->armor_wait_ms = 200.0f;
-    }
-    if(autoaim->aim_mode == AUTOAIM_ARMOR)
-    {
-        wait_ms = shooter->armor_wait_ms;
-    }
-    else if(autoaim->aim_mode == AUTOAIM_SMALL_BUFF)
-    {
-        wait_ms = shooter->buff_wait_ms;
-    }
-    else if(autoaim->aim_mode == AUTOAIM_BIG_BUFF)
-    {
-        wait_ms = shooter->buff_wait_ms;
-    }
-    /***************AutoShoot T_ms Judge End***********/
-
     /***************AutoShoot Start***************/
     if(remote_control->autoshoot_flag)
     {
         if(autoaim->hit_mode == AUTOAIM_HIT_ARMOR)
         {
-            if((shooter->heat_limit - shooter->heat_now) <= HEAT_SLOW_LIMIT)
+            if((shooter->heat_limit - shooter->heat_now) <= HEAT_LIMIT)
             {
                 Shoot_FeederModeSet(FEEDER_STOP);
                 return;
             }
             wait_tick++;
-            if(minipc->is_get_target == 1 && minipc->is_shoot == 1 && remote_control->autoshoot_flag == 1 && wait_tick >= wait_ms &&
-                    (shooter->heat_limit - shooter->heat_now) >= HEAT_FAST_LIMIT &&
+            if(minipc->is_get_target == 1 && minipc->is_shoot == 1 && remote_control->autoshoot_flag == 1 && wait_tick >= shooter->armor_wait_ms &&
+                    (shooter->heat_limit - shooter->heat_now) >= HEAT_LIMIT &&
                     Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorRight.encoder.speed > 20)
             {
                 Shoot_FeederModeSet(FEEDER_SINGLE);
@@ -453,7 +418,7 @@ void AutoAim_ShootModeSet()
         else if(autoaim->hit_mode == AUTOAIM_HIT_BUFF)
         {
             if(minipc->is_get_target == 1 && minipc->is_shoot == 1 && have_shooted == 0 &&
-                    (shooter->heat_limit - shooter->heat_now) >= HEAT_FAST_LIMIT &&
+                    (shooter->heat_limit - shooter->heat_now) >= HEAT_LIMIT &&
                     Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorRight.encoder.speed > 20)
             {
                 Shoot_FeederModeForceSet(FEEDER_SINGLE);

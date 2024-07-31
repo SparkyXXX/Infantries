@@ -1,34 +1,31 @@
 
 
-GraphedExpression="(Gimbal_Control).pitch_position_ref", Color=#e56a6f
-GraphedExpression="(Gimbal_Control).present_mode", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#35792b
-GraphedExpression="(Gimbal_Control).last_mode", Color=#769dda
-GraphedExpression="(AutoAim_Control).armor_pitch", Color=#b14f0d
-GraphedExpression="(MiniPC_Data).is_get_target", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#b3c38e
-GraphedExpression="(AutoAim_Control).hit_mode", Color=#ab7b05
-OpenDocument="main.c", FilePath="F:/RM Code/Infantry/Gimbal/Core/Src/main.c", Line=67
-OpenDocument="mode_bug.csv", FilePath="F:/RM Code/Infantry/Gimbal/mode_bug.csv", Line=0
-OpenDocument="app_freertos.c", FilePath="F:/RM Code/Infantry/Gimbal/Core/Src/app_freertos.c", Line=162
+GraphedExpression="((Motor_shooterMotorLeft).encoder).speed", Color=#e56a6f
+GraphedExpression="((Shoot_Control).shoot_speed).referee_bullet_speed[0]", Color=#35792b
+OpenDocument="stm32g4xx_it.c", FilePath="F:/RM Code/infantries/Gimbal/Core/Src/stm32g4xx_it.c", Line=92
+OpenDocument="startup_stm32g473xx.s", FilePath="F:/RM Code/Infantry/Gimbal/MDK-ARM/startup_stm32g473xx.s", Line=0
+OpenDocument="main.c", FilePath="F:/RM Code/infantries/Gimbal/Core/Src/main.c", Line=67
 OpenToolbar="Debug", Floating=0, x=0, y=0
-OpenWindow="Call Stack", DockArea=RIGHT, x=0, y=0, w=1319, h=761, TabPos=3, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=383, h=787, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Global Data", DockArea=BOTTOM, x=0, y=0, w=1920, h=91, TabPos=2, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Local Data", DockArea=BOTTOM, x=0, y=0, w=1920, h=91, TabPos=1, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Watched Data 1", DockArea=BOTTOM, x=0, y=0, w=1920, h=91, TabPos=0, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Data Sampling", DockArea=RIGHT, x=0, y=0, w=1319, h=761, TabPos=0, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=1, UniformSampleSpacing=0
-OpenWindow="Timeline", DockArea=RIGHT, x=0, y=0, w=1319, h=761, TabPos=1, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="1 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="0;12", DataGraphShowNamesAtCursor=0, PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="1052;-89", CodeGraphLegendShown=0, CodeGraphLegendPosition="1071;0"
-OpenWindow="RTOS", DockArea=RIGHT, x=0, y=0, w=1319, h=761, TabPos=2, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, Showing=""
+OpenWindow="Call Stack", DockArea=RIGHT, x=0, y=0, w=1505, h=547, TabPos=3, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=261, h=573, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Global Data", DockArea=BOTTOM, x=0, y=0, w=1920, h=305, TabPos=2, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Local Data", DockArea=BOTTOM, x=0, y=0, w=1920, h=305, TabPos=1, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Watched Data 1", DockArea=BOTTOM, x=0, y=0, w=1920, h=305, TabPos=0, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Data Sampling", DockArea=RIGHT, x=0, y=0, w=1505, h=547, TabPos=0, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
+OpenWindow="Timeline", DockArea=RIGHT, x=0, y=0, w=1505, h=547, TabPos=1, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="200 ms", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="751;304", DataGraphShowNamesAtCursor=0, PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="1220;-89", CodeGraphLegendShown=0, CodeGraphLegendPosition="1239;0"
+OpenWindow="RTOS", DockArea=RIGHT, x=0, y=0, w=1505, h=547, TabPos=2, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, Showing=""
 SmartViewPlugin="", Page="", Toolbar="Hidden", Window="SmartView 1"
-TableHeader="Data Sampling Setup", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[399;278;135;135;135;135;129;151;151]
-TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" (Gimbal_Control).pitch_position_ref";" (Gimbal_Control).present_mode";" (Gimbal_Control).last_mode";" (AutoAim_Control).armor_pitch";" (MiniPC_Data).is_get_target";" (AutoAim_Control).hit_mode"], ColWidths=[100;100;100;100;100;100;100;616]
 TableHeader="Global Data", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Location";"Size";"Type";"Scope"], ColWidths=[100;100;100;100;100;460]
-TableHeader="Local Data", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Location";"Size";"Type";"Scope"], ColWidths=[149;100;118;100;100;393]
-TableHeader="Call Stack", SortCol="Function", SortOrder="ASCENDING", VisibleCols=["Function";"Stack Frame";"Source";"PC";"Return Address";"Stack Used"], ColWidths=[239;100;100;100;112;686]
-TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[345;102;100;100;1213]
+TableHeader="Local Data", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Location";"Size";"Type";"Scope"], ColWidths=[149;329;118;100;100;164]
+TableHeader="Call Stack", SortCol="Function", SortOrder="ASCENDING", VisibleCols=["Function";"Stack Frame";"Source";"PC";"Return Address";"Stack Used"], ColWidths=[239;100;100;100;112;854]
+TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" ((Motor_shooterMotorLeft).encoder).speed"], ColWidths=[100;100;100]
+TableHeader="Data Sampling Setup", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[498;100;100;168;179;107;129;151;151]
+TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[345;102;100;100;1147]
 TableHeader="Power Sampling", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
 TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[484;435;402;578]
 TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;351]
-WatchedExpression="Gimbal_Control", RefreshRate=5, Window=Watched Data 1
-WatchedExpression="AutoAim_Control", Window=Watched Data 1
-WatchedExpression="MiniPC_Data", Window=Watched Data 1
+WatchedExpression="Shoot_Control", RefreshRate=5, Window=Watched Data 1
+WatchedExpression="shoot_ref", Window=Watched Data 1
+WatchedExpression="Motor_shooterMotorLeft", RefreshRate=5, Window=Watched Data 1
+WatchedExpression="kf", Window=Watched Data 1

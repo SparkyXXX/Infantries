@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-18 01:33:10
+ * @LastEditTime: 2024-07-26 19:46:43
  */
 
 #include "protocol_board.h"
@@ -63,10 +63,12 @@ BoardCom_DataTypeDef *BoardCom_GetDataPtr()
 
 void BoardCom_Init()
 {
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     FDCAN_InitTxHeader(&TxHeader_Gimbal_Control, ID_SEND_CONTROL);
     FDCAN_InitTxHeader(&TxHeader_Gimbal_ImuYaw, ID_SEND_IMU_YAW);
     FDCAN_InitTxHeader(&TxHeader_Gimbal_ChassisRef, ID_SEND_CHASSIS_REF);
     FDCAN_InitTxHeader(&TxHeader_Gimbal_UIState, ID_SEND_UI_STATE);
+    boardcom->power_limit_mode = 1;
 }
 
 void BoardCom_Update()
@@ -252,8 +254,8 @@ static void _send_ui_state(uint8_t buff[])
 /*************** RECEIVE *****************/
 int countb[2];
 float rateb[2];
-//uint16_t temp_heat_limit = 0;
-//uint16_t temp_cool = 0;
+// uint16_t temp_heat_limit = 0;
+// uint16_t temp_cool = 0;
 static void _receive_referee_data1(uint8_t buff[])
 {
     countb[0]++;
@@ -263,10 +265,10 @@ static void _receive_referee_data1(uint8_t buff[])
     boardcom->robot_id = buff[0] & 0x7F;
     boardcom->power_management_shooter_output = buff[1] >> 7;
     boardcom->heat_limit = buff2i16(buff + 2);
-//	boardcom->heat_limit = temp_heat_limit;
+    //	boardcom->heat_limit = temp_heat_limit;
     boardcom->shoot_spd_referee = ((float)buff2ui16(buff + 4)) / 100;
     boardcom->cooling_per_second = buff2ui16(buff + 6);
-//	boardcom->cooling_per_second = temp_cool;
+    //	boardcom->cooling_per_second = temp_cool;
     boardcom->last_update_time = HAL_GetTick();
 }
 
@@ -278,6 +280,6 @@ static void _receive_referee_data2(uint8_t buff[])
     BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     boardcom->stage_remain_time = buff2ui16(buff);
     boardcom->game_progress = buff[2];
-	boardcom->shooter_heat_referee = buff2ui16(buff + 3);
+    boardcom->shooter_heat_referee = buff2ui16(buff + 3);
     boardcom->last_update_time = HAL_GetTick();
 }

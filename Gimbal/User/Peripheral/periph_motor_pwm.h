@@ -3,8 +3,8 @@
  *
  * @Author: Hatrix
  * @Date: 2023-11-07 14:28:30
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-17 21:39:20
+ * @LastEditors: Chen Zhihong
+ * @LastEditTime: 2024-07-31 21:06:53
  */
 
 #ifndef PERIPH_MOTOR_PWM_H
@@ -31,6 +31,7 @@ extern "C"
         uint32_t ch;
         uint8_t direction;
         uint32_t counter;
+        uint32_t last_counter;
         uint32_t last_update_time;
     } EncoderPWM_DataTypeDef;
 
@@ -49,6 +50,8 @@ extern "C"
     } MotorPWM_GroupDataTypeDef;
 
     void Motor_PWM_ReadEncoder(MotorPWM_DataTypeDef *pmotor);
+	void Motor_PWM_ReadEncoder_L(MotorPWM_DataTypeDef *pmotor);
+    void Motor_PWM_ReadEncoder_R(MotorPWM_DataTypeDef *pmotor);
     void Motor_PWM_SendOutput(MotorPWM_DataTypeDef *pmotor);
 	void MotorPWM_Init(MotorPWM_DataTypeDef *pmotor, TIM_HandleTypeDef *htim, uint32_t ch, uint32_t clk, uint32_t freq, TIM_HandleTypeDef *htim_enc, uint16_t encoder_lines);    void MotorPWM_InitGroup(MotorPWM_GroupDataTypeDef *pgroup, uint8_t motor_num);
     void MotorPWM_SetOutput(MotorPWM_DataTypeDef *pmotor, float output);

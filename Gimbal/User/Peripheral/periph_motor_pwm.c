@@ -8,7 +8,7 @@
  */
 
 #include "periph_motor_pwm.h"
-
+#include "sys_dwt.h"
 /**
  * @brief      Sending motor PWM output
  * @param      pmotor: The pointer points to the motor to be sent
@@ -130,4 +130,63 @@ void MotorPWM_SetOutput(MotorPWM_DataTypeDef *pmotor, float output)
 float MotorPWM_GetOutput(MotorPWM_DataTypeDef *pmotor)
 {
     return pmotor->output;
+}
+
+/**
+ * @brief      Read motor PWM encoder
+ * @param      pmotor: The pointer points to the motor group to be sent
+ * @retval     NULL
+ **/
+void Motor_PWM_ReadEncoder_L(MotorPWM_DataTypeDef *pmotor)
+{
+    static float last_tick = 0;
+    static int64_t last_cnt = 0;
+    int64_t temp = 0;
+    if (pmotor == NULL)
+    {
+        return;
+    }
+    pmotor->encoder.counter = __HAL_TIM_GET_COUNTER(pmotor->encoder.htim);
+    temp = pmotor->encoder.counter - last_cnt;
+    // __HAL_TIM_SET_COUNTER(pmotor->encoder.htim, 0);
+    if (temp > 32768)
+    {
+        temp -= 65535;
+    }
+    else if (temp < -32768)
+    {
+        temp += 65535;
+    }
+
+    pmotor->encoder.speed = (float)temp * 2 * 3.1415926f / ((DWT_GetTimeline_ms() - last_tick) / 1000) * 0.0235 / (4 * pmotor->encoder.encoder_lines);
+    last_cnt = __HAL_TIM_GET_COUNTER(pmotor->encoder.htim);
+    last_tick = DWT_GetTimeline_ms();
+    // register_counter * (numbers of turns to rads:2 * PI) * (ms_to_s:1000) * (radius:0.0235m) / (4 * lines)
+}
+
+void Motor_PWM_ReadEncoder_R(MotorPWM_DataTypeDef *pmotor)
+{
+    static float last_tick = 0;
+    static int64_t last_cnt = 0;
+    int64_t temp = 0;
+    if (pmotor == NULL)
+    {
+        return;
+    }
+    pmotor->encoder.counter = __HAL_TIM_GET_COUNTER(pmotor->encoder.htim);
+    temp = pmotor->encoder.counter - last_cnt;
+    // __HAL_TIM_SET_COUNTER(pmotor->encoder.htim, 0);
+    if (temp > 32768)
+    {
+        temp -= 65535;
+    }
+    else if (temp < -32768)
+    {
+        temp += 65535;
+    }
+
+    pmotor->encoder.speed = (float)temp * 2 * 3.1415926f / ((DWT_GetTimeline_ms() - last_tick) / 1000) * 0.0235 / (4 * pmotor->encoder.encoder_lines);
+    last_cnt = __HAL_TIM_GET_COUNTER(pmotor->encoder.htim);
+    last_tick = DWT_GetTimeline_ms();
+    // register_counter * (numbers of turns to rads:2 * PI) * (ms_to_s:1000) * (radius:0.0235m) / (4 * lines)
 }

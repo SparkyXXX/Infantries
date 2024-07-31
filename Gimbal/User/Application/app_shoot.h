@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-07-21 14:22:25
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-07-27 11:05:46
  */
 
 #ifndef APP_SHOOT_H
@@ -26,8 +26,7 @@ extern "C"
 #define COOLING_FIRST 1
 #define OUTBURST_FIRST 2
 
-#define HEAT_FAST_LIMIT 15
-#define HEAT_SLOW_LIMIT 15
+#define HEAT_LIMIT 15
 
 #define CONTINUOUS 1
 #define SINGLE 2
@@ -40,8 +39,7 @@ extern "C"
         FEEDER_REFEREE = 3u,
         FEEDER_FINISH = 4u,
         FEEDER_INITING = 5u
-    }
-                     Feeder_ModeEnum;
+    } Feeder_ModeEnum;
 
     typedef enum
     {
@@ -74,22 +72,18 @@ extern "C"
         float heat_now;
         float heat_now_referee;
         float heat_limit;
-        uint8_t shoot_strategy;
 
         uint8_t shoot_mode;
         uint8_t single_shoot_done;
         float armor_wait_ms;
-        uint16_t buff_wait_ms;
 
         PID_TypeDef shoot_left, shoot_right;
         PID_TypeDef feed_spd, feed_ang;
-        Filter_Lowpass_TypeDef shooter_left_lpf;
-        Filter_Lowpass_TypeDef shooter_right_lpf;
     } Shoot_ControlTypeDef;
 
     extern float angle_diff, last_consequent_angle;
 
-    Shoot_ControlTypeDef* Shoot_GetControlPtr(void);
+    Shoot_ControlTypeDef *Shoot_GetControlPtr(void);
     void Shoot_Init(void);
     void ShootSpeed_Update(void);
     void Heat_Control(void);

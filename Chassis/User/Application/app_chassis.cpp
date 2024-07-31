@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-25 22:51:06
+ * @LastEditTime: 2024-07-26 19:27:34
  */
 
 #include "app_chassis.h"
@@ -176,12 +176,12 @@ void OmniChassis_PowerControl()
 	else if (boardcom->power_limit_mode == POWER_LIMIT && boardcom->cap_speedup_flag == CAP_SPEEDUP)
 	{
 		chassis->power_limit = MIN(referee->chassis_power_limit * chassis->powerup_coef, Max_Power_Cal(cap->rest_energy)) * chassis->powercontrol_limit_k + chassis->powercontrol_limit_b;
-		PowerControl(chassis->power_control_args, chassis->power_limit * chassis->powerup_coef, chassis->chassis_I, chassis->chassis_W);
+		PowerControl(chassis->power_control_args, chassis->power_limit, chassis->chassis_I, chassis->chassis_W);
 	}
-	else if (boardcom->power_limit_mode == POWER_UNLIMIT && boardcom->cap_speedup_flag == CAP_SPEEDUP && chassis->present_mode == CHASSIS_GYRO)
+	else if (boardcom->power_limit_mode == POWER_UNLIMIT)
 	{
-		chassis->power_limit = MIN(300.0f, Max_Power_Cal(cap->rest_energy)) * chassis->powercontrol_limit_k + chassis->powercontrol_limit_b;
-		PowerControl(chassis->power_control_args, chassis->power_limit * chassis->powerup_coef, chassis->chassis_I, chassis->chassis_W);
+		chassis->power_limit = MIN(350.0f, Max_Power_Cal(cap->rest_energy)) * chassis->powercontrol_limit_k + chassis->powercontrol_limit_b;
+		PowerControl(chassis->power_control_args, chassis->power_limit, chassis->chassis_I, chassis->chassis_W);
 	}
 
 	for (int i = 0; i < 4; i++)

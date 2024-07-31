@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-24 18:10:30
+ * @LastEditTime: 2024-07-27 10:39:42
  */
 
 #include "config_ctrl.h"
@@ -26,8 +26,7 @@ const float Correction_Matrix[9] = {0, -1, 0,
 float Armor_Feeder_Fast_Freq = 150.0f;
 float Armor_Feeder_Slow_Freq = 60.0f;
 float Buff_Feeder_Freq = 6.5f;
-float AutoShoot_Wait_ms = 250.0f;
-uint16_t AutoShootBuff_Wait_ms = 310;
+float AutoShoot_Wait_ms = 50.0f;
 
 float KeyMouse_NormalSpeed = 200.0f;
 float KeyMouse_UpperSpeed = 500.0f;
@@ -69,15 +68,11 @@ void Shoot_ParamInit(void)
     shooter->fast_shoot_freq = Armor_Feeder_Fast_Freq;
     shooter->slow_shoot_freq = Armor_Feeder_Slow_Freq;
     shooter->armor_wait_ms = AutoShoot_Wait_ms;
-    shooter->buff_wait_ms = AutoShootBuff_Wait_ms;
     PID_Init(&(shooter->feed_spd), 500.0f, 10.0f, 0.0f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
     PID_Init(&(shooter->feed_ang), 8.35f, 0.0f, 0.00011f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
 
-    PID_Init(&(shooter->shoot_left), 10.0f, 20.0f, 0.0f, 0.0f, 31.0f, 35.0f, 159.154922f, 159.154922f);
-    PID_Init(&(shooter->shoot_right), 10.0f, 20.0f, 0.0f, 0.0f, 31.0f, 35.0f, 159.154922f, 159.154922f);
-
-    Filter_Lowpass_Init(200.0f, &(shooter->shooter_left_lpf));
-    Filter_Lowpass_Init(200.0f, &(shooter->shooter_right_lpf));
+    PID_Init(&(shooter->shoot_left), 10.0f, 20.0f, 0.0f, 0.0f, 5.0f, 20.0f, 159.154922f, 159.154922f);
+    PID_Init(&(shooter->shoot_right), 10.0f, 20.0f, 0.0f, 0.0f, 5.0f, 20.0f, 159.154922f, 159.154922f);
 }
 
 static void AutoAim_Init(void)
@@ -162,6 +157,11 @@ void Init_All(void)
     FDCAN_IntFilterAndStart(&hfdcan1);
     FDCAN_IntFilterAndStart(&hfdcan2);
 
+    __HAL_TIM_SET_COMPARE(Motor_shooterMotorLeft.pwm.htim, Motor_shooterMotorLeft.pwm.ch, 0.5f * Motor_shooterMotorLeft.pwm.htim->Init.Period);
+    __HAL_TIM_SET_COMPARE(Motor_shooterMotorRight.pwm.htim, Motor_shooterMotorLeft.pwm.ch, 0.5f * Motor_shooterMotorRight.pwm.htim->Init.Period);
+    HAL_TIM_PWM_Start(Motor_shooterMotorLeft.pwm.htim, Motor_shooterMotorLeft.pwm.ch);
+    HAL_TIM_PWM_Start(Motor_shooterMotorRight.pwm.htim, Motor_shooterMotorRight.pwm.ch);
+
     INS_Init();
     Gimbal_Init();
     Shoot_Init();
@@ -189,8 +189,7 @@ const float Correction_Matrix[9] = {0, -1, 0,
 float Armor_Feeder_Fast_Freq = 150.0f;
 float Armor_Feeder_Slow_Freq = 60.0f;
 float Buff_Feeder_Freq = 6.5f;
-float AutoShoot_Wait_ms = 250.0f;
-uint16_t AutoShootBuff_Wait_ms = 310;
+float AutoShoot_Wait_ms = 50.0f;
 
 float KeyMouse_NormalSpeed = 200.0f;
 float KeyMouse_UpperSpeed = 500.0f;
@@ -232,15 +231,11 @@ void Shoot_ParamInit(void)
     shooter->fast_shoot_freq = Armor_Feeder_Fast_Freq;
     shooter->slow_shoot_freq = Armor_Feeder_Slow_Freq;
     shooter->armor_wait_ms = AutoShoot_Wait_ms;
-    shooter->buff_wait_ms = AutoShootBuff_Wait_ms;
     PID_Init(&(shooter->feed_spd), 500.0f, 10.0f, 0.0f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
     PID_Init(&(shooter->feed_ang), 8.35f, 0.0f, 0.00011f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
 
-    PID_Init(&(shooter->shoot_left), 10.0f, 20.0f, 0.0f, 0.0f, 31.0f, 35.0f, 159.154922f, 159.154922f);
-    PID_Init(&(shooter->shoot_right), 10.0f, 20.0f, 0.0f, 0.0f, 31.0f, 35.0f, 159.154922f, 159.154922f);
-
-    Filter_Lowpass_Init(200.0f, &(shooter->shooter_left_lpf));
-    Filter_Lowpass_Init(200.0f, &(shooter->shooter_right_lpf));
+    PID_Init(&(shooter->shoot_left), 10.0f, 20.0f, 0.0f, 0.0f, 5.0f, 20.0f, 159.154922f, 159.154922f);
+    PID_Init(&(shooter->shoot_right), 10.0f, 20.0f, 0.0f, 0.0f, 5.0f, 20.0f, 159.154922f, 159.154922f);
 }
 
 static void AutoAim_Init(void)
