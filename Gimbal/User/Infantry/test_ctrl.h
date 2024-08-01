@@ -4,7 +4,7 @@
 #define STAR_DUST 4
 #define HUGE_TITAN 5
 #define WHITE_MISTRESS 6
-#define ROBOT_ID STAR_DUST
+#define ROBOT_ID WHITE_MISTRESS
 
 #define DEBUG 1
 #define TRAIN 2

@@ -142,6 +142,18 @@ static void Remote_Update()
     {
         remote_control->gyro_flag = 0;
     }
+	
+	if ((remote->remote.ch[RIGHT_X] > 650) || 
+		(remote->remote.ch[RIGHT_X] < -650) || 
+	    (remote->remote.ch[RIGHT_Y] > 650) || 
+		(remote->remote.ch[RIGHT_Y] < -650))
+	{
+		boardcom->power_limit_mode = 0;
+	}
+	else
+	{
+		boardcom->power_limit_mode = 1;
+	}
 
     float yaw_ref = (float)remote->remote.ch[LEFT_X] * remote_control->remote_yaw_to_ref;
     float pitch_ref = (float)remote->remote.ch[LEFT_Y] * remote_control->remote_pitch_to_ref;
