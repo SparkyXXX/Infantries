@@ -46,10 +46,13 @@ void Shoot_Init()
     Shoot_ParamInit();
 }
 
+uint32_t shoot_tick_start = 0;
+uint32_t shoot_tick_diff = 0;
 void ShootSpeed_Update()
 {
     Shoot_ControlTypeDef* shooter = Shoot_GetControlPtr();
     BoardCom_DataTypeDef* boardcom = BoardCom_GetDataPtr();
+    MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
 
     shooter->shoot_speed.referee_bullet_speed[4] = shooter->shoot_speed.referee_bullet_speed[3];
     shooter->shoot_speed.referee_bullet_speed[3] = shooter->shoot_speed.referee_bullet_speed[2];
@@ -61,6 +64,14 @@ void ShootSpeed_Update()
     {
         sum += shooter->shoot_speed.referee_bullet_speed[i];
     }
+	if (minipc->is_shoot == 1)
+	{
+		shoot_tick_start = HAL_GetTick();
+	}
+	if (shooter->shoot_speed.referee_bullet_speed[0] != shooter->shoot_speed.referee_bullet_speed[1])
+	{
+		shoot_tick_diff = HAL_GetTick() - shoot_tick_start;
+	}
     shooter->shoot_speed.average_bullet_speed = sum / 5;
     Motor_PWM_ReadEncoder_L(&Motor_shooterMotorLeft);
     Motor_PWM_ReadEncoder_R(&Motor_shooterMotorRight);
