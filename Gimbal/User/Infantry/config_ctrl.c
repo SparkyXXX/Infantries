@@ -190,8 +190,6 @@ float Armor_Feeder_Fast_Freq = 150.0f;
 float Armor_Feeder_Slow_Freq = 60.0f;
 float Buff_Feeder_Freq = 6.5f;
 float AutoShoot_Wait_ms = 50.0f;
-//debug
-//float AutoShoot_Wait_ms = 1000.0f;
 
 float KeyMouse_NormalSpeed = 200.0f;
 float KeyMouse_UpperSpeed = 500.0f;

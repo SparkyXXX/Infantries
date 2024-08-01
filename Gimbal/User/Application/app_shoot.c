@@ -48,6 +48,7 @@ void Shoot_Init()
 
 uint32_t shoot_tick_start = 0;
 uint32_t shoot_tick_diff = 0;
+float snail_diff = 0.0f;
 void ShootSpeed_Update()
 {
     Shoot_ControlTypeDef* shooter = Shoot_GetControlPtr();
@@ -64,10 +65,7 @@ void ShootSpeed_Update()
     {
         sum += shooter->shoot_speed.referee_bullet_speed[i];
     }
-	if (minipc->is_shoot == 1)
-	{
-		shoot_tick_start = HAL_GetTick();
-	}
+
 	if (shooter->shoot_speed.referee_bullet_speed[0] != shooter->shoot_speed.referee_bullet_speed[1])
 	{
 		shoot_tick_diff = HAL_GetTick() - shoot_tick_start;
@@ -75,6 +73,7 @@ void ShootSpeed_Update()
     shooter->shoot_speed.average_bullet_speed = sum / 5;
     Motor_PWM_ReadEncoder_L(&Motor_shooterMotorLeft);
     Motor_PWM_ReadEncoder_R(&Motor_shooterMotorRight);
+	snail_diff = shooter->shoot_speed.left_speed_fdb - shooter->shoot_speed.right_speed_fdb;
 }
 
 float feeder_tick_last = 0.0f;
@@ -403,6 +402,7 @@ void Keymouse_ShootModeSet()
     AutoAim_ShootModeSet();
 }
 
+extern uint32_t shoot_tick_start;
 uint16_t wait_tick = 0;
 uint8_t have_shooted = 0; // this is_shoot=1 time is have shooted to avoid one is_shoot time shoot twice
 //  set when is_shoot==1 and shooted, and reset when is_shoot==0
@@ -429,6 +429,7 @@ void AutoAim_ShootModeSet()
                     (shooter->heat_limit - shooter->heat_now) >= HEAT_LIMIT &&
                     Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorRight.encoder.speed > 20)
             {
+				shoot_tick_start = HAL_GetTick();				
                 Shoot_FeederModeSet(FEEDER_SINGLE);
                 shooter->single_shoot_done = 0;
                 have_shooted = 1;
