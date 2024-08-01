@@ -4,7 +4,7 @@
 #define STAR_DUST 4
 #define HUGE_TITAN 5
 #define WHITE_MISTRESS 6
-#define ROBOT_ID WHITE_MISTRESS
+#define ROBOT_ID STAR_DUST
 
 #define NO_SYS_IDENT 1
 #define SYS_IDENT 0

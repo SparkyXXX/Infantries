@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-26 19:27:34
+ * @LastEditTime: 2024-08-01 11:50:36
  */
 
 #include "app_chassis.h"
@@ -416,5 +416,45 @@ static float Max_Power_Cal(uint8_t remain_energy)
 	{
 		float Low_Power_Output_Max = Power_Output_Max * (remain_energy * remain_energy) / 255.0f;
 		return MAX(Low_Power_Output_Max, Cap_Charging_Power_Max);
+	}
+}
+
+#define SEVEN_PIN_LOST_ERR 1
+#define CAN_LOST_ERR 2
+char ErrorCode_Watch[2][3];
+void Write_ErrorCode_Watch(uint8_t column, char type, uint8_t id, uint8_t errCode)
+{
+	ErrorCode_Watch[column][0] = type;
+	ErrorCode_Watch[column][1] = '0' + id;
+	ErrorCode_Watch[column][2] = '0' + errCode;
+}
+
+void Check_Motor_State()
+{
+	uint8_t lostID = 0, ErrorCode = 0, exist_err = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		if (Motor_IsLostData(Motor_ChassisMotors.motor_handle[i]))
+		{ // encoder数据不更新
+			lostID += (i + 1);
+			if (Motor_ChassisMotors.motor_handle[i]->state == MOTOR_LOST)
+			{ // 通信也没有了，说明can断了
+				ErrorCode += CAN_LOST_ERR;
+			}
+			else
+			{ // 通信还有，说明7pin线断了
+				ErrorCode += SEVEN_PIN_LOST_ERR;
+			}
+		}
+	}
+	if (lostID != 0)
+	{
+		exist_err = 1;
+		Write_ErrorCode_Watch(0, 'M', lostID, ErrorCode);
+	}
+
+	if (Motor_GimbalMotors.motor_handle[0]->state == MOTOR_LOST)
+	{ // 通信没有了，说明can断了
+		Write_ErrorCode_Watch(1, 'Y', 1, CAN_LOST_ERR);
 	}
 }

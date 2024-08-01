@@ -134,6 +134,7 @@ void Shoot_ShooterControl()
         break;
     }
 
+#if SHOOTER_MODE == CLOSELOOP_CONTROL
     PID_SetRef(&(shooter->shoot_left), shooter->shoot_speed.left_speed_ref);
     PID_SetRef(&(shooter->shoot_right), shooter->shoot_speed.right_speed_ref);
     shooter->shoot_speed.left_speed_fdb = Motor_shooterMotorLeft.encoder.speed;
@@ -142,6 +143,14 @@ void Shoot_ShooterControl()
     PID_SetFdb(&(shooter->shoot_right), shooter->shoot_speed.right_speed_fdb);
     MotorPWM_SetOutput(&Motor_shooterMotorLeft, kf * shooter->shoot_speed.left_speed_ref + PID_Calc(&(shooter->shoot_left)));
     MotorPWM_SetOutput(&Motor_shooterMotorRight, kf * shooter->shoot_speed.right_speed_ref + PID_Calc(&(shooter->shoot_right)));
+#endif
+	
+#if SHOOTER_MODE == OPENLOOP_TEST
+    shooter->shoot_speed.left_speed_fdb = Motor_shooterMotorLeft.encoder.speed;
+    shooter->shoot_speed.right_speed_fdb = Motor_shooterMotorRight.encoder.speed;
+    MotorPWM_SetOutput(&Motor_shooterMotorLeft, kf * shooter->shoot_speed.left_speed_ref);
+    MotorPWM_SetOutput(&Motor_shooterMotorRight, kf * shooter->shoot_speed.right_speed_ref);
+#endif
 }
 
 void Shoot_FeederControl()
@@ -338,10 +347,10 @@ void Remote_ShootModeSet()
     }
     case REMOTE_SWITCH_DOWN:
     {
-#if IF_BULLET_SPD_TEST == NO_BULLET_SPD_TEST
+#if SHOOT_DECIDE == AUTOAIM_DECIDE_SHOOT
         AutoAim_ShootModeSet();
 #endif
-#if IF_BULLET_SPD_TEST == BULLET_SPD_TEST
+#if SHOOT_DECIDE == REMOTE_DECIDE_SHOOT
         Shoot_FeederModeSet(FEEDER_REFEREE);
 #endif
         break;

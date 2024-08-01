@@ -4,7 +4,7 @@
  * @Author: Hatrix
  * @Date: 2023-11-07 14:28:30
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-17 19:49:24
+ * @LastEditTime: 2024-08-01 11:41:37
  */
 
 #include "task_ctrl.h"
@@ -29,6 +29,7 @@ void Chassis_Task(void const *argument)
         Motor_IsLost(&Motor_ForwardRight);
         Motor_IsLost(&Motor_BackwardRight);
         Motor_IsLost(&Motor_BackwardLeft);
+        Check_Motor_State();
         OmniChassis_EstimateSpeed();
         OmniChassis_GetInstruct();
         OmniChassis_CalcOutput();

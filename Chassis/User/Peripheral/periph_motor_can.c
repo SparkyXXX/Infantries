@@ -3,7 +3,7 @@
  * @Author: GDDG08
  * @Date: 2024-07-17 17:42:09
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-25 11:34:27
+ * @LastEditTime: 2024-08-01 11:32:39
  */
 /*
  * @Project: Infantry Code
@@ -219,4 +219,16 @@ void Motor_IsLost(Motor_DataTypeDef *pmotor)
     }
     uint32_t now = HAL_GetTick();
     pmotor->state = ((now - pmotor->encoder.last_update_time) > MOTOR_OFFLINE_TIME);
+}
+
+uint8_t Motor_IsLostData(Motor_DataTypeDef *pmotor)
+{
+    uint32_t now = HAL_GetTick();
+    if (pmotor->encoder.last_current != pmotor->encoder.current)
+    {
+        pmotor->encoder.last_current_update_time = now;
+    }
+    pmotor->encoder.last_current = pmotor->encoder.current;
+
+    return (now - pmotor->encoder.last_current_update_time) > MOTOR_OFFLINE_TIME;
 }

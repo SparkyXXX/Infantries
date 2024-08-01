@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-25 11:34:16
+ * @LastEditTime: 2024-08-01 11:37:40
  */
 
 #ifndef PERIPH_MOTOR_CAN_H
@@ -45,6 +45,8 @@ extern "C"
         float consequent_angle;
 
         uint32_t last_update_time;
+        float last_current;
+        uint32_t last_current_update_time;
     } Encoder_DataTypeDef;
 
     typedef struct
@@ -73,6 +75,7 @@ extern "C"
     void Motor_SetOutput(Motor_DataTypeDef *pmotor, float output);
     float Motor_GetOutput(Motor_DataTypeDef *pmotor);
     void Motor_IsLost(Motor_DataTypeDef *pmotor);
+    uint8_t Motor_IsLostData(Motor_DataTypeDef *pmotor);
 
 #ifdef __cplusplus
 }

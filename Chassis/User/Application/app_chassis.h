@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-18 01:51:36
+ * @LastEditTime: 2024-08-01 11:41:24
  */
 
 #ifndef APP_CHASSIS_H
@@ -87,6 +87,7 @@ extern "C"
     static void Chassis_MultiHeadSetPosRef(float fdb);
     static void Chassis_LowRestEnergyProtect(void);
     static float Max_Power_Cal(uint8_t remain_energy);
+    void Check_Motor_State();
 
 #ifdef __cplusplus
 }
