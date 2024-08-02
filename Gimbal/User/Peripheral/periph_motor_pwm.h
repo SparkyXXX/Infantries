@@ -4,7 +4,7 @@
  * @Author: Hatrix
  * @Date: 2023-11-07 14:28:30
  * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-07-31 21:06:53
+ * @LastEditTime: 2024-08-02 17:08:20
  */
 
 #ifndef PERIPH_MOTOR_PWM_H
@@ -30,8 +30,9 @@ extern "C"
         TIM_HandleTypeDef *htim;
         uint32_t ch;
         uint8_t direction;
-        uint32_t counter;
-        uint32_t last_counter;
+        int64_t counter;
+        int64_t last_counter;
+        uint64_t last_tick;
         uint32_t last_update_time;
     } EncoderPWM_DataTypeDef;
 
