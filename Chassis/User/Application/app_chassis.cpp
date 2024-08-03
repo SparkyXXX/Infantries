@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-08-01 11:50:36
+ * @LastEditors: Chen Zhihong
+ * @LastEditTime: 2024-08-04 01:29:02
  */
 
 #include "app_chassis.h"
@@ -126,7 +126,7 @@ void OmniChassis_CalcOutput()
 		{
 			InverseKinematics_Translation(chassis->wheel_ref,
 										  chassis->chassis_coordinate_ref.vx, chassis->chassis_coordinate_ref.vz,
-										  200 * chassis->gyro_dir, 450);
+										  200 * chassis->gyro_dir, 469);
 		}
 		else
 		{
