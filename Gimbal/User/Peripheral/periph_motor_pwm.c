@@ -4,7 +4,7 @@
  * @Author: Hatrix
  * @Date: 2023-11-07 14:28:30
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-08-02 18:55:37
+ * @LastEditTime: 2024-08-03 10:46:15
  */
 
 #include "periph_motor_pwm.h"
@@ -39,20 +39,25 @@ void Motor_PWM_SendOutput(MotorPWM_DataTypeDef *pmotor)
  **/
 void Motor_PWM_ReadEncoder(MotorPWM_DataTypeDef *pmotor)
 {
-    uint32_t temp = 0;
     if (pmotor == NULL)
     {
         return;
     }
     pmotor->encoder.counter = __HAL_TIM_GET_COUNTER(pmotor->encoder.htim);
-    temp = pmotor->encoder.counter;
-    __HAL_TIM_SET_COUNTER(pmotor->encoder.htim, 0);
-    if (temp > 32768)
+    pmotor->encoder.temp_tick = DWT_GetTimeline_us();
+    pmotor->encoder.temp = pmotor->encoder.counter - pmotor->encoder.last_counter;
+    if (pmotor->encoder.temp > 32768)
     {
-        temp = 65535 - temp;
+        pmotor->encoder.temp -= 65535;
     }
-    pmotor->encoder.speed = (float)temp * 2 * 3.1415926f * 1000 * 0.0235 / (4 * pmotor->encoder.encoder_lines);
-    // register_counter * (numbers of turns to rads:2 * PI) * (ms_to_s:1000) * (radius:0.0235m) / (4 * lines)
+    else if (pmotor->encoder.temp < -32768)
+    {
+        pmotor->encoder.temp += 65535;
+    }
+    pmotor->encoder.speed = (float)pmotor->encoder.temp * 2 * 3.1415926f / (((float)(pmotor->encoder.temp_tick - pmotor->encoder.last_tick)) / 1000000) * 0.0235 / (4 * pmotor->encoder.encoder_lines);
+    // register_counter * (numbers of turns to rads:2 * PI) / (time:us_to_s) * (radius:0.0235m) / (4 * lines)
+    pmotor->encoder.last_counter = pmotor->encoder.counter;
+    pmotor->encoder.last_tick = pmotor->encoder.temp_tick;
 }
 
 /**
@@ -129,59 +134,4 @@ void MotorPWM_SetOutput(MotorPWM_DataTypeDef *pmotor, float output)
 float MotorPWM_GetOutput(MotorPWM_DataTypeDef *pmotor)
 {
     return pmotor->output;
-}
-
-/**
- * @brief      Read motor PWM encoder
- * @param      pmotor: The pointer points to the motor group to be sent
- * @retval     NULL
- **/
-void Motor_PWM_ReadEncoder_L(MotorPWM_DataTypeDef *pmotor)
-{
-    int64_t temp = 0;
-    uint64_t temp_tick = 0;
-    if (pmotor == NULL)
-    {
-        return;
-    }
-    pmotor->encoder.counter = __HAL_TIM_GET_COUNTER(pmotor->encoder.htim);
-    temp_tick = DWT_GetTimeline_us();
-    temp = pmotor->encoder.counter - pmotor->encoder.last_counter;
-    if (temp > 32768)
-    {
-        temp -= 65535;
-    }
-    else if (temp < -32768)
-    {
-        temp += 65535;
-    }
-    pmotor->encoder.speed = (float)temp * 2 * 3.1415926f / (((float)(temp_tick - pmotor->encoder.last_tick)) / 1000000) * 0.0235 / (4 * pmotor->encoder.encoder_lines);
-    // register_counter * (numbers of turns to rads:2 * PI) / (time:us_to_s) * (radius:0.0235m) / (4 * lines)
-    pmotor->encoder.last_counter = pmotor->encoder.counter;
-    pmotor->encoder.last_tick = temp_tick;
-}
-
-void Motor_PWM_ReadEncoder_R(MotorPWM_DataTypeDef *pmotor)
-{
-    int64_t temp = 0;
-    uint64_t temp_tick = 0;
-    if (pmotor == NULL)
-    {
-        return;
-    }
-    pmotor->encoder.counter = __HAL_TIM_GET_COUNTER(pmotor->encoder.htim);
-    temp_tick = DWT_GetTimeline_us();
-    temp = pmotor->encoder.counter - pmotor->encoder.last_counter;
-    if (temp > 32768)
-    {
-        temp -= 65535;
-    }
-    else if (temp < -32768)
-    {
-        temp += 65535;
-    }
-    pmotor->encoder.speed = (float)temp * 2 * 3.1415926f / (((float)(temp_tick - pmotor->encoder.last_tick)) / 1000000) * 0.0235 / (4 * pmotor->encoder.encoder_lines);
-    // register_counter * (numbers of turns to rads:2 * PI) / (time:us_to_s) * (radius:0.0235m) / (4 * lines)
-    pmotor->encoder.last_counter = pmotor->encoder.counter;
-    pmotor->encoder.last_tick = temp_tick;
 }

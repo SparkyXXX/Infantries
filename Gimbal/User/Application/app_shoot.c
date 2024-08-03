@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-08-02 19:04:37
+ * @LastEditTime: 2024-08-03 10:53:23
  */
 
 #include "app_shoot.h"
@@ -72,8 +72,8 @@ void ShootSpeed_Update()
         shoot_tick_diff = HAL_GetTick() - shoot_tick_start;
     }
     shooter->shoot_speed.average_bullet_speed = sum / 5;
-    Motor_PWM_ReadEncoder_L(&Motor_shooterMotorLeft);
-    Motor_PWM_ReadEncoder_R(&Motor_shooterMotorRight);
+    Motor_PWM_ReadEncoder(&Motor_shooterMotorLeft);
+    Motor_PWM_ReadEncoder(&Motor_shooterMotorRight);
     snail_diff = shooter->shoot_speed.left_speed_fdb - shooter->shoot_speed.right_speed_fdb;
 }
 
@@ -148,8 +148,8 @@ void Shoot_ShooterControl()
 #if SHOOTER_MODE == CLOSELOOP_CONTROL
     PID_SetRef(&(shooter->shoot_left), shooter->shoot_speed.left_speed_ref);
     PID_SetRef(&(shooter->shoot_right), shooter->shoot_speed.right_speed_ref);
-    shooter->shoot_speed.left_speed_fdb = Motor_shooterMotorLeft.encoder.speed;
-    shooter->shoot_speed.right_speed_fdb = Motor_shooterMotorRight.encoder.speed;
+    shooter->shoot_speed.left_speed_fdb = Filter_Lowpass(Motor_shooterMotorLeft.encoder.speed, &(shooter->shooter_fdb_lpf));
+    shooter->shoot_speed.right_speed_fdb = Filter_Lowpass(Motor_shooterMotorRight.encoder.speed, &(shooter->shooter_fdb_lpf));
     PID_SetFdb(&(shooter->shoot_left), shooter->shoot_speed.left_speed_fdb);
     PID_SetFdb(&(shooter->shoot_right), shooter->shoot_speed.right_speed_fdb);
     MotorPWM_SetOutput(&Motor_shooterMotorLeft, kf * shooter->shoot_speed.left_speed_ref + PID_Calc(&(shooter->shoot_left)));
@@ -157,8 +157,8 @@ void Shoot_ShooterControl()
 #endif
 
 #if SHOOTER_MODE == OPENLOOP_TEST
-    shooter->shoot_speed.left_speed_fdb = Motor_shooterMotorLeft.encoder.speed;
-    shooter->shoot_speed.right_speed_fdb = Motor_shooterMotorRight.encoder.speed;
+    shooter->shoot_speed.left_speed_fdb = Filter_Lowpass(Motor_shooterMotorLeft.encoder.speed, &(shooter->shooter_fdb_lpf));
+    shooter->shoot_speed.right_speed_fdb = Filter_Lowpass(Motor_shooterMotorRight.encoder.speed, &(shooter->shooter_fdb_lpf));
     MotorPWM_SetOutput(&Motor_shooterMotorLeft, kf * shooter->shoot_speed.left_speed_ref);
     MotorPWM_SetOutput(&Motor_shooterMotorRight, kf * shooter->shoot_speed.right_speed_ref);
 #endif

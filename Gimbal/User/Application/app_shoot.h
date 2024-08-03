@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-08-02 19:06:59
+ * @LastEditTime: 2024-08-03 10:49:32
  */
 
 #ifndef APP_SHOOT_H
@@ -79,6 +79,7 @@ extern "C"
 
         PID_TypeDef shoot_left, shoot_right;
         PID_TypeDef feed_spd, feed_ang;
+        Filter_Lowpass_TypeDef shooter_fdb_lpf;
     } Shoot_ControlTypeDef;
 
     extern float angle_diff, last_consequent_angle;
