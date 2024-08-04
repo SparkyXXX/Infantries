@@ -17,10 +17,3 @@
 #define YAW_REMOTE 1
 #define YAW_STEP 0
 #define YAW_MOVE YAW_REMOTE
-
-#define POWER_INFINITE 0
-#define POWER_350 1
-#define POWER_300 2
-#define POWER_250 3
-#define POWER_200 4
-#define TMD_POWER_CTRL POWER_300

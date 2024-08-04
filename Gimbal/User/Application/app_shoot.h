@@ -26,7 +26,7 @@ extern "C"
 #define COOLING_FIRST 1
 #define OUTBURST_FIRST 2
 
-#define HEAT_LIMIT 15
+#define HEAT_LIMIT 20
 
 #define CONTINUOUS 1
 #define SINGLE 2

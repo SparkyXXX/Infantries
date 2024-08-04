@@ -178,40 +178,12 @@ void OmniChassis_PowerControl()
 		chassis->power_limit = MIN(referee->chassis_power_limit * chassis->powerup_coef, Max_Power_Cal(cap->rest_energy)) * chassis->powercontrol_limit_k + chassis->powercontrol_limit_b;
 		PowerControl(chassis->power_control_args, chassis->power_limit, chassis->chassis_I, chassis->chassis_W);
 	}
-#if TMD_POWER_CTRL == POWER_INFINITE
 	else if (boardcom->power_limit_mode == POWER_UNLIMIT)
 	{
+		chassis->power_limit = MIN(400.0f, Max_Power_Cal(cap->rest_energy)) * chassis->powercontrol_limit_k + chassis->powercontrol_limit_b;
+		PowerControl(chassis->power_control_args, chassis->power_limit, chassis->chassis_I, chassis->chassis_W);
+	}
 
-	}
-#endif
-#if TMD_POWER_CTRL == POWER_350
-	else if (boardcom->power_limit_mode == POWER_UNLIMIT)
-	{
-		chassis->power_limit = MIN(350.0f, Max_Power_Cal(cap->rest_energy)) * chassis->powercontrol_limit_k + chassis->powercontrol_limit_b;
-		PowerControl(chassis->power_control_args, chassis->power_limit, chassis->chassis_I, chassis->chassis_W);
-	}
-#endif
-#if TMD_POWER_CTRL == POWER_300
-	else if (boardcom->power_limit_mode == POWER_UNLIMIT)
-	{
-		chassis->power_limit = MIN(300.0f, Max_Power_Cal(cap->rest_energy)) * chassis->powercontrol_limit_k + chassis->powercontrol_limit_b;
-		PowerControl(chassis->power_control_args, chassis->power_limit, chassis->chassis_I, chassis->chassis_W);
-	}
-#endif
-#if TMD_POWER_CTRL == POWER_250
-	else if (boardcom->power_limit_mode == POWER_UNLIMIT)
-	{
-		chassis->power_limit = MIN(250.0f, Max_Power_Cal(cap->rest_energy)) * chassis->powercontrol_limit_k + chassis->powercontrol_limit_b;
-		PowerControl(chassis->power_control_args, chassis->power_limit, chassis->chassis_I, chassis->chassis_W);
-	}
-#endif
-#if TMD_POWER_CTRL == POWER_200
-	else if (boardcom->power_limit_mode == POWER_UNLIMIT)
-	{
-		chassis->power_limit = MIN(200.0f, Max_Power_Cal(cap->rest_energy)) * chassis->powercontrol_limit_k + chassis->powercontrol_limit_b;
-		PowerControl(chassis->power_control_args, chassis->power_limit, chassis->chassis_I, chassis->chassis_W);
-	}
-#endif
 	for (int i = 0; i < 4; i++)
 	{
 		Motor_SetOutput(Motor_ChassisMotors.motor_handle[i], chassis->chassis_I[i] / 20.0f * 16384.0f); // 设置输出，注意单�?
