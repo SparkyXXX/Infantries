@@ -126,7 +126,7 @@ void OmniChassis_CalcOutput()
 		{
 			InverseKinematics_Translation(chassis->wheel_ref,
 										  chassis->chassis_coordinate_ref.vx, chassis->chassis_coordinate_ref.vz,
-										  200 * chassis->gyro_dir, 469);
+										  200 * chassis->gyro_dir, 450);
 		}
 		else
 		{
