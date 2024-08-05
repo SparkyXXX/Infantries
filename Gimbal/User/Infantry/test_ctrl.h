@@ -2,8 +2,8 @@
  * @Project: Infantry Code
  * @Author: GDDG08
  * @Date: 2024-07-18 18:26:59
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-08-04 11:26:05
+ * @LastEditors: Chen Zhihong
+ * @LastEditTime: 2024-08-06 01:42:20
  */
 #define OLD_WHEAT 1
 #define SWING_DANCE 2
@@ -23,7 +23,7 @@
 
 #define AUTOAIM_DECIDE_SHOOT 1
 #define REMOTE_DECIDE_SHOOT 0
-#define SHOOT_DECIDE REMOTE_DECIDE_SHOOT
+#define SHOOT_DECIDE AUTOAIM_DECIDE_SHOOT
 
 #define CLOSELOOP_CONTROL 1
 #define OPENLOOP_TEST 0

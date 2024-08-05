@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-18 00:40:52
+ * @LastEditors: Chen Zhihong
+ * @LastEditTime: 2024-08-06 01:41:26
  */
 
 #ifndef PERIPH_MINIPC_H
@@ -74,6 +74,7 @@ extern "C"
 
         //  Gimbal Receive from MiniPC
         uint8_t recieve_packet_type;
+        uint8_t recieving_lock;
         uint8_t is_get_target;
         uint8_t is_shoot;
         uint16_t timestamp;
