@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-08-03 11:13:46
+ * @LastEditors: Chen Zhihong
+ * @LastEditTime: 2024-08-06 05:11:15
  */
 
 #include "config_ctrl.h"
@@ -68,7 +68,8 @@ void Shoot_ParamInit(void)
     shooter->fast_shoot_freq = Armor_Feeder_Fast_Freq;
     shooter->slow_shoot_freq = Armor_Feeder_Slow_Freq;
     shooter->armor_wait_ms = AutoShoot_Wait_ms;
-    Filter_Lowpass_Init(1000.0f, &(shooter->shooter_fdb_lpf));
+    Filter_Lowpass_Init(1000.0f, &(shooter->shooter_left_fdb_lpf));
+    Filter_Lowpass_Init(1000.0f, &(shooter->shooter_right_fdb_lpf));
     PID_Init(&(shooter->feed_spd), 500.0f, 10.0f, 0.0f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
     PID_Init(&(shooter->feed_ang), 8.35f, 0.0f, 0.00011f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
 
@@ -233,7 +234,7 @@ void Shoot_ParamInit(void)
     shooter->slow_shoot_freq = Armor_Feeder_Slow_Freq;
     shooter->armor_wait_ms = AutoShoot_Wait_ms;
     Filter_Lowpass_Init(1000.0f, &(shooter->shooter_left_fdb_lpf));
-	Filter_Lowpass_Init(1000.0f, &(shooter->shooter_right_fdb_lpf));
+    Filter_Lowpass_Init(1000.0f, &(shooter->shooter_right_fdb_lpf));
     PID_Init(&(shooter->feed_spd), 500.0f, 10.0f, 0.0f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
     PID_Init(&(shooter->feed_ang), 8.35f, 0.0f, 0.00011f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
 
