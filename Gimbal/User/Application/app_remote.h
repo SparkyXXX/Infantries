@@ -73,6 +73,7 @@ extern "C"
     static void Remote_Update(void);
     static void Keymouse_Update(void);
     static void KeyMouse_BuffModeSet(uint8_t mode);
+	static void Remote_AutoaimModeSet(uint8_t mode);
     static void KeyMouse_ArmorModeSet(uint8_t mode);
     static void Following_AutoaimModeSet(void);
     static void KeyMouse_GyroModeSet(void);

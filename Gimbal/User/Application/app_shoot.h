@@ -79,7 +79,8 @@ extern "C"
 
         PID_TypeDef shoot_left, shoot_right;
         PID_TypeDef feed_spd, feed_ang;
-        Filter_Lowpass_TypeDef shooter_fdb_lpf;
+        Filter_Lowpass_TypeDef shooter_left_fdb_lpf;
+		Filter_Lowpass_TypeDef shooter_right_fdb_lpf;
     } Shoot_ControlTypeDef;
 
     extern float angle_diff, last_consequent_angle;

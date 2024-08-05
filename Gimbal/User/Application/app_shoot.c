@@ -148,8 +148,8 @@ void Shoot_ShooterControl()
 #if SHOOTER_MODE == CLOSELOOP_CONTROL
     PID_SetRef(&(shooter->shoot_left), shooter->shoot_speed.left_speed_ref);
     PID_SetRef(&(shooter->shoot_right), shooter->shoot_speed.right_speed_ref);
-    shooter->shoot_speed.left_speed_fdb = Filter_Lowpass(Motor_shooterMotorLeft.encoder.speed, &(shooter->shooter_fdb_lpf));
-    shooter->shoot_speed.right_speed_fdb = Filter_Lowpass(Motor_shooterMotorRight.encoder.speed, &(shooter->shooter_fdb_lpf));
+    shooter->shoot_speed.left_speed_fdb = Filter_Lowpass(Motor_shooterMotorLeft.encoder.speed, &(shooter->shooter_left_fdb_lpf));
+    shooter->shoot_speed.right_speed_fdb = Filter_Lowpass(Motor_shooterMotorRight.encoder.speed, &(shooter->shooter_right_fdb_lpf));
     PID_SetFdb(&(shooter->shoot_left), shooter->shoot_speed.left_speed_fdb);
     PID_SetFdb(&(shooter->shoot_right), shooter->shoot_speed.right_speed_fdb);
     MotorPWM_SetOutput(&Motor_shooterMotorLeft, kf * shooter->shoot_speed.left_speed_ref + PID_Calc(&(shooter->shoot_left)));
