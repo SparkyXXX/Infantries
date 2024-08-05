@@ -17,8 +17,17 @@ extern "C"
 
 #include "stdint.h"
 
+#define CAP_OFFLINE_TIME 10
+
+	typedef enum
+    {
+        CAP_CONNECTED = 0,
+        CAP_LOST = 1
+    } Cap_StateEnum;
+	
     typedef struct
     {
+		Cap_StateEnum state;
         uint8_t SD_flag;
         uint8_t ui_state;
         float sum_power;
@@ -38,6 +47,7 @@ extern "C"
     Cap_DataTypeDef *Cap_GetDataPtr(void);
     void Cap_Init(void);
     void Cap_Update(void);
+	void Cap_IsLost(void);
 
 #ifdef __cplusplus
 }

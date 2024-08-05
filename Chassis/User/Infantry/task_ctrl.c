@@ -73,6 +73,7 @@ void Cap_Task(void const *argument)
 {
     for (;;)
     {
+		Cap_IsLost();
         Cap_Update();
         osDelay(1);
     }

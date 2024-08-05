@@ -234,20 +234,18 @@ static void Keymouse_Update()
             {
                 KeyMouse_GyroModeSet();
             }
-//            if (KEY_UP(b))
-//            {
-//                KeyMouse_BuffModeSet(REMOTE_BUFF_TEMP);
-//            }
-			//////////////////
-			if (KEY_UP(v))
-            {
-                Remote_AutoaimModeSet(REMOTE_SMALL_BUFF);
-            }
             if (KEY_UP(b))
             {
-                Remote_AutoaimModeSet(REMOTE_BIG_BUFF);
+                KeyMouse_BuffModeSet(REMOTE_BUFF_TEMP);
             }
-			/////////////
+//			  if (KEY_UP(v))
+//            {
+//                Remote_AutoaimModeSet(REMOTE_SMALL_BUFF);
+//            }
+//            if (KEY_UP(b))
+//            {
+//                Remote_AutoaimModeSet(REMOTE_BIG_BUFF);
+//            }
             if (KEY_UP(x))
             {
                 gimbal->yaw_position_ref = gimbal->yaw_position_ref - 180.0f;
@@ -391,29 +389,29 @@ static void KeyMouse_ArmorModeSet(uint8_t mode)
     }
 }
 
-//static void KeyMouse_BuffModeSet(uint8_t mode)
-//{
-//    Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
-//    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-//    if (remote_control->aim_mode == REMOTE_ARMOR)
-//    {
-//        remote_control->aim_mode = mode;
-//        if (boardcom->game_progress == 4 && boardcom->stage_remain_time <= 210)
-//        {
-//            remote_control->aim_mode = REMOTE_BIG_BUFF;
-//        }
-//        else if (boardcom->game_progress == 4 && boardcom->stage_remain_time > 210)
-//        {
-//            remote_control->aim_mode = REMOTE_SMALL_BUFF;
-//        }
-//    }
-//    else if ((remote_control->aim_mode == REMOTE_BUFF_TEMP) ||
-//             (remote_control->aim_mode == REMOTE_SMALL_BUFF) ||
-//             (remote_control->aim_mode == REMOTE_BIG_BUFF))
-//    {
-//        remote_control->aim_mode = REMOTE_ARMOR;
-//    }
-//}
+static void KeyMouse_BuffModeSet(uint8_t mode)
+{
+    Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+    if (remote_control->aim_mode == REMOTE_ARMOR)
+    {
+        remote_control->aim_mode = mode;
+        if (boardcom->game_progress == 4 && boardcom->stage_remain_time <= 210)
+        {
+            remote_control->aim_mode = REMOTE_BIG_BUFF;
+        }
+        else if (boardcom->game_progress == 4 && boardcom->stage_remain_time > 210)
+        {
+            remote_control->aim_mode = REMOTE_SMALL_BUFF;
+        }
+    }
+    else if ((remote_control->aim_mode == REMOTE_BUFF_TEMP) ||
+             (remote_control->aim_mode == REMOTE_SMALL_BUFF) ||
+             (remote_control->aim_mode == REMOTE_BIG_BUFF))
+    {
+        remote_control->aim_mode = REMOTE_ARMOR;
+    }
+}
 
 static void Remote_AutoaimModeSet(uint8_t mode)
 {

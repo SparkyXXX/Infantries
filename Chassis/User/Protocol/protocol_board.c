@@ -67,6 +67,8 @@ BoardCom_DataTypeDef *BoardCom_GetDataPtr()
 
 void BoardCom_Init()
 {
+	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+	boardcom->cap_rest_energy = 40;
     FDCAN_InitTxHeader(&TxHeader_Chassis_to_Gimbal1, ID_SEND_REFEREE_DATA1);
     FDCAN_InitTxHeader(&TxHeader_Chassis_to_Gimbal2, ID_SEND_REFEREE_DATA2);
     FDCAN_InitTxHeader(&TxHeader_Chassis_to_Cap, ID_SEND_CAP_DATA);
@@ -78,7 +80,6 @@ void BoardCom_Update()
     Referee_DataTypeDef *referee = Referee_GetDataPtr();
 
     boardcom->robot_id = referee->robot_id;
-    boardcom->power_limit = referee->chassis_power_limit;
     boardcom->cooling_per_second = referee->shooter_barrel_cooling_value;
     boardcom->shoot_spd_referee = referee->initial_speed;
     boardcom->heat_limit = referee->shooter_barrel_heat_limit;

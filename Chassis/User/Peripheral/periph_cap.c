@@ -31,6 +31,7 @@ void Cap_Init(void)
 	Cap_DataTypeDef *cap = Cap_GetDataPtr();
 	cap->SD_flag = 0;
 	cap->ui_state = 0;
+	cap->rest_energy = 40;
 	cap->buck_version = 2;
 	cap->boost_version = 2;
 	cap->buck_input_current_max = Cap_Version_Table[0][cap->buck_version - 1];
@@ -48,7 +49,14 @@ void Cap_Update(void)
 	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
 
 	cap->sum_power = boardcom->cap_power;
-	cap->rest_energy = boardcom->cap_rest_energy;
+	if (cap->state == CAP_CONNECTED)
+	{
+		cap->rest_energy = boardcom->cap_rest_energy;
+	}
+	else if (cap->state == CAP_LOST)
+	{
+		cap->rest_energy = 40;
+	}
 	cap->buck_version = boardcom->buck_version;
 	cap->boost_version = boardcom->boost_version;
 	cap->buck_input_current_max = Cap_Version_Table[0][cap->buck_version - 1];
@@ -72,4 +80,13 @@ void Cap_Update(void)
 		boardcom->cap_mode_flag = 0;
 	}
 	cap->last_update_time = HAL_GetTick();
+}
+
+uint32_t diff;
+void Cap_IsLost(void)
+{
+	Cap_DataTypeDef *cap = Cap_GetDataPtr();
+	uint32_t now = HAL_GetTick();
+	diff = now - cap->last_update_time;
+    cap->state = ((diff) > CAP_OFFLINE_TIME);
 }
