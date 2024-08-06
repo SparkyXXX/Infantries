@@ -60,8 +60,8 @@ void Chassis_ParamInit(void)
     chassis->power_control_args = Power_Control_Args;
     Filter_Lowpass_Init(100.0f, &(chassis->Spd_Follow_Fdb_lpf));
 #if IF_FOLLOW == FOLLOW
-    PID_Init(&(chassis->Chassis_SpdfollowPID), 6.5f, 0.0f, 0.0f, 0.0f, 0.0f, 200.0f, 159.154922f, 159.154922f);
-    PID_Init(&(chassis->Chassis_AngfollowPID), 100.0f, 0.0f, 0.0f, 0.0f, 0.0f, 30.0f, 159.154922f, 159.154922f);
+    PID_Init(&(chassis->Chassis_SpdfollowPID), 4.5f, 0.0f, 0.0f, 0.0f, 0.0f, 200.0f, 159.154922f, 159.154922f);
+    PID_Init(&(chassis->Chassis_AngfollowPID), 50.0f, 0.0f, 0.0f, 0.0f, 0.0f, 30.0f, 159.154922f, 159.154922f);
 #endif
 #if IF_FOLLOW == NO_FOLLOW
     PID_Init(&(chassis->Chassis_SpdfollowPID), 0.0f, 0.0f, 0.0f, 0.0f, 1000.0f, 1000.0f, 159.154922f, 159.154922f);

@@ -28,7 +28,7 @@ float Armor_Feeder_Slow_Freq = 60.0f;
 float Buff_Feeder_Freq = 6.5f;
 float AutoShoot_Wait_ms = 50.0f;
 
-float KeyMouse_NormalSpeed = 200.0f;
+float KeyMouse_NormalSpeed = 300.0f;
 float KeyMouse_UpperSpeed = 500.0f;
 float KeyMouse_FlySlopeSpeed = 500.0f;
 float Mouse_Pitch_To_Ref = 0.001f;
@@ -68,7 +68,8 @@ void Shoot_ParamInit(void)
     shooter->fast_shoot_freq = Armor_Feeder_Fast_Freq;
     shooter->slow_shoot_freq = Armor_Feeder_Slow_Freq;
     shooter->armor_wait_ms = AutoShoot_Wait_ms;
-    Filter_Lowpass_Init(1000.0f, &(shooter->shooter_fdb_lpf));
+    Filter_Lowpass_Init(1000.0f, &(shooter->shooter_left_fdb_lpf));
+	Filter_Lowpass_Init(1000.0f, &(shooter->shooter_right_fdb_lpf));
     PID_Init(&(shooter->feed_spd), 500.0f, 10.0f, 0.0f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
     PID_Init(&(shooter->feed_ang), 8.35f, 0.0f, 0.00011f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
 
@@ -192,7 +193,7 @@ float Armor_Feeder_Slow_Freq = 60.0f;
 float Buff_Feeder_Freq = 6.5f;
 float AutoShoot_Wait_ms = 50.0f;
 
-float KeyMouse_NormalSpeed = 200.0f;
+float KeyMouse_NormalSpeed = 300.0f;
 float KeyMouse_UpperSpeed = 500.0f;
 float KeyMouse_FlySlopeSpeed = 500.0f;
 float Mouse_Pitch_To_Ref = 0.001f;

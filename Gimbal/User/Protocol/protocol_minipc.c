@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-24 18:13:32
+ * @LastEditors: Chen Zhihong
+ * @LastEditTime: 2024-08-06 01:44:44
  */
 
 #include "protocol_minipc.h"
@@ -150,13 +150,13 @@ void MiniPC_Decode(uint8_t *buff, uint16_t rxdatalen)
 {
     MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
     minipc->last_update_time = HAL_GetTick();
-
+    
     if (!MiniPC_Verify(buff, rxdatalen))
     {
         minipc->state = MINIPC_ERROR;
         return;
     }
-
+    minipc->recieving_lock = 1;
     switch (buff[4])
     {
     case MINIPC_ARMOR_PACKET:
@@ -168,6 +168,7 @@ void MiniPC_Decode(uint8_t *buff, uint16_t rxdatalen)
     default:
         break;
     }
+    minipc->recieving_lock = 0;
 }
 
 static void MiniPC_ArmorPacketDecode(void *buff, uint16_t rxdatalen)

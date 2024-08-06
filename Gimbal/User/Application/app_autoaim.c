@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-18 01:04:02
+ * @LastEditors: Chen Zhihong
+ * @LastEditTime: 2024-08-05 22:19:04
  */
 
 #include "app_autoaim.h"
@@ -39,7 +39,7 @@ void AutoAim_Output()
             {
                 autoaim->armor_yaw += 360;
             }
-            if(minipc->recieve_packet_type == MINIPC_ARMOR_PACKET && minipc->is_get_target && !MiniPC_IsLost())
+            if(minipc->recieve_packet_type == MINIPC_ARMOR_PACKET && minipc->is_get_target && !MiniPC_IsLost() && minipc->recieving_lock == 0)
             {
                 gimbal->pitch_position_ref = autoaim->armor_pitch;
                 gimbal->yaw_position_ref = autoaim->armor_yaw;

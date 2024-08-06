@@ -7,7 +7,7 @@
 #include "protocol_referee.h"
 #include "util_uart.h"
 
-constexpr uint16_t CircleX = 960+sight_bias;
+constexpr uint16_t CircleX = 960 + sight_bias;
 constexpr uint16_t CircleY = 340;
 constexpr uint16_t Radius = 60;
 uint16_t directionline1FX = 0;
@@ -91,7 +91,7 @@ constexpr uint16_t eCapProgressBarRight = 645;
 constexpr uint16_t eCapProgressBarBottom = 824;
 
 UI ::Rectangle getTargetRec{
-	UI::Color::Pink, 5, {960 - 140+sight_bias, 540 - 140}, {960 + 140+sight_bias, 540 + 140}};
+	UI::Color::Pink, 5, {960 - 140 + sight_bias, 540 - 140}, {960 + 140 + sight_bias, 540 + 140}};
 
 UI::Rectangle eCapProgressBarBox{
 	UI::Color::Yellow, 3, {eCapProgressBarLeft, eCapProgressBarTop}, {eCapProgressBarRight, eCapProgressBarBottom}};
@@ -124,43 +124,43 @@ UI::Float ChassisSpeedW{
 	UI::Color::Green, 2, {300, 540 + 80}, 20, 1.23456f};
 
 UI::Line frontSightMiddle{
-	UI::Color::Black, 1, {960+sight_bias, 690}, {960+sight_bias, 390}};
+	UI::Color::Black, 1, {960 + sight_bias, 690}, {960 + sight_bias, 390}};
 
 UI::Line frontSightUp1{
-	UI::Color::Black, 1, {885+sight_bias, 690}, {1035+sight_bias, 690}};
+	UI::Color::Black, 1, {885 + sight_bias, 690}, {1035 + sight_bias, 690}};
 
 UI::Line frontSightUp2{
-	UI::Color::Black, 1, {910+sight_bias, 640}, {1010+sight_bias, 640}};
+	UI::Color::Black, 1, {910 + sight_bias, 640}, {1010 + sight_bias, 640}};
 
 UI::Line frontSightUp3{
-	UI::Color::Black, 1, {935+sight_bias, 590}, {985+sight_bias, 590}};
+	UI::Color::Black, 1, {935 + sight_bias, 590}, {985 + sight_bias, 590}};
 
 UI::Line frontSightUp4{
-	UI::Color::Black, 1, {945+sight_bias, 665}, {975+sight_bias, 665}};
+	UI::Color::Black, 1, {945 + sight_bias, 665}, {975 + sight_bias, 665}};
 
 UI::Line frontSightUp5{
-	UI::Color::Black, 1, {945+sight_bias, 615}, {975+sight_bias, 615}};
+	UI::Color::Black, 1, {945 + sight_bias, 615}, {975 + sight_bias, 615}};
 
 UI::Line frontSightDown1{
-	UI::Color::Black, 1, {885+sight_bias, 390}, {1035+sight_bias, 390}};
+	UI::Color::Black, 1, {885 + sight_bias, 390}, {1035 + sight_bias, 390}};
 
 UI::Line frontSightDown2{
-	UI::Color::Black, 1, {910+sight_bias, 440}, {1010+sight_bias, 440}};
+	UI::Color::Black, 1, {910 + sight_bias, 440}, {1010 + sight_bias, 440}};
 
 UI::Line frontSightDown3{
-	UI::Color::Black, 1, {935+sight_bias, 490}, {985+sight_bias, 490}};
+	UI::Color::Black, 1, {935 + sight_bias, 490}, {985 + sight_bias, 490}};
 
 UI::Line frontSightDown4{
-	UI::Color::Black, 1, {945+sight_bias, 415}, {975+sight_bias, 415}};
+	UI::Color::Black, 1, {945 + sight_bias, 415}, {975 + sight_bias, 415}};
 
 UI::Line frontSightDown5{
-	UI::Color::Black, 1, {945+sight_bias, 465}, {975+sight_bias, 465}};
+	UI::Color::Black, 1, {945 + sight_bias, 465}, {975 + sight_bias, 465}};
 
 UI::Circle DirectionCircle{
-	UI::Color::Cyan, 3, {CircleX+sight_bias, CircleY}, Radius};
+	UI::Color::Cyan, 3, {CircleX + sight_bias, CircleY}, Radius};
 
 UI::Line DirectionLine1{
-	UI::Color::Green, 4, {CircleX+sight_bias, CircleY}, {CircleX+sight_bias + 30, CircleY + 30}};
+	UI::Color::Green, 4, {CircleX + sight_bias, CircleY}, {CircleX + sight_bias + 30, CircleY + 30}};
 
 /* 实时更新的图层 */
 
@@ -358,6 +358,23 @@ void UI_Update()
 		capRec.changeColor(UI::Color::Pink);
 	}
 
+	if (ui->rest_energy < 30)
+	{
+		uint32_t _tick = HAL_GetTick();
+		if (_tick % 1000 < 500)
+		{
+			eCapProgressBarCor.changeColor(UI::Color::Pink);
+		}
+		else
+		{
+			eCapProgressBarCor.changeColor(UI::Color::Green);
+		}
+	}
+	else if (ui->rest_energy >= 30)
+	{
+		eCapProgressBarCor.changeColor(UI::Color::Green);
+	}
+
 	if (ui->homehurt)
 	{
 		homeWarningRec.changeColor(UI::Color::Pink);
@@ -426,7 +443,7 @@ void UI_Update()
 	eCapProgressBarCor.changeSecondPoint({l, eCapProgressBarBottom + 9});
 	eCapProgressValue.changeValue(ui->rest_energy);
 	pitchValue.changeValue(ui->pitch);
-	
+
 	ChassisSpeedVz.changeValue(ui->chassis_speed_vz);
 	ChassisSpeedVx.changeValue(ui->chassis_speed_vx);
 	ChassisSpeedW.changeValue(ui->chassis_speed_w);
@@ -436,49 +453,4 @@ void UI_Update()
 	progressBars.getUpdateBuffer(UiBuffer, ui->robot_id, ui->client_id);
 	HAL_UART_Transmit(&huart2, UiBuffer, 122, 40);
 	osDelay(50);
-}
-
-void HomeHurt_Detect()
-{
-	Referee_DataTypeDef *referee = Referee_GetDataPtr();
-	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-	HP_DataTypeDef *hp = HP_GetDataPtr();
-	UI_DataTypeDef *ui = UI_GetDataPtr();
-
-	hp->blue_7_robot_HP_last = hp->blue_7_robot_HP;
-	hp->blue_outpost_HP_last = hp->blue_outpost_HP;
-	hp->blue_base_HP_last = hp->blue_base_HP;
-	hp->red_7_robot_HP_last = hp->red_7_robot_HP;
-	hp->red_outpost_HP_last = hp->red_outpost_HP;
-	hp->red_base_HP_last = hp->red_base_HP;
-
-	hp->blue_7_robot_HP = referee->blue_7_robot_HP;
-	hp->blue_outpost_HP = referee->blue_outpost_HP;
-	hp->blue_base_HP = referee->blue_base_HP;
-	hp->red_7_robot_HP = referee->red_7_robot_HP;
-	hp->red_outpost_HP = referee->red_outpost_HP;
-	hp->red_base_HP = referee->red_base_HP;
-
-	if (boardcom->team_color == COLOR_BLUE)
-	{
-		if (hp->blue_7_robot_HP < hp->blue_7_robot_HP_last || hp->blue_outpost_HP < hp->blue_outpost_HP_last || hp->blue_base_HP < hp->blue_base_HP_last)
-		{
-			ui->homehurt = 1;
-		}
-		else
-		{
-			ui->homehurt = 0;
-		}
-	}
-	if (boardcom->team_color == COLOR_RED)
-	{
-		if (hp->red_7_robot_HP < hp->red_7_robot_HP_last || hp->red_outpost_HP < hp->red_outpost_HP_last || hp->red_base_HP < hp->red_base_HP_last)
-		{
-			ui->homehurt = 1;
-		}
-		else
-		{
-			ui->homehurt = 0;
-		}
-	}
 }

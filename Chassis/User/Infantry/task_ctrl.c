@@ -97,7 +97,6 @@ void UI_Task(void const *argument)
             UI_Refresh();
         }
         ui_cmd_last = boardcom->ui_cmd;
-        HomeHurt_Detect();
         UI_Update();
         osDelay(20);
     }
