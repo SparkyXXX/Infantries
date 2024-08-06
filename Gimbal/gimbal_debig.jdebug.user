@@ -1,52 +1,33 @@
 
 
-GraphedExpression="((Shoot_Control).shoot_speed).left_speed_fdb", Color=#e56a6f
-GraphedExpression="((Shoot_Control).shoot_speed).right_speed_fdb", Color=#35792b
-GraphedExpression="snail_diff", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#769dda, Show=0
-GraphedExpression="((Shoot_Control).shoot_speed).referee_bullet_speed[0]", Color=#b14f0d, Show=0
-OpenDocument="app_gimbal.c", FilePath="F:/RM Code/infantries/Gimbal/User/Application/app_gimbal.c", Line=14
-OpenDocument="main.c", FilePath="F:/RM Code/infantries/Gimbal/Core/Src/main.c", Line=67
-OpenDocument="periph_motor_pwm.h", FilePath="F:/RM Code/infantries/Gimbal/User/Peripheral/periph_motor_pwm.h", Line=37
-OpenDocument="periph_motor_can.c", FilePath="F:/RM Code/infantries/Gimbal/User/Peripheral/periph_motor_can.c", Line=0
-OpenDocument="protocol_board.c", FilePath="F:/RM Code/infantries/Gimbal/User/Protocol/protocol_board.c", Line=0
-OpenDocument="app_shoot.c", FilePath="F:/RM Code/infantries/Gimbal/User/Application/app_shoot.c", Line=144
-OpenDocument="startup_stm32g473xx.s", FilePath="F:/RM Code/infantries/Gimbal/MDK-ARM/startup_stm32g473xx.s", Line=190
-OpenDocument="task_ctrl.c", FilePath="F:/RM Code/infantries/Gimbal/User/Infantry/task_ctrl.c", Line=69
-OpenDocument="util_pwm.h", FilePath="F:/RM Code/infantries/Gimbal/User/Utility/util_pwm.h", Line=25
-OpenDocument="periph_motor_pwm.c", FilePath="F:/RM Code/infantries/Gimbal/User/Peripheral/periph_motor_pwm.c", Line=115
-OpenDocument="app_ins.c", FilePath="F:/RM Code/infantries/Gimbal/User/Application/app_ins.c", Line=0
-OpenDocument="tasks.c", FilePath="F:/RM Code/infantries/Gimbal/Middlewares/Third_Party/FreeRTOS/Source/tasks.c", Line=3659
-OpenDocument="stm32g4xx_it.c", FilePath="F:/RM Code/infantries/Gimbal/Core/Src/stm32g4xx_it.c", Line=92
+GraphedExpression="((Gimbal_Control).pitch_pos).ref", Color=#e56a6f
+GraphedExpression="((Gimbal_Control).pitch_pos).fdb", Color=#35792b
+GraphedExpression="((Gimbal_Control).pitch_pos).sum", Color=#769dda, Show=0
+OpenDocument="stm32g4xx_hal.c", FilePath="D:/RM/my project/tmp/infantries/Gimbal/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.c", Line=397
+OpenDocument="startup_stm32g473xx.s", FilePath="D:/RM/my project/tmp/infantries/Gimbal/MDK-ARM/startup_stm32g473xx.s", Line=183
+OpenDocument="main.c", FilePath="D:/RM/my project/tmp/infantries/Gimbal/Core/Src/main.c", Line=61
 OpenToolbar="Debug", Floating=0, x=0, y=0
-OpenWindow="Call Stack", DockArea=RIGHT, x=0, y=0, w=706, h=501, TabPos=3, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=176, h=527, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Global Data", DockArea=BOTTOM, x=0, y=0, w=1920, h=351, TabPos=2, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Local Data", DockArea=BOTTOM, x=0, y=0, w=1920, h=351, TabPos=1, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Watched Data 1", DockArea=BOTTOM, x=0, y=0, w=1920, h=351, TabPos=0, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Data Sampling", DockArea=RIGHT, x=0, y=0, w=706, h=501, TabPos=0, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
-OpenWindow="Timeline", DockArea=RIGHT, x=0, y=0, w=706, h=501, TabPos=1, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="200 ms / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="-27;0", DataGraphShowNamesAtCursor=0, PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="421;-89", CodeGraphLegendShown=0, CodeGraphLegendPosition="440;0"
-OpenWindow="RTOS", DockArea=RIGHT, x=0, y=0, w=706, h=501, TabPos=2, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, Showing=""
+OpenWindow="Call Stack", DockArea=RIGHT, x=0, y=0, w=1277, h=944, TabPos=3, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=176, h=963, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Global Data", DockArea=BOTTOM, x=0, y=0, w=2160, h=351, TabPos=2, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Local Data", DockArea=BOTTOM, x=0, y=0, w=2160, h=351, TabPos=1, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Watched Data 1", DockArea=BOTTOM, x=0, y=0, w=2160, h=351, TabPos=0, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Data Sampling", DockArea=RIGHT, x=0, y=0, w=1277, h=944, TabPos=0, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
+OpenWindow="Timeline", DockArea=RIGHT, x=0, y=0, w=1277, h=944, TabPos=1, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="2 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="0;0", DataGraphShowNamesAtCursor=0, PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="1112;-69", CodeGraphLegendShown=0, CodeGraphLegendPosition="1128;0"
+OpenWindow="RTOS", DockArea=RIGHT, x=0, y=0, w=1277, h=944, TabPos=2, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, Showing=""
 SmartViewPlugin="", Page="", Toolbar="Hidden", Window="SmartView 1"
-TableHeader="Global Data", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Location";"Size";"Type";"Scope"], ColWidths=[100;100;100;100;100;460]
-TableHeader="Local Data", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Location";"Size";"Type";"Scope"], ColWidths=[149;329;118;100;100;164]
-TableHeader="Call Stack", SortCol="Function", SortOrder="ASCENDING", VisibleCols=["Function";"Stack Frame";"Source";"PC";"Return Address";"Stack Used"], ColWidths=[239;100;100;100;112;124]
-TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" ((Shoot_Control).shoot_speed).left_speed_fdb";" ((Shoot_Control).shoot_speed).right_speed_fdb";" snail_diff"], ColWidths=[100;100;100;100;100]
-TableHeader="Data Sampling Setup", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[615;100;100;168;179;107;129;151;151]
-TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[345;102;100;100;1147]
+TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" ((Gimbal_Control).pitch_pos).ref";" ((Gimbal_Control).pitch_pos).fdb";" ((Gimbal_Control).pitch_pos).sum"], ColWidths=[100;100;100;100;100]
+TableHeader="Data Sampling Setup", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[615;100;100;154;164;100;110;126;126]
+TableHeader="Global Data", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Location";"Size";"Type";"Scope"], ColWidths=[100;100;100;100;100;580]
+TableHeader="Local Data", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Location";"Size";"Type";"Scope"], ColWidths=[149;329;118;100;100;284]
+TableHeader="Call Stack", SortCol="Function", SortOrder="ASCENDING", VisibleCols=["Function";"Stack Frame";"Source";"PC";"Return Address";"Stack Used"], ColWidths=[239;100;100;100;112;100]
+TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[345;102;100;100;918]
 TableHeader="Power Sampling", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
-TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[484;435;402;578]
-TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;351]
-WatchedExpression="Shoot_Control", RefreshRate=5, Window=Watched Data 1
-WatchedExpression="shoot_ref", Window=Watched Data 1
-WatchedExpression="Motor_shooterMotorLeft", RefreshRate=5, Window=Watched Data 1
-WatchedExpression="kf", Window=Watched Data 1
-WatchedExpression="Motor_shooterMotorRight", RefreshRate=5, Window=Watched Data 1
-WatchedExpression="shoot_diff_tick", Window=Watched Data 1
-WatchedExpression="snail_diff", Window=Watched Data 1
-WatchedExpression="shoot_tick_diff", Window=Watched Data 1
+TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[484;435;402;813]
+TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;340]
 WatchedExpression="Gimbal_Control", RefreshRate=5, Window=Watched Data 1
-WatchedExpression="Motor_gimbalMotorPitch", RefreshRate=5, Window=Watched Data 1
-WatchedExpression="INS_Data", Window=Watched Data 1
-WatchedExpression="Boardcom_Data", Window=Watched Data 1
-WatchedExpression="BoardCom_Data", RefreshRate=5, Window=Watched Data 1
+WatchedExpression="test_ref", Window=Watched Data 1
+WatchedExpression="Pitch_Pos_KpSet", Window=Watched Data 1
+WatchedExpression="Pitch_Pos_KiSet", Window=Watched Data 1
+WatchedExpression="Pitch_Pos_KdSet", Window=Watched Data 1
