@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-08-06 05:11:15
+ * @LastEditTime: 2024-08-07 00:28:35
  */
 
 #include "config_ctrl.h"
@@ -331,5 +331,6 @@ void Init_All(void)
     RemoteControl_Init();
     AutoAim_Init();
     Remote_Init(&huart3);
+    Referee_Init(&huart2);
 }
 #endif

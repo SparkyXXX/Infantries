@@ -2749,6 +2749,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\Peripheral\periph_remote.c</FilePath>
             </File>
+            <File>
+              <FileName>periph_ext_remote.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Peripheral\periph_ext_remote.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-08-03 10:53:23
+ * @LastEditors: Chen Zhihong
+ * @LastEditTime: 2024-08-06 20:54:43
  */
 
 #include "app_shoot.h"
@@ -402,7 +402,37 @@ void Keymouse_ShootModeSet()
 
     AutoAim_ShootModeSet();
 }
+int press_time_VTM = 0;
+void Keymouse_VTM_ShootModeSet()
+{
+    ext_remote_control_t *remote = &(Referee_GetDataPtr()->remote_vtm_data);
+    MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
+    AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
+    Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();
+    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
 
+    if (remote->left_button_down == 1)
+    {
+        press_time++;
+        if (press_time > 150)
+        {
+            Shoot_FeederModeSet(FEEDER_REFEREE);
+        }
+        else
+        {
+            Shoot_FeederModeSet(FEEDER_SINGLE);
+        }
+    }
+    else
+    {
+        Shoot_FeederModeSet(FEEDER_STOP);
+        shooter->single_shoot_done = 0;
+        press_time = 0;
+    }
+
+    AutoAim_ShootModeSet();
+}
 extern uint32_t shoot_tick_start;
 uint16_t wait_tick = 0;
 uint8_t have_shooted = 0; // this is_shoot=1 time is have shooted to avoid one is_shoot time shoot twice

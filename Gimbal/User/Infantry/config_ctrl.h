@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-17 22:02:51
+ * @LastEditors: Chen Zhihong
+ * @LastEditTime: 2024-08-06 23:54:53
  */
 
 #ifndef INIT_CTRL_H
@@ -28,6 +28,7 @@ extern "C"
 #include "periph_remote.h"
 #include "periph_servo.h"
 #include "protocol_minipc.h"
+#include "periph_ext_remote.h"
 
 #include "cmsis_os.h"
 #include "protocol_board.h"

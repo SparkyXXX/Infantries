@@ -70,7 +70,6 @@ void MX_FREERTOS_Init(void);
   * @retval int
   */
 int main(void)
-
 {
   /* USER CODE BEGIN 1 */
 
@@ -105,6 +104,7 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_ADC2_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   Init_All();
   /* USER CODE END 2 */
