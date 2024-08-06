@@ -332,7 +332,7 @@ void UI_Update()
 	}
 	if (ui->is_get_target)
 	{
-		get_target_count = 10;
+		get_target_count = 2;
 	}
 	else if (get_target_count > 0)
 	{
