@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-18 01:18:29
+ * @LastEditors: Chen Zhihong
+ * @LastEditTime: 2024-08-06 21:22:49
  */
 
 #ifndef APP_REMOTE_H
@@ -29,6 +29,12 @@ extern "C"
 #define KEY3(T1, T2, T3) (remote->key.T1 && remote->key.T2 && remote->key.T3)
 #define KEY_UP(T) (Remote_Keylast.T && !keyboard->T)
 #define KEY_DN(T) (!Remote_Keylast.T && keyboard->T)
+
+#define KEY_VTM(T) (keyboard_VTM->T)
+#define KEY2_VTM(T1, T2) (keyboard_VTM->T1 && keyboard_VTM->T2)
+#define KEY3_VTM(T1, T2, T3) (keyboard_VTM->T1 && keyboard_VTM->T2 && keyboard_VTM->T3)
+#define KEY_UP_VTM(T) (Remote_Keylast_VTM.T && !keyboard_VTM->T)
+#define KEY_DN_VTM(T) (!Remote_Keylast_VTM.T && keyboard_VTM->T)
 
     typedef enum
     {
@@ -72,6 +78,7 @@ extern "C"
     void Remote_DriveModeSet(void);
     static void Remote_Update(void);
     static void Keymouse_Update(void);
+    static void Keymouse_VTM_Update(void);
     static void KeyMouse_BuffModeSet(uint8_t mode);
 	static void Remote_AutoaimModeSet(uint8_t mode);
     static void KeyMouse_ArmorModeSet(uint8_t mode);

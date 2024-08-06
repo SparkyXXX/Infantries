@@ -3,14 +3,18 @@
  *
  * @Author: Hatrix
  * @Date: 2023-11-07 14:28:30
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-01-15 01:28:43
+ * @LastEditors: Chen Zhihong
+ * @LastEditTime: 2024-08-07 03:11:06
  */
 
 #include "callback_ctrl.h"
+#include "periph_ext_remote.h"
 
 static FDCAN_RxHeaderTypeDef FDCAN_RxHeader;
 static uint8_t FDCAN_RxData[FDCAN_RX_LEN];
+
+extern const uint16_t REFEREE_FRAME_HEADER_SOF;
+extern uint8_t Referee_RxData[REFEREE_RX_BUFF_LEN];
 
 float uart_pe_count = 0;
 float uart_fe_count = 0;
@@ -34,7 +38,17 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
     }
     if (huart == &huart3)
     {
+        HAL_UART_DMAStop(&huart3);
+        HAL_UART_DeInit(&huart3);
+        HAL_UART_Init(&huart3);
         Remote_Init(huart);
+    }
+    else if (huart == &huart2)
+    {
+        HAL_UART_DMAStop(huart);
+        HAL_UART_DeInit(huart);
+        HAL_UART_Init(huart);
+        Referee_Init(huart);
     }
 }
 /**
@@ -59,6 +73,21 @@ void UART_ReceiveHandler(UART_HandleTypeDef *huart)
     }
 }
 
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t rxdatalen)
+{
+    if (huart == &huart2)
+    {
+        for (uint16_t i = 0; i < rxdatalen; i++)
+        {
+            if (Referee_RxData[i] == REFEREE_FRAME_HEADER_SOF)
+            {
+                Referee_Decode(Referee_RxData + i, rxdatalen);
+            }
+        }
+        HAL_UARTEx_ReceiveToIdle_DMA(huart, Referee_RxData, REFEREE_RX_BUFF_LEN);
+    }
+}
+
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *phfdcan, uint32_t RxFifo0ITs)
 {
     if ((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
@@ -77,4 +106,3 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *phfdcan, uint32_t RxFifo0ITs
         }
     }
 }
-

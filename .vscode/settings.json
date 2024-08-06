@@ -22,6 +22,7 @@
   "files.associations": {
     "callback_ctrl.h": "c",
     "util_pwm.h": "c",
-    "tim.h": "c"
+    "tim.h": "c",
+    "config_ctrl.h": "c"
   }
 }

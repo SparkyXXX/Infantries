@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-01-15 00:45:13
+ * @LastEditors: Chen Zhihong
+ * @LastEditTime: 2024-08-06 20:20:01
  */
 
 #ifndef PERIPH_REMOTE_H
@@ -55,7 +55,25 @@ extern "C"
     {
         uint8_t w, a, s, d, shift, ctrl, space, q, e, r, f, g, z, x, c, v, b;
     } Keyboard_DataTypeDef;
-
+    typedef struct
+    {
+        uint16_t w : 1;
+        uint16_t s : 1;
+        uint16_t a : 1;
+        uint16_t d : 1;
+        uint16_t shift : 1;
+        uint16_t ctrl : 1;
+        uint16_t q : 1;
+        uint16_t e : 1;
+        uint16_t r : 1;
+        uint16_t f : 1;
+        uint16_t g : 1;
+        uint16_t z : 1;
+        uint16_t x : 1;
+        uint16_t c : 1;
+        uint16_t v : 1;
+        uint16_t b : 1;
+    } Keyboard_VTM_DataTypeDef;
     typedef struct
     {
         Remote_StateEnum state;
@@ -77,13 +95,13 @@ extern "C"
         } mouse;
 
         Keyboard_DataTypeDef key;
-		
+
         uint8_t rx_data[REMOTE_RX_BUFF_LEN];
         uint32_t last_update_time;
     } Remote_DataTypeDef;
-	
-	extern uint8_t Remote_Decode_Flag;
-	extern UART_HandleTypeDef* REMOTE_UART_HANDLER;
+
+    extern uint8_t Remote_Decode_Flag;
+    extern UART_HandleTypeDef *REMOTE_UART_HANDLER;
 
     void Remote_Decode(Remote_DataTypeDef *rc, uint8_t *buff, int rxdatalen);
     void KeyBoard_Decode(Keyboard_DataTypeDef *key, uint16_t v);

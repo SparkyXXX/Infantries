@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-08-03 11:13:46
+ * @LastEditTime: 2024-08-07 06:47:33
  */
 
 #include "config_ctrl.h"
@@ -45,7 +45,7 @@ Interval Pitch_Spd_Error_Range = {-8.0f, 8.0f};
 Interval Pitch_Spd_ErrorChange_Range = {-8.0f, 8.0f};
 
 float Pitch_Pos_KpSet[7] = {80.0f, 60.0f, 40.0f, 30.0f, 40.0f, 60.0f, 80.0f};
-float Pitch_Pos_KiSet[7] = {20.0f, 20.0f, 20.0f, 15.0f, 10.0f, 10.0f, 10.0f};
+float Pitch_Pos_KiSet[7] = {15.0f, 15.0f, 15.0f, 10.0f, 8.0f, 8.0f, 8.0f};
 float Pitch_Pos_KdSet[7] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 Interval Pitch_Pos_Error_Range = {-0.54f, 0.48f};
 Interval Pitch_Pos_ErrorChange_Range = {-0.54f, 0.48f};
@@ -59,7 +59,7 @@ void Gimbal_ParamInit(void)
                   &Pitch_Spd_Error_Range, &Pitch_Spd_ErrorChange_Range, 0.0f, 8000.0f, 25000.0f, 100000000.0f, 159.154922f);
     //																	kf        sum_max  output_max d_cutoff_frq kf_cutoff_frq
     FuzzyPID_Init(&(gimbal->pitch_pos), Pitch_Pos_KpSet, Pitch_Pos_KiSet, Pitch_Pos_KdSet,
-                  &Pitch_Pos_Error_Range, &Pitch_Pos_ErrorChange_Range, 0.0f, 0.15f, 15.0f, 159.154922f, 159.154922f);
+                  &Pitch_Pos_Error_Range, &Pitch_Pos_ErrorChange_Range, 0.0f, 0.13f, 15.0f, 159.154922f, 159.154922f);
 }
 
 void Shoot_ParamInit(void)
@@ -69,7 +69,8 @@ void Shoot_ParamInit(void)
     shooter->slow_shoot_freq = Armor_Feeder_Slow_Freq;
     shooter->armor_wait_ms = AutoShoot_Wait_ms;
     Filter_Lowpass_Init(1000.0f, &(shooter->shooter_left_fdb_lpf));
-	Filter_Lowpass_Init(1000.0f, &(shooter->shooter_right_fdb_lpf));
+    Filter_Lowpass_Init(1000.0f, &(shooter->shooter_right_left_fdb_lpf));
+    Filter_Lowpass_Init(1000.0f, &(shooter->shooter_right_fdb_lpf));
     PID_Init(&(shooter->feed_spd), 500.0f, 10.0f, 0.0f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
     PID_Init(&(shooter->feed_ang), 8.35f, 0.0f, 0.00011f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
 
@@ -234,7 +235,7 @@ void Shoot_ParamInit(void)
     shooter->slow_shoot_freq = Armor_Feeder_Slow_Freq;
     shooter->armor_wait_ms = AutoShoot_Wait_ms;
     Filter_Lowpass_Init(1000.0f, &(shooter->shooter_left_fdb_lpf));
-	Filter_Lowpass_Init(1000.0f, &(shooter->shooter_right_fdb_lpf));
+    Filter_Lowpass_Init(1000.0f, &(shooter->shooter_right_fdb_lpf));
     PID_Init(&(shooter->feed_spd), 500.0f, 10.0f, 0.0f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
     PID_Init(&(shooter->feed_ang), 8.35f, 0.0f, 0.00011f, 0.0f, 10000.0f, 20000.0f, 159.154922f, 159.154922f);
 
@@ -331,5 +332,6 @@ void Init_All(void)
     RemoteControl_Init();
     AutoAim_Init();
     Remote_Init(&huart3);
+    Referee_Init(&huart2);
 }
 #endif
