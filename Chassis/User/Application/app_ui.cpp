@@ -298,6 +298,7 @@ void UI_Refresh()
 }
 
 uint16_t warn_count = 0;
+uint16_t get_target_count = 0;
 void UI_Update()
 {
 	UI_DataTypeDef *ui = UI_GetDataPtr();
@@ -330,6 +331,14 @@ void UI_Update()
 		shooterRec.changeColor(UI::Color::Pink);
 	}
 	if (ui->is_get_target)
+	{
+		get_target_count = 10;
+	}
+	else if (get_target_count > 0)
+	{
+		get_target_count -= 1;
+	}
+	if (get_target_count > 0)
 	{
 		getTargetRec.changeColor(UI::Color::Green);
 	}
