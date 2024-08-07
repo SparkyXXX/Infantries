@@ -23,6 +23,7 @@
     "callback_ctrl.h": "c",
     "util_pwm.h": "c",
     "tim.h": "c",
-    "config_ctrl.h": "c"
+    "config_ctrl.h": "c",
+    "lib_power_ctrl.h": "c"
   }
 }

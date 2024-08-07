@@ -210,7 +210,6 @@ static void Keymouse_Update()
             if (KEY_DN(r))
             {
                 remote_control->autoshoot_flag = 0;
-                autoaim->is_change_target = 0;
                 wait4release = 1;
             }
             if (KEY_DN(c))
@@ -281,7 +280,6 @@ static void Keymouse_Update()
             if (KEY_DN(r))
             {
                 remote_control->autoshoot_flag = 1;
-                autoaim->is_change_target = 1;
             }
             if (KEY_DN(c))
             {
@@ -459,7 +457,6 @@ static void Keymouse_VTM_Update(void)
             if (KEY_DN_VTM(r))
             {
                 remote_control->autoshoot_flag = 0;
-                autoaim->is_change_target = 0;
                 wait4release = 1;
             }
             if (KEY_DN_VTM(c))
@@ -530,7 +527,6 @@ static void Keymouse_VTM_Update(void)
             if (KEY_DN_VTM(r))
             {
                 remote_control->autoshoot_flag = 1;
-                autoaim->is_change_target = 1;
             }
             if (KEY_DN_VTM(c))
             {

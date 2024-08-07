@@ -21,6 +21,7 @@ void AutoAim_Output()
     MiniPC_DataTypeDef* minipc = MiniPC_GetDataPtr();
     Gimbal_ControlTypeDef* gimbal = Gimbal_GetControlPtr();
     Shoot_ControlTypeDef* shooter = Shoot_GetControlPtr();
+	Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
 
     if(gimbal->present_mode != GIMBAL_NO_AUTO)
     {
@@ -47,6 +48,7 @@ void AutoAim_Output()
         }
         else if(autoaim->hit_mode == AUTOAIM_HIT_BUFF)
         {
+			autoaim->is_change_target = remote_control->autoshoot_flag;
             shooter->fast_shoot_freq = autoaim->buff_freq;
             shooter->slow_shoot_freq = autoaim->buff_freq;
             autoaim->buff_yaw = -(float)minipc->buff_yaw_ref / 100;
