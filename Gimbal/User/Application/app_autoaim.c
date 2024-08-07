@@ -40,7 +40,8 @@ void AutoAim_Output()
             {
                 autoaim->armor_yaw += 360;
             }
-            if(minipc->recieve_packet_type == MINIPC_ARMOR_PACKET && minipc->is_get_target && !MiniPC_IsLost() && minipc->recieving_lock == 0)
+            if(minipc->recieve_packet_type == MINIPC_ARMOR_PACKET && minipc->is_get_target && !MiniPC_IsLost() &&
+				minipc->recieving_lock == 0 && !((minipc->armor_yaw_ref == 0) && (minipc->armor_pitch_ref == 0)))
             {
                 gimbal->pitch_position_ref = autoaim->armor_pitch;
                 gimbal->yaw_position_ref = autoaim->armor_yaw;
