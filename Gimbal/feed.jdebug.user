@@ -1,0 +1,25 @@
+
+
+GraphedExpression="((Shoot_Control).shoot_left).fdb", Color=#e56a6f
+GraphedExpression="((Shoot_Control).shoot_right).fdb", Color=#35792b
+GraphedExpression="((Shoot_Control).shoot_left).output", Color=#769dda
+OpenDocument="main.c", FilePath="D:/RM/my project/Infantry_BigTitan/infantry_-big_-titan/Gimbal_extR/Core/Src/main.c", Line=0
+OpenToolbar="Debug", Floating=0, x=0, y=0
+OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=855, h=292, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Memory 1", DockArea=BOTTOM, x=1, y=0, w=1083, h=166, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, EditorAddress=0x20002638
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=0, w=420, h=1167, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Data Sampling", DockArea=RIGHT, x=0, y=1, w=855, h=855, TabPos=0, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
+OpenWindow="Timeline", DockArea=RIGHT, x=0, y=1, w=855, h=855, TabPos=1, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="2 s", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="438;0", DataGraphShowNamesAtCursor=0, PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="1211;-69", CodeGraphLegendShown=0, CodeGraphLegendPosition="1227;0"
+OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=1076, h=166, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+SmartViewPlugin="", Page="", Toolbar="Hidden", Window="SmartView 1"
+TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" ((Shoot_Control).shoot_left).fdb";" ((Shoot_Control).shoot_right).fdb";" ((Shoot_Control).shoot_left).output"], ColWidths=[100;100;100;100;100]
+TableHeader="Data Sampling Setup", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[290;100;100;100;100;100;100;100;126]
+TableHeader="Power Sampling", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
+TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[167;100;100;100]
+TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
+WatchedExpression="Gimbal_Control", RefreshRate=1, Window=Watched Data 1
+WatchedExpression="MiniPC_Data", RefreshRate=1, Window=Watched Data 1
+WatchedExpression="bullet_speed", RefreshRate=1, Window=Watched Data 1
+WatchedExpression="bullet", RefreshRate=1, Window=Watched Data 1
+WatchedExpression="BoardCom_Data", Window=Watched Data 1
+WatchedExpression="Shoot_Control", Window=Watched Data 1

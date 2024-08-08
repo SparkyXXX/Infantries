@@ -1,0 +1,23 @@
+
+
+OpenDocument="startup_stm32g473xx.s", FilePath="D:/RM/my project/Infantry_BigTitan/infantry_-big_-titan/Chassis/MDK-ARM/startup_stm32g473xx.s", Line=180
+OpenDocument="main.c", FilePath="D:/RM/my project/Infantry_BigTitan/infantry_-big_-titan/Chassis/Core/Src/main.c", Line=59
+OpenToolbar="Debug", Floating=0, x=0, y=0
+OpenWindow="Memory 1", DockArea=BOTTOM, x=1, y=0, w=1081, h=155, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, EditorAddress=0x0
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=0, w=794, h=1178, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Data Sampling", DockArea=RIGHT, x=0, y=1, w=909, h=254, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
+OpenWindow="Timeline", DockArea=RIGHT, x=0, y=0, w=909, h=923, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="1 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="0;0", DataGraphShowNamesAtCursor=0, PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="1118;-69", CodeGraphLegendShown=0, CodeGraphLegendPosition="1134;0"
+OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=1078, h=155, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+SmartViewPlugin="", Page="", Toolbar="Hidden", Window="SmartView 1"
+TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time"], ColWidths=[100;100]
+TableHeader="Data Sampling Setup", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[266;100;100;100;100;100;110;126;126]
+TableHeader="Power Sampling", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
+TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh";"Access"], ColWidths=[167;157;100;100;270]
+TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
+TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;340]
+WatchedExpression="GimbalYaw_Control", RefreshRate=1, DisplayFormat=DISPLAY_FORMAT_HEX, Window=Watched Data 1
+WatchedExpression="Chassis_Control", RefreshRate=5, Window=Watched Data 1
+WatchedExpression="M", Window=Watched Data 1
+WatchedExpression="Motor_ForwardLeft", Window=Watched Data 1
+WatchedExpression="Motor_ForwardRight", Window=Watched Data 1
+WatchedExpression="CapData", RefreshRate=5, Window=Watched Data 1

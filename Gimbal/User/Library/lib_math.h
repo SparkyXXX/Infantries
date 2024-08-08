@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-21 18:11:33
+ * @LastEditTime: 2024-01-05 17:46:32
  */
 
 #ifndef ALG_MATH_H
@@ -15,18 +15,24 @@ extern "C"
 {
 #endif
 
+#include "stm32g4xx_hal.h"
 #include "arm_math.h"
 #include "stdlib.h"
-#include "stm32g4xx_hal.h"
 
-#define mat arm_matrix_instance_f32
-#define Matrix_Init arm_mat_init_f32
-#define Matrix_Add arm_mat_add_f32
-#define Matrix_Subtract arm_mat_sub_f32
-#define Matrix_Multiply arm_mat_mult_f32
-#define Matrix_Transpose arm_mat_trans_f32
-#define Matrix_Inverse arm_mat_inverse_f32
+#define mat                 arm_matrix_instance_f32
+#define Matrix_Init         arm_mat_init_f32
+#define Matrix_Add          arm_mat_add_f32
+#define Matrix_Subtract     arm_mat_sub_f32
+#define Matrix_Multiply     arm_mat_mult_f32
+#define Matrix_Transpose    arm_mat_trans_f32
+#define Matrix_Inverse      arm_mat_inverse_f32
 
+/**
+ * @brief      Limit function
+ * @param      input :Limited value
+ * @param      max :Max limite value
+ * @retval     NULL
+ */
 #define LimitMax(input, max)   \
     {                          \
         if (input > max)       \
@@ -39,6 +45,13 @@ extern "C"
         }                      \
     }
 
+/**
+ * @brief      Maximum and minimum limiting
+ * @param      input :Limited value
+ * @param      max :Max limite value
+ * @param      min :Min limite value
+ * @retval     NULL
+ */
 #define LimitMaxMin(input, max, min) \
     {                                \
         if (input > max)             \
@@ -50,18 +63,15 @@ extern "C"
             input = min;             \
         }                            \
     }
-
-#define GetMaxandMinRange(input, max, min) \
-    {                                      \
-        if (input >= max)                  \
-        {                                  \
-            max = input;                   \
-        }                                  \
-        else if (input <= min)             \
-        {                                  \
-            min = input;                   \
-        }                                  \
-    }
+	
+#define GetMaxandMinRange(input, max, min) {    \
+    if (input >= max) {                         \
+        max = input;                            \
+    }                                           \
+    else if (input <= min) {                    \
+        min = input;                            \
+    }                                           \
+}
 
     typedef struct
     {
@@ -69,8 +79,9 @@ extern "C"
         float dec;
     } Math_SlopeParamTypeDef;
 
+	float Math_Normalize(float input, float minInput, float maxInput);
+	float Math_Consequent_To_180(float angle_ref, float angle_fdb);
     float Math_RadToAngle(float rad);
-    float Math_AngleToRad(float angle);
     float Math_Fal(float e, float alpha, float zeta);
     int16_t Math_Fsg(float x, float d);
     int16_t Math_Sign(float Input);

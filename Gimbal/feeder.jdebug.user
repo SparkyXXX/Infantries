@@ -1,0 +1,57 @@
+
+
+GraphedExpression="((Gimbal_Control).pitch_pos_big_energy).ref", Color=#e56a6f, Show=0
+GraphedExpression="((Gimbal_Control).pitch_pos_big_energy).fdb", Color=#35792b, Show=0
+GraphedExpression="((Gimbal_Control).pitch_pos_armor).ref", Color=#769dda, Show=0
+GraphedExpression="((Gimbal_Control).pitch_pos_armor).fdb", Color=#b14f0d, Show=0
+GraphedExpression="((Gimbal_Control).pitch_pos_no_auto).ref", Color=#b3c38e
+GraphedExpression="((Gimbal_Control).pitch_pos_no_auto).fdb", Color=#ab7b05
+OpenDocument="util_fdcan.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/User/Utility/util_fdcan.c", Line=37
+OpenDocument="sys_dwt.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/User/System/sys_dwt.c", Line=104
+OpenDocument="startup_stm32g473xx.s", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/MDK-ARM/startup_stm32g473xx.s", Line=182
+OpenDocument="main.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/Core/Src/main.c", Line=59
+OpenDocument="app_shoot.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/User/Application/app_shoot.c", Line=231
+OpenDocument="periph_bmi088.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/User/Peripheral/periph_bmi088.c", Line=371
+OpenDocument="stm32g4xx_hal_tim.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim.c", Line=7389
+OpenDocument="stm32g4xx_hal_dma.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma.c", Line=727
+OpenDocument="alg_pid.h", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/User/Algorithm/alg_pid.h", Line=0
+OpenDocument="stm32g4xx_hal_fdcan.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_fdcan.c", Line=2551
+OpenDocument="app_ins.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/User/Application/app_ins.c", Line=0
+OpenDocument="stm32g4xx_hal.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.c", Line=324
+OpenDocument="stm32g4xx_it.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/Core/Src/stm32g4xx_it.c", Line=91
+OpenDocument="down.csv", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/down.csv", Line=77
+OpenDocument="stm32g4xx_hal_spi.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_spi.c", Line=3986
+OpenDocument="feeder.jdebug", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/feeder.jdebug", Line=0
+OpenDocument="stm32g4xx_hal_uart.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.c", Line=2587
+OpenDocument="app_gimbal.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/TITAN_TEST2405082152/Gimbal/User/Application/app_gimbal.c", Line=0
+OpenToolbar="Debug", Floating=0, x=0, y=0
+OpenWindow="Memory 1", DockArea=BOTTOM, x=1, y=0, w=929, h=166, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, EditorAddress=0x20002638
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=0, w=420, h=828, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Data Sampling", DockArea=RIGHT, x=0, y=0, w=855, h=814, TabPos=0, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
+OpenWindow="Timeline", DockArea=RIGHT, x=0, y=0, w=855, h=814, TabPos=1, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="1 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="0;0", DataGraphShowNamesAtCursor=0, PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="679;0", CodeGraphLegendShown=0, CodeGraphLegendPosition="691;0"
+OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=926, h=166, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+SmartViewPlugin="", Page="", Toolbar="Hidden", Window="SmartView 1"
+TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" ((Gimbal_Control).pitch_pos_big_energy).ref";" ((Gimbal_Control).pitch_pos_big_energy).fdb";" ((Gimbal_Control).pitch_pos_armor).ref";" ((Gimbal_Control).pitch_pos_armor).fdb";" ((Gimbal_Control).pitch_pos_no_auto).ref";" ((Gimbal_Control).pitch_pos_no_auto).fdb"], ColWidths=[100;100;100;100;100;100;100;100]
+TableHeader="Data Sampling Setup", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[465;100;100;100;100;100;100;100;100]
+TableHeader="Power Sampling", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
+TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[167;100;100;100]
+TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
+TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;359]
+WatchedExpression="antiG_k", DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="antiG_b", RefreshRate=1, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="antiG_NG", DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="Gimbal_Control", RefreshRate=1, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="Motor_gimbalMotorPitch", RefreshRate=1, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="pitch_start", DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="watch_pitch_pos", RefreshRate=5, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="res_pitch", RefreshRate=5, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="((Motor_gimbalMotorPitch).encoder).temp", RefreshRate=5, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="feed", DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="pitch_lamb", DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="pitch_sig", DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="is_shoot_changed", DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="MiniPC_Data", RefreshRate=1, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="Motor_feederMotor", DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="Shoot_Control", RefreshRate=1, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="kadancurrent", DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="app_shoot.c::Shoot_FeederLockedJudge::count", DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1

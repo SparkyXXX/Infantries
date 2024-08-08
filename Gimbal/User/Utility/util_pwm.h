@@ -40,6 +40,7 @@ extern "C"
     void PWM_SetDuty(PWM_HandleTypeDef *pwm, float duty);
     void PWM_SetFreq(PWM_HandleTypeDef *pwm, uint32_t freq);
 
+
 #ifdef __cplusplus
 }
 #endif

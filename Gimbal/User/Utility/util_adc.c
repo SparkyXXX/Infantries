@@ -4,14 +4,14 @@
  * @Descripttion :
  * @Author       : GDDG08
  * @Date         : 2021-12-31 17:37:14
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-18 02:32:26
+ * @LastEditors  : GDDG08
+ * @LastEditTime : 2022-08-23 23:34:09
  */
 
 #include "util_adc.h"
 
 uint32_t ADC_ValueBuf[30]; // Adc data array
-float ADC_Voltage;         // Adc decode data
+float ADC_Voltage;  // Adc decode data
 
 /**
  * @brief      Adc peripheral initialization

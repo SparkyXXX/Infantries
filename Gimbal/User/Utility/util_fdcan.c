@@ -9,7 +9,16 @@
 
 #include "util_fdcan.h"
 
-void FDCAN_InitTxHeader(FDCAN_TxHeaderTypeDef *pheader, uint32_t id)
+/**
+ * @brief      Initialize fdcan transmitter
+ * @param      pheader: Pointer to the initialized header
+ * @param      id: FDCAN Equipment number
+ * @param      dlc: FDCAN Datalength
+ * @param      baudrateswitch: Choose if use bandrateswitch function
+ * @param      can_type: Choose use classis can or fdcan
+ * @retval     NULL
+ */
+void FDCAN_InitTxHeader(FDCAN_TxHeaderTypeDef *pheader, uint32_t id, uint32_t dlc, uint32_t baudrateswitch, uint32_t can_type)
 {
     pheader->Identifier = id;
     if (id >= 0x800) 
@@ -21,14 +30,19 @@ void FDCAN_InitTxHeader(FDCAN_TxHeaderTypeDef *pheader, uint32_t id)
         pheader->IdType = FDCAN_STANDARD_ID;
     }
     pheader->TxFrameType = FDCAN_DATA_FRAME;
-    pheader->DataLength = FDCAN_DLC_BYTES_8;
+    pheader->DataLength = dlc;
     pheader->ErrorStateIndicator = FDCAN_ESI_ACTIVE;
-    pheader->BitRateSwitch = FDCAN_BRS_OFF;
-    pheader->FDFormat = FDCAN_CLASSIC_CAN;
+    pheader->BitRateSwitch = baudrateswitch;
+    pheader->FDFormat = can_type;
     pheader->TxEventFifoControl = FDCAN_NO_TX_EVENTS;
     pheader->MessageMarker = 0;
 }
 
+/**
+ * @brief      Initialize fdcan filter and enable FDCAN Bus Transceiver
+ * @param      phfdcan: Pointer to the CAN header
+ * @retval     NULL
+ */
 void FDCAN_IntFilterAndStart(FDCAN_HandleTypeDef *phfdcan)
 {
     FDCAN_FilterTypeDef sFilterConfig;
@@ -62,27 +76,28 @@ void FDCAN_IntFilterAndStart(FDCAN_HandleTypeDef *phfdcan)
     }
 }
 
+/**
+ * @brief      Sending information to can bus
+ * @param      phfdcan: Pointer to the CAN header
+ * @param      pheader: Pointer to the CAN tx header
+ * @param      txdata: Message to send
+ * @retval     NULL
+ */
 void FDCAN_Send(FDCAN_HandleTypeDef *phfdcan, FDCAN_TxHeaderTypeDef *ptxhead, uint8_t *pdata)
 {
     uint32_t ret;
-    if (HAL_FDCAN_AddMessageToTxFifoQ(phfdcan, ptxhead, pdata) != HAL_OK)
+    if (HAL_FDCAN_AddMessageToTxFifoQ(phfdcan, ptxhead, pdata) != HAL_OK) 
     {
-        if (phfdcan->ErrorCode & HAL_FDCAN_ERROR_FIFO_FULL)
-        {
-            HAL_FDCAN_Stop(phfdcan);
-            phfdcan->Instance->TXFQS = 0x03;
-            HAL_FDCAN_Start(phfdcan);
-        }
-        else
-        {
-
-            FDCAN_ErrorHandler(ret);
-        }
+        FDCAN_ErrorHandler(ret);
     }
 }
 
-uint8_t CAN_Error_Flag = 0;
+/**
+ * @brief      FDCAN Error handle handling
+ * @retval     NULL
+ */
 void FDCAN_ErrorHandler(uint32_t ret)
 {
-    CAN_Error_Flag = 1;
+    while (1)
+    {;}
 }

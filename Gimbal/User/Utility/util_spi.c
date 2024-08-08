@@ -189,8 +189,8 @@ void SPI_ReadMuliReg(SPI_HandleTypeDef *hspi, uint8_t *rx_data, uint8_t len)
  * @param      ret: error data
  * @retval     NULL
  */
-uint8_t SPI_Error_Flag = 0;
 void SPI_ErrorHandler(uint32_t ret)
 {
-    SPI_Error_Flag = 1;
+    while (1) 
+    {;}
 }

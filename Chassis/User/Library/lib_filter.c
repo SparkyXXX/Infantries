@@ -16,10 +16,9 @@
  * @param      Filter_LowpassParamTypeDef: low pass filter param stuct
  * @retval     filtering result
  */
-void Filter_Lowpass_Init(float cut_off_frq, Filter_Lowpass_TypeDef *lpf)
+void Filter_Lowpass_Init(float param, Filter_Lowpass_TypeDef *lpf)
 {
-    lpf->cut_off_frq = cut_off_frq;
-	lpf->filt_para = (lpf->cut_off_frq * 0.001) / (lpf->cut_off_frq * 0.001 + 1);
+    lpf->filt_para = param;
     lpf->last_tick = 0;
 }
 
@@ -34,11 +33,14 @@ float Filter_Lowpass(float val, Filter_Lowpass_TypeDef *lpf)
     // calculate cut off frequence
     uint32_t period = HAL_GetTick() - lpf->last_tick;
     lpf->last_tick = HAL_GetTick();
-	lpf->filt_para = (lpf->cut_off_frq * 0.001) / (lpf->cut_off_frq * 0.001 + 1);
     if ((lpf->filt_para > 0) && (lpf->filt_para <= 1))
     {
         lpf->filted_val = lpf->filt_para * val + (1 - lpf->filt_para) * lpf->filted_last_val;
         lpf->filted_last_val = lpf->filted_val;
+        if (period > 0)
+        {
+            lpf->cut_off_frq = lpf->filt_para / (2 * PI * (float)period * 0.001f);
+        }
         lpf->calc_frq = 1000 / (float)period;
         return lpf->filted_val;
     }

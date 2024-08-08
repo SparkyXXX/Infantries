@@ -26,6 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "app_chassis.h"
+#include "app_power.h"
 #include "protocol_board.h"
 #include "config_ctrl.h"
 #include "app_gimbal.h"
@@ -58,6 +59,7 @@ osThreadId BoardComHandle;
 osThreadId ChassisHandle;
 osThreadId UIHandle;
 osThreadId CapHandle;
+osThreadId MonitorHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -70,6 +72,7 @@ void BoardCom_Task(void const * argument);
 void Chassis_Task(void const * argument);
 void UI_Task(void const * argument);
 void Cap_Task(void const * argument);
+void Monitor_Task(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -80,8 +83,7 @@ void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackTy
 static StaticTask_t xIdleTaskTCBBuffer;
 static StackType_t xIdleStack[configMINIMAL_STACK_SIZE];
 
-void vApplicationGetIdleTaskMemory(StaticTask_t** ppxIdleTaskTCBBuffer, StackType_t** ppxIdleTaskStackBuffer, uint32_t* pulIdleTaskStackSize)
-{
+void vApplicationGetIdleTaskMemory(StaticTask_t** ppxIdleTaskTCBBuffer, StackType_t** ppxIdleTaskStackBuffer, uint32_t* pulIdleTaskStackSize) {
     *ppxIdleTaskTCBBuffer = &xIdleTaskTCBBuffer;
     *ppxIdleTaskStackBuffer = &xIdleStack[0];
     *pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
@@ -140,6 +142,10 @@ void MX_FREERTOS_Init(void) {
   osThreadDef(Cap, Cap_Task, osPriorityRealtime, 0, 128);
   CapHandle = osThreadCreate(osThread(Cap), NULL);
 
+  /* definition and creation of Monitor */
+  osThreadDef(Monitor, Monitor_Task, osPriorityRealtime, 0, 128);
+  MonitorHandle = osThreadCreate(osThread(Monitor), NULL);
+
   /* USER CODE BEGIN RTOS_THREADS */
     /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -157,8 +163,7 @@ __weak void Init_Task(void const * argument)
 {
   /* USER CODE BEGIN Init_Task */
     /* Infinite loop */
-    for(;;)
-    {
+    for (;;) {
         osDelay(1);
     }
   /* USER CODE END Init_Task */
@@ -175,8 +180,7 @@ __weak void Gimbal_Task(void const * argument)
 {
   /* USER CODE BEGIN Gimbal_Task */
     /* Infinite loop */
-    for(;;)
-    {
+    for (;;) {
         osDelay(1);
     }
   /* USER CODE END Gimbal_Task */
@@ -192,11 +196,11 @@ __weak void Gimbal_Task(void const * argument)
 __weak void BoardCom_Task(void const * argument)
 {
   /* USER CODE BEGIN BoardCom_Task */
-    /* Infinite loop */
-    for(;;)
-    {
-        osDelay(1);
-    }
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
   /* USER CODE END BoardCom_Task */
 }
 
@@ -211,8 +215,7 @@ __weak void Chassis_Task(void const * argument)
 {
   /* USER CODE BEGIN Chassis_Task */
     /* Infinite loop */
-    for(;;)
-    {
+    for (;;) {
         osDelay(1);
     }
   /* USER CODE END Chassis_Task */
@@ -228,11 +231,11 @@ __weak void Chassis_Task(void const * argument)
 __weak void UI_Task(void const * argument)
 {
   /* USER CODE BEGIN UI_Task */
-    /* Infinite loop */
-    for(;;)
-    {
-        osDelay(1);
-    }
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
   /* USER CODE END UI_Task */
 }
 
@@ -246,12 +249,30 @@ __weak void UI_Task(void const * argument)
 __weak void Cap_Task(void const * argument)
 {
   /* USER CODE BEGIN Cap_Task */
-    /* Infinite loop */
-    for(;;)
-    {
-        osDelay(1);
-    }
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
   /* USER CODE END Cap_Task */
+}
+
+/* USER CODE BEGIN Header_Monitor_Task */
+/**
+* @brief Function implementing the Monitor thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_Monitor_Task */
+__weak void Monitor_Task(void const * argument)
+{
+  /* USER CODE BEGIN Monitor_Task */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END Monitor_Task */
 }
 
 /* Private application code --------------------------------------------------*/

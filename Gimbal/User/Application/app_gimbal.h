@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-22 19:51:25
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-03-06 00:41:23
  */
 
 #ifndef APP_GIMBAL_H
@@ -15,11 +15,12 @@ extern "C"
 {
 #endif
 
-#include "test_ctrl.h"
-#include "alg_pid.h"
+#include "config_ctrl.h"
 #include "app_ins.h"
+#include "alg_pid.h"
 #include "cmsis_os.h"
 #include "config_ctrl.h"
+#include "lib_math.h"
 
 #define PITCH 0
 
@@ -45,21 +46,28 @@ extern "C"
         GimbalYaw_ModeEnum yaw_mode;
         uint8_t mode_change_flag;
 
-        float last_pitch_spd_ref;
-        float last_pitch_pos_ref;
         float yaw_position_ref;
         float pitch_position_ref;
 
-        float elevation_angle;
-        float depression_angle;
-		
-        FuzzyPID_TypeDef pitch_spd;
-        FuzzyPID_TypeDef pitch_pos;
+//        FuzzyPID_TypeDef pitch_spd;
+//        FuzzyPID_TypeDef pitch_pos;
+		PID_TypeDef pitch_spd_no_auto;
+        PID_TypeDef pitch_pos_no_auto;
+		PID_TypeDef pitch_spd_armor;
+        PID_TypeDef pitch_pos_armor;
+		PID_TypeDef pitch_spd_small_energy;
+        PID_TypeDef pitch_pos_small_energy;
+		PID_TypeDef pitch_spd_big_energy;
+        PID_TypeDef pitch_pos_big_energy;
+			
+        Filter_Lowpass_TypeDef pitch_pos_ref_filter;
+			float pitch_position_ref_lpf;
     } Gimbal_ControlTypeDef;
 
-    Gimbal_ControlTypeDef *Gimbal_GetControlPtr(void);
     void Gimbal_Init(void);
     void Gimbal_PitchOutput(void);
+
+    Gimbal_ControlTypeDef *Gimbal_GetControlPtr(void);
     void Gimbal_ModeSet(Gimbal_ModeEnum mode);
     void Gimbal_YawModeSet(void);
 

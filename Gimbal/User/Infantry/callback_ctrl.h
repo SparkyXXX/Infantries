@@ -17,6 +17,7 @@ extern "C"
 
 #include "protocol_board.h"
 #include "periph_remote.h"
+#include "ext_remote_dev.h"
 
 #define FDCAN_RX_LEN 200
 #define __HAL_DMA_SET_COUNTER(__HANDLE__, __COUNTER__) ((__HANDLE__)->Instance->CNDTR = (uint16_t)(__COUNTER__))

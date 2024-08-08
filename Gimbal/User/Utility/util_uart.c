@@ -10,10 +10,10 @@
 #include "util_uart.h"
 
 /**
- * @brief         Init UART
- * @param         huart
- * @return        NULL
- */
+* @brief         Init UART
+* @param         huart
+* @return        NULL
+*/
 void UART_Init(UART_HandleTypeDef *huart)
 {
     uint32_t ret;
@@ -37,9 +37,9 @@ void UART_Send(UART_HandleTypeDef *huart, uint8_t txdata[], uint16_t size, uint3
     {
         UART_ErrorHandler(HAL_ERROR);
     }
-
+        
     uint32_t ret = HAL_UART_Transmit(huart, txdata, size, 10);
-    if (ret != HAL_OK)
+    if (ret != HAL_OK) 
     {
         UART_ErrorHandler(ret);
     }
@@ -60,7 +60,7 @@ void UART_SendIT(UART_HandleTypeDef *huart, uint8_t txdata[], uint16_t size)
     }
 
     uint32_t ret = HAL_UART_Transmit_IT(huart, txdata, size);
-    if (ret != HAL_OK)
+    if (ret != HAL_OK) 
     {
         UART_ErrorHandler(ret);
     }
@@ -83,7 +83,7 @@ void UART_SendITForce(UART_HandleTypeDef *huart, uint8_t txdata[], uint16_t size
 
     __HAL_UNLOCK(huart);
     uint32_t ret = HAL_UART_Transmit_IT(huart, txdata, size);
-    if (ret != HAL_OK)
+    if (ret != HAL_OK) 
     {
         UART_ErrorHandler(ret);
     }
@@ -101,14 +101,14 @@ void UART_InitDMA(UART_HandleTypeDef *huart)
 }
 
 /**
- * @brief      Sending information to UART (blocking mode)
- * @param      huart: UART handle
- * @param      txdata: The message to send
- * @param      size: The message length
- * @param      timeout: Timeout duration
- * @retval     NULL
- */
-void UART_SendDMA(UART_HandleTypeDef *huart, uint8_t txdata[], uint16_t size)
+  * @brief      Sending information to UART (blocking mode)
+  * @param      huart: UART handle
+  * @param      txdata: The message to send
+  * @param      size: The message length
+  * @param      timeout: Timeout duration
+  * @retval     NULL
+  */
+void UART_SendDMA(UART_HandleTypeDef* huart, uint8_t txdata[], uint16_t size) 
 {
     if ((huart == NULL) || (txdata == NULL))
     {
@@ -116,7 +116,7 @@ void UART_SendDMA(UART_HandleTypeDef *huart, uint8_t txdata[], uint16_t size)
     }
 
     uint32_t ret = HAL_UART_Transmit_DMA(huart, txdata, size);
-    if (ret != HAL_OK)
+    if (ret != HAL_OK) 
     {
         UART_ErrorHandler(ret);
     }
@@ -138,11 +138,11 @@ HAL_StatusTypeDef UART_ReceiveDMA(UART_HandleTypeDef *huart, uint8_t *pData, uin
 {
     if (huart->RxState == HAL_UART_STATE_READY)
     {
-        if ((pData == NULL) || (Size == 0U))
+        if ((pData == NULL) || (Size == 0U)) 
         {
             return HAL_ERROR;
         }
-
+            
         __HAL_LOCK(huart);
         huart->ReceptionType = HAL_UART_RECEPTION_STANDARD;
         if (!(IS_LPUART_INSTANCE(huart->Instance)))
@@ -154,7 +154,7 @@ HAL_StatusTypeDef UART_ReceiveDMA(UART_HandleTypeDef *huart, uint8_t *pData, uin
         }
         return (UART_Start_Receive_DMA(huart, pData, Size));
     }
-    else
+    else 
     {
         return HAL_BUSY;
     }
@@ -176,8 +176,8 @@ uint16_t UART_DMACurrentDataCounter(DMA_HandleTypeDef *dma_handle)
  * @param      ret: error data
  * @retval     NULL
  */
-uint8_t UART_Error_Flag = 0;
 void UART_ErrorHandler(uint32_t ret)
 {
-    UART_Error_Flag = 1;
+    while (1) 
+    {;}
 }

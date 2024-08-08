@@ -3,458 +3,490 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-08-04 01:29:02
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-03-16 04:12:08
  */
 
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
+#include "config_ctrl.h"
 #include "app_chassis.h"
 #include "app_gimbal.h"
-#include "config_ctrl.h"
-#include "lib_math.h"
-#include "periph_cap.h"
-#include "protocol_board.h"
+#include "app_power.h"
 #include "protocol_referee.h"
+#include "lib_math.h"
+#include "periph_motor_can.h"
+#include "periph_cap.h"
+#include "lib_power_ctrl.h"
+
+float wheel_spd[4] = {0};
+
+PCArgsType pp_args = {
+    .mp = 0.3051f,
+    .kp = {0.1382f,     0.001005f},
+    .cp = 0.3649f,
+		.lp = 0.1721f,
+    .mn = {-0.000353f, -0.1052f  },
+    .kn = {0.176f,     -0.003642f},
+    .cn = 0.7356f,
+		.ln = 0.144
+};
+
 
 Chassis_ControlTypeDef Chassis_Control;
 
+/**
+ * @brief      Gets the pointer to the chassis control object
+ * @param      NULL
+ * @retval     The pointer points to the chassis control object
+ */
 Chassis_ControlTypeDef *Chassis_GetControlPtr()
 {
-	return &Chassis_Control;
+    return &Chassis_Control;
 }
 
+/**
+ * @brief      Chassis control initialization
+ * @param      NULL
+ * @retval     NULL
+ */
 void Chassis_Init()
 {
-	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	chassis->present_mode = CHASSIS_STOP;
-	chassis->last_mode = CHASSIS_STOP;
-	chassis->last_ref.vz = 0;
-	chassis->last_ref.vx = 0;
-	chassis->last_ref.w = 0;
-	chassis->gimbal_coordinate_ref.vz = 0;
-	chassis->gimbal_coordinate_ref.vx = 0;
-	chassis->gimbal_coordinate_ref.w = 0;
-	chassis->chassis_coordinate_ref.vz = 0;
-	chassis->chassis_coordinate_ref.vx = 0;
-	chassis->chassis_coordinate_ref.w = 0;
-	Chassis_ParamInit();
+    Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
+    chassis->present_mode = CHASSIS_STOP;
+    chassis->last_mode = CHASSIS_STOP;
+
+    for (uint8_t i = 0; i < 4; i++)
+    {
+        chassis->last_motor_ref[i] = 0.0f;
+    }
+
+    chassis->last_ref.forward_back_ref = 0;
+    chassis->last_ref.left_right_ref = 0;
+    chassis->last_ref.rotate_ref = 0;
+    chassis->raw_ref.forward_back_ref = 0;
+    chassis->raw_ref.left_right_ref = 0;
+    chassis->raw_ref.rotate_ref = 0;
+    chassis->move_ref.forward_back_ref = 0;
+    chassis->move_ref.left_right_ref = 0;
+    chassis->move_ref.rotate_ref = 0;
+    Chassis_ParamInit();
+    PowerCtrl_Init(POWER_LIMITED, &Motor_ChassisMotors);
+#if ROBOT_NAME == SWING_DANCE
+	Math_InitSlopeParam(&chassis->Chassis_Move_Slope, Chassis_Move_Acc, Chassis_Move_Dec);
+	Math_InitSlopeParam(&chassis->Chassis_Gyro_Slope, Chassis_Gyro_Acc, Chassis_Gyro_Dec);
+	Math_InitSlopeParam(&chassis->Chassis_Follow_Slope, Chassis_Follow_Acc, Chassis_Follow_Dec);
+#endif
 }
 
+/**
+ * @brief      Chassis mode setting
+ * @param      mode: Chassis mode
+ * @retval     NULL
+ */
 void Chassis_ModeSet(Chassis_ModeEnum mode)
 {
-	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	chassis->last_mode = chassis->present_mode;
-	chassis->present_mode = mode;
+    Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
+    chassis->last_mode = chassis->present_mode;
+    chassis->present_mode = mode;
 }
 
-void Chassis_SetMoveRef(float vz, float vx)
+void Chassis_SetMoveRef(float forward_back_ref, float left_right_ref)
 {
-	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	chassis->last_ref.vz = chassis->gimbal_coordinate_ref.vz;
-	chassis->last_ref.vx = chassis->gimbal_coordinate_ref.vx;
-	chassis->gimbal_coordinate_ref.vz = vz;
-	chassis->gimbal_coordinate_ref.vx = vx;
+    Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
+    chassis->last_ref.forward_back_ref = chassis->raw_ref.forward_back_ref;
+    chassis->last_ref.left_right_ref = chassis->raw_ref.left_right_ref;
+    chassis->raw_ref.forward_back_ref = forward_back_ref;
+    chassis->raw_ref.left_right_ref = left_right_ref;
 }
 
-void OmniChassis_GetInstruct()
-{
-	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-	switch (boardcom->chassis_mode)
-	{
-	case CHASSIS_CTRL_STOP:
-	{
-		Chassis_ModeSet(CHASSIS_STOP);
-		Chassis_SetMoveRef(0, 0);
-		break;
-	}
-	case CHASSIS_CTRL_NORMAL:
-	{
-		Chassis_ModeSet(CHASSIS_NORMAL);
-		Chassis_SetMoveRef(boardcom->chassis_fb_ref, boardcom->chassis_lr_ref);
-		break;
-	}
-	case CHASSIS_CTRL_GYRO:
-	{
-		Chassis_ModeSet(CHASSIS_GYRO);
-		Chassis_SetMoveRef(boardcom->chassis_fb_ref, boardcom->chassis_lr_ref);
-		break;
-	}
-	default:
-		return;
-	}
-}
-
-void OmniChassis_CalcOutput()
-{
-	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-	Referee_DataTypeDef *referee = Referee_GetDataPtr();
-	switch (chassis->present_mode)
-	{
-	case CHASSIS_STOP:
-		chassis->gimbal_coordinate_ref.vz = 0;
-		chassis->gimbal_coordinate_ref.vx = 0;
-		chassis->gimbal_coordinate_ref.w = 0;
-		chassis->chassis_coordinate_ref.vz = 0;
-		chassis->chassis_coordinate_ref.vx = 0;
-		chassis->chassis_coordinate_ref.w = 0;
-		for (int i = 0; i < 4; i++)
-		{
-			chassis->wheel_ref[i] = 0;
-		}
-		break;
-	case CHASSIS_NORMAL:
-		Chassis_CalcMoveRef();		 // Headless translation solution
-		Chassis_CalcOmniFollowRef(); // Chassis following soslution
-		if (boardcom->power_limit_mode == POWER_UNLIMIT)
-		{
-			InverseKinematics_Translation(chassis->wheel_ref,
-										  chassis->chassis_coordinate_ref.vx, chassis->chassis_coordinate_ref.vz,
-										  chassis->chassis_coordinate_ref.w, 1500);
-		}
-		else
-		{
-			InverseKinematics_Translation(chassis->wheel_ref,
-										  chassis->chassis_coordinate_ref.vx, chassis->chassis_coordinate_ref.vz,
-										  chassis->chassis_coordinate_ref.w, referee->chassis_power_limit * 1.9 + 130);
-		}
-		break;
-	case CHASSIS_GYRO:
-		Chassis_CalcMoveRef(); // Headless translation solution
-		Chassis_CalcGyroRef(); // Solution of gyro sign
-		if (boardcom->power_limit_mode == POWER_UNLIMIT)
-		{
-			InverseKinematics_Translation(chassis->wheel_ref,
-										  chassis->chassis_coordinate_ref.vx, chassis->chassis_coordinate_ref.vz,
-										  200 * chassis->gyro_dir, 450);
-		}
-		else
-		{
-			if (boardcom->cap_speedup_flag == CAP_NORMAL)
-			{
-				InverseKinematics_Rotation(chassis->wheel_ref,
-										   chassis->chassis_coordinate_ref.vx, chassis->chassis_coordinate_ref.vz,
-										   (referee->chassis_power_limit * 1.7 + 110));
-			}
-			else if (boardcom->cap_speedup_flag == CAP_SPEEDUP)
-			{
-				InverseKinematics_Translation(chassis->wheel_ref,
-											  chassis->chassis_coordinate_ref.vx, chassis->chassis_coordinate_ref.vz,
-											  (referee->chassis_power_limit * 0.5 + 340) * chassis->gyro_dir, (referee->chassis_power_limit * 0.5 + 440));
-			}
-		}
-		break;
-	default:
-		break;
-	}
-	for (int i = 0; i < 4; i++)
-	{
-		PID_SetRef(&(chassis->Chassis_MotorSpdPID[i]), chassis->wheel_ref[i]);
-	}
-	// Chassis_LowRestEnergyProtect();
-}
-
-void OmniChassis_PowerControl()
-{
-	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-	Referee_DataTypeDef *referee = Referee_GetDataPtr();
-	Cap_DataTypeDef *cap = Cap_GetDataPtr();
-
-	for (int i = 0; i < 4; i++)
-	{
-		PID_SetFdb(&(chassis->Chassis_MotorSpdPID[i]), Motor_ChassisMotors.motor_handle[i]->encoder.speed);													// 速度环 pid
-		chassis->chassis_I[i] = (PID_Calc(&(chassis->Chassis_MotorSpdPID[i]))) * 20.0f / 16384.0f;															// 读取电流，单位 A
-		chassis->chassis_W[i] = (Motor_ChassisMotors.motor_handle[i]->encoder.speed * Motor_ChassisMotors.motor_handle[i]->dec_ratio / 9.549296596425384f); // 读取转速（无减速比），单位 rad/s
-	}
-
-	if (boardcom->power_limit_mode == POWER_LIMIT && boardcom->cap_speedup_flag == CAP_NORMAL)
-	{
-		chassis->power_limit = MIN(referee->chassis_power_limit, Max_Power_Cal(cap->rest_energy)) * chassis->powercontrol_limit_k + chassis->powercontrol_limit_b;
-		PowerControl(chassis->power_control_args, chassis->power_limit, chassis->chassis_I, chassis->chassis_W);
-	}
-	else if (boardcom->power_limit_mode == POWER_LIMIT && boardcom->cap_speedup_flag == CAP_SPEEDUP)
-	{
-		chassis->power_limit = MIN(referee->chassis_power_limit * chassis->powerup_coef, Max_Power_Cal(cap->rest_energy)) * chassis->powercontrol_limit_k + chassis->powercontrol_limit_b;
-		PowerControl(chassis->power_control_args, chassis->power_limit, chassis->chassis_I, chassis->chassis_W);
-	}
-	else if (boardcom->power_limit_mode == POWER_UNLIMIT)
-	{
-		chassis->power_limit = MIN(400.0f, Max_Power_Cal(cap->rest_energy)) * chassis->powercontrol_limit_k + chassis->powercontrol_limit_b;
-		PowerControl(chassis->power_control_args, chassis->power_limit, chassis->chassis_I, chassis->chassis_W);
-	}
-
-	for (int i = 0; i < 4; i++)
-	{
-		Motor_SetOutput(Motor_ChassisMotors.motor_handle[i], chassis->chassis_I[i] / 20.0f * 16384.0f); // 设置输出，注意单�?
-	}
-	if (boardcom_decoded_count > BOARDCOM_TIMEOUT_VALUE)
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			Motor_SetOutput(Motor_ChassisMotors.motor_handle[i], 0.0f);
-		}
-	}
-	else
-	{
-		boardcom_decoded_count++;
-	}
-	Motor_CAN_SendGroupOutput(&Motor_ChassisMotors);
-}
-
-float temp_vz = 0.0f;
-float temp_vx = 0.0f;
-void OmniChassis_EstimateSpeed()
-{
-	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	for (int i = 0; i < 4; i++)
-	{
-		chassis->wheel_fdb[i] = chassis->Chassis_MotorSpdPID[i].fdb;
-	}
-	temp_vz = 0.25 * 1.414f * chassis->wheel_radius * (+chassis->wheel_fdb[0] - chassis->wheel_fdb[1] - chassis->wheel_fdb[2] + chassis->wheel_fdb[3]) * 0.10472f;								// m/s
-	temp_vx = 0.25 * 1.414f * chassis->wheel_radius * (+chassis->wheel_fdb[0] + chassis->wheel_fdb[1] - chassis->wheel_fdb[2] - chassis->wheel_fdb[3]) * 0.10472f;								// m/s
-	chassis->real_spd.w = 0.25 * chassis->wheel_radius / chassis->center_distance * (chassis->wheel_fdb[0] + chassis->wheel_fdb[1] + chassis->wheel_fdb[2] + chassis->wheel_fdb[3]) * 0.10472f; // rad/s (1 rpm = 0.10472 rad/s)
-	chassis->real_spd.vz = +cos(chassis->separate_rad) * temp_vz - sin(chassis->separate_rad) * temp_vx;
-	chassis->real_spd.vx = +sin(chassis->separate_rad) * temp_vz + cos(chassis->separate_rad) * temp_vx;
-}
-
+/**
+ * @brief      calculate move speed ref
+ * @param      NULL
+ * @retval     NULL
+ */
+static float theta_rad;
 static void Chassis_CalcMoveRef()
 {
-	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	chassis->separate_rad = Math_Consequent_To_Limited(0.0f,
-													   Math_AngleToRad(Motor_GimbalYaw.encoder.limited_angle - chassis->install_angle));
-	float sin_tl = (float)sin(chassis->separate_rad);
-	float cos_tl = (float)cos(chassis->separate_rad);
-	chassis->chassis_coordinate_ref.vz = +cos_tl * chassis->gimbal_coordinate_ref.vz + sin_tl * chassis->gimbal_coordinate_ref.vx;
-	chassis->chassis_coordinate_ref.vx = -sin_tl * chassis->gimbal_coordinate_ref.vz + cos_tl * chassis->gimbal_coordinate_ref.vx;
+    Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
+    theta_rad = -(Motor_GimbalYaw.encoder.limited_angle - Install_Angle) * PI / 180;
+    float sin_tl = (float)sin(theta_rad);
+    float cos_tl = (float)cos(theta_rad);
+    chassis->move_ref.forward_back_ref = (chassis->raw_ref.forward_back_ref * cos_tl - chassis->raw_ref.left_right_ref * sin_tl) * 0.18f;
+    chassis->move_ref.left_right_ref = (chassis->raw_ref.forward_back_ref * sin_tl + chassis->raw_ref.left_right_ref * cos_tl) * 0.18f;
 }
 
+/**
+ * @brief      Chassis following solution
+ * @param      NULL
+ * @retval     NULL
+ */
+static void Chassis_CalcFollowRef()
+{
+    Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
+    GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
+
+    chassis->move_ref.rotate_ref = chassis->raw_ref.rotate_ref;
+	float fdb = Math_Consequent_To_180(Install_Angle, Motor_GimbalYaw.encoder.limited_angle);
+	PID_SetFdb(&(chassis->Chassis_AngfollowPID), fdb);
+#if ROBOT_NAME == OLD_WHEAT
+	PID_SetRef(&(chassis->Chassis_AngfollowPID), Install_Angle);
+    PID_SetRef(&(chassis->Chassis_SpdfollowPID), PID_Calc(&(chassis->Chassis_AngfollowPID)));
+#endif
+#if ROBOT_NAME == OREO_REO
+	PID_SetRef(&(chassis->Chassis_AngfollowPID), Install_Angle);
+    PID_SetRef(&(chassis->Chassis_SpdfollowPID), PID_Calc(&(chassis->Chassis_AngfollowPID)));
+#endif	
+#if ROBOT_NAME == BIG_TITAN
+		PID_SetRef(&(chassis->Chassis_AngfollowPID), Install_Angle);
+    PID_SetRef(&(chassis->Chassis_SpdfollowPID), PID_Calc(&(chassis->Chassis_AngfollowPID)));
+#endif
+#if ROBOT_NAME == NEW_TITAN
+		PID_SetRef(&(chassis->Chassis_AngfollowPID), Install_Angle);
+    PID_SetRef(&(chassis->Chassis_SpdfollowPID), PID_Calc(&(chassis->Chassis_AngfollowPID)));
+#endif
+#if ROBOT_NAME == SWING_DANCE
+	if (chassis->present_mode == CHASSIS_NORMAL)
+	{
+		if (fdb < -45 && fdb >= -135)
+		{
+			PID_SetRef(&chassis->Chassis_AngfollowPID, Install_Angle);
+		}
+		else if (fdb < 45 && fdb >= -45)
+		{
+			PID_SetRef(&chassis->Chassis_AngfollowPID, Install_Angle + 90);
+		}
+
+		else if (fdb < -135 && fdb >= -225)
+		{
+			PID_SetRef(&chassis->Chassis_AngfollowPID, Install_Angle - 90);
+		}
+		else if (fdb >= 45)
+		{
+			PID_SetRef(&chassis->Chassis_AngfollowPID, Install_Angle + 180);
+		}
+		else if (fdb < -225)
+		{
+			PID_SetRef(&chassis->Chassis_AngfollowPID, Install_Angle - 180);
+		}
+	}	
+	else if (chassis->present_mode == CHASSIS_GYRO)
+	{
+		PID_SetRef(&chassis->Chassis_AngfollowPID, Install_Angle);
+	}
+	PID_SetFdb(&(chassis->Chassis_SpdfollowPID), Motor_GimbalYaw.encoder.speed);
+	PID_SetRef(&chassis->Chassis_SpdfollowPID, PID_Calc(&chassis->Chassis_AngfollowPID));
+#endif
+    chassis->move_ref.rotate_ref = PID_Calc(&(chassis->Chassis_SpdfollowPID));
+    chassis->last_yaw_ref = gimbalyaw->yaw_ref;
+}
+
+/**
+ * @brief      Calculation of chassis small gyroscope
+ * @param      NULL
+ * @retval     NULL
+ */
 static void Chassis_CalcGyroRef()
 {
-	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-	if (boardcom->gyro_dir == CW)
-	{
-		chassis->gyro_dir = 1;
-	}
-	else if (boardcom->gyro_dir == CCW)
-	{
-		chassis->gyro_dir = -1;
-	}
+    Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
+    Referee_DataTypeDef *referee = Referee_GetDataPtr();
+    float level_gyro_spd = Gyro_Speed_Table[1][1];
+    for (int8_t i = 0; i < 12; i++)
+    {
+        if (referee->chassis_power_limit == Gyro_Speed_Table[i][0])
+        {
+            level_gyro_spd = Gyro_Speed_Table[i][1];
+            break;
+        }
+    }
+    if (chassis->last_mode != CHASSIS_GYRO)
+    {
+        level_gyro_spd = 0;
+    }
+	chassis->move_ref.rotate_ref = level_gyro_spd;
 }
 
-float dead_zone = 0.0f;
-static void Chassis_CalcOmniFollowRef()
-{
-	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
-	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+//zch
 
-	chassis->chassis_coordinate_ref.w = chassis->gimbal_coordinate_ref.w;
-	PID_SetFdb(&(chassis->Chassis_AngfollowPID), chassis->separate_rad);
-	Chassis_MultiHeadSetPosRef(chassis->separate_rad);
-	// if (boardcom->fly_flag == 1)
-	// {
-	// 	PID_SetRef(&(chassis->Chassis_AngfollowPID), Math_AngleToRad(FLY_ANGLE));
-	// }
-	PID_SetFdb(&(chassis->Chassis_SpdfollowPID), Filter_Lowpass(Motor_GimbalYaw.encoder.speed, &(chassis->Spd_Follow_Fdb_lpf)));
-	PID_SetRef(&(chassis->Chassis_SpdfollowPID), PID_Calc(&(chassis->Chassis_AngfollowPID)));
-	chassis->chassis_coordinate_ref.w += PID_Calc(&(chassis->Chassis_SpdfollowPID));
-	if (abs(chassis->Chassis_AngfollowPID.ref - chassis->Chassis_AngfollowPID.fdb) < dead_zone)
-	{
-		chassis->chassis_coordinate_ref.w = 0;
-	}
+#define WheelRadius     (0.15f / 2)
+#define WheelBase       (0.3f)
+#define GET_SIGN_BIT(x) (((*(uint32_t *)(&(x))) >> 31) & 1)
+#define SET_SIGN_POS(x) ((*(uint32_t *)(&(x))) &= 0x7FFFFFFFU)
+void GetSpeedRefs(float omega[4], float vx, float vy, float wz, float omegaM) {
+     struct {
+        uint8_t x   :2;
+        uint8_t y   :2;
+        uint8_t z   :2;
+        uint8_t None:2;
+    } sign;
+		
+     float k, tmp;
+		
+    sign.x = GET_SIGN_BIT(vx);
+    sign.y = GET_SIGN_BIT(vy);
+    sign.z = GET_SIGN_BIT(wz);
+		
+    SET_SIGN_POS(vx);
+    SET_SIGN_POS(vy);
+    SET_SIGN_POS(wz);
+		
+    tmp = WheelRadius * omegaM / WheelBase * 0.8f;
+    wz  = MIN(wz, tmp);
+		
+    k = 1.0f;
+		
+    tmp = MAX(vx, vy) / (omegaM * WheelRadius - wz * WheelBase);
+    k   = MAX(k, tmp);
+		
+    tmp = (vx + vy) / (omegaM * WheelRadius);
+    k   = MAX(k, tmp);
+		
+    vx = vx / k * (1 - sign.x * 2);
+    vy = vy / k * (1 - sign.y * 2);
+    wz = wz * (1 - sign.z * 2);
+		
+    omega[0] = (vx + vy - wz * WheelBase) / WheelRadius;
+    omega[1] = (vx - vy - wz * WheelBase) / WheelRadius;
+    omega[2] = (-vx - vy - wz * WheelBase) / WheelRadius;
+    omega[3] = (-vx + vy - wz * WheelBase) / WheelRadius;
 }
 
-/*
- * 限制线速度，平动使用这个
- * @param omega 电机角速度输出数组
- * @param vx x轴线速度
- * @param vy y轴线速度
- * @param wz 期望角速度
- * @param wm 最大角速度
+void GetSpeedRefs_Gyro(float omega[4], float vx, float vy, float omegaM) {
+     float wz = 0.0f;
+     struct {
+        uint8_t x   :2;
+        uint8_t y   :2;
+        uint8_t z   :2;
+        uint8_t None:2;
+    } sign;
+     float k, tmp;
+    sign.x = GET_SIGN_BIT(vx);
+    sign.y = GET_SIGN_BIT(vy);
+    SET_SIGN_POS(vx);
+    SET_SIGN_POS(vy);
+    k = 1.0f;
+		
+    tmp = (vx + vy) / (omegaM * WheelRadius * 0.7);
+    k   = MAX(k, tmp);
+		
+		vx /= k;
+		vy /= k;
+		
+    wz = WheelRadius * omegaM / WheelBase;
+    tmp = (omegaM * WheelRadius - MAX(vx, vy)) / (WheelBase);
+    wz  = MIN(wz, tmp);
+		
+		
+    vx *= (1 - sign.x * 2);
+    vy *= (1 - sign.y * 2);
+    omega[0] = (vx + vy - wz * WheelBase) / WheelRadius;
+    omega[1] = (vx - vy - wz * WheelBase) / WheelRadius;
+    omega[2] = (-vx - vy - wz * WheelBase) / WheelRadius;
+    omega[3] = (-vx + vy - wz * WheelBase) / WheelRadius;
+}
+
+/**
+ * @brief      Wheel round solution
+ * @param      NULL
+ * @retval     NULL
  */
-static void InverseKinematics_Translation(float omega[4], float vx, float vy, float wz, float wm)
+#if ROBOT_NAME == SWING_DANCE
+float Wheel_Speed_Ref[4] = {};
+float Wheel_Speed_Max = 0;
+float Protect_Coef = 1.0;
+float temp_wheel_speed = 0.0f;
+#endif
+static void Chassis_CalcWheelRef()
 {
-	float k;
-	char i = GET_SIGN_BIT(wz);
-	wz = MIN(fabs(wz), wm * 0.7f);
-	k = (fabs(vx) + fabs(vy)) / (wm - wz);
-	if (k == 0)
+	
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+    Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
+	Referee_DataTypeDef *referee = Referee_GetDataPtr();
+	
+    for (int i = 0; i < 4; i++)
+    {
+        chassis->last_motor_ref[i] = PID_GetRef(&chassis->Chassis_MotorSpdPID[i]);
+    }
+
+    float f_b_ref = chassis->move_ref.forward_back_ref;
+    float l_r_ref = chassis->move_ref.left_right_ref;
+    float gyro_ref = chassis->move_ref.rotate_ref;
+		
+		
+		
+//			float k_follow = 1.0f + sqrt(f_b_ref*f_b_ref + l_r_ref*l_r_ref)/1.0f;//基础的随动1.0f + 平动速度平方*系数作为平动时随动的偏置,400000~=700*700
+//			float k_fblr = 1.0f - gyro_ref/400.0f;//跟随速度越大，越减小平动速度，150000 = 300*300*5/3
+		//if(sqrt(f_b_ref*f_b_ref + l_r_ref*l_r_ref)>2.0f && gyro_ref > 2.0f){
+			
+		//}
+	switch (chassis->present_mode)
 	{
-		vx = 0;
-		vy = 0;
+		case CHASSIS_STOP:
+			for (int i = 0; i < 4; i++)
+			{
+				PID_SetRef(&chassis->Chassis_MotorSpdPID[i], 0);
+			}
+			break;
+		
+		case CHASSIS_NORMAL:
+//			k_fblr = 1.0f;
+//			k_follow = 1.0f;
+//			PID_SetRef(&chassis->Chassis_MotorSpdPID[FORWARD_LEFT], (f_b_ref + l_r_ref)*k_fblr + gyro_ref*k_follow);
+//			PID_SetRef(&chassis->Chassis_MotorSpdPID[FORWARD_RIGHT], (-f_b_ref + l_r_ref)*k_fblr + gyro_ref*k_follow);
+//			PID_SetRef(&chassis->Chassis_MotorSpdPID[BACKWARD_RIGHT], (-f_b_ref - l_r_ref)*k_fblr + gyro_ref*k_follow);
+//			PID_SetRef(&chassis->Chassis_MotorSpdPID[BACKWARD_LEFT], (f_b_ref - l_r_ref)*k_fblr + gyro_ref*k_follow);
+			if(boardcom->power_limit_mode == POWER_LIMITED){
+					GetSpeedRefs(wheel_spd, l_r_ref, f_b_ref, -gyro_ref, referee->chassis_power_limit * 1.818 + 250);
+			}else{
+					GetSpeedRefs(wheel_spd, l_r_ref, f_b_ref, -gyro_ref, 500);
+			}
+			for(int i = 0; i < 4; i ++) {
+				PID_SetRef(&chassis->Chassis_MotorSpdPID[i], wheel_spd[i]);
+			}
+			break;
+		case CHASSIS_GYRO:
+			
+			if(boardcom->power_limit_mode == POWER_UNLIMITED){
+				wheel_spd[0] = f_b_ref * 5.0f + l_r_ref * 5.0f + -Forward_Left_Compensate * gyro_ref * 1.1;
+				wheel_spd[1] = -f_b_ref * 5.0f + l_r_ref * 5.0f + -Forward_Right_Compensate * gyro_ref * 1.1;
+				wheel_spd[2] = -f_b_ref * 5.0f - l_r_ref * 5.0f + -Backward_Right_Compensate * gyro_ref * 1.1;
+				wheel_spd[3] = f_b_ref * 5.0f - l_r_ref * 5.0f + -Backward_Left_Compensate * gyro_ref * 1.1;
+//					GetSpeedRefs(wheel_spd, l_r_ref, f_b_ref, gyro_ref * 0.2f, 600);
+			}else if(boardcom->cap_mode_user == SUPERCAP_CTRL_ON){
+				GetSpeedRefs_Gyro(wheel_spd, l_r_ref, f_b_ref, referee->chassis_power_limit * PowerUp_Coef * 1.818 + 250);
+			}else{
+				GetSpeedRefs_Gyro(wheel_spd, l_r_ref, f_b_ref, referee->chassis_power_limit * 1.818 + 250);
+			}
+		
+			for(int i = 0; i < 4; i ++) {
+				PID_SetRef(&chassis->Chassis_MotorSpdPID[i], wheel_spd[i]);
+			}
+//			PID_SetRef(&chassis->Chassis_MotorSpdPID[FORWARD_LEFT], f_b_ref + l_r_ref + Forward_Left_Compensate * gyro_ref);
+//			PID_SetRef(&chassis->Chassis_MotorSpdPID[FORWARD_RIGHT], -f_b_ref + l_r_ref + Forward_Right_Compensate * gyro_ref);
+//			PID_SetRef(&chassis->Chassis_MotorSpdPID[BACKWARD_RIGHT], -f_b_ref - l_r_ref + Backward_Right_Compensate * gyro_ref);
+//			PID_SetRef(&chassis->Chassis_MotorSpdPID[BACKWARD_LEFT], f_b_ref - l_r_ref + Backward_Left_Compensate * gyro_ref);
+			break;
+		case CHASSIS_BACKGYRO:
+			GetSpeedRefs_Gyro(wheel_spd, -l_r_ref, -f_b_ref, referee->chassis_power_limit * 1.818 + 250);
+			for(int i = 0; i < 4; i ++) {
+				PID_SetRef(&chassis->Chassis_MotorSpdPID[i], -wheel_spd[i]);
+			}
+			break;
+		
+		default:
+			return;
 	}
-	else
-	{
-		vx /= MAX(k, 1);
-		vy /= MAX(k, 1);
-	}
-	if (i == 1)
-	{
-		wz = -wz;
-	}
-	omega[0] = +vx + vy + wz;
-	omega[1] = +vx - vy + wz;
-	omega[2] = -vx - vy + wz;
-	omega[3] = -vx + vy + wz;
 }
 
-/*
- * 限制角速度，小陀螺使用这个
- * @param omega 电机角速度输出数组
- * @param vx x轴线速度
- * @param vy y轴线速度
- * @param wm 最大角速度
+/**
+ * @brief      Calculation of Cap Output Power MAX
+ * @param      remain_energy
+ * @retval     NULL
  */
-static void InverseKinematics_Rotation(float omega[4], float vx, float vy, float wm)
-{
-	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	float wz;
-	float k;
-	k = (fabs(vx) + fabs(vy)) / (0.7f * wm);
-	if (k == 0)
-	{
-		vx = 0;
-		vy = 0;
-	}
-	else
-	{
-		vx /= MAX(k, 1);
-		vy /= MAX(k, 1);
-	}
-	wz = wm - (fabs(vx) + fabs(vy));
-	wz *= chassis->gyro_dir;
-	omega[0] = +vx + vy + wz;
-	omega[1] = +vx - vy + wz;
-	omega[2] = -vx - vy + wz;
-	omega[3] = -vx + vy + wz;
-}
-
-#if ROBOT_ID == WHITE_MISTRESS
-static void Chassis_MultiHeadSetPosRef(float fdb)
-{
-	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	if (chassis->present_mode == CHASSIS_NORMAL)
-	{
-		if (fdb < 0.25 * PI && fdb >= -0.25 * PI)
-		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, 0 * PI);
-		}
-		else if (fdb < 0.75 * PI && fdb >= 0.25 * PI)
-		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, 0.5 * PI);
-		}
-		else if (fdb < -0.25 * PI && fdb >= -0.75 * PI)
-		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, -0.5 * PI);
-		}
-		else if (fdb >= 0.75 * PI)
-		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, PI);
-		}
-		else if (fdb < -0.75 * PI)
-		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, -PI);
-		}
-	}
-	else if (chassis->present_mode == CHASSIS_GYRO)
-	{
-		PID_SetRef(&(chassis->Chassis_AngfollowPID), 0 * PI);
-	}
-}
-#endif
-#if ROBOT_ID == STAR_DUST
-static void Chassis_MultiHeadSetPosRef(float fdb)
-{
-	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	if (chassis->present_mode == CHASSIS_NORMAL)
-	{
-		if (fdb <= PI && fdb >= 0)
-		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, 0.5 * PI);
-		}
-		else if (fdb < 0 && fdb >= -PI)
-		{
-			PID_SetRef(&chassis->Chassis_AngfollowPID, -0.5 * PI);
-		}
-	}
-	else if (chassis->present_mode == CHASSIS_GYRO)
-	{
-		PID_SetRef(&(chassis->Chassis_AngfollowPID), 0.5 * PI);
-	}
-}
-#endif
-
-static void Chassis_LowRestEnergyProtect()
-{
-	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-	Cap_DataTypeDef *cap = Cap_GetDataPtr();
-	if (cap->rest_energy < 25)
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			PID_SetRef(&(chassis->Chassis_MotorSpdPID[i]), 0.0);
-		}
-	}
-}
-
-static float Max_Power_Cal(uint8_t remain_energy)
+#define Max(a,b) (a>b?a:b)//lzq
+#define Min(a,b) (a>b?b:a)
+float Max_Power_Cal(uint8_t remain_energy)
 {
 	Referee_DataTypeDef *referee = Referee_GetDataPtr();
 	Cap_DataTypeDef *cap = Cap_GetDataPtr();
 	float VCC_Cap = sqrt((double)((remain_energy / 100.0f) * 27.0f * 27.0f));
-	float Power_Input_Max = cap->boost_input_current_max * VCC_Cap;
-	float VCC_Motor = MIN(24.0f, (Power_Input_Max / cap->boost_output_current_max));
-	float Power_Output_Max = cap->boost_output_current_max * VCC_Motor;
-	float Cap_Charging_Power_Max = MIN(VCC_Cap * cap->buck_output_current_max, referee->chassis_power_limit) * 0.75f;
-	if (remain_energy >= 15)
-	{
-		return Power_Output_Max;
+	float Power_Input_Max = cap->BOOST_INPUT_CURRENT_MAX  * VCC_Cap;
+	float VCC_Motor = Min(24.0f , (Power_Input_Max / cap->BOOST_OUTPUT_CURRENT_MAX));
+	float Power_Output_Max = cap->BOOST_OUTPUT_CURRENT_MAX * VCC_Motor;
+	float Cap_Charging_Power_Max = Min(VCC_Cap * cap->BUCK_OUTPUT_CURRENT_MAX, referee->chassis_power_limit);
+	if(remain_energy >= 15){
+	return Power_Output_Max;
 	}
-	else
-	{
+	else{
 		float Low_Power_Output_Max = Power_Output_Max * (remain_energy * remain_energy) / 255.0f;
-		return MAX(Low_Power_Output_Max, Cap_Charging_Power_Max);
+		return Max(Low_Power_Output_Max , Cap_Charging_Power_Max);
 	}
-}
+}//lzq
 
-#define SEVEN_PIN_LOST_ERR 1
-#define CAN_LOST_ERR 2
-char ErrorCode_Watch[2][3];
-void Write_ErrorCode_Watch(uint8_t column, char type, uint8_t id, uint8_t errCode)
-{
-	ErrorCode_Watch[column][0] = type;
-	ErrorCode_Watch[column][1] = '0' + id;
-	ErrorCode_Watch[column][2] = '0' + errCode;
-}
+/**
+ * @brief      Calculation of chassis control quantity
+ * @param      NULL
+ * @retval     NULL
+ */
+uint8_t speedup_enable_flag = 1;
+float ChassisI[4];
+float ChassisW[4];
+float overMin = 1000.0f, overMax = 0.0f;
+float my_power_limit = 45.0f;
+//float power_offset[10] = {50.0f,61.0f,70.0f,82.0f,92.0f,103.0f,113.0f,};//45,55,65,75,85,95,105,115
 
-void Check_Motor_State()
+void Chassis_Output()
 {
-	uint8_t lostID = 0, ErrorCode = 0, exist_err = 0;
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+    Referee_DataTypeDef *referee = Referee_GetDataPtr();
+    Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
+	Cap_DataTypeDef *cap = Cap_GetDataPtr();
+    switch (chassis->present_mode)
+    {
+		case CHASSIS_STOP:
+			chassis->raw_ref.forward_back_ref = 0;
+			chassis->raw_ref.left_right_ref = 0;
+			chassis->raw_ref.rotate_ref = 0;
+			chassis->move_ref.forward_back_ref = 0;
+			chassis->move_ref.left_right_ref = 0;
+			chassis->move_ref.rotate_ref = 0;
+			break;
+		case CHASSIS_NORMAL:
+			Chassis_CalcMoveRef();   // Headless translation solution
+			Chassis_CalcFollowRef(); // Chassis following soGYROlution
+			break;
+		case CHASSIS_GYRO:
+		case CHASSIS_BACKGYRO:
+			Chassis_CalcMoveRef(); // Headless translation solution
+			if(boardcom->power_limit_mode == POWER_UNLIMITED){
+				Chassis_CalcGyroRef(); // Solution of gyro
+			}
+			break;
+		default:
+			return;
+	}
+
+    // hrx: 测试保护数据
+	// if (cap->rest_energy < 20)
+	// {
+	// 	speedup_enable_flag = 0;
+	// 	LimitMax(chassis->move_ref.forward_back_ref, 90);
+	// 	LimitMax(chassis->move_ref.left_right_ref, 90);
+	// }
+	// if (cap->rest_energy > 25 && speedup_enable_flag == 0)
+	// {
+	// 	speedup_enable_flag = 1;
+	// }
+	// else if (cap->rest_energy <= 25 && speedup_enable_flag == 0)
+	// {
+	// 	LimitMax(chassis->move_ref.forward_back_ref, 90);
+	// 	LimitMax(chassis->move_ref.left_right_ref, 90);
+	// }
+
+    Chassis_CalcWheelRef();
+	
 	for (int i = 0; i < 4; i++)
 	{
-		if (Motor_IsLostData(Motor_ChassisMotors.motor_handle[i]))
-		{ // encoder数据不更新
-			lostID += (i + 1);
-			if (Motor_ChassisMotors.motor_handle[i]->state == MOTOR_LOST)
-			{ // 通信也没有了，说明can断了
-				ErrorCode += CAN_LOST_ERR;
-			}
-			else
-			{ // 通信还有，说明7pin线断了
-				ErrorCode += SEVEN_PIN_LOST_ERR;
-			}
-		}
+		PID_SetFdb(&chassis->Chassis_MotorSpdPID[i], Motor_ChassisMotors.motor_handle[i]->encoder.speed);
+		ChassisI[i] = PID_Calc(&chassis->Chassis_MotorSpdPID[i]) * 20 / 16384.0f;
+		ChassisW[i] = (Motor_ChassisMotors.motor_handle[i]->encoder.speed / 9.549296596425384f);
 	}
-	if (lostID != 0)
-	{
-		exist_err = 1;
-		Write_ErrorCode_Watch(0, 'M', lostID, ErrorCode);
-	}
+	
+#if POWER_CTRL == NEW//lzq
+	float power_limit_temp = (boardcom->power_limit_mode ? (referee->chassis_power_limit * (boardcom->cap_mode_user ? PowerUp_Coef : 1.0)) : 300.0f);//计算功率期望
+	float PC_Limit =  Min(power_limit_temp , Max_Power_Cal(cap->rest_energy))* PC_Limit_K + PC_Limit_B;
 
-	if (Motor_GimbalMotors.motor_handle[0]->state == MOTOR_LOST)
-	{ // 通信没有了，说明can断了
-		Write_ErrorCode_Watch(1, 'Y', 1, CAN_LOST_ERR);
+	PowerControl(pp_args, PC_Limit, ChassisI, ChassisW); // 功率控制
+
+#endif
+	/*if(referee->chassis_power > my_power_limit) {
+		overMax = MAX(overMax,referee->chassis_power);
+		overMin = MIN(overMin,referee->chassis_power);
+	}*/
+	
+	//PowerControl(pp_args, (referee->chassis_power_limit * 0.0f + 55.0f), CurrentToSend, SpeedNow);
+	for (int i = 0; i < 4; i++)
+	{
+    Motor_SetOutput(Motor_ChassisMotors.motor_handle[i], ChassisI[i]*819.2f);
 	}
 }

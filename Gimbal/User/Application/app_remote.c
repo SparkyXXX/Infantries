@@ -3,182 +3,324 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-08-07 00:42:50
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-04-20 01:33:55
  */
 
 #include "app_remote.h"
-#include "periph_ext_remote.h"
 
-uint8_t Remote_Lost_Flag = 0;
+#define REMOTE_MODE TRAIN
+
+#define DEBUG 1
+#define TRAIN 2
 
 Remote_ControlTypeDef Remote_Control;
+
 Keyboard_DataTypeDef Remote_Keylast;
 Keyboard_DataTypeDef Remote_KeyZero;
-Keyboard_VTM_DataTypeDef Remote_Keylast_VTM;
-Keyboard_VTM_DataTypeDef Remote_KeyZero_VTM;
-Remote_ControlTypeDef *Remote_GetControlPtr()
-{
-    return &Remote_Control;
-}
+Math_SlopeParamTypeDef Remote_ChassisSlope;
 
-/***************Drive Mode Set***************************************************************************************/
+/**
+ * @brief      Remote control command
+ * @param      NULL
+ * @retval     NULL
+ */
 void Remote_DriveModeSet()
 {
     Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
     Remote_DataTypeDef *remote = Remote_GetDataPtr();
-    AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
-    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
-    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-
     remote_control->pending = 1;
-    if (Remote_IsLost(remote))
+	if (Remote_IsLost(remote))
     {
         Remote_Reset(remote);
+			Use_extRemote(remote);
     }
-    // 断连检测由于Remote_ControlTypeDef结构体固有缺陷，不建议使用。
-
-    if (HAL_GetTick() - remote->last_update_time > 500)
+	
+    switch (remote->remote.s[SWITCH_RIGHT])
     {
-        Keymouse_VTM_Update();
+	case REMOTE_SWITCH_NULL:
+    {
+        remote_control->on_aim = 0;
+        remote_control->aim_mode = REMOTE_ARMOR;
+        Remote_Update();
+        Remote_ShootModeSet();
+        Servo_SetAngle(&Servo_MagServo, Servo_Close);
+        Remote_Mag_State = 0;
+        break;
+    }
+    case REMOTE_SWITCH_UP:
+    {
+#if REMOTE_MODE == DEBUG
+        remote_control->on_aim = 1;
+        remote_control->aim_mode = REMOTE_BIG_BUFF;
+        Remote_Update();
+        Remote_ShootModeSet();
+        Servo_SetAngle(&Servo_MagServo, Servo_Open);
+        Remote_Mag_State = 1;
+#endif
+#if REMOTE_MODE == TRAIN
+        remote_control->on_aim = 0;
+        remote_control->aim_mode = REMOTE_ARMOR;
+        Remote_Update();
+        Remote_ShootModeSet();
+        Servo_SetAngle(&Servo_MagServo, Servo_Close);
+        Remote_Mag_State = 0;
+#endif
+        break;
+    }
+    case REMOTE_SWITCH_MIDDLE:
+    {
+#if REMOTE_MODE == DEBUG
+        remote_control->on_aim = 1;
+        remote_control->aim_mode = REMOTE_SMALL_BUFF;
+        Remote_Update();
+        Remote_ShootModeSet();
+        Servo_SetAngle(&Servo_MagServo, Servo_Open);
+        Remote_Mag_State = 1;
+#endif
+#if REMOTE_MODE == TRAIN
+        Keymouse_Update();
         Keymouse_ShootModeSet();
+#endif
+        break;
     }
-
-    else
+    case REMOTE_SWITCH_DOWN:
     {
-
-        switch (remote->remote.s[SWITCH_RIGHT])
-        {
-        case REMOTE_SWITCH_NULL:
-        {
-            remote_control->on_aim = 0;
-            remote_control->aim_mode = REMOTE_ARMOR;
-            Remote_Update();
-            Remote_ShootModeSet();
-            Servo_SetAngle(&Servo_MagServo, Servo_Close);
-            remote_control->mag_state = 0;
-            break;
-        }
-        case REMOTE_SWITCH_UP:
-        {
 #if REMOTE_MODE == DEBUG
-            remote_control->on_aim = 1;
-            remote_control->aim_mode = REMOTE_BIG_BUFF;
-            Remote_Update();
-            Remote_ShootModeSet();
-            remote_control->autoshoot_flag = 1;
-            Servo_SetAngle(&Servo_MagServo, Servo_Open);
-            remote_control->mag_state = 1;
+        remote_control->on_aim = 1;
+        remote_control->aim_mode = REMOTE_ARMOR;
+        Remote_Update();
+        Remote_ShootModeSet();
+        Servo_SetAngle(&Servo_MagServo, Servo_Close);
+        Remote_Mag_State = 0;
 #endif
 #if REMOTE_MODE == TRAIN
-            remote_control->on_aim = 0;
-            remote_control->aim_mode = REMOTE_ARMOR;
-            Remote_Update();
-            Remote_ShootModeSet();
-            Servo_SetAngle(&Servo_MagServo, Servo_Close);
-            remote_control->mag_state = 0;
+        remote_control->on_aim = 1;
+        remote_control->aim_mode = REMOTE_ARMOR;
+        Remote_Update();
+        Remote_ShootModeSet();
+        Servo_SetAngle(&Servo_MagServo, Servo_Open);
+        Remote_Mag_State = 1;
 #endif
-            break;
-        }
-        case REMOTE_SWITCH_MIDDLE:
-        {
-#if REMOTE_MODE == DEBUG
-            remote_control->on_aim = 1;
-            remote_control->aim_mode = REMOTE_SMALL_BUFF;
-            Remote_Update();
-            Remote_ShootModeSet();
-            remote_control->autoshoot_flag = 1;
-            Servo_SetAngle(&Servo_MagServo, Servo_Open);
-            remote_control->mag_state = 1;
-#endif
-#if REMOTE_MODE == TRAIN
-            Keymouse_Update();
-            Keymouse_ShootModeSet();
-#endif
-            break;
-        }
-        case REMOTE_SWITCH_DOWN:
-        {
-#if REMOTE_MODE == DEBUG
-            remote_control->on_aim = 1;
-            remote_control->aim_mode = REMOTE_ARMOR;
-            Remote_Update();
-            Remote_ShootModeSet();
-            remote_control->autoshoot_flag = 1;
-            Servo_SetAngle(&Servo_MagServo, Servo_Close);
-            remote_control->mag_state = 0;
-#endif
-#if REMOTE_MODE == TRAIN
-            remote_control->on_aim = 1;
-            remote_control->aim_mode = REMOTE_ARMOR;
-            Remote_Update();
-            Remote_ShootModeSet();
-            remote_control->autoshoot_flag = 1;
-            Servo_SetAngle(&Servo_MagServo, Servo_Open);
-            remote_control->mag_state = 1;
-#endif
-            break;
-        }
-        default:
-            break;
-        }
+        break;
+    }
+    default:
+        break;
     }
     Following_AutoaimModeSet();
+    aim_mode_watch = remote_control->aim_mode;
     remote_control->pending = 0;
-    // 检录磁力计校准时使用
-    // #if REMOTE_MODE == TRAIN
-    //    if (remote->remote.s[SWITCH_RIGHT] == REMOTE_SWITCH_DOWN)
-    //        KeyMouse_ChassisModeSet(CHASSIS_STOP);
-    //    boardcom->check_in = (remote->remote.s[SWITCH_RIGHT] == REMOTE_SWITCH_DOWN ? 1 : 0);
-    // #endif
 }
+
+/**
+ * @brief      AutoAim_ShootModeSet
+ * @param      NULL
+ * @retval     NULL
+ */
+uint16_t wait_tick = 0;
+uint8_t have_shooted = 0;	//this is_shoot=1 time is have shooted to avoid one is_shoot time shoot twice
+													// set when is_shoot==1 and shooted, and reset when is_shoot==0
+void AutoAim_ShootModeSet(){
+    MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
+    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
+    AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
+		Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();
+    Remote_DataTypeDef *remote = Remote_GetDataPtr();
+	uint16_t wait_ms = 1000;
+	if(autoaim->aim_mode == AUTOAIM_ARMOR){
+		wait_ms = AutoShoot_Wait_ms;
+	}else if(autoaim->aim_mode == AUTOAIM_SMALL_BUFF){
+		wait_ms = AutoShootSmallEnergy_Wait_ms;
+	}else if(autoaim->aim_mode == AUTOAIM_BIG_BUFF){
+		wait_ms = AutoShootBigEnergy_Wait_ms;
+	}
+	if (gimbal->present_mode != GIMBAL_NO_AUTO && autoaim->hit_mode == AUTOAIM_HIT_ARMOR)
+    {
+        wait_tick++;
+        if (minipc->is_get_target == 1 && minipc->is_shoot == 1 
+					&& (autoaim->AutoShootFlag == 1 || remote->remote.s[SWITCH_RIGHT] == REMOTE_SWITCH_DOWN) && wait_tick >= wait_ms &&
+            (shooter->heat_ctrl.shooter_17mm_cooling_rate - shooter->heat_ctrl.shooter_17mm_cooling_heat) >= HEAT_SLOW_LIMIT 
+						&& Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorRight.encoder.speed > 20)
+        {
+            Shoot_FeederModeSet(FEEDER_SINGLE);
+						shooter->single_shoot_done = 0;
+            wait_tick = 0;
+        }
+				//Shoot_FeederModeSet(FEEDER_REFEREE);//use to test the shoot, DO NOT OPEN!
+    }
+	else if (gimbal->present_mode != GIMBAL_NO_AUTO && autoaim->hit_mode == AUTOAIM_HIT_BUFF)
+		{
+				if (minipc->is_get_target == 1 && minipc->is_shoot == 1 && have_shooted == 0 && autoaim->AutoShootFlag == 1 &&
+						(shooter->heat_ctrl.shooter_17mm_cooling_rate - shooter->heat_ctrl.shooter_17mm_cooling_heat) >= HEAT_SLOW_LIMIT 
+						&& Motor_shooterMotorLeft.encoder.speed > 20 && Motor_shooterMotorRight.encoder.speed > 20)
+				{
+					Shoot_FeederModeSet(FEEDER_SINGLE);
+					shooter->single_shoot_done = 0;
+					have_shooted = 1;
+				}else if(autoaim->AutoShootFlag == 0){
+					;
+				}
+				else if (minipc->is_get_target == 1 && minipc->is_shoot == 0){
+					//Shoot_FeederModeSet(FEEDER_STOP);
+					have_shooted = 0;
+				}
+		}else{
+			wait_tick = 0;
+		}
+		if(remote->remote.s[SWITCH_RIGHT] == REMOTE_SWITCH_UP){
+			Shoot_FeederModeSet(FEEDER_REFEREE);
+		}
+		#if REMOTE_MODE == DEBUG
+			autoaim->AutoShootFlag = 1;
+		#endif
+}
+/**
+ * @brief      Remote shoot mode set
+ * @param      NULL
+ * @retval     NULL
+ */
+static void Remote_ShootModeSet()
+{
+    Remote_DataTypeDef *remote = Remote_GetDataPtr();
+    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
+		static uint32_t wait_tick;
+    switch (remote->remote.s[SWITCH_LEFT])
+    {
+    case REMOTE_SWITCH_UP:
+    {
+        shooter->shooter_mode = SHOOTER_STOP;
+        Shoot_FeederModeSet(FEEDER_STOP);
+        break;
+    }
+    case REMOTE_SWITCH_MIDDLE:
+    {
+        shooter->shooter_mode = SHOOTER_REFEREE;
+        Shoot_FeederModeSet(FEEDER_STOP);
+        break;
+    }
+    case REMOTE_SWITCH_DOWN:
+    {
+//			AutoAim_ShootModeSet();
+			Shoot_FeederModeSet(FEEDER_REFEREE);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+uint8_t Remote_Chassis_Gyro_State = 0;
+uint8_t Remote_Mag_State = 0;
+uint8_t Remote_Mag_State_Last = 0;
+uint8_t quiet_flag = 0;
+uint8_t flyslope_flag = 0;
+uint8_t cap_speedup_flag = 0;
 
 static void Remote_Update()
 {
-    Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
     BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     Remote_DataTypeDef *remote = Remote_GetDataPtr();
     Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();
     AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
 
-    boardcom->chassis_fb_ref = (float)remote->remote.ch[RIGHT_Y] * 440 / 660;
-    boardcom->chassis_lr_ref = (float)remote->remote.ch[RIGHT_X] * 440 / 660;
+		if(remote->remote.ch[RIGHT_Y] > 600) {
+			boardcom->chassis_fb_ref = KeyMouse_FlySlopeSpeed;
+		} else if(remote->remote.ch[RIGHT_Y] > 100) {
+			boardcom->chassis_fb_ref = KeyMouse_NormalSpeed;
+		} else if(remote->remote.ch[RIGHT_Y] < -600) {
+			boardcom->chassis_fb_ref = -KeyMouse_FlySlopeSpeed;
+		} else if(remote->remote.ch[RIGHT_Y] < -100) {
+			boardcom->chassis_fb_ref = -KeyMouse_NormalSpeed;
+		} else {
+			boardcom->chassis_fb_ref = 0;
+		}
+		
+		if(remote->remote.ch[RIGHT_X] > 600) {
+			boardcom->chassis_lr_ref = KeyMouse_FlySlopeSpeed;
+		} else if(remote->remote.ch[RIGHT_X] > 100) {
+			boardcom->chassis_lr_ref = KeyMouse_NormalSpeed;
+		} else if(remote->remote.ch[RIGHT_X] < -600) {
+			boardcom->chassis_lr_ref = -KeyMouse_FlySlopeSpeed;
+		} else if(remote->remote.ch[RIGHT_X] < -100) {
+			boardcom->chassis_lr_ref = -KeyMouse_NormalSpeed;
+		} else {
+			boardcom->chassis_lr_ref = 0;
+		}
+		if(remote->remote.ch[RIGHT_X]*remote->remote.ch[RIGHT_X] + remote->remote.ch[RIGHT_Y]*remote->remote.ch[RIGHT_Y] > 360000){
+			
+			boardcom->power_limit_mode = POWER_UNLIMIT;
+		}else{
+			boardcom->power_limit_mode = POWER_LIMIT;
+			
+		}
+//    boardcom->chassis_fb_ref = (float)remote->remote.ch[RIGHT_Y] * 100 / 660;
+//    boardcom->chassis_lr_ref = (float)remote->remote.ch[RIGHT_X] * 440 / 660;
+
     if (remote->remote.ch[PADDLE_WHEEL] <= -500.0f)
     {
-        remote_control->gyro_flag = 1;
-        boardcom->gyro_dir = 0;
+        Remote_Chassis_Gyro_State = 1;
+//			gimbal->yaw_position_ref = 10.0f;
+//			gimbal->pitch_position_ref = 10.0f;
     }
-    else if (remote->remote.ch[PADDLE_WHEEL] >= 500.0f)
+		else if (remote->remote.ch[PADDLE_WHEEL] >= 500.0f)
     {
-        remote_control->gyro_flag = 1;
-        boardcom->gyro_dir = 1;
+        Remote_Chassis_Gyro_State = 2;
+//			gimbal->yaw_position_ref = -10.0f;
+//			gimbal->pitch_position_ref = -10.0f;
     }
     else
     {
-        remote_control->gyro_flag = 0;
+        Remote_Chassis_Gyro_State = 0;
     }
 
-    if ((remote->remote.ch[RIGHT_X] > 650) ||
-        (remote->remote.ch[RIGHT_X] < -650) ||
-        (remote->remote.ch[RIGHT_Y] > 650) ||
-        (remote->remote.ch[RIGHT_Y] < -650))
-    {
-        boardcom->power_limit_mode = 0;
-    }
-    else
-    {
-        boardcom->power_limit_mode = 1;
-    }
+    float yaw_ref, pitch_ref, temp_pitch_ref;
+    yaw_ref = (float)remote->remote.ch[LEFT_X] * Remote_Yaw_To_Ref;
+    pitch_ref = (float)remote->remote.ch[LEFT_Y] * Remote_Pitch_To_Ref;
 
-    float yaw_ref = (float)remote->remote.ch[LEFT_X] * remote_control->remote_yaw_to_ref;
-    float pitch_ref = (float)remote->remote.ch[LEFT_Y] * remote_control->remote_pitch_to_ref;
-    float temp_pitch_ref = gimbal->pitch_position_ref + pitch_ref;
     LimitMaxMin(yaw_ref, 0.5f, -0.5f);
-    LimitMaxMin(temp_pitch_ref, gimbal->elevation_angle, gimbal->depression_angle);
     gimbal->yaw_position_ref = gimbal->yaw_position_ref - yaw_ref;
+    temp_pitch_ref = gimbal->pitch_position_ref + pitch_ref;
+    LimitMaxMin(temp_pitch_ref, Elevation_Angle, Depression_Angle);
     gimbal->pitch_position_ref = temp_pitch_ref;
 }
 
+int press_time = 0;
+static void Keymouse_ShootModeSet()
+{
+    Remote_DataTypeDef *remote = Remote_GetDataPtr();
+    MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
+    AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
+    Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();
+    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+
+    if (remote->mouse.l == 1)
+    {
+        press_time++;
+        if (press_time > 150)
+        {
+            Shoot_FeederModeSet(FEEDER_REFEREE);
+        }
+        else
+        {
+            Shoot_FeederModeSet(FEEDER_SINGLE);
+        }
+    }
+    else
+    {
+        Shoot_FeederModeSet(FEEDER_STOP);
+        shooter->single_shoot_done = 0;
+        press_time = 0;
+    }
+		
+    AutoAim_ShootModeSet();//autoaim is lower than NoAuto, so NoAuto set after AutoAim
+}
+
+/**
+ * @brief      KeyMouse control process
+ * @param      NULL
+ * @retval     NULL
+ */
 static void Keymouse_Update()
 {
     Remote_DataTypeDef *remote = Remote_GetDataPtr();
@@ -190,10 +332,10 @@ static void Keymouse_Update()
     AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
 
     static uint8_t wait4release = 0;
+
     if (KEY(ctrl))
     {
-        remote_control->quiet_flag = 1;
-        remote_control->flyslope_flag = 0;
+        quiet_flag = 1;
         if (wait4release <= 1)
         {
             if (KEY_DN(f))
@@ -201,30 +343,39 @@ static void Keymouse_Update()
                 shooter->shooter_mode = SHOOTER_STOP;
                 wait4release = 1;
             }
-            if (KEY_DN(q))
-            {
-                Servo_SetAngle(&Servo_MagServo, Servo_Close);
-                remote_control->mag_state = 0;
-                wait4release = 1;
-            }
-            if (KEY_DN(r))
-            {
-                remote_control->autoshoot_flag = 0;
-                wait4release = 1;
-            }
-            if (KEY_DN(c))
-            {
-                remote_control->cap_speedup_flag = 0;
-            }
-            if (KEY_DN(z))
-            {
-                Shoot_FeederModeSet(FEEDER_INITING);
-            }
+						if (KEY_DN(q))
+						{
+							Servo_SetAngle(&Servo_MagServo, Servo_Close);
+											Remote_Mag_State = 0;
+											wait4release = 1;
+						}
+						if (KEY_DN(r))
+						{
+							autoaim->AutoShootFlag = 0;
+							autoshoot_flag_watch = autoaim->AutoShootFlag;
+							wait4release = 1;
+						}
+						if (KEY_DN(c))
+						{
+							cap_speedup_flag = 0;
+						}
+						if (KEY_DN(x))
+						{
+							Shoot_FeederModeForceSet(FEEDER_INITING);
+						}
+						if (KEY_DN(g))
+						{
+							FeederOneInc();
+						}
+						if (KEY_DN(b))
+						{
+							FeederOneRemainInc();
+						}
         }
     }
     else if (KEY(shift))
     {
-        remote_control->flyslope_flag = 1;
+        flyslope_flag = 1;
         if (wait4release <= 1)
         {
             if (KEY_DN(c))
@@ -236,8 +387,8 @@ static void Keymouse_Update()
     }
     else
     {
-        remote_control->quiet_flag = 0;
-        remote_control->flyslope_flag = 0;
+        quiet_flag = 0;
+        flyslope_flag = 0;
         if (wait4release == 0)
         {
             if (KEY_DN(f))
@@ -246,74 +397,110 @@ static void Keymouse_Update()
             }
             if (KEY_UP(e))
             {
-                KeyMouse_GyroModeSet();
+                Remote_Gyro_ModeSet();
+            }
+            if (KEY_UP(v))
+            {
+                Remote_AutoaimModeSet(REMOTE_SMALL_BUFF);
             }
             if (KEY_UP(b))
             {
-                KeyMouse_BuffModeSet(REMOTE_BUFF_TEMP);
+                Remote_AutoaimModeSet(REMOTE_BIG_BUFF);
             }
-            //			  if (KEY_UP(v))
-            //            {
-            //                Remote_AutoaimModeSet(REMOTE_SMALL_BUFF);
-            //            }
-            //            if (KEY_UP(b))
-            //            {
-            //                Remote_AutoaimModeSet(REMOTE_BIG_BUFF);
-            //            }
-            if (KEY_UP(x))
-            {
-                gimbal->yaw_position_ref = gimbal->yaw_position_ref - 180.0f;
-            }
-            if (KEY_DN(z))
-            {
-                boardcom->fly_flag = 1;
-            }
-            if (KEY_UP(z))
-            {
-                boardcom->fly_flag = 0;
-            }
-            if (KEY_DN(q))
+// 保留功能，以后如果再出一个自瞄模式可以用
+//            if (KEY_UP(g))
+//            {
+//				Remote_AutoaimModeSet(REMOTE_GYRO);
+//            }
+						if (KEY_DN(q))
             {
                 Servo_SetAngle(&Servo_MagServo, Servo_Open);
-                remote_control->mag_state = 1;
+                Remote_Mag_State = 1;
             }
             if (KEY_DN(r))
             {
-                remote_control->autoshoot_flag = 1;
+                autoaim->AutoShootFlag = 1;
+                autoshoot_flag_watch = autoaim->AutoShootFlag;
             }
-            if (KEY_DN(c))
+						if (KEY_DN(c))
             {
-                remote_control->cap_speedup_flag = 1;
+								cap_speedup_flag = 1;
             }
         }
     }
 
     if (wait4release == 0)
     {
+        /******** MOVE function ******/
         if (!KEY(f) && !KEY2(ctrl, shift) && !KEY(ctrl))
         {
+            /**************Front and back control*************/
             static float t_ws = 0.0f;
             static float t_ws_last = 0.0f;
-            if (remote_control->flyslope_flag)
+//            float Move_Speed_Coef = 0.0f;
+//            if (flyslope_flag == 0)
+//            {
+//                Move_Speed_Coef = 1.0f;
+//							boardcom->power_limit_mode = POWER_LIMIT;
+//            }
+//            else if (flyslope_flag == 1)
+//            {
+//                Move_Speed_Coef = SpeedUp_Coef;
+//							boardcom->power_limit_mode = POWER_UNLIMIT;
+//            }
+
+//            if (KEY(w))
+//            {
+//                t_ws = Math_CalcAbsSlopeRef(t_ws, Chassis_Move_Speed * Move_Speed_Coef, &Remote_ChassisSlope);
+//            }
+//            else if (KEY(s))
+//            {
+//                t_ws = Math_CalcAbsSlopeRef(t_ws, -Chassis_Move_Speed * Move_Speed_Coef, &Remote_ChassisSlope);
+//            }
+//            else if (t_ws_last != 0)
+//            {
+//                t_ws = Math_CalcAbsSlopeRef(t_ws_last, 0, &Remote_ChassisSlope);
+//            }
+//            t_ws_last = t_ws;
+
+            /**************Left and right control*************/
+//            static float t_ad = 0.0f;
+//            static float t_ad_last = 0.0f;
+
+//            if (KEY(d))
+//            {
+//                t_ad = Math_CalcAbsSlopeRef(t_ad, Chassis_Move_Speed * Move_Speed_Coef, &Remote_ChassisSlope);
+//            }
+//            else if (KEY(a))
+//            {
+//                t_ad = Math_CalcAbsSlopeRef(t_ad, -Chassis_Move_Speed * Move_Speed_Coef, &Remote_ChassisSlope);
+//            }
+//            else if (t_ad_last != 0)
+//            {
+//                t_ad = Math_CalcAbsSlopeRef(t_ad_last, 0, &Remote_ChassisSlope);
+//            }
+//            t_ad_last = t_ad;
+						if (flyslope_flag == 1)
             {
                 boardcom->power_limit_mode = POWER_UNLIMIT;
-                boardcom->chassis_fb_ref = (KEY(w) - KEY(s)) * remote_control->keymouse_flyslope_speed;
-                boardcom->chassis_lr_ref = (KEY(d) - KEY(a)) * remote_control->keymouse_flyslope_speed;
+								boardcom->cap_mode_user = SUPERCAP_CTRL_ON;
+								boardcom->chassis_fb_ref = (KEY(w) - KEY(s)) * KeyMouse_FlySlopeSpeed;
+                boardcom->chassis_lr_ref = (KEY(d) - KEY(a)) * KeyMouse_FlySlopeSpeed;
             }
-            else if (!remote_control->flyslope_flag && remote_control->cap_speedup_flag)
+            else if (flyslope_flag == 0 && cap_speedup_flag == 1)
             {
                 boardcom->power_limit_mode = POWER_LIMIT;
-                boardcom->cap_speedup_flag = CAP_SPEEDUP;
-                boardcom->chassis_fb_ref = (KEY(w) - KEY(s)) * remote_control->keymouse_upper_speed;
-                boardcom->chassis_lr_ref = (KEY(d) - KEY(a)) * remote_control->keymouse_upper_speed;
+								boardcom->cap_mode_user = SUPERCAP_CTRL_ON;
+								boardcom->chassis_fb_ref = (KEY(w) - KEY(s)) * KeyMouse_CapOnSpeed;
+                boardcom->chassis_lr_ref = (KEY(d) - KEY(a)) * KeyMouse_CapOnSpeed;
             }
-            else if (!remote_control->flyslope_flag && !remote_control->cap_speedup_flag)
-            {
-                boardcom->power_limit_mode = POWER_LIMIT;
-                boardcom->cap_speedup_flag = CAP_NORMAL;
-                boardcom->chassis_fb_ref = (KEY(w) - KEY(s)) * remote_control->keymouse_normal_speed;
-                boardcom->chassis_lr_ref = (KEY(d) - KEY(a)) * remote_control->keymouse_normal_speed;
-            }
+						else if (flyslope_flag == 0 && cap_speedup_flag == 0)
+						{
+								boardcom->power_limit_mode = POWER_LIMIT;
+								boardcom->cap_mode_user = SUPERCAP_CTRL_OFF;
+								boardcom->chassis_fb_ref = (KEY(w) - KEY(s)) * KeyMouse_NormalSpeed;
+								boardcom->chassis_lr_ref = (KEY(d) - KEY(a)) * KeyMouse_NormalSpeed;
+						}
         }
     }
     else
@@ -327,40 +514,65 @@ static void Keymouse_Update()
 
     /*********** mouse control********/
     static uint8_t mouse_r_last = 0;
+
     if (!mouse_r_last && remote->mouse.r)
     {
-        KeyMouse_ArmorModeSet(1);
-        autoaim->is_change_target = 1;
+        Keymouse_AutoaimModeSet(1);
+        autoaim->isChangeTarget = 1;
     }
     else if (mouse_r_last && !remote->mouse.r)
     {
-        KeyMouse_ArmorModeSet(0);
-        autoaim->is_change_target = 0;
+        Keymouse_AutoaimModeSet(0);
+        autoaim->isChangeTarget = 0;
     }
-
     mouse_r_last = remote->mouse.r;
+
     if (gimbal->present_mode == GIMBAL_NO_AUTO || (autoaim->target_state != AUTOAIM_TARGET_FOLLOWING))
     {
-        float yaw_ref = 0.0f, pitch_ref = 0.0f, temp_pitch_ref = 0.0f;
-        if (remote_control->quiet_flag)
+        float yaw, pitch, temp_pitch_ref;
+        if (quiet_flag)
         {
-            yaw_ref = (float)remote->mouse.x * remote_control->keymouse_yaw_to_ref_quiet;
-            pitch_ref = -(float)remote->mouse.y * remote_control->keymouse_pitch_to_ref_quiet;
+            yaw = (float)remote->mouse.x * Mouse_Yaw_To_Ref_Quiet;
+            pitch = -(float)remote->mouse.y * Mouse_Pitch_To_Ref_Quiet;
         }
         else
         {
-            yaw_ref = (float)remote->mouse.x * remote_control->keymouse_yaw_to_ref;
-            pitch_ref = -(float)remote->mouse.y * remote_control->keymouse_pitch_to_ref;
+            yaw = (float)remote->mouse.x * Mouse_Yaw_To_Ref;
+            pitch = -(float)remote->mouse.y * Mouse_Pitch_To_Ref;
         }
-        temp_pitch_ref = gimbal->pitch_position_ref + pitch_ref;
-        LimitMaxMin(yaw_ref, 0.5f, -0.5f);
-        LimitMaxMin(temp_pitch_ref, gimbal->elevation_angle, gimbal->depression_angle);
-        gimbal->yaw_position_ref = gimbal->yaw_position_ref - yaw_ref;
+
+        LimitMaxMin(yaw, 0.5f, -0.5f);
+        gimbal->yaw_position_ref = gimbal->yaw_position_ref - yaw;
+        temp_pitch_ref = gimbal->pitch_position_ref + pitch;
+        LimitMaxMin(temp_pitch_ref, Elevation_Angle, Depression_Angle);
         gimbal->pitch_position_ref = temp_pitch_ref;
     }
 }
 
-static void KeyMouse_ArmorModeSet(uint8_t mode)
+/**
+ * @brief      switch autoaim state
+ * @param      Remote_AutoAimModeEnum mode
+ * @retval     NULL
+ */
+static void Remote_AutoaimModeSet(uint8_t mode)
+{
+    Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
+    if (remote_control->aim_mode == REMOTE_ARMOR)
+    {
+        remote_control->aim_mode = mode;
+    }
+    else if (remote_control->aim_mode == mode)
+    {
+        remote_control->aim_mode = REMOTE_ARMOR;
+    }
+}
+
+/**
+ * @brief      switch autoaim state
+ * @param      state :on or off
+ * @retval     NULL
+ */
+static void Keymouse_AutoaimModeSet(uint8_t mode)
 {
     Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
 
@@ -402,233 +614,17 @@ static void KeyMouse_ArmorModeSet(uint8_t mode)
     }
 }
 
-static void KeyMouse_BuffModeSet(uint8_t mode)
-{
-    Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
-    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-    if (remote_control->aim_mode == REMOTE_ARMOR)
-    {
-        remote_control->aim_mode = mode;
-        if (boardcom->game_progress == 4 && boardcom->stage_remain_time <= 210)
-        {
-            remote_control->aim_mode = REMOTE_BIG_BUFF;
-        }
-        else if (boardcom->game_progress == 4 && boardcom->stage_remain_time > 210)
-        {
-            remote_control->aim_mode = REMOTE_SMALL_BUFF;
-        }
-    }
-    else if ((remote_control->aim_mode == REMOTE_BUFF_TEMP) ||
-             (remote_control->aim_mode == REMOTE_SMALL_BUFF) ||
-             (remote_control->aim_mode == REMOTE_BIG_BUFF))
-    {
-        remote_control->aim_mode = REMOTE_ARMOR;
-    }
-}
-
-static void Keymouse_VTM_Update(void)
-{
-    ext_remote_control_t *remote = &(Referee_GetDataPtr()->remote_vtm_data);
-    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-    Keyboard_VTM_DataTypeDef *keyboard_VTM = (Keyboard_VTM_DataTypeDef *)&(Referee_GetDataPtr()->remote_vtm_data.keyboard_value);
-    Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
-    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
-    Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();
-    AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
-
-    static uint8_t wait4release = 0;
-    if (KEY_VTM(ctrl))
-    {
-        remote_control->quiet_flag = 1;
-        remote_control->flyslope_flag = 0;
-        if (wait4release <= 1)
-        {
-            if (KEY_DN_VTM(f))
-            {
-                shooter->shooter_mode = SHOOTER_STOP;
-                wait4release = 1;
-            }
-            if (KEY_DN_VTM(q))
-            {
-                Servo_SetAngle(&Servo_MagServo, Servo_Close);
-                remote_control->mag_state = 0;
-                wait4release = 1;
-            }
-            if (KEY_DN_VTM(r))
-            {
-                remote_control->autoshoot_flag = 0;
-                wait4release = 1;
-            }
-            if (KEY_DN_VTM(c))
-            {
-                remote_control->cap_speedup_flag = 0;
-            }
-            if (KEY_DN_VTM(z))
-            {
-                Shoot_FeederModeSet(FEEDER_INITING);
-            }
-        }
-    }
-    else if (KEY_VTM(shift))
-    {
-        remote_control->flyslope_flag = 1;
-        if (wait4release <= 1)
-        {
-            if (KEY_DN_VTM(c))
-            {
-                boardcom->ui_cmd = !boardcom->ui_cmd;
-                wait4release = 1;
-            }
-        }
-    }
-    else
-    {
-        remote_control->quiet_flag = 0;
-        remote_control->flyslope_flag = 0;
-        if (wait4release == 0)
-        {
-            if (KEY_DN_VTM(f))
-            {
-                shooter->shooter_mode = SHOOTER_REFEREE;
-            }
-            if (KEY_UP_VTM(e))
-            {
-                KeyMouse_GyroModeSet();
-            }
-            if (KEY_UP_VTM(b))
-            {
-                KeyMouse_BuffModeSet(REMOTE_BUFF_TEMP);
-            }
-            //			  if (KEY_UP_VTM(v))
-            //            {
-            //                Remote_AutoaimModeSet(REMOTE_SMALL_BUFF);
-            //            }
-            //            if (KEY_UP_VTM(b))
-            //            {
-            //                Remote_AutoaimModeSet(REMOTE_BIG_BUFF);
-            //            }
-            if (KEY_UP_VTM(x))
-            {
-                gimbal->yaw_position_ref = gimbal->yaw_position_ref - 180.0f;
-            }
-            if (KEY_DN_VTM(z))
-            {
-                boardcom->fly_flag = 1;
-            }
-            if (KEY_UP_VTM(z))
-            {
-                boardcom->fly_flag = 0;
-            }
-            if (KEY_DN_VTM(q))
-            {
-                Servo_SetAngle(&Servo_MagServo, Servo_Open);
-                remote_control->mag_state = 1;
-            }
-            if (KEY_DN_VTM(r))
-            {
-                remote_control->autoshoot_flag = 1;
-            }
-            if (KEY_DN_VTM(c))
-            {
-                remote_control->cap_speedup_flag = 1;
-            }
-        }
-    }
-
-    if (wait4release == 0)
-    {
-        if (!KEY_VTM(f) && !KEY2_VTM(ctrl, shift) && !KEY_VTM(ctrl))
-        {
-            static float t_ws = 0.0f;
-            static float t_ws_last = 0.0f;
-            if (remote_control->flyslope_flag)
-            {
-                boardcom->power_limit_mode = POWER_UNLIMIT;
-                boardcom->chassis_fb_ref = (KEY_VTM(w) - KEY_VTM(s)) * remote_control->keymouse_flyslope_speed;
-                boardcom->chassis_lr_ref = (KEY_VTM(d) - KEY_VTM(a)) * remote_control->keymouse_flyslope_speed;
-            }
-            else if (!remote_control->flyslope_flag && remote_control->cap_speedup_flag)
-            {
-                boardcom->power_limit_mode = POWER_LIMIT;
-                boardcom->cap_speedup_flag = CAP_SPEEDUP;
-                boardcom->chassis_fb_ref = (KEY_VTM(w) - KEY_VTM(s)) * remote_control->keymouse_upper_speed;
-                boardcom->chassis_lr_ref = (KEY_VTM(d) - KEY_VTM(a)) * remote_control->keymouse_upper_speed;
-            }
-            else if (!remote_control->flyslope_flag && !remote_control->cap_speedup_flag)
-            {
-                boardcom->power_limit_mode = POWER_LIMIT;
-                boardcom->cap_speedup_flag = CAP_NORMAL;
-                boardcom->chassis_fb_ref = (KEY_VTM(w) - KEY_VTM(s)) * remote_control->keymouse_normal_speed;
-                boardcom->chassis_lr_ref = (KEY_VTM(d) - KEY_VTM(a)) * remote_control->keymouse_normal_speed;
-            }
-        }
-    }
-    else
-    {
-        if (memcmp(keyboard_VTM, &Remote_KeyZero_VTM, sizeof(Remote_KeyZero_VTM)) == 0)
-        {
-            wait4release = 0;
-        }
-    }
-    memcpy(&Remote_Keylast_VTM, keyboard_VTM, sizeof(Remote_Keylast_VTM));
-
-    /*********** mouse control********/
-    static uint8_t mouse_r_last = 0;
-    if (!mouse_r_last && remote->right_button_down)
-    {
-        KeyMouse_ArmorModeSet(1);
-        autoaim->is_change_target = 1;
-    }
-    else if (mouse_r_last && !remote->right_button_down)
-    {
-        KeyMouse_ArmorModeSet(0);
-        autoaim->is_change_target = 0;
-    }
-
-    mouse_r_last = remote->right_button_down;
-    if (gimbal->present_mode == GIMBAL_NO_AUTO || (autoaim->target_state != AUTOAIM_TARGET_FOLLOWING))
-    {
-        float yaw_ref = 0.0f, pitch_ref = 0.0f, temp_pitch_ref = 0.0f;
-        if (remote_control->quiet_flag)
-        {
-            yaw_ref = (float)remote->mouse_x * remote_control->keymouse_yaw_to_ref_quiet;
-            pitch_ref = -(float)remote->mouse_y * remote_control->keymouse_pitch_to_ref_quiet;
-        }
-        else
-        {
-            yaw_ref = (float)remote->mouse_x * remote_control->keymouse_yaw_to_ref;
-            pitch_ref = -(float)remote->mouse_y * remote_control->keymouse_pitch_to_ref;
-        }
-        temp_pitch_ref = gimbal->pitch_position_ref + pitch_ref;
-        LimitMaxMin(yaw_ref, 0.5f, -0.5f);
-        LimitMaxMin(temp_pitch_ref, gimbal->elevation_angle, gimbal->depression_angle);
-        gimbal->yaw_position_ref = gimbal->yaw_position_ref - yaw_ref;
-        gimbal->pitch_position_ref = temp_pitch_ref;
-    }
-}
-static void Remote_AutoaimModeSet(uint8_t mode)
-{
-    Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
-    if (remote_control->aim_mode == REMOTE_ARMOR)
-    {
-        remote_control->aim_mode = mode;
-    }
-    else if (remote_control->aim_mode == mode)
-    {
-        remote_control->aim_mode = REMOTE_ARMOR;
-    }
-}
 
 static void Following_AutoaimModeSet()
 {
     Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
-    AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
+	AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
     switch (remote_control->aim_mode)
     {
     case REMOTE_ARMOR:
     case REMOTE_ARMOR_TEMP:
         AutoAim_ModeSet(AUTOAIM_ARMOR);
-        autoaim->hit_mode = AUTOAIM_HIT_ARMOR;
+		autoaim->hit_mode = AUTOAIM_HIT_ARMOR;
         if (remote_control->on_aim)
         {
             Gimbal_ModeSet(GIMBAL_ARMOR);
@@ -637,11 +633,11 @@ static void Following_AutoaimModeSet()
         {
             Gimbal_ModeSet(GIMBAL_NO_AUTO);
         }
-        KeyMouse_ChassisModeSet(CHASSIS_NORMAL);
+        Remote_Chassis_ModeSet(CHASSIS_NORMAL);
         break;
     case REMOTE_GYRO:
         AutoAim_ModeSet(AUTOAIM_GYRO);
-        autoaim->hit_mode = AUTOAIM_HIT_ARMOR;
+		autoaim->hit_mode = AUTOAIM_HIT_ARMOR;
         if (remote_control->on_aim)
         {
             Gimbal_ModeSet(GIMBAL_ARMOR);
@@ -650,56 +646,89 @@ static void Following_AutoaimModeSet()
         {
             Gimbal_ModeSet(GIMBAL_NO_AUTO);
         }
-        KeyMouse_ChassisModeSet(CHASSIS_NORMAL);
+        Remote_Chassis_ModeSet(CHASSIS_NORMAL);
         break;
     case REMOTE_SMALL_BUFF:
         AutoAim_ModeSet(AUTOAIM_SMALL_BUFF);
-        autoaim->hit_mode = AUTOAIM_HIT_BUFF;
+	    autoaim->hit_mode = AUTOAIM_HIT_BUFF;
         Gimbal_ModeSet(GIMBAL_SMALL_ENERGY);
-        KeyMouse_ChassisModeSet(CHASSIS_STOP);
+        Remote_Chassis_ModeSet(CHASSIS_STOP);
         break;
     case REMOTE_BIG_BUFF:
         AutoAim_ModeSet(AUTOAIM_BIG_BUFF);
-        autoaim->hit_mode = AUTOAIM_HIT_BUFF;
+	    autoaim->hit_mode = AUTOAIM_HIT_BUFF;
         Gimbal_ModeSet(GIMBAL_BIG_ENERGY);
-        KeyMouse_ChassisModeSet(CHASSIS_STOP);
+        Remote_Chassis_ModeSet(CHASSIS_STOP);
         break;
-    default:
-        break;
+	default:
+		break;
     }
 }
 
-static void KeyMouse_GyroModeSet(void)
+/**
+ * @brief      Change chassis control state
+ * @param      Chassis: control mode
+ * @retval     NULL
+ */
+static void Remote_Chassis_ModeSet(uint8_t chassis_mode)
 {
-    Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
     BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-    if (boardcom->chassis_mode == CHASSIS_STOP)
-    {
-        return;
-    }
-    if (remote_control->gyro_flag == 0)
-    {
-        KeyMouse_ChassisModeSet(CHASSIS_GYRO);
-        boardcom->gyro_dir = !boardcom->gyro_dir;
-        remote_control->gyro_flag = 1;
-    }
-    else
-    {
-        KeyMouse_ChassisModeSet(CHASSIS_NORMAL);
-        remote_control->gyro_flag = 0;
-    }
-}
-
-static void KeyMouse_ChassisModeSet(uint8_t chassis_mode)
-{
-    Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
-    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-    if (chassis_mode == CHASSIS_NORMAL && remote_control->gyro_flag)
+    if (chassis_mode == CHASSIS_NORMAL && Remote_Chassis_Gyro_State == 1)
     {
         boardcom->chassis_mode = CHASSIS_GYRO;
+    }
+		else if (chassis_mode == CHASSIS_NORMAL && Remote_Chassis_Gyro_State == 2)
+    {
+        boardcom->chassis_mode = CHASSIS_BACKGYRO;
     }
     else
     {
         boardcom->chassis_mode = chassis_mode;
     }
+}
+
+
+/**
+ * @brief      switch chassis gryo state
+ * @param      NULL
+ * @retval     NULL
+ */
+static void Remote_Gyro_ModeSet(void)
+{
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+    if (boardcom->chassis_mode == CHASSIS_STOP)
+    {
+        return;
+    }
+    if (Remote_Chassis_Gyro_State == 0)
+    {
+        Remote_Chassis_ModeSet(CHASSIS_GYRO);
+        Remote_Chassis_Gyro_State = 1;
+    }
+    else
+    {
+        Remote_Chassis_ModeSet(CHASSIS_NORMAL);
+        Remote_Chassis_Gyro_State = 0;
+    }
+}
+
+
+/**
+ * @brief      Gets the pointer to the remote control remote object
+ * @param      NULL
+ * @retval     Pointer to remote control remote object
+ */
+Remote_ControlTypeDef *Remote_GetControlPtr()
+{
+    return &Remote_Control;
+}
+
+/**
+ * @brief      Remote Control Init
+ * @param      NULL
+ * @retval     NULL
+ */
+void Remote_ControlInit()
+{
+    Math_InitSlopeParam(&Remote_ChassisSlope, Remote_Acc, Remote_Dec);
 }

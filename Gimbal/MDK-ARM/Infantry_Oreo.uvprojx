@@ -16,8 +16,8 @@
         <TargetCommonOption>
           <Device>STM32G473CBTx</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32G4xx_DFP.1.5.0</PackID>
-          <PackURL>https://www.keil.com/pack/</PackURL>
+          <PackID>Keil.STM32G4xx_DFP.1.4.0</PackID>
+          <PackURL>http://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000-0x2001FFFF) IROM(0x8000000-0x801FFFF) CLOCK(8000000) FPU2 CPUTYPE("Cortex-M4") TZ</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -190,7 +190,7 @@
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>0</useUlib>
+            <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
@@ -334,10 +334,10 @@
             <vShortEn>1</vShortEn>
             <vShortWch>1</vShortWch>
             <v6Lto>0</v6Lto>
-            <v6WtE>1</v6WtE>
+            <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>-Wno-error=armcc-pragma-import -Wno-error=armcc-pragma-arm</MiscControls>
+              <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32G473xx,ARM_MATH_CM4,__TARGET_FPU_VFP</Define>
               <Undefine></Undefine>
               <IncludePath>../USB_Device/App;../USB_Device/Target;../Drivers/CMSIS/Include;../Drivers/CMSIS/DSP/Include;../Drivers/CMSIS/Device/ST/STM32G4xx/Include;../Drivers/STM32G4xx_HAL_Driver/Inc;../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc;../Core/Inc;../User/Infantry;../User/Application;../User/Protocol;../User/Algorithm;../User/Library;../User/Peripheral;../User/Utility;../User/System</IncludePath>
@@ -2515,11 +2515,6 @@
           <GroupName>Drivers/CMSIS</GroupName>
           <Files>
             <File>
-              <FileName>arm_cortexM4lf_math.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\Drivers\CMSIS\DSP\Lib\ARM\arm_cortexM4lf_math.lib</FilePath>
-            </File>
-            <File>
               <FileName>system_stm32g4xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/system_stm32g4xx.c</FilePath>
@@ -2615,19 +2610,14 @@
               <FilePath>..\User\Infantry\callback_ctrl.c</FilePath>
             </File>
             <File>
-              <FileName>task_ctrl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\Infantry\task_ctrl.c</FilePath>
-            </File>
-            <File>
               <FileName>config_ctrl.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Infantry\config_ctrl.c</FilePath>
             </File>
             <File>
-              <FileName>test_ctrl.c</FileName>
+              <FileName>task_ctrl.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\User\Infantry\test_ctrl.c</FilePath>
+              <FilePath>..\User\Infantry\task_ctrl.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2659,20 +2649,25 @@
               <FileType>1</FileType>
               <FilePath>..\User\Application\app_ins.c</FilePath>
             </File>
+            <File>
+              <FileName>app_monitor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Application\app_monitor.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Protocol</GroupName>
           <Files>
             <File>
+              <FileName>protocol_motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Protocol\protocol_motor.c</FilePath>
+            </File>
+            <File>
               <FileName>protocol_board.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Protocol\protocol_board.c</FilePath>
-            </File>
-            <File>
-              <FileName>protocol_minipc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\Protocol\protocol_minipc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2699,6 +2694,11 @@
         <Group>
           <GroupName>Library</GroupName>
           <Files>
+            <File>
+              <FileName>arm_cortexM4lf_math.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\Drivers\CMSIS\DSP\Include\arm_cortexM4lf_math.lib</FilePath>
+            </File>
             <File>
               <FileName>lib_math.c</FileName>
               <FileType>1</FileType>
@@ -2750,9 +2750,14 @@
               <FilePath>..\User\Peripheral\periph_remote.c</FilePath>
             </File>
             <File>
-              <FileName>periph_ext_remote.c</FileName>
+              <FileName>periph_minipc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\User\Peripheral\periph_ext_remote.c</FilePath>
+              <FilePath>..\User\Peripheral\periph_minipc.c</FilePath>
+            </File>
+            <File>
+              <FileName>ext_remote_dev.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Peripheral\ext_remote_dev.c</FilePath>
             </File>
           </Files>
         </Group>

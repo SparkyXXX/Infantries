@@ -1,0 +1,8 @@
+	app_remote.c:
+		AutoAim_ShootModeSet()
+		Remote_ShootModeSet()
+		Keymouse_ShootModeSet()
+	config_ctrl.c:
+		AutoShootBigEnergy_Wait_ms
+		AutoShootSmallEnergy_Wait_ms
+		

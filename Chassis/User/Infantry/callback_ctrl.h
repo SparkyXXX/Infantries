@@ -18,7 +18,6 @@ extern "C"
 #include "util_uart.h"
 #include "util_fdcan.h"
 
-#define REFEREE_RX_BUFF_LEN 500
 #define FDCAN_RX_DATA 200
 
     void UART_ReceiveHandler(UART_HandleTypeDef *huart);

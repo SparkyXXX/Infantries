@@ -16,6 +16,7 @@ extern "C"
 #endif
 
 #include "stm32g4xx_hal.h"
+#include "lib_math.h"
 
 #define MAX_LENGTH 30
 

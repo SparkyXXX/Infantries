@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-08-06 20:50:44
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-04-20 02:10:14
  */
 
 #ifndef APP_SHOOT_H
@@ -15,18 +15,24 @@ extern "C"
 {
 #endif
 
+#include "protocol_motor.h"
+#include "protocol_board.h"
+#include "periph_motor_pwm.h"
 #include "alg_pid.h"
+#include "util_adc.h"
+#include "cmsis_os.h"
 
-#define LOCKED_CURRENT 8000.0f
+#define LOCKED_CURRENT 9000.0f
 #define LOCKED_SPEED 20.0f
-#define LOCKED_TIME 20.0f
+#define LOCKED_TIME 500.0f
 #define RELOCKED_TIME 100.0f
 #define REVERSE_SPEED -30.0f
 
-#define COOLING_FIRST 1
-#define OUTBURST_FIRST 2
-
-#define HEAT_LIMIT 20
+#define HEAT_SINGLE_COUNT 10
+#define HEAT_FAST_LIMIT 120
+#define HEAT_SLOW_LIMIT 20
+#define HEAT_WAIT_LIMIT 10
+#define HEAT_STOP_LIMIT 0
 
 #define CONTINUOUS 1
 #define SINGLE 2
@@ -49,61 +55,51 @@ extern "C"
 
     typedef struct
     {
-        float left_speed_ref;
-        float right_speed_ref;
-        float left_speed_fdb;
-        float right_speed_fdb;
-        float referee_bullet_speed[5];
-        float average_bullet_speed;
+        float left_shoot_speed;
+        float right_shoot_speed;
+        float feeder_shoot_speed;
     } Shooter_SpeedDataTypeDef;
+
+    typedef struct
+    {
+        float shooter_17mm_cooling_heat;
+        float shooter_17mm_cooling_rate;
+        float feeder_speed;
+        uint8_t current_pidnum;
+    } Shooter_HeatDataTypeDef;
 
     typedef struct
     {
         Shooter_ModeEnum shooter_mode;
         Feeder_ModeEnum feeder_mode, last_feeder_mode;
         Shooter_SpeedDataTypeDef shoot_speed;
-
-        float feeder_angle_init;
-        float shoot_freq_ref;
-        float shoot_freq_fdb;
-        float fast_shoot_freq;
-        float slow_shoot_freq;
-
-        float heat_now;
-        float heat_now_referee;
-        float heat_limit;
-
-        uint8_t shoot_mode;
+        Shooter_HeatDataTypeDef heat_ctrl;
         uint8_t single_shoot_done;
-        float armor_wait_ms;
-
         PID_TypeDef shoot_left, shoot_right;
         PID_TypeDef feed_spd, feed_ang;
-        Filter_Lowpass_TypeDef shooter_left_fdb_lpf;
-        Filter_Lowpass_TypeDef shooter_right_fdb_lpf;
+				float feeder_angle_init;
+				float feeder_angle_beginInit;
     } Shoot_ControlTypeDef;
 
-    extern float angle_diff, last_consequent_angle;
 
-    Shoot_ControlTypeDef *Shoot_GetControlPtr(void);
     void Shoot_Init(void);
-    void ShootSpeed_Update(void);
-    void Heat_Control(void);
     void Shoot_ShooterControl(void);
     void Shoot_FeederControl(void);
-    void Shoot_ShooterOutput(void);
-    void Shoot_FeederOutput(void);
+    static void Shoot_HeatControl();
+    void Shoot_Update(void);
+    void Shoot_Output(void);
 
     void Shoot_Single(void);
+		void FeederOneInc(void);
+		void FeederOneRemainInc(void);
     void Shoot_FeederLockedJudge(void);
     static void Shoot_FeederLockedHandle();
+
+    Shoot_ControlTypeDef *Shoot_GetControlPtr(void);
     void Shoot_FeederModeSet(Feeder_ModeEnum mode);
     void Shoot_FeederModeForceSet(Feeder_ModeEnum mode);
+    void Shoot_SetFeederSpeed(float speed);
 
-    void Remote_ShootModeSet(void);
-    void Keymouse_ShootModeSet(void);
-    void Keymouse_VTM_ShootModeSet(void);
-    void AutoAim_ShootModeSet(void);
 #endif
 
 #ifdef __cplusplus

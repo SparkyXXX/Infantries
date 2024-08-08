@@ -4,17 +4,33 @@
  * @Author: Hatrix
  * @Date: 2023-11-07 14:28:30
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-08-01 11:41:37
+ * @LastEditTime: 2024-01-10 14:19:05
  */
 
 #include "task_ctrl.h"
+#include "config_ctrl.h"
 #include "app_chassis.h"
 #include "app_gimbal.h"
+#include "app_power.h"
 #include "app_ui.h"
-#include "cmsis_os.h"
-#include "config_ctrl.h"
-#include "periph_cap.h"
+#include "protocol_referee.h"
 #include "protocol_board.h"
+#include "periph_cap.h"
+#include "app_monitor.h"
+
+int Global_Init_Flag = 0;
+
+void Init_Task(void const *argument)
+{
+    Init_All();
+    TaskHandle_t InitTask_Handler = xTaskGetHandle(pcTaskGetName(NULL));
+    for (;;)
+    {
+        Global_Init_Flag = 1;
+        vTaskSuspend(InitTask_Handler);
+        osDelay(1);
+    }
+}
 
 /**
  * @brief          Chassis task
@@ -25,15 +41,13 @@ void Chassis_Task(void const *argument)
 {
     for (;;)
     {
-        Motor_IsLost(&Motor_ForwardLeft);
-        Motor_IsLost(&Motor_ForwardRight);
-        Motor_IsLost(&Motor_BackwardRight);
-        Motor_IsLost(&Motor_BackwardLeft);
-        Check_Motor_State();
-        OmniChassis_EstimateSpeed();
-        OmniChassis_GetInstruct();
-        OmniChassis_CalcOutput();
-        OmniChassis_PowerControl();
+        while (!Global_Init_Flag)
+        {
+            osDelay(1);
+        }
+        Chassis_Output();
+        Output_Control();
+				
         osDelay(1);
     }
 }
@@ -43,13 +57,14 @@ void Chassis_Task(void const *argument)
  * @param          NULL
  * @retval         NULL
  */
-extern uint8_t start_ident_flag;
 void Gimbal_Task(void const *argument)
 {
     for (;;)
     {
-        Motor_IsLost(&Motor_GimbalYaw);
-        start_ident_flag = 1;
+        while (!Global_Init_Flag)
+        {
+            osDelay(1);
+        }
         GimbalYaw_Output();
         osDelay(1);
     }
@@ -59,6 +74,10 @@ void BoardCom_Task(void const *argument)
 {
     for (;;)
     {
+        while (!Global_Init_Flag)
+        {
+            osDelay(1);
+        }
         BoardCom_Send();
         osDelay(1);
     }
@@ -73,7 +92,10 @@ void Cap_Task(void const *argument)
 {
     for (;;)
     {
-		Cap_IsLost();
+        while (!Global_Init_Flag)
+        {
+            osDelay(1);
+        }
         Cap_Update();
         osDelay(1);
     }
@@ -88,24 +110,38 @@ void Cap_Task(void const *argument)
 uint8_t ui_cmd_last = 0;
 void UI_Task(void const *argument)
 {
-#if IF_SYS_IDENT == NO_SYS_IDENT
-    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     for (;;)
     {
-        if (boardcom->ui_cmd != ui_cmd_last)
+        while (!Global_Init_Flag)
         {
-            UI_Refresh();
+            osDelay(1);
         }
-        ui_cmd_last = boardcom->ui_cmd;
-        UI_Update();
-        osDelay(20);
-    }
-#endif
-#if IF_SYS_IDENT == SYS_IDENT
-    for (;;)
-    {
-        Test_Response();
+		if (boardcom->ui_cmd != ui_cmd_last)
+		{
+			UI_Refresh();
+		}
+	    ui_cmd_last = boardcom->ui_cmd;
+		HomeHurt_Detect();
+		UI_Update();
         osDelay(1);
     }
-#endif
+}
+
+/**
+ * @brief          Monitor
+ * @param          NULL
+ * @retval         NULL
+ */
+void Monitor_Task(void const *argument)
+{
+	for (;;)
+    {
+        while (!Global_Init_Flag)
+        {
+            osDelay(1);
+        }
+        Monitor_Check();
+        osDelay(1);
+    }
 }

@@ -9,6 +9,23 @@
 
 #include "lib_math.h"
 
+float Math_Normalize(float input, float minInput, float maxInput)
+{
+    float modulus = maxInput - minInput;
+    float normalized_input = input;
+    int numMax = (int)((normalized_input - minInput) / modulus);
+    normalized_input -= numMax * modulus;
+
+    int numMin = (int)((normalized_input - maxInput) / modulus);
+    normalized_input -= numMin * modulus;
+    return normalized_input;
+}
+
+float Math_Consequent_To_180(float angle_ref, float angle_fdb)
+{
+	return angle_ref - Math_Normalize(angle_ref - angle_fdb, -180.0f, 180.0f);
+}
+
 /**
  * @brief      Radian to angle
  * @param      Converted radian
@@ -17,16 +34,6 @@
 float Math_RadToAngle(float rad)
 {
     return (rad * 180.0f / PI);
-}
-
-/**
- * @brief      Angle to Radian
- * @param      Converted radian
- * @retval     result
- */
-float Math_AngleToRad(float angle)
-{
-    return (angle * PI / 180.0f);
 }
 
 /**
@@ -100,7 +107,7 @@ float Math_InvSqrt(float x)
  */
 float Math_Differential(float arr[], uint8_t order)
 {
-    float value = 0.0f;
+    float value;
     switch (order)
     {
         case 1:
@@ -141,7 +148,7 @@ void Math_InitSlopeParam(Math_SlopeParamTypeDef *pparam, float acc, float dec)
  */
 float Math_CalcSlopeRef(float rawref, float targetref, Math_SlopeParamTypeDef *pparam)
 {
-    float newref =0.0f;
+    float newref;
     if (pparam->acc == 0 | pparam->dec == 0)
         return targetref;
     if (rawref < targetref - pparam->acc)
@@ -168,7 +175,7 @@ float Math_CalcSlopeRef(float rawref, float targetref, Math_SlopeParamTypeDef *p
  */
 float Math_CalcAbsSlopeRef(float rawref, float targetref, Math_SlopeParamTypeDef *pparam)
 {
-    float newref = 0.0f;
+    float newref;
     if (pparam->acc == 0 | pparam->dec == 0)
         return targetref;
     if (rawref > 0)

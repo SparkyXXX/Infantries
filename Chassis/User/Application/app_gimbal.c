@@ -3,15 +3,16 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-17 20:07:58
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-04-20 00:38:01
  */
-
-#include "app_gimbal.h"
-#include "app_chassis.h"
+ 
 #include "config_ctrl.h"
+#include "app_gimbal.h"
+#include "protocol_motor.h"
 #include "lib_math.h"
 #include "protocol_board.h"
+#include "app_chassis.h"
 
 GimbalYaw_ControlTypeDef GimbalYaw_Control;
 
@@ -58,148 +59,121 @@ void GimbalYaw_ModeSet(GimbalYaw_ModeEnum mode)
     }
 }
 
-void GimbalYaw_ModeProcess()
-{
-    GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
-    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-
-    switch (boardcom->yaw_mode)
-    {
-    case GIMBAL_YAW_NO_AUTO:
-        GimbalYaw_ModeSet(GimbalYaw_NO_AUTO);
-        break;
-    case GIMBAL_YAW_ARMOR:
-        GimbalYaw_ModeSet(GimbalYaw_ARMOR);
-        break;
-    case GIMBAL_YAW_BIG_ENERGY:
-        GimbalYaw_ModeSet(GimbalYaw_BIG_ENERGY);
-        break;
-    case GIMBAL_YAW_SMALL_ENERGY:
-        GimbalYaw_ModeSet(GimbalYaw_SMALL_ENERGY);
-        break;
-    default:
-        return;
-    }
-    if (gimbalyaw->mode_change_flag == 1)
-    {
-        PID_Clear(&(gimbalyaw->spd_no_auto));
-        PID_Clear(&(gimbalyaw->pos_no_auto));
-        PID_Clear(&(gimbalyaw->spd_armor));
-        PID_Clear(&(gimbalyaw->pos_armor));
-        PID_Clear(&(gimbalyaw->spd_big_energy));
-        PID_Clear(&(gimbalyaw->pos_big_energy));
-        PID_Clear(&(gimbalyaw->spd_small_energy));
-        PID_Clear(&(gimbalyaw->pos_small_energy));
-
-        if (gimbalyaw->present_mode == GimbalYaw_NO_AUTO)
-        {
-            gimbalyaw->spd_no_auto.ref = gimbalyaw->last_yaw_spd_ref;
-            gimbalyaw->pos_no_auto.ref = gimbalyaw->last_yaw_pos_ref;
-        }
-        if (gimbalyaw->present_mode == GimbalYaw_ARMOR)
-        {
-            gimbalyaw->spd_armor.ref = gimbalyaw->last_yaw_spd_ref;
-            gimbalyaw->pos_armor.ref = gimbalyaw->last_yaw_pos_ref;
-        }
-        if (gimbalyaw->present_mode == GimbalYaw_BIG_ENERGY)
-        {
-            gimbalyaw->spd_big_energy.ref = gimbalyaw->last_yaw_spd_ref;
-            gimbalyaw->pos_big_energy.ref = gimbalyaw->last_yaw_pos_ref;
-        }
-        if (gimbalyaw->present_mode == GimbalYaw_SMALL_ENERGY)
-        {
-            gimbalyaw->spd_small_energy.ref = gimbalyaw->last_yaw_spd_ref;
-            gimbalyaw->pos_small_energy.ref = gimbalyaw->last_yaw_pos_ref;
-        }
-        gimbalyaw->mode_change_flag = 0;
-    }
-}
-
-float test_ref = 0.0f;
-void GimbalYaw_CalcOutput()
-{
-    GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
-    switch (gimbalyaw->present_mode)
-    {
-    case GimbalYaw_NO_AUTO:
-#if YAW_MOVE == YAW_REMOTE
-        PID_SetRef(&(gimbalyaw->pos_no_auto), gimbalyaw->yaw_ref);
-#endif
-#if YAW_MOVE == YAW_STEP
-        PID_SetRef(&gimbalyaw->pos_no_auto, test_ref);
-#endif
-        PID_SetFdb(&gimbalyaw->pos_no_auto, Math_Consequent_To_Limited(gimbalyaw->yaw_ref, gimbalyaw->yaw_position_fdb));
-        PID_SetRef(&gimbalyaw->spd_no_auto, Filter_Lowpass(PID_Calc(&gimbalyaw->pos_no_auto), &(gimbalyaw->spd_ref_filter)));
-        PID_SetFdb(&gimbalyaw->spd_no_auto, gimbalyaw->yaw_speed_fdb);
-        Motor_SetOutput(&Motor_GimbalYaw, PID_Calc(&gimbalyaw->spd_no_auto));
-        gimbalyaw->last_yaw_spd_ref = gimbalyaw->spd_no_auto.ref;
-        gimbalyaw->last_yaw_pos_ref = gimbalyaw->pos_no_auto.ref;
-#if IF_SYS_IDENT == SYS_IDENT
-        Motor_SetOutput(&Motor_GimbalYaw, openloop_spd_ref);
-#endif
-        break;
-    case GimbalYaw_ARMOR:
-        PID_SetRef(&gimbalyaw->pos_armor, Filter_Lowpass(gimbalyaw->yaw_ref, &(gimbalyaw->autoaim_yaw_filter)));
-        PID_SetFdb(&gimbalyaw->pos_armor, Math_Consequent_To_Limited(gimbalyaw->yaw_ref, gimbalyaw->yaw_position_fdb));
-        PID_SetRef(&gimbalyaw->spd_armor, Filter_Lowpass(PID_Calc(&gimbalyaw->pos_armor), &(gimbalyaw->spd_ref_filter)));
-        PID_SetFdb(&gimbalyaw->spd_armor, gimbalyaw->yaw_speed_fdb);
-        Motor_SetOutput(&Motor_GimbalYaw, PID_Calc(&gimbalyaw->spd_armor));
-        gimbalyaw->last_yaw_spd_ref = gimbalyaw->spd_armor.ref;
-        gimbalyaw->last_yaw_pos_ref = gimbalyaw->pos_armor.ref;
-        break;
-    case GimbalYaw_BIG_ENERGY:
-        PID_SetRef(&gimbalyaw->pos_big_energy, gimbalyaw->yaw_ref);
-        PID_SetFdb(&gimbalyaw->pos_big_energy, Math_Consequent_To_Limited(gimbalyaw->yaw_ref, gimbalyaw->yaw_position_fdb));
-        PID_SetRef(&gimbalyaw->spd_big_energy, Filter_Lowpass(PID_Calc(&gimbalyaw->pos_big_energy), &(gimbalyaw->spd_ref_filter)));
-        PID_SetFdb(&gimbalyaw->spd_big_energy, gimbalyaw->yaw_speed_fdb);
-        Motor_SetOutput(&Motor_GimbalYaw, PID_Calc(&gimbalyaw->spd_big_energy));
-        gimbalyaw->last_yaw_spd_ref = gimbalyaw->spd_big_energy.ref;
-        gimbalyaw->last_yaw_pos_ref = gimbalyaw->pos_big_energy.ref;
-        break;
-    case GimbalYaw_SMALL_ENERGY:
-        PID_SetRef(&gimbalyaw->pos_small_energy, gimbalyaw->yaw_ref);
-        PID_SetFdb(&gimbalyaw->pos_small_energy, Math_Consequent_To_Limited(gimbalyaw->yaw_ref, gimbalyaw->yaw_position_fdb));
-        PID_SetRef(&gimbalyaw->spd_small_energy, Filter_Lowpass(PID_Calc(&gimbalyaw->pos_small_energy), &(gimbalyaw->spd_ref_filter)));
-        PID_SetFdb(&gimbalyaw->spd_small_energy, gimbalyaw->yaw_speed_fdb);
-        Motor_SetOutput(&Motor_GimbalYaw, PID_Calc(&gimbalyaw->spd_small_energy));
-        gimbalyaw->last_yaw_spd_ref = gimbalyaw->spd_small_energy.ref;
-        gimbalyaw->last_yaw_pos_ref = gimbalyaw->pos_small_energy.ref;
-        break;
-    default:
-        break;
-    }
-}
-
 /**
  * @brief      Control function of gimbal yaw
  * @param      NULL
  * @retval     NULL
  */
+//float GetAutoFeedForward(float x) {
+//	return 12.0f * x + (x > 0 ? 0.03f : -0.03f);
+//}
+
+//float lastyawref, llastyawref, refspd, lrefspd, llrefspd;
+//void GimbalYaw_Output()
+//{
+//    GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
+//    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+//    Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
+
+//    if (gimbalyaw->mode_change_flag == 1)
+//    {
+//        PID_Clear(&gimbalyaw->spd_no_auto);
+//        PID_Clear(&gimbalyaw->pos_no_auto);
+//        PID_Clear(&gimbalyaw->spd_armor);
+//        PID_Clear(&gimbalyaw->pos_armor);
+//        PID_Clear(&gimbalyaw->spd_big_energy);
+//        PID_Clear(&gimbalyaw->pos_big_energy);
+//        PID_Clear(&gimbalyaw->spd_small_energy);
+//        PID_Clear(&gimbalyaw->pos_small_energy);
+//        gimbalyaw->mode_change_flag = 0;
+//    }
+//    switch (chassis->present_mode)
+//    {
+//    case CHASSIS_GYRO:
+//        PID_SetRef(&gimbalyaw->pos_armor, gimbalyaw->yaw_ref);
+//        PID_SetFdb(&gimbalyaw->pos_armor, Math_Consequent_To_180(gimbalyaw->yaw_ref, gimbalyaw->yaw_position_fdb));
+//        PID_SetRef(&gimbalyaw->spd_armor, PID_Calc(&gimbalyaw->pos_armor));
+//        PID_SetFdb(&gimbalyaw->spd_armor, gimbalyaw->yaw_speed_fdb);
+//        Motor_SetOutput(&Motor_GimbalYaw, PID_Calc(&gimbalyaw->spd_armor));
+//        yaw_pos_error_watch = gimbalyaw->pos_armor.err_watch;
+//        break;
+//    default:
+//		refspd = (gimbalyaw->yaw_ref - llastyawref) / 2;
+//        PID_SetRef(&gimbalyaw->pos_no_auto, gimbalyaw->yaw_ref + GetAutoFeedForward((refspd + lrefspd + llrefspd) / 3));
+//        PID_SetFdb(&gimbalyaw->pos_no_auto, Math_Consequent_To_180(gimbalyaw->yaw_ref, gimbalyaw->yaw_position_fdb));
+//        PID_SetRef(&gimbalyaw->spd_no_auto, PID_Calc(&gimbalyaw->pos_no_auto));
+//        PID_SetFdb(&gimbalyaw->spd_no_auto, gimbalyaw->yaw_speed_fdb);
+//        Motor_SetOutput(&Motor_GimbalYaw, PID_Calc(&gimbalyaw->spd_no_auto));
+//        yaw_pos_error_watch = gimbalyaw->pos_no_auto.err_watch;
+//		llastyawref = lastyawref;
+//		lastyawref = gimbalyaw->yaw_ref;
+//		llrefspd = lrefspd;
+//		lrefspd = refspd;
+//        break;
+//    }
+//    if (boardcom->check_in == 1)
+//    {
+//        Motor_SetOutput(&Motor_GimbalYaw, 0.0f);
+//    }
+//    Motor_CAN_SendGroupOutput(&Motor_GimbalMotors);
+//    yaw_pos_ref_watch = gimbalyaw->yaw_ref;
+//    yaw_pos_fdb_watch = gimbalyaw->yaw_position_fdb;
+//}
 void GimbalYaw_Output()
 {
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
-    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-    Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
-
-    GimbalYaw_SetRef(boardcom->yaw_ref);
-    GimbalYaw_SetAngleFdb(boardcom->yaw_pos_fdb);
-    GimbalYaw_SetSpeedFdb(boardcom->yaw_spd_fdb);
-
-    GimbalYaw_ModeProcess();
-    GimbalYaw_CalcOutput();
-
-#if IF_SYS_IDENT == SYS_IDENT
-    openloop_spd_fdb = gimbalyaw->yaw_speed_fdb;
-#endif
-    if (boardcom->check_in == 1 || boardcom_decoded_count > BOARDCOM_TIMEOUT_VALUE)
+    if (gimbalyaw->mode_change_flag == 1)
     {
-        Motor_SetOutput(&Motor_GimbalYaw, 0.0f);
+        PID_Clear(&gimbalyaw->spd_no_auto);
+        PID_Clear(&gimbalyaw->pos_no_auto);
+        PID_Clear(&gimbalyaw->spd_armor);
+        PID_Clear(&gimbalyaw->pos_armor);
+        PID_Clear(&gimbalyaw->spd_big_energy);
+        PID_Clear(&gimbalyaw->pos_big_energy);
+        PID_Clear(&gimbalyaw->spd_small_energy);
+        PID_Clear(&gimbalyaw->pos_small_energy);
+        gimbalyaw->mode_change_flag = 0;
     }
-    else
+    switch (gimbalyaw->present_mode)
     {
-        boardcom_decoded_count++;
+    case GimbalYaw_NO_AUTO:
+        PID_SetRef(&gimbalyaw->pos_no_auto, gimbalyaw->yaw_ref);
+        PID_SetFdb(&gimbalyaw->pos_no_auto, Math_Consequent_To_180(gimbalyaw->yaw_ref, gimbalyaw->yaw_position_fdb));
+        PID_SetRef(&gimbalyaw->spd_no_auto, PID_Calc(&gimbalyaw->pos_no_auto));
+        PID_SetFdb(&gimbalyaw->spd_no_auto, gimbalyaw->yaw_speed_fdb);
+        Motor_SetOutput(&Motor_GimbalYaw, PID_Calc(&gimbalyaw->spd_no_auto));
+        yaw_pos_error_watch = gimbalyaw->pos_no_auto.err_watch;
+        break;
+    case GimbalYaw_ARMOR:
+        PID_SetRef(&gimbalyaw->pos_armor, gimbalyaw->yaw_ref);
+        PID_SetFdb(&gimbalyaw->pos_armor, Math_Consequent_To_180(gimbalyaw->yaw_ref, gimbalyaw->yaw_position_fdb));
+        PID_SetRef(&gimbalyaw->spd_armor, PID_Calc(&gimbalyaw->pos_armor));
+        PID_SetFdb(&gimbalyaw->spd_armor, gimbalyaw->yaw_speed_fdb);
+        Motor_SetOutput(&Motor_GimbalYaw, PID_Calc(&gimbalyaw->spd_armor));
+        yaw_pos_error_watch = gimbalyaw->pos_armor.err_watch;
+        break;
+    case GimbalYaw_BIG_ENERGY:
+        PID_SetRef(&gimbalyaw->pos_big_energy, gimbalyaw->yaw_ref);
+        PID_SetFdb(&gimbalyaw->pos_big_energy, Math_Consequent_To_180(gimbalyaw->yaw_ref, gimbalyaw->yaw_position_fdb));
+        PID_SetRef(&gimbalyaw->spd_big_energy, PID_Calc(&gimbalyaw->pos_big_energy));
+        PID_SetFdb(&gimbalyaw->spd_big_energy, gimbalyaw->yaw_speed_fdb);
+        Motor_SetOutput(&Motor_GimbalYaw, PID_Calc(&gimbalyaw->spd_big_energy));
+        yaw_pos_error_watch = gimbalyaw->pos_big_energy.err_watch;
+        break;
+    case GimbalYaw_SMALL_ENERGY:
+        PID_SetRef(&gimbalyaw->pos_small_energy, gimbalyaw->yaw_ref);
+        PID_SetFdb(&gimbalyaw->pos_small_energy, Math_Consequent_To_180(gimbalyaw->yaw_ref, gimbalyaw->yaw_position_fdb));
+        PID_SetRef(&gimbalyaw->spd_small_energy, PID_Calc(&gimbalyaw->pos_small_energy));
+        PID_SetFdb(&gimbalyaw->spd_small_energy, gimbalyaw->yaw_speed_fdb);
+        Motor_SetOutput(&Motor_GimbalYaw, PID_Calc(&gimbalyaw->spd_small_energy));
+        yaw_pos_error_watch = gimbalyaw->pos_small_energy.err_watch;
+        break;
+    default:
+        break;
     }
     Motor_CAN_SendGroupOutput(&Motor_GimbalMotors);
+    yaw_pos_ref_watch = gimbalyaw->yaw_ref;
+    yaw_pos_fdb_watch = gimbalyaw->yaw_position_fdb;
 }
 
 /**
@@ -210,7 +184,7 @@ void GimbalYaw_Output()
 void GimbalYaw_SetRef(float yaw_ref)
 {
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
-    gimbalyaw->yaw_ref = Math_AngleToRad(yaw_ref);
+    gimbalyaw->yaw_ref = yaw_ref;
 }
 
 /**
@@ -221,7 +195,7 @@ void GimbalYaw_SetRef(float yaw_ref)
 void GimbalYaw_SetAngleFdb(float yaw_pos_fdb)
 {
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
-    gimbalyaw->yaw_position_fdb = Math_AngleToRad(yaw_pos_fdb);
+    gimbalyaw->yaw_position_fdb = yaw_pos_fdb;
 }
 
 /**

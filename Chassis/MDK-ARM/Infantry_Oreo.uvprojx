@@ -16,8 +16,8 @@
         <TargetCommonOption>
           <Device>STM32G473CBTx</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32G4xx_DFP.1.5.0</PackID>
-          <PackURL>https://www.keil.com/pack/</PackURL>
+          <PackID>Keil.STM32G4xx_DFP.1.4.0</PackID>
+          <PackURL>http://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000-0x2001FFFF) IROM(0x8000000-0x801FFFF)  CLOCK(8000000) FPU2 CPUTYPE("Cortex-M4") TZ</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -1662,11 +1662,6 @@
               <FileType>1</FileType>
               <FilePath>..\User\Infantry\config_ctrl.c</FilePath>
             </File>
-            <File>
-              <FileName>test_ctrl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\Infantry\test_ctrl.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -1683,15 +1678,30 @@
               <FilePath>..\User\Application\app_gimbal.c</FilePath>
             </File>
             <File>
+              <FileName>app_power.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Application\app_power.c</FilePath>
+            </File>
+            <File>
               <FileName>app_ui.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\User\Application\app_ui.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>app_monitor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Application\app_monitor.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Protocol</GroupName>
           <Files>
+            <File>
+              <FileName>protocol_motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Protocol\protocol_motor.c</FilePath>
+            </File>
             <File>
               <FileName>protocol_board.c</FileName>
               <FileType>1</FileType>

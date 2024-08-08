@@ -1,0 +1,8 @@
+-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c
+-fno-rtti -funsigned-char -fshort-enums -fshort-wchar
+-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Core/Inc -I ../User/Infantry -I ../User/Algorithm -I ../User/Application -I ../User/Protocol -I ../User/Library -I ../User/Peripheral -I ../User/Utility -I ../User/System
+-I./RTE/_Infantry_Oreo
+-IC:/Keil_v5/ARM/PACK/ARM/CMSIS/5.9.0/CMSIS/Core/Include
+-IC:/Keil_v5/ARM/PACK/Keil/STM32G4xx_DFP/1.4.0/Drivers/CMSIS/Device/ST/STM32G4xx/Include
+-D__UVISION_VERSION="538" -D_RTE_ -DSTM32G473xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32G473xx -DARM_MATH_CM4 -D__TARGET_FPU_VFP
+-o infantry_oreo/app_monitor.o -MD "../User/Application/app_monitor.c"

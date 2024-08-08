@@ -131,7 +131,7 @@ void KF_xhat_Update(KF_DataTypeDef *kf)
 
 /**
  * @brief         Kalman Filter P Update
- * @param 		  *kf
+ * @param *kf
  * @retval
  */
 void KF_P_Update(KF_DataTypeDef *kf)

@@ -1,0 +1,35 @@
+
+
+GraphedExpression="((Gimbal_Control).pitch_spd_armor).ref", Color=#e56a6f, Show=0
+GraphedExpression="((Gimbal_Control).pitch_spd_armor).fdb", Color=#35792b, Show=0
+GraphedExpression="((Gimbal_Control).pitch_pos_armor).ref", Color=#769dda, Show=0
+GraphedExpression="((Gimbal_Control).pitch_pos_armor).fdb", Color=#b14f0d
+GraphedExpression="((Gimbal_Control).pitch_pos_armor).sum", Color=#b3c38e, Show=0
+GraphedExpression="((Gimbal_Control).pitch_spd_armor).sum", Color=#ab7b05, Show=0
+GraphedExpression="(MiniPC_Data).is_shoot", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#7fd3b7, Show=0
+GraphedExpression="have_shooted", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#50328f, Show=0
+GraphedExpression="((Shoot_Control).shoot_left).fdb", Color=#c587a5, Show=0
+GraphedExpression="((Shoot_Control).shoot_right).fdb", Color=#999401, Show=0
+GraphedExpression="(Shoot_Control).single_shoot_done", Color=#aa1d24, Show=0
+OpenDocument="app_shoot.h", FilePath="D:/RM/my project/Infantry_BigTitan/infantry_-big_-titan/Gimbal_extR/User/Application/app_shoot.h", Line=38
+OpenDocument="main.c", FilePath="D:/RM/my project/Infantry_BigTitan/infantry_-big_-titan/Gimbal_extR/Core/Src/main.c", Line=55
+OpenDocument="app_gimbal.c", FilePath="D:/RM/my project/Infantry_BigTitan/infantry_-big_-titan/Gimbal_extR/User/Application/app_gimbal.c", Line=0
+OpenToolbar="Debug", Floating=0, x=0, y=0
+OpenWindow="Call Stack", DockArea=RIGHT, x=0, y=0, w=1241, h=1315, TabPos=3, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Disassembly", DockArea=LEFT, x=0, y=1, w=509, h=322, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=0, w=509, h=1011, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Data Sampling", DockArea=RIGHT, x=0, y=0, w=1241, h=1315, TabPos=0, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
+OpenWindow="Timeline", DockArea=RIGHT, x=0, y=0, w=1241, h=1315, TabPos=1, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="1 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="31;0", DataGraphShowNamesAtCursor=0, PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="628;-69", CodeGraphLegendShown=0, CodeGraphLegendPosition="644;0"
+OpenWindow="RTOS", DockArea=RIGHT, x=0, y=0, w=1241, h=1315, TabPos=2, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, Showing=""
+SmartViewPlugin="", Page="", Toolbar="Hidden", Window="SmartView 1"
+TableHeader="Call Stack", SortCol="Function", SortOrder="ASCENDING", VisibleCols=["Function";"Stack Frame";"Source";"PC";"Return Address";"Stack Used"], ColWidths=[239;100;100;100;112;590]
+TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" ((Gimbal_Control).pitch_spd_armor).ref";" ((Gimbal_Control).pitch_spd_armor).fdb";" ((Gimbal_Control).pitch_pos_armor).ref";" ((Gimbal_Control).pitch_pos_armor).fdb";" ((Gimbal_Control).pitch_pos_armor).sum";" ((Gimbal_Control).pitch_spd_armor).sum";" (MiniPC_Data).is_shoot";" have_shooted";" ((Shoot_Control).shoot_left).fdb";" ((Shoot_Control).shoot_right).fdb";" (Shoot_Control).single_shoot_done"], ColWidths=[100;100;100;100;100;100;100;100;100;100;100;100;100]
+TableHeader="Data Sampling Setup", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[318;144;144;134;134;154;110;144;134]
+TableHeader="Power Sampling", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
+TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[283;435;402;100]
+TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
+TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;340]
+WatchedExpression="Gimbal_Control", RefreshRate=5, Window=Watched Data 1
+WatchedExpression="Shoot_Control", RefreshRate=5, Window=Watched Data 1
+WatchedExpression="have_shooted", Window=Watched Data 1
+WatchedExpression="MiniPC_Data", Window=Watched Data 1

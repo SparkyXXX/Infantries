@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-17 19:45:23
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-03-16 04:30:28
  */
 
 #ifndef INIT_CTRL_H
@@ -17,15 +17,29 @@ extern "C"
 
 #include "periph_motor_can.h"
 #include "stdint.h"
-#include "test_ctrl.h"
 
-#if ROBOT_ID == WHITE_MISTRESS
-#define sight_bias  20
-#endif
+#define ROBOT_NAME BIG_TITAN
+
+#define OLD_WHEAT 1 	//上供弹老麦轮
+#define OREO_REO 2		//上供弹新麦轮
+#define SWING_DANCE 3	//上供弹全向
+#define BIG_TITAN 4		//半下供弹麦轮
+#define NEW_TITAN 5		//半下供弹麦轮
 	
-#if ROBOT_ID == STAR_DUST
-#define sight_bias 0
-#endif
+#define POWER_CTRL NEW
+#define NEW 1
+#define OLD 2
+
+    extern const uint16_t Gyro_Speed_Table[12][2];
+
+    extern uint16_t chassis_power_limit_watch;
+    extern uint8_t buffer_energy_watch;
+    extern uint8_t rest_energy_watch;
+    extern uint8_t launching_frequency_watch;
+    extern float initial_speed_watch;
+    extern float yaw_pos_ref_watch;
+    extern float yaw_pos_fdb_watch;
+    extern float yaw_pos_error_watch;
 
     extern Motor_GroupDataTypeDef *Motor_groupHandle[2];
     extern Motor_GroupDataTypeDef Motor_ChassisMotors;

@@ -1,0 +1,29 @@
+
+
+OpenDocument="stm32g4xx_it.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/Chassis/Core/Src/stm32g4xx_it.c", Line=80
+OpenDocument="tasks.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/Chassis/Middlewares/Third_Party/FreeRTOS/Source/tasks.c", Line=3417
+OpenDocument="stm32g4xx_hal_uart.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/Chassis/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.c", Line=3399
+OpenDocument="alg_pid.h", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/Chassis/User/Algorithm/alg_pid.h", Line=0
+OpenDocument="main.c", FilePath="D:/myproj/2021dkdlb/202404/infantry-code-stable-edition-master/TITAN_TEST/Chassis/Core/Src/main.c", Line=41
+OpenToolbar="Debug", Floating=0, x=0, y=0
+OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=855, h=160, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Memory 1", DockArea=BOTTOM, x=1, y=0, w=927, h=155, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, EditorAddress=0x0
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=0, w=420, h=839, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Data Sampling", DockArea=RIGHT, x=0, y=2, w=855, h=193, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
+OpenWindow="Timeline", DockArea=RIGHT, x=0, y=1, w=855, h=484, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="1 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="0;0", DataGraphShowNamesAtCursor=0, PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="679;0", CodeGraphLegendShown=0, CodeGraphLegendPosition="691;0"
+OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=928, h=155, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+SmartViewPlugin="", Page="", Toolbar="Hidden", Window="SmartView 1"
+TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time"], ColWidths=[100;100]
+TableHeader="Data Sampling Setup", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[362;100;100;100;100;100;100;100;100]
+TableHeader="Power Sampling", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
+TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh";"Access"], ColWidths=[167;100;100;100;0]
+TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
+TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;359]
+WatchedExpression="GimbalYaw_Control", RefreshRate=1, Window=Watched Data 1
+WatchedExpression="overMax", Window=Watched Data 1
+WatchedExpression="overMin", Window=Watched Data 1
+WatchedExpression="my_power_limit", Window=Watched Data 1
+WatchedExpression="Referee_Data", RefreshRate=1, Window=Watched Data 1
+WatchedExpression="Chassis_Control", RefreshRate=1, Window=Watched Data 1
+WatchedExpression="Chassis_Control", Window=Watched Data 1
+WatchedExpression="GimbalYaw_Control", Window=Watched Data 1

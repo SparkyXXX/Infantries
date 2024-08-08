@@ -19,7 +19,6 @@ extern "C" {
 #include "callback_ctrl.h"
 
 
-
 #ifdef __cplusplus
 }
 #endif

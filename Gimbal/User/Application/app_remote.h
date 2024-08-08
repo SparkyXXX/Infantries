@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-08-06 21:22:49
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2024-04-20 01:53:30
  */
 
 #ifndef APP_REMOTE_H
@@ -16,13 +16,15 @@ extern "C"
 #endif
 
 #include "config_ctrl.h"
-#include "periph_remote.h"
-#include "periph_servo.h"
 #include "protocol_board.h"
+#include "periph_servo.h"
+#include "periph_remote.h"
+#include "ext_remote_dev.h"
 
 #define CHASSIS_STOP 0x00
 #define CHASSIS_NORMAL 0x01
 #define CHASSIS_GYRO 0x02
+#define CHASSIS_BACKGYRO 0x03 //反向小陀螺，仅检录测滑环时用，仅遥控器用
 
 #define KEY(T) (remote->key.T)
 #define KEY2(T1, T2) (remote->key.T1 && remote->key.T2)
@@ -30,61 +32,62 @@ extern "C"
 #define KEY_UP(T) (Remote_Keylast.T && !keyboard->T)
 #define KEY_DN(T) (!Remote_Keylast.T && keyboard->T)
 
-#define KEY_VTM(T) (keyboard_VTM->T)
-#define KEY2_VTM(T1, T2) (keyboard_VTM->T1 && keyboard_VTM->T2)
-#define KEY3_VTM(T1, T2, T3) (keyboard_VTM->T1 && keyboard_VTM->T2 && keyboard_VTM->T3)
-#define KEY_UP_VTM(T) (Remote_Keylast_VTM.T && !keyboard_VTM->T)
-#define KEY_DN_VTM(T) (!Remote_Keylast_VTM.T && keyboard_VTM->T)
-
     typedef enum
     {
         REMOTE_ARMOR = 0u,
         REMOTE_BIG_BUFF,
         REMOTE_SMALL_BUFF,
         REMOTE_GYRO,
-        REMOTE_ARMOR_TEMP,
-        REMOTE_BUFF_TEMP
-    }
-    Remote_AutoAimModeEnum;
+        REMOTE_ARMOR_TEMP
+    } Remote_AutoAimModeEnum;
 
     typedef struct
     {
-        Remote_AutoAimModeEnum aim_mode;
-        uint8_t pending;
+        uint8_t pending; // 互斥锁，目前没用到
         uint8_t on_aim;
-        uint8_t mag_state;
-        uint8_t gyro_flag;
-        uint8_t quiet_flag;
-        uint8_t flyslope_flag;
-        uint8_t cap_speedup_flag;
-        uint8_t autoshoot_flag;
-
-        float keymouse_normal_speed;
-        float keymouse_upper_speed;
-        float keymouse_flyslope_speed;
-
-        float keymouse_pitch_to_ref;
-        float keymouse_yaw_to_ref;
-        float keymouse_pitch_to_ref_quiet;
-        float keymouse_yaw_to_ref_quiet;
-        float remote_pitch_to_ref;
-        float remote_yaw_to_ref;
+        Remote_AutoAimModeEnum aim_mode;
     } Remote_ControlTypeDef;
 
-    extern float Servo_Open;
-    extern float Servo_Close;
+    extern uint8_t Remote_Mag_State;
+	extern float Remote_Acc;
+	extern float Remote_Dec;
+	extern float KeyMouse_NormalSpeed;
+	extern float KeyMouse_CapOnSpeed;
+	extern float KeyMouse_FlySlopeSpeed;
+    extern float Chassis_Move_Speed;
+    extern float SpeedUp_Coef;
 
-    Remote_ControlTypeDef* Remote_GetControlPtr(void);
+    extern float Remote_Pitch_To_Ref;
+    extern float Remote_Yaw_To_Ref;
+    extern float Mouse_Pitch_To_Ref;
+    extern float Mouse_Yaw_To_Ref;
+    extern float Mouse_Pitch_To_Ref_Quiet;
+    extern float Mouse_Yaw_To_Ref_Quiet;
+
+	extern float Servo_Open;
+	extern float Servo_Close;
+    extern float Elevation_Angle;
+    extern float Depression_Angle;
+    extern uint16_t AutoShoot_Wait_ms;
+    extern uint16_t AutoShootSmallEnergy_Wait_ms;
+    extern uint16_t AutoShootBigEnergy_Wait_ms;
+		extern uint8_t is_shoot_changed;
+
+    static void Remote_Update();
+    static void Keymouse_Update();
     void Remote_DriveModeSet(void);
-    static void Remote_Update(void);
-    static void Keymouse_Update(void);
-    static void Keymouse_VTM_Update(void);
-    static void KeyMouse_BuffModeSet(uint8_t mode);
-	static void Remote_AutoaimModeSet(uint8_t mode);
-    static void KeyMouse_ArmorModeSet(uint8_t mode);
-    static void Following_AutoaimModeSet(void);
-    static void KeyMouse_GyroModeSet(void);
-    static void KeyMouse_ChassisModeSet(uint8_t chassis_mode);
+
+    static void Remote_ShootModeSet();
+    static void Keymouse_ShootModeSet();
+    static void Remote_AutoaimModeSet(uint8_t mode);
+    static void Keymouse_AutoaimModeSet(uint8_t mode);
+    static void Following_AutoaimModeSet();
+
+    static void Remote_Chassis_ModeSet(uint8_t chassis_mode);
+    static void Remote_Gyro_ModeSet(void);
+
+    Remote_ControlTypeDef *Remote_GetControlPtr(void);
+    void Remote_ControlInit(void);
 
 #ifdef __cplusplus
 }

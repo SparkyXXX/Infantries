@@ -16,7 +16,6 @@ extern "C"
 #endif
 
 #include "BMI088reg.h"
-#include "test_ctrl.h"
 #include "util_spi.h"
 #include "util_gpio.h"
 #include "lib_buff.h"
@@ -25,21 +24,12 @@ extern "C"
 
 #define GRAVITY 9.81f
 #define BMI088_OFFLINE_TIME 0.3f
+
 #define IF_CAILBRATE 0
-
-#if ROBOT_ID == WHITE_MISTRESS
-#define GXOFFSET 0.000658329518f
-#define GYOFFSET -0.00570373517f
-#define GZOFFSET  -0.00247374992f
+#define GXOFFSET 0.00247530174f
+#define GYOFFSET 0.000393082853f
+#define GZOFFSET 0.000393082853f
 #define GNORM 9.69293118f
-#endif
-
-#if ROBOT_ID == STAR_DUST
-#define GXOFFSET 0.00351985544f
-#define GYOFFSET -0.00351949222f
-#define GZOFFSET  0.00200676522f
-#define GNORM 9.66644382f
-#endif
 
 #define BMI088_ACCEL_WRITE_SINGLE_REG(reg, data, hspi, gpio_accel) \
     {                                                              \

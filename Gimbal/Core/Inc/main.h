@@ -84,6 +84,10 @@ void Error_Handler(void);
 #define Encoder_Left_B_GPIO_Port GPIOA
 #define Encoder_Left_A_Pin GPIO_PIN_9
 #define Encoder_Left_A_GPIO_Port GPIOA
+#define SW2_Pin GPIO_PIN_15
+#define SW2_GPIO_Port GPIOA
+#define SW0_Pin GPIO_PIN_7
+#define SW0_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
