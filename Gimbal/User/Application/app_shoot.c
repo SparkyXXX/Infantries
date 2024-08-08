@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-08-06 20:54:43
+ * @LastEditTime: 2024-08-08 16:49:26
  */
 
 #include "app_shoot.h"
@@ -414,8 +414,8 @@ void Keymouse_VTM_ShootModeSet()
 
     if (remote->left_button_down == 1)
     {
-        press_time++;
-        if (press_time > 150)
+        press_time_VTM++;
+        if (press_time_VTM > 150)
         {
             Shoot_FeederModeSet(FEEDER_REFEREE);
         }
@@ -428,7 +428,7 @@ void Keymouse_VTM_ShootModeSet()
     {
         Shoot_FeederModeSet(FEEDER_STOP);
         shooter->single_shoot_done = 0;
-        press_time = 0;
+        press_time_VTM = 0;
     }
 
     AutoAim_ShootModeSet();

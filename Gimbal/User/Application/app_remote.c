@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-08-07 00:42:50
+ * @LastEditTime: 2024-08-08 16:49:44
  */
 
 #include "app_remote.h"
@@ -41,7 +41,7 @@ void Remote_DriveModeSet()
     if (HAL_GetTick() - remote->last_update_time > 500)
     {
         Keymouse_VTM_Update();
-        Keymouse_ShootModeSet();
+        Keymouse_VTM_ShootModeSet();
     }
 
     else

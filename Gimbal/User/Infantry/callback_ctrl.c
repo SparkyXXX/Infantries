@@ -84,7 +84,6 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t rxdatalen)
                 Referee_Decode(Referee_RxData + i, rxdatalen);
             }
         }
-        HAL_UARTEx_ReceiveToIdle_DMA(huart, Referee_RxData, REFEREE_RX_BUFF_LEN);
     }
 }
 
