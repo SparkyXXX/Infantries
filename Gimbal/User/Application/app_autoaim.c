@@ -10,60 +10,63 @@
 #include "app_autoaim.h"
 
 AutoAim_ControlTypeDef AutoAim_Control;
-AutoAim_ControlTypeDef* AutoAim_GetControlPtr()
+AutoAim_ControlTypeDef *AutoAim_GetControlPtr()
 {
     return &AutoAim_Control;
 }
 
+// 自瞄期望赋值给云台控制
 void AutoAim_Output()
 {
-    AutoAim_ControlTypeDef* autoaim = AutoAim_GetControlPtr();
-    MiniPC_DataTypeDef* minipc = MiniPC_GetDataPtr();
-    Gimbal_ControlTypeDef* gimbal = Gimbal_GetControlPtr();
-    Shoot_ControlTypeDef* shooter = Shoot_GetControlPtr();
-	Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
+    AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
+    MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
+    Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();
+    Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
+    Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
 
-    if(gimbal->present_mode != GIMBAL_NO_AUTO)
+    if (gimbal->present_mode != GIMBAL_NO_AUTO)
     {
-        if(autoaim->hit_mode == AUTOAIM_HIT_ARMOR)
+        if (autoaim->hit_mode == AUTOAIM_HIT_ARMOR)
         {
             shooter->fast_shoot_freq = autoaim->armor_fast_freq;
             shooter->slow_shoot_freq = autoaim->armor_slow_freq;
+            // 为保证数据精度，发给视觉和视觉回传的云台期望均放大了100倍，此处需要转化回去
             autoaim->armor_yaw = -(float)minipc->armor_yaw_ref / 100;
             autoaim->armor_pitch = -(float)minipc->armor_pitch_ref / 100;
             LimitMaxMin(autoaim->armor_pitch, gimbal->elevation_angle, gimbal->depression_angle);
-            while(autoaim->armor_yaw >= 180)
+            while (autoaim->armor_yaw >= 180)
             {
                 autoaim->armor_yaw -= 360;
             }
-            while(autoaim->armor_yaw <= -180)
+            while (autoaim->armor_yaw <= -180)
             {
                 autoaim->armor_yaw += 360;
             }
-            if(minipc->recieve_packet_type == MINIPC_ARMOR_PACKET && minipc->is_get_target && !MiniPC_IsLost() &&
-				minipc->recieving_lock == 0 && !((minipc->armor_yaw_ref == 0) && (minipc->armor_pitch_ref == 0)))
+            // receiving_lock即为README中提到的线程安全问题；滤掉yaw和pitch都为0的数据帧，README中也有详细解释
+            if (minipc->recieve_packet_type == MINIPC_ARMOR_PACKET && minipc->is_get_target && !MiniPC_IsLost() &&
+                minipc->recieving_lock == 0 && !((minipc->armor_yaw_ref == 0) && (minipc->armor_pitch_ref == 0)))
             {
                 gimbal->pitch_position_ref = autoaim->armor_pitch;
                 gimbal->yaw_position_ref = autoaim->armor_yaw;
             }
         }
-        else if(autoaim->hit_mode == AUTOAIM_HIT_BUFF)
+        else if (autoaim->hit_mode == AUTOAIM_HIT_BUFF)
         {
-			autoaim->is_change_target = remote_control->autoshoot_flag;
+            autoaim->is_change_target = remote_control->autoshoot_flag;
             shooter->fast_shoot_freq = autoaim->buff_freq;
             shooter->slow_shoot_freq = autoaim->buff_freq;
             autoaim->buff_yaw = -(float)minipc->buff_yaw_ref / 100;
             autoaim->buff_pitch = -(float)minipc->buff_pitch_ref / 100;
             LimitMaxMin(autoaim->buff_pitch, gimbal->elevation_angle, gimbal->depression_angle);
-            while(autoaim->buff_yaw >= 180)
+            while (autoaim->buff_yaw >= 180)
             {
                 autoaim->buff_yaw -= 360;
             }
-            while(autoaim->buff_yaw <= -180)
+            while (autoaim->buff_yaw <= -180)
             {
                 autoaim->buff_yaw += 360;
             }
-            if(minipc->recieve_packet_type == MINIPC_BUFF_PACKET && minipc->is_get_target && !MiniPC_IsLost() && autoaim->target_state == AUTOAIM_TARGET_FOLLOWING)
+            if (minipc->recieve_packet_type == MINIPC_BUFF_PACKET && minipc->is_get_target && !MiniPC_IsLost() && autoaim->target_state == AUTOAIM_TARGET_FOLLOWING)
             {
                 gimbal->pitch_position_ref = autoaim->buff_pitch;
                 gimbal->yaw_position_ref = autoaim->buff_yaw;
@@ -77,19 +80,21 @@ void AutoAim_Output()
     }
 }
 
+// 自瞄模式设置
 void AutoAim_ModeSet(AutoAim_ModeEnum mode)
 {
-    AutoAim_ControlTypeDef* autoaim = AutoAim_GetControlPtr();
-    MiniPC_DataTypeDef* minipc = MiniPC_GetDataPtr();
+    AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
+    MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
     autoaim->aim_mode = mode;
     minipc->mode = mode;
 }
 
+// 更新时间戳用于断联检测
 void AutoAim_UpdateTime()
 {
-    AutoAim_ControlTypeDef* autoaim = AutoAim_GetControlPtr();
-    MiniPC_DataTypeDef* minipc = MiniPC_GetDataPtr();
-    if(minipc->is_get_target == 0)
+    AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
+    MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
+    if (minipc->is_get_target == 0)
     {
         return;
     }
@@ -99,15 +104,16 @@ void AutoAim_UpdateTime()
     }
 }
 
+// 断联检测
 void AutoAim_IsLost()
 {
-    AutoAim_ControlTypeDef* autoaim = AutoAim_GetControlPtr();
+    AutoAim_ControlTypeDef *autoaim = AutoAim_GetControlPtr();
     uint32_t now = HAL_GetTick();
-    if((now - autoaim->get_target_time) <= AUTOAIM_LOST_TARGET_TIME)
+    if ((now - autoaim->get_target_time) <= AUTOAIM_LOST_TARGET_TIME)
     {
         autoaim->target_state = AUTOAIM_TARGET_FOLLOWING;
     }
-    else if((now - autoaim->get_target_time) >= AUTOAIM_LOST_TARGET_TIME)
+    else if ((now - autoaim->get_target_time) >= AUTOAIM_LOST_TARGET_TIME)
     {
         autoaim->target_state = AUTOAIM_TARGET_LOST;
     }

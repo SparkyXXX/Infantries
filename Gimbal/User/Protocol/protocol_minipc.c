@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-08-06 01:44:44
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-08-16 18:49:24
  */
 
 #include "protocol_minipc.h"
@@ -72,6 +72,7 @@ void MiniPC_CheckID()
     }
 }
 
+// 视觉通信协议，与视觉协商前禁止改动；其中有许多位目前没有用到（目前均置0了），但为了协议的统一，暂时保留
 void MiniPC_Send()
 {
     MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
@@ -146,11 +147,12 @@ void MiniPC_Send()
     }
 }
 
+// 视觉通信协议，与视觉协商前禁止改动；其中有许多位目前没有用到（目前均置0了），但为了协议的统一，暂时保留
 void MiniPC_Decode(uint8_t *buff, uint16_t rxdatalen)
 {
     MiniPC_DataTypeDef *minipc = MiniPC_GetDataPtr();
     minipc->last_update_time = HAL_GetTick();
-    
+
     if (!MiniPC_Verify(buff, rxdatalen))
     {
         minipc->state = MINIPC_ERROR;

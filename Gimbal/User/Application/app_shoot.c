@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-08-08 16:49:26
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-08-16 18:44:23
  */
 
 #include "app_shoot.h"
@@ -20,6 +20,7 @@ Shoot_ControlTypeDef *Shoot_GetControlPtr()
     return &Shoot_Control;
 }
 
+// 发射初始化
 void Shoot_Init()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
@@ -32,6 +33,7 @@ void Shoot_Init()
     shooter->shoot_speed.left_speed_ref = 0;
     shooter->shoot_speed.right_speed_ref = 0;
     shooter->shoot_freq_ref = 0;
+    // 初始化认为裁判系统弹速为28，方便视觉做弹道解算；否则调试时第一发必定瞄偏
     for (int i = 0; i < 5; i++)
     {
         shooter->shoot_speed.referee_bullet_speed[i] = 28.0f;
@@ -47,6 +49,7 @@ void Shoot_Init()
     Shoot_ParamInit();
 }
 
+// 更新弹速数据
 uint32_t shoot_tick_start = 0;
 uint32_t shoot_tick_diff = 0;
 float snail_diff = 0.0f;
@@ -61,12 +64,14 @@ void ShootSpeed_Update()
     shooter->shoot_speed.referee_bullet_speed[2] = shooter->shoot_speed.referee_bullet_speed[1];
     shooter->shoot_speed.referee_bullet_speed[1] = shooter->shoot_speed.referee_bullet_speed[0];
     shooter->shoot_speed.referee_bullet_speed[0] = boardcom->shoot_spd_referee;
+    // 将裁判系统数据取平均能，能有效减小发给视觉的弹速误差。
     float sum;
     for (int i = 0; i < 5; i++)
     {
         sum += shooter->shoot_speed.referee_bullet_speed[i];
     }
 
+    // 用于协助视觉测试罚单延迟，即从收到视觉的is_get=1开始，到弹丸发射出去这段时间的延迟
     if (shooter->shoot_speed.referee_bullet_speed[0] != shooter->shoot_speed.referee_bullet_speed[1])
     {
         shoot_tick_diff = HAL_GetTick() - shoot_tick_start;
@@ -77,6 +82,7 @@ void ShootSpeed_Update()
     snail_diff = shooter->shoot_speed.left_speed_fdb - shooter->shoot_speed.right_speed_fdb;
 }
 
+// 离线热控
 float feeder_tick_last = 0.0f;
 float angle_diff_sum = 0.0f;
 int ammunition = 0;
@@ -124,6 +130,7 @@ void Heat_Control()
     }
 }
 
+// 摩擦轮计算控制输出
 float shoot_ref = 25.0f;
 float kf = 1.0f;
 void Shoot_ShooterControl()
@@ -164,31 +171,43 @@ void Shoot_ShooterControl()
 #endif
 }
 
+// 拨弹轮计算控制输出
 void Shoot_FeederControl()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
     BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
     switch (shooter->feeder_mode)
     {
+    // 停止
     case FEEDER_STOP:
         shooter->shoot_mode = SINGLE;
         shooter->shoot_freq_ref = 0.0f;
         shooter->feed_spd.sum = 0;
         break;
+
+    // 单发
     case FEEDER_SINGLE:
         shooter->shoot_mode = SINGLE;
         Shoot_Single();
         break;
+
+    // 卡拨弹需要倒转
     case FEEDER_LOCKED:
         shooter->shoot_mode = CONTINUOUS;
         Shoot_FeederLockedHandle();
         break;
+
+    // 连发
     case FEEDER_REFEREE:
         shooter->shoot_mode = CONTINUOUS;
         break;
+
+    // 发射结束
     case FEEDER_FINISH:
         shooter->shoot_mode = CONTINUOUS;
         break;
+
+    // 拨盘初始化
     case FEEDER_INITING:
         shooter->shoot_mode = CONTINUOUS;
         shooter->shoot_freq_ref = 10.0f;
@@ -198,6 +217,7 @@ void Shoot_FeederControl()
     }
 }
 
+// 摩擦轮输出
 void Shoot_ShooterOutput()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
@@ -212,6 +232,7 @@ void Shoot_ShooterOutput()
     Motor_CAN_SendGroupOutput(&Motor_feederMotors);
 }
 
+// 拨弹轮输出
 void Shoot_FeederOutput()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
@@ -220,12 +241,14 @@ void Shoot_FeederOutput()
     if (shooter->shoot_mode == CONTINUOUS)
     {
         PID_SetRef(&(shooter->feed_spd), shooter->shoot_freq_ref);
+        // 摩擦轮正常起转且发射机构上电才允许发射弹丸
         if (shooter->shoot_speed.left_speed_fdb < 20 || shooter->shoot_speed.right_speed_fdb < 20 || boardcom->power_management_shooter_output == 0)
         {
             PID_SetRef(&(shooter->feed_spd), 0);
         }
         PID_SetFdb(&(shooter->feed_spd), Motor_feederMotor.encoder.speed);
         PID_Calc(&(shooter->feed_spd));
+        // 连射结束后需回到初始化角度 + n*45° （拨盘八个齿，360 / 8 = 45）
         PID_SetRef(&(shooter->feed_ang),
                    shooter->feeder_angle_init + (int)((Motor_feederMotor.encoder.consequent_angle -
                                                        shooter->feeder_angle_init + 40.0f) /
@@ -236,6 +259,7 @@ void Shoot_FeederOutput()
     {
         PID_SetFdb(&(shooter->feed_ang), Motor_feederMotor.encoder.consequent_angle);
         PID_SetRef(&(shooter->feed_spd), PID_Calc(&shooter->feed_ang));
+        // 摩擦轮正常起转且发射机构上电才允许发射弹丸
         if (shooter->shoot_speed.left_speed_fdb < 20 || shooter->shoot_speed.right_speed_fdb < 20 || boardcom->power_management_shooter_output == 0)
         {
             PID_SetRef(&(shooter->feed_spd), 0);
@@ -245,6 +269,7 @@ void Shoot_FeederOutput()
     Motor_SetOutput(&Motor_feederMotor, PID_Calc(&(shooter->feed_spd)));
 }
 
+// 单发控制
 void Shoot_Single()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
@@ -261,6 +286,7 @@ void Shoot_Single()
     }
 }
 
+// 卡弹检测
 void Shoot_FeederLockedJudge()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
@@ -300,6 +326,7 @@ void Shoot_FeederLockedJudge()
     }
 }
 
+// 卡弹处理：倒转
 static void Shoot_FeederLockedHandle()
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
@@ -313,6 +340,7 @@ static void Shoot_FeederLockedHandle()
     }
 }
 
+// 拨弹轮模式设置
 void Shoot_FeederModeSet(Feeder_ModeEnum mode)
 {
     Shoot_ControlTypeDef *shooter = Shoot_GetControlPtr();
@@ -325,6 +353,7 @@ void Shoot_FeederModeSet(Feeder_ModeEnum mode)
     if ((shooter->feeder_mode != shooter->last_feeder_mode) && (shooter->last_feeder_mode == FEEDER_REFEREE))
     {
         shooter->feeder_mode = FEEDER_FINISH;
+        // 连射结束后需回到初始化角度 + n*45° （拨盘八个齿，360 / 8 = 45）
         PID_SetRef(&(shooter->feed_ang),
                    shooter->feeder_angle_init + (int)((shooter->feed_ang.fdb - shooter->feeder_angle_init + 40.0f) / 45) * 45);
     }
@@ -336,6 +365,7 @@ void Shoot_FeederModeForceSet(Feeder_ModeEnum mode)
     shooter->feeder_mode = mode;
 }
 
+// 遥控器控制发射
 /***************Shoot Mode Set***************************************************************************************/
 void Remote_ShootModeSet()
 {
@@ -358,9 +388,11 @@ void Remote_ShootModeSet()
     }
     case REMOTE_SWITCH_DOWN:
     {
+// 自瞄调试使用，即is_shoot=1才允许发射
 #if SHOOT_DECIDE == AUTOAIM_DECIDE_SHOOT
         AutoAim_ShootModeSet();
 #endif
+// 发射测试使用，即遥控器可以直接控制发射
 #if SHOOT_DECIDE == REMOTE_DECIDE_SHOOT
         Shoot_FeederModeSet(FEEDER_REFEREE);
 #endif
@@ -371,6 +403,7 @@ void Remote_ShootModeSet()
     }
 }
 
+// 键鼠控制发射
 int press_time = 0;
 void Keymouse_ShootModeSet()
 {
@@ -402,6 +435,8 @@ void Keymouse_ShootModeSet()
 
     AutoAim_ShootModeSet();
 }
+
+// 图传链路的键鼠控制发射
 int press_time_VTM = 0;
 void Keymouse_VTM_ShootModeSet()
 {
@@ -433,6 +468,8 @@ void Keymouse_VTM_ShootModeSet()
 
     AutoAim_ShootModeSet();
 }
+
+// 自瞄控制发射
 extern uint32_t shoot_tick_start;
 uint16_t wait_tick = 0;
 uint8_t have_shooted = 0; // this is_shoot=1 time is have shooted to avoid one is_shoot time shoot twice
@@ -455,7 +492,8 @@ void AutoAim_ShootModeSet()
                 Shoot_FeederModeSet(FEEDER_STOP);
                 return;
             }
-            wait_tick++;
+            // 自动扳机，开火权交给视觉：操作手开启自动扳机后，热量足够，且摩擦轮正常起转，且视觉判断is_shoot=1,则自动开火
+            wait_tick++; // 装甲板检测击打频率为20Hz，故两次发射至少需要间隔50ms
             if (minipc->is_get_target == 1 && minipc->is_shoot == 1 && remote_control->autoshoot_flag == 1 && wait_tick >= shooter->armor_wait_ms &&
                 (shooter->heat_limit - shooter->heat_now) >= HEAT_LIMIT &&
                 shooter->shoot_speed.left_speed_fdb > 20 && shooter->shoot_speed.right_speed_fdb > 20)
@@ -469,6 +507,7 @@ void AutoAim_ShootModeSet()
         }
         else if (autoaim->hit_mode == AUTOAIM_HIT_BUFF)
         {
+            // 自动扳机，逻辑与上面类似；但打符的is_shoot以脉冲形式给出，不存在连续is_shoot=1的情况，故不需要wait_tick
             if (minipc->is_get_target == 1 && minipc->is_shoot == 1 && have_shooted == 0 &&
                 (shooter->heat_limit - shooter->heat_now) >= HEAT_LIMIT &&
                 shooter->shoot_speed.left_speed_fdb > 20 && shooter->shoot_speed.right_speed_fdb > 20)

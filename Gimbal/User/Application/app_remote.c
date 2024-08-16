@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-08-08 16:49:44
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-08-16 18:17:46
  */
 
 #include "app_remote.h"
@@ -13,8 +13,12 @@
 uint8_t Remote_Lost_Flag = 0;
 
 Remote_ControlTypeDef Remote_Control;
+
+// 遥控器信号
 Keyboard_DataTypeDef Remote_Keylast;
 Keyboard_DataTypeDef Remote_KeyZero;
+
+// 图传链路 （VTM全称为Virtual Tellers Machine）
 Keyboard_VTM_DataTypeDef Remote_Keylast_VTM;
 Keyboard_VTM_DataTypeDef Remote_KeyZero_VTM;
 Remote_ControlTypeDef *Remote_GetControlPtr()
@@ -23,6 +27,7 @@ Remote_ControlTypeDef *Remote_GetControlPtr()
 }
 
 /***************Drive Mode Set***************************************************************************************/
+// 设置控制模式，包括遥控器模式、键鼠模式、装甲板自瞄测试模式
 void Remote_DriveModeSet()
 {
     Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
@@ -133,6 +138,7 @@ void Remote_DriveModeSet()
     // #endif
 }
 
+// 遥控器数据更新
 static void Remote_Update()
 {
     Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
@@ -179,6 +185,7 @@ static void Remote_Update()
     gimbal->pitch_position_ref = temp_pitch_ref;
 }
 
+// 键鼠数据更新
 static void Keymouse_Update()
 {
     Remote_DataTypeDef *remote = Remote_GetDataPtr();
@@ -248,10 +255,12 @@ static void Keymouse_Update()
             {
                 KeyMouse_GyroModeSet();
             }
+            // 比赛使用，根据时间自动选择大小符模式
             if (KEY_UP(b))
             {
                 KeyMouse_BuffModeSet(REMOTE_BUFF_TEMP);
             }
+            // 打符测试使用
             //			  if (KEY_UP(v))
             //            {
             //                Remote_AutoaimModeSet(REMOTE_SMALL_BUFF);
@@ -260,10 +269,13 @@ static void Keymouse_Update()
             //            {
             //                Remote_AutoaimModeSet(REMOTE_BIG_BUFF);
             //            }
+
+            // 一键掉头
             if (KEY_UP(x))
             {
                 gimbal->yaw_position_ref = gimbal->yaw_position_ref - 180.0f;
             }
+            // 分区赛时期的飞坡朝向，暂未使用
             if (KEY_DN(z))
             {
                 boardcom->fly_flag = 1;
@@ -272,6 +284,8 @@ static void Keymouse_Update()
             {
                 boardcom->fly_flag = 0;
             }
+
+            // 早期有舵机的上供弹云台使用，如今的半下供弹云台已没有舵机
             if (KEY_DN(q))
             {
                 Servo_SetAngle(&Servo_MagServo, Servo_Open);
@@ -360,6 +374,7 @@ static void Keymouse_Update()
     }
 }
 
+// 键鼠模式设置后，后续的自瞄模式状态机切换
 static void KeyMouse_ArmorModeSet(uint8_t mode)
 {
     Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
@@ -402,6 +417,7 @@ static void KeyMouse_ArmorModeSet(uint8_t mode)
     }
 }
 
+// 遥控器或键鼠模式设置后，后续的打符模式状态机切换
 static void KeyMouse_BuffModeSet(uint8_t mode)
 {
     Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
@@ -426,6 +442,7 @@ static void KeyMouse_BuffModeSet(uint8_t mode)
     }
 }
 
+// 图传链路键鼠数据更新
 static void Keymouse_VTM_Update(void)
 {
     ext_remote_control_t *remote = &(Referee_GetDataPtr()->remote_vtm_data);
@@ -606,6 +623,8 @@ static void Keymouse_VTM_Update(void)
         gimbal->pitch_position_ref = temp_pitch_ref;
     }
 }
+
+// 遥控器模式设置后，后续的自瞄模式状态机切换
 static void Remote_AutoaimModeSet(uint8_t mode)
 {
     Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
@@ -619,6 +638,7 @@ static void Remote_AutoaimModeSet(uint8_t mode)
     }
 }
 
+// 自瞄模式状态机切换后，后续云台底盘状态机切换
 static void Following_AutoaimModeSet()
 {
     Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
@@ -669,6 +689,7 @@ static void Following_AutoaimModeSet()
     }
 }
 
+// 键鼠模式设置后，后续小陀螺状态机切换
 static void KeyMouse_GyroModeSet(void)
 {
     Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();
@@ -690,6 +711,7 @@ static void KeyMouse_GyroModeSet(void)
     }
 }
 
+// 键鼠模式设置后，后续底盘状态机切换
 static void KeyMouse_ChassisModeSet(uint8_t chassis_mode)
 {
     Remote_ControlTypeDef *remote_control = Remote_GetControlPtr();

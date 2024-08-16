@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-25 19:48:27
+ * @LastEditTime: 2024-08-16 18:52:21
  */
 
 #include "protocol_board.h"
@@ -67,8 +67,8 @@ BoardCom_DataTypeDef *BoardCom_GetDataPtr()
 
 void BoardCom_Init()
 {
-	BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
-	boardcom->cap_rest_energy = 40;
+    BoardCom_DataTypeDef *boardcom = BoardCom_GetDataPtr();
+    boardcom->cap_rest_energy = 40;
     FDCAN_InitTxHeader(&TxHeader_Chassis_to_Gimbal1, ID_SEND_REFEREE_DATA1);
     FDCAN_InitTxHeader(&TxHeader_Chassis_to_Gimbal2, ID_SEND_REFEREE_DATA2);
     FDCAN_InitTxHeader(&TxHeader_Chassis_to_Cap, ID_SEND_CAP_DATA);
@@ -201,6 +201,7 @@ static void _send_referee_data2(uint8_t buff[])
     FDCAN_Send(BOARD_CAN_HANDLER, pheader, buff);
 }
 
+// 与超电的通信协议，与硬件协商前禁止改动
 static void _send_cap_data(uint8_t buff[])
 {
     static uint32_t last_send_time = 0;
@@ -278,6 +279,7 @@ static void _receive_ui_state(uint8_t buff[])
     boardcom->last_update_time[3] = HAL_GetTick();
 }
 
+// 与超电的通信协议，与硬件协商前禁止改动
 static void _receive_cap_data(uint8_t buff[])
 {
     countb[4]++;

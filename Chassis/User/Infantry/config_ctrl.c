@@ -120,6 +120,7 @@ static void Init_AllMotors(void)
     Motor_GimbalMotors.motor_handle[YAW_CAN_ID - 0x205] = &Motor_GimbalYaw;
 }
 
+// 初始化，不建议随意更改顺序
 void Init_All(void)
 {
     DWT_Init(CPU_Clock);
@@ -238,6 +239,7 @@ static void Init_AllMotors(void)
     Motor_GimbalMotors.motor_handle[YAW_CAN_ID - 0x205] = &Motor_GimbalYaw;
 }
 
+// 初始化，不建议随意更改顺序
 void Init_All(void)
 {
     DWT_Init(CPU_Clock);

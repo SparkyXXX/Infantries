@@ -3,8 +3,8 @@
  *
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
- * @LastEditors: Chen Zhihong
- * @LastEditTime: 2024-08-04 01:29:02
+ * @LastEditors: Hatrix
+ * @LastEditTime: 2024-08-16 18:03:37
  */
 
 #include "app_chassis.h"
@@ -22,6 +22,7 @@ Chassis_ControlTypeDef *Chassis_GetControlPtr()
 	return &Chassis_Control;
 }
 
+// 底盘初始化
 void Chassis_Init()
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
@@ -39,6 +40,7 @@ void Chassis_Init()
 	Chassis_ParamInit();
 }
 
+// 设置模式
 void Chassis_ModeSet(Chassis_ModeEnum mode)
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
@@ -46,6 +48,7 @@ void Chassis_ModeSet(Chassis_ModeEnum mode)
 	chassis->present_mode = mode;
 }
 
+// 设置云台坐标系的期望速度
 void Chassis_SetMoveRef(float vz, float vx)
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
@@ -55,6 +58,7 @@ void Chassis_SetMoveRef(float vz, float vx)
 	chassis->gimbal_coordinate_ref.vx = vx;
 }
 
+// 接收板通数据，设置底盘模式和云台系速度期望
 void OmniChassis_GetInstruct()
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
@@ -84,6 +88,7 @@ void OmniChassis_GetInstruct()
 	}
 }
 
+// 根据底盘状态机计算底盘坐标系的期望速度
 void OmniChassis_CalcOutput()
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
@@ -151,9 +156,11 @@ void OmniChassis_CalcOutput()
 	{
 		PID_SetRef(&(chassis->Chassis_MotorSpdPID[i]), chassis->wheel_ref[i]);
 	}
+	// 旧超电板需要的掉压保护，新超电板不需要
 	// Chassis_LowRestEnergyProtect();
 }
 
+// 功控
 void OmniChassis_PowerControl()
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
@@ -186,7 +193,7 @@ void OmniChassis_PowerControl()
 
 	for (int i = 0; i < 4; i++)
 	{
-		Motor_SetOutput(Motor_ChassisMotors.motor_handle[i], chassis->chassis_I[i] / 20.0f * 16384.0f); // 设置输出，注意单�?
+		Motor_SetOutput(Motor_ChassisMotors.motor_handle[i], chassis->chassis_I[i] / 20.0f * 16384.0f); // 设置输出，注意单位
 	}
 	if (boardcom_decoded_count > BOARDCOM_TIMEOUT_VALUE)
 	{
@@ -204,6 +211,7 @@ void OmniChassis_PowerControl()
 
 float temp_vz = 0.0f;
 float temp_vx = 0.0f;
+// 底盘正运动学解算
 void OmniChassis_EstimateSpeed()
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
@@ -218,6 +226,7 @@ void OmniChassis_EstimateSpeed()
 	chassis->real_spd.vx = +sin(chassis->separate_rad) * temp_vz + cos(chassis->separate_rad) * temp_vx;
 }
 
+// 由云台系期望速度计算到底盘系期望速度
 static void Chassis_CalcMoveRef()
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
@@ -229,6 +238,7 @@ static void Chassis_CalcMoveRef()
 	chassis->chassis_coordinate_ref.vx = -sin_tl * chassis->gimbal_coordinate_ref.vz + cos_tl * chassis->gimbal_coordinate_ref.vx;
 }
 
+// 判断小陀螺旋转方向
 static void Chassis_CalcGyroRef()
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
@@ -243,6 +253,7 @@ static void Chassis_CalcGyroRef()
 	}
 }
 
+// 随动控制
 float dead_zone = 0.0f;
 static void Chassis_CalcOmniFollowRef()
 {
@@ -266,6 +277,7 @@ static void Chassis_CalcOmniFollowRef()
 	}
 }
 
+// 下面两个函数用于底盘不同运动模式下的逆运动学解算，并根据3508的峰值转速作限幅
 /*
  * 限制线速度，平动使用这个
  * @param omega 电机角速度输出数组
@@ -331,6 +343,7 @@ static void InverseKinematics_Rotation(float omega[4], float vx, float vy, float
 	omega[3] = -vx + vy + wz;
 }
 
+// 全向独有的多头随动，分区赛全向设置两个头，国赛全向设置四个头
 #if ROBOT_ID == WHITE_MISTRESS
 static void Chassis_MultiHeadSetPosRef(float fdb)
 {
@@ -386,6 +399,7 @@ static void Chassis_MultiHeadSetPosRef(float fdb)
 }
 #endif
 
+// 旧超电板掉压保护，新超电板不需要
 static void Chassis_LowRestEnergyProtect()
 {
 	Chassis_ControlTypeDef *chassis = Chassis_GetControlPtr();
@@ -399,6 +413,7 @@ static void Chassis_LowRestEnergyProtect()
 	}
 }
 
+// 新超电板掉压保护
 static float Max_Power_Cal(uint8_t remain_energy)
 {
 	Referee_DataTypeDef *referee = Referee_GetDataPtr();
@@ -429,6 +444,7 @@ void Write_ErrorCode_Watch(uint8_t column, char type, uint8_t id, uint8_t errCod
 	ErrorCode_Watch[column][2] = '0' + errCode;
 }
 
+// 电机断联问题定位
 void Check_Motor_State()
 {
 	uint8_t lostID = 0, ErrorCode = 0, exist_err = 0;

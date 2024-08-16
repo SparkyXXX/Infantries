@@ -30,6 +30,7 @@ GimbalYaw_ControlTypeDef *GimbalYaw_GetControlPtr()
  * @param      NULL
  * @retval     NULL
  */
+// yaw轴初始化
 void GimbalYaw_Init()
 {
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
@@ -46,6 +47,7 @@ void GimbalYaw_Init()
  * @param      mode: gimbal yaw mode
  * @retval     NULL
  */
+// 设置云台yaw轴模式
 void GimbalYaw_ModeSet(GimbalYaw_ModeEnum mode)
 {
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
@@ -58,6 +60,7 @@ void GimbalYaw_ModeSet(GimbalYaw_ModeEnum mode)
     }
 }
 
+// 模式切换处理
 void GimbalYaw_ModeProcess()
 {
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
@@ -115,6 +118,7 @@ void GimbalYaw_ModeProcess()
     }
 }
 
+// 计算控制输出
 float test_ref = 0.0f;
 void GimbalYaw_CalcOutput()
 {
@@ -175,6 +179,7 @@ void GimbalYaw_CalcOutput()
  * @param      NULL
  * @retval     NULL
  */
+// yaw轴电机输出
 void GimbalYaw_Output()
 {
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
@@ -191,6 +196,7 @@ void GimbalYaw_Output()
 #if IF_SYS_IDENT == SYS_IDENT
     openloop_spd_fdb = gimbalyaw->yaw_speed_fdb;
 #endif
+    // 断联检测
     if (boardcom->check_in == 1 || boardcom_decoded_count > BOARDCOM_TIMEOUT_VALUE)
     {
         Motor_SetOutput(&Motor_GimbalYaw, 0.0f);
@@ -207,6 +213,7 @@ void GimbalYaw_Output()
  * @param      yaw_ref: gimbal yaw target value
  * @retval     NULL
  */
+// 设置yaw轴期望
 void GimbalYaw_SetRef(float yaw_ref)
 {
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
@@ -218,6 +225,7 @@ void GimbalYaw_SetRef(float yaw_ref)
  * @param      yaw_pos_fdb: IMU Yaw Position feedback
  * @retval     NULL
  */
+// 设置yaw轴角度反馈
 void GimbalYaw_SetAngleFdb(float yaw_pos_fdb)
 {
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();
@@ -229,6 +237,7 @@ void GimbalYaw_SetAngleFdb(float yaw_pos_fdb)
  * @param      yaw_pos_fdb: IMU Yaw Speed feedback
  * @retval     NULL
  */
+// 设置yaw轴速度反馈
 void GimbalYaw_SetSpeedFdb(float yaw_pos_fdb)
 {
     GimbalYaw_ControlTypeDef *gimbalyaw = GimbalYaw_GetControlPtr();

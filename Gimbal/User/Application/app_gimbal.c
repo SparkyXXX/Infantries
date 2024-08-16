@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-22 19:47:14
+ * @LastEditTime: 2024-08-16 18:14:18
  */
 #include "app_gimbal.h"
 
@@ -14,6 +14,7 @@ Gimbal_ControlTypeDef *Gimbal_GetControlPtr()
     return &Gimbal_Control;
 }
 
+// pitch轴初始化
 void Gimbal_Init()
 {
     Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();
@@ -25,6 +26,7 @@ void Gimbal_Init()
     Gimbal_ParamInit();
 }
 
+// 计算控制输出，使用模糊PID
 float test_ref = 0.0f;
 void Gimbal_PitchOutput()
 {
@@ -54,6 +56,7 @@ void Gimbal_PitchOutput()
     gimbal->last_pitch_pos_ref = gimbal->pitch_pos.ref;
 }
 
+// pitch轴模式设置
 void Gimbal_ModeSet(Gimbal_ModeEnum mode)
 {
     Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();
@@ -65,6 +68,7 @@ void Gimbal_ModeSet(Gimbal_ModeEnum mode)
     }
 }
 
+// yaw轴模式设置，用于板通发给底盘
 void Gimbal_YawModeSet()
 {
     Gimbal_ControlTypeDef *gimbal = Gimbal_GetControlPtr();

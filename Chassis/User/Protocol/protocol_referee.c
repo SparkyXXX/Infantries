@@ -4,7 +4,7 @@
  * @Author: GDDG08
  * @Date: 2021-12-31 17:37:14
  * @LastEditors: Hatrix
- * @LastEditTime: 2024-07-25 11:13:08
+ * @LastEditTime: 2024-08-16 18:06:53
  */
 
 #include "protocol_referee.h"
@@ -124,7 +124,6 @@ const Referee_RefereeCmdTypeDef Const_Referee_CMD_INTERACTIVE = {0x0301, 8, NULL
 const uint16_t Const_Referee_DATA_CMD_ID_INTERACTIVE_DATA_LBOUND = 0x0200;         // 机器人间交互数据内容ID下界
 const uint16_t Const_Referee_DATA_CMD_ID_INTERACTIVE_DATA_UBOUND = 0x02FF;         // 机器人间交互数据内容ID上界
 
-
 /********** REFEREE CMD PARSER FUNCTION **********/
 uint8_t P_ext_game_status(Referee_DataTypeDef *referee, void *data_ptr)
 {
@@ -156,7 +155,7 @@ uint8_t P_ext_game_robot_HP(Referee_DataTypeDef *referee, void *data_ptr)
 
 uint8_t P_ext_event_data(Referee_DataTypeDef *referee, void *data_ptr)
 {
-//    ext_event_data_t *struct_ptr = data_ptr;
+    //    ext_event_data_t *struct_ptr = data_ptr;
     return PARSE_SUCCEEDED;
 }
 

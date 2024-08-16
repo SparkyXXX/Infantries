@@ -21,6 +21,7 @@ float uart_pe_count = 0;
 float uart_fe_count = 0;
 float uart_ore_count = 0;
 
+// 用于解决裁判系统通信偶尔出错导致程序卡死的问题
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 {
     if (huart->ErrorCode & HAL_UART_ERROR_PE)

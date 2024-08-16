@@ -73,7 +73,7 @@ void Cap_Task(void const *argument)
 {
     for (;;)
     {
-		Cap_IsLost();
+        Cap_IsLost();
         Cap_Update();
         osDelay(1);
     }
@@ -101,6 +101,7 @@ void UI_Task(void const *argument)
         osDelay(20);
     }
 #endif
+// 用于系统辨识测试，随手放在了这里
 #if IF_SYS_IDENT == SYS_IDENT
     for (;;)
     {

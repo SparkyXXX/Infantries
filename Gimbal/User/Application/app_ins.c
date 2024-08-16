@@ -6,18 +6,19 @@
  * @LastEditors: Please set LastEditors
  * @LastEditTime: 2024-06-02 22:59:20
  */
-
+// INS全称为 inertial navigation system，即惯性导航系统。此文件用于获得准确的imu角度。
 #include "app_ins.h"
 
 INS_DataTypeDef INS_Data;
-INS_DataTypeDef* INS_GetControlPtr()
+INS_DataTypeDef *INS_GetControlPtr()
 {
     return &INS_Data;
 }
 
+// 卡尔曼滤波参数初始化
 void INS_Init()
 {
-    INS_DataTypeDef* ins = INS_GetControlPtr();
+    INS_DataTypeDef *ins = INS_GetControlPtr();
     ins->ins_param.scale[X_AXIS] = 1;
     ins->ins_param.scale[Y_AXIS] = 1;
     ins->ins_param.scale[Z_AXIS] = 1;
@@ -28,12 +29,13 @@ void INS_Init()
     QEKF_Init(&(ins->q), 10, 0.01f, 10000000, 1, 0.0085f);
 }
 
-void INS_Upadte(BMI088_DataTypeDef* bmi088)
+// imu数据更新
+void INS_Upadte(BMI088_DataTypeDef *bmi088)
 {
-    INS_DataTypeDef* ins = INS_GetControlPtr();
+    INS_DataTypeDef *ins = INS_GetControlPtr();
     static uint32_t count = 0;
     ins->update_dt = DWT_GetDeltaT(&ins->last_update_tick);
-    if(((count % 1) == 0))
+    if (((count % 1) == 0))
     {
         BMI088_Decode(bmi088);
         QEKF_Update(&(ins->q), bmi088->gyro.pitch, bmi088->gyro.row, bmi088->gyro.yaw,
